@@ -3,7 +3,7 @@ from stock.core import symbol, Store, State
 
 def test_symbols():
  assert symbol('00700.hk') == '700.HK'
- for bad in ['Tencent','700','AAPL.US','0.HK','700.HK;ls']:
+ for bad in ['Tencent','700','0.HK','700.HK;ls']:
   with pytest.raises(ValueError): symbol(bad)
 
 def test_annotation_persistence(tmp_path):

@@ -11,18 +11,20 @@ from textual.binding import Binding
 from textual.containers import VerticalScroll
 from textual.widgets import Static, TextArea
 from .core import State
-from .data import DataError, HK, hk_date
+from .data import DataError, HK
+from .exchanges import exchange
 
 
-def date_label(timestamp, minute=False):
-    date = datetime.fromisoformat(timestamp.replace('Z','+00:00')).astimezone(HK)
-    return date.strftime('%d %b %Y' + (' %H:%M HKT' if minute else '')).upper()
+def date_label(timestamp, minute=False, timezone=HK):
+    date = datetime.fromisoformat(timestamp.replace('Z','+00:00')).astimezone(timezone)
+    return date.strftime('%d %b %Y' + (' %H:%M %Z' if minute else '')).upper()
 
 
 ORIGIN = 11
 
 
-def chart(state, annotations, width, height):
+def chart(state, annotations, width, height, venue=None):
+    venue = venue or exchange('700.HK')
     rows, start = state.window()
     w, h = max(1, width-ORIGIN), max(2, height)
     values = [float(r['close']) for r in rows]
@@ -76,7 +78,7 @@ def chart(state, annotations, width, height):
     marks = [' ']*w
     for i, row in enumerate(rows):
         if any(t == row['timestamp'] or
-               (state.zooms[state.level][1] == 'day' and hk_date(t) == hk_date(row['timestamp']))
+               (state.zooms[state.level][1] == 'day' and venue.date(t) == venue.date(row['timestamp']))
                for t in annotations):
             marks[x(i)] = '●'
     marks[x(state.index-start)] = '▼'
@@ -85,7 +87,7 @@ def chart(state, annotations, width, height):
     ticks = [' ']*w
     occupied = set()
     for i in dict.fromkeys([len(rows)-1, 0, len(rows)//4, len(rows)//2, 3*len(rows)//4]):
-        label = date_label(rows[i]['timestamp']) if i == len(rows)-1 else date_label(rows[i]['timestamp'])[:2]
+        label = date_label(rows[i]['timestamp'], timezone=venue.timezone) if i == len(rows)-1 else date_label(rows[i]['timestamp'], timezone=venue.timezone)[:2]
         if len(label) > w: label = label[:2]
         pos = max(0, min(w-len(label), x(i)-len(label)//2))
         cells = set(range(pos, pos+len(label)))
@@ -118,13 +120,16 @@ class PriceApp(App):
 
     def __init__(self,ticker,metadata,observations,store,market,minute_available,notice=''):
         super().__init__()
+        self.venue=exchange(ticker)
         self.ticker=ticker;self.metadata=metadata;self.state=State(observations)
+        self.minimum_level=next((i for i,(_,_,count) in enumerate(self.state.zooms[:5]) if count<=len(observations)),4)
+        self.state.level=max(self.minimum_level,self.state.level)
         self.daily=observations;self.store=store;self.market=market
         self.minute_available=minute_available;self.notice=notice
         if minute_available:
             period = minute_available if isinstance(minute_available,str) else '1m'
             minutes = {'1m':1,'5m':5,'15m':15,'30m':30,'1h':60}[period]
-            self.state.zooms[5:]=[('1D',period,max(1,330//minutes)),('1H',period,max(1,60//minutes))]
+            self.state.zooms[5:]=[('1D',period,max(1,self.venue.session_minutes//minutes)),('1H',period,max(1,60//minutes))]
         self.expanded=False;self.editing=False;self.anchor=None;self.loading=False
 
     def compose(self) -> ComposeResult:
@@ -159,13 +164,13 @@ class PriceApp(App):
     def paint(self):
         if not self.is_mounted: return
         annotations=self.store.annotations(self.ticker)
-        self.query_one('#chart',Static).update(Text(chart(self.state,annotations,self.size.width-2,max(4,min(16,self.size.height-11)))))
+        self.query_one('#chart',Static).update(Text(chart(self.state,annotations,self.size.width-2,max(4,min(16,self.size.height-11)),self.venue)))
         timestamp=self.timestamp();text=annotations.get(timestamp,'')
         prefix='> ' if self.state.row==1 else '  '
         content=text if self.expanded else (text.splitlines()[0] if text else 'No annotation')
         if not self.expanded and len(content)>max(20,self.size.width-24):
             content=content[:max(20,self.size.width-27)]+'...'
-        content = date_label(timestamp, self.state.zooms[self.state.level][1]!='day')+(' · '+content if not self.editing else '')
+        content = date_label(timestamp, self.state.zooms[self.state.level][1]!='day',self.venue.timezone)+(' · '+content if not self.editing else '')
         available = max(1, self.size.width-2-ORIGIN)
         lines = []
         for paragraph in content.split('\n'):
@@ -175,7 +180,7 @@ class PriceApp(App):
         self.query_one('#annotation',Static).update(Text(aligned))
         self.query_one('#annotation').display=True
         z=self.state.level;maximum=6 if self.minute_available else 4
-        prev=self.state.zooms[z-1][0] if z else '—';nxt=self.state.zooms[z+1][0] if z<maximum else '—'
+        prev=self.state.zooms[z-1][0] if z>self.minimum_level else '—';nxt=self.state.zooms[z+1][0] if z<maximum else '—'
         selected=self.state.row==2
         current=self.state.zooms[z][0]
         gap=' '*max(1,min(8,(self.size.width-2-ORIGIN-len(prev)-len(current)-len(nxt)-2)//2))
@@ -204,7 +209,7 @@ class PriceApp(App):
         self.editing=False;editor.display=False;editor.disabled=True;self.set_focus(None);self.paint()
 
     async def change_zoom(self,direction):
-        old=self.state.level;new=max(0,min(6 if self.minute_available else 4,old+direction))
+        old=self.state.level;new=max(self.minimum_level,min(6 if self.minute_available else 4,old+direction))
         if new==old: return
         anchor=self.timestamp()
         if self.state.zooms[old][1] != self.state.zooms[new][1]:
@@ -214,7 +219,7 @@ class PriceApp(App):
                 # Preserve the historical instant even when its finer observation is unavailable.
                 exact=next((i for i,r in enumerate(data) if r['timestamp']==anchor),None)
                 if exact is None:
-                    same=[i for i,r in enumerate(data) if hk_date(r['timestamp'])==hk_date(anchor)]
+                    same=[i for i,r in enumerate(data) if self.venue.date(r['timestamp'])==self.venue.date(anchor)]
                     if not same: raise DataError('No observations at selected date; zoom unchanged')
                     target=datetime.fromisoformat(anchor.replace('Z','+00:00'))
                     exact=min(same,key=lambda i:abs((datetime.fromisoformat(data[i]['timestamp'].replace('Z','+00:00'))-target).total_seconds()))

@@ -23,7 +23,7 @@ def test_search_normalizes_filters_and_matches(tmp_path):
  market=Market(Store(tmp_path/'db'),Catalogue())
  assert market.search('Tencent')[0][0]=='700.HK'
  assert market.search('00700')[0][0]=='700.HK'
- assert market.search('Apple')==[]
+ assert market.search('Apple')[0][0]=='AAPL.US'
 
 def test_calendar_chunks_upstream_month_limit(tmp_path):
  from datetime import date

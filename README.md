@@ -1,6 +1,6 @@
 # Stock
 
-Minimal keyboard-only Hong Kong securities terminal. Python 3.11+ and Textual;
+Minimal keyboard-only US and Hong Kong securities terminal. Python 3.11+ and Textual;
 read-only market data through Longbridge CLI's supported JSON-RPC interface.
 
 ```sh
@@ -11,6 +11,8 @@ python3 -m venv .venv
 source .venv/bin/activate
 stock price 700.HK
 stock search Tencent
+stock search coreweave
+stock price CRWV.US
 ```
 
 The current machine also has `~/.local/bin/stock` symlinked to the project's
@@ -58,14 +60,14 @@ The chart plots **raw closes** from real OHLCV observations, with straight line
 segments between them. Chart segments, note markers, selection, and date ticks
 share one elapsed-time scale. The reserved marker row sits immediately above the x-axis. No synthetic
 price observations are added for weekends, holidays, lunch breaks, or missing bars.
-Intraday labels and dates use Asia/Hong_Kong. Month/year zooms are approximate
+Dates, annotation markers, anchored history requests, and intraday labels use the exchange timezone: Asia/Hong_Kong for HK and America/New_York for US (EST/EDT). Calendars are requested independently by market; only returned price observations are plotted. Month/year zooms are approximate
 trading-observation windows (21/63/126/252 daily bars), not calendar durations.
-The initial fetch contains up to 1,000 daily bars; navigation stops at its edges.
+The initial fetch contains up to 1,000 daily bars; navigation stops at its edges. Daily zooms longer than the returned history are unavailable (the shortest window remains usable for newly listed stocks).
 
 Stock probes 1m, 5m, 15m, 30m, then 1h history to find the finest resolution the
 account actually returns. Intraday zoom is disabled if all probes fail. Moving
 between daily and intraday bars retains the exact historical anchor; the triangle
-uses the nearest returned bar on that HK date. Timeline movement then selects an
+uses the nearest returned bar on that exchange-local date. Timeline movement then selects an
 actual bar in the new resolution. No returned bar on that date means zoom stays
 unchanged with an error. Intraday notes appear as date markers at daily zoom.
 Historical availability remains subject to Longbridge retention and account quotas.
@@ -80,13 +82,22 @@ split into ranges shorter than a month; startup retrieves the visible month.
 Longbridge limits calendar history independently of price history; unavailable
 calendar responses are reported while observed price timestamps remain usable.
 
-Search uses the supported **`quote.security_list` with market `HK`**, then matches
-names (English and Chinese) or symbols locally. Both the catalogue shape and
-Tencent → `700.HK` were verified against the authenticated API. A guessed
-`/v1/search/stock` path returned 404 and is **not used**. Search includes other HK
-securities returned by Longbridge, such as warrants and bonds; it never opens Price.
-See the [RPC contract](https://open.longbridge.com/docs/cli/serve) and
-[calendar API](https://open.longbridge.com/docs/market/trade-days).
+Search uses the supported **`quote.security_list` with markets `US` and `HK`**,
+then ranks names (English and Chinese) and tickers locally, case-insensitively.
+Exact tickers and names precede prefixes, substrings, and close spelling matches.
+Results retain canonical symbols and explicit markets, including duplicate company
+names across listings. HK zero padding is normalized; US share-class punctuation
+is retained. Catalogue failures identify which market could not be searched.
+Search never opens Price. The catalogues may include funds, warrants and bonds
+alongside equities; catalogue membership is not a guarantee of price entitlement.
+
+The official [CLI catalogue documentation](https://open.longbridge.com/docs/cli/market-data/security-list)
+and [RPC contract](https://open.longbridge.com/docs/cli/serve) document this route.
+The older [SDK security-list page](https://open.longbridge.com/docs/quote/security/security_list)
+describes a narrower overnight list; the installed CLI 0.30.0 RPC was separately
+verified to return full US and HK catalogues, including CRWV.US and 700.HK.
+No guessed REST endpoint, web scraping, alternate data provider, or CLI upgrade
+is used. See also the [calendar API](https://open.longbridge.com/docs/market/trade-days).
 
 ## Verification
 
@@ -96,8 +107,10 @@ cd ~/Documents/Developer/stock
 .venv/bin/python tests/smoke.py
 ```
 
-The smoke script makes fresh authenticated, read-only requests for Tencent search,
-metadata, daily and one-minute OHLCV, anchored minute history, and the HK calendar.
-It fails if a stale cache fallback was used. Tests cover keyboard editing,
-navigation, zoom anchoring across HK midnight, note persistence, validation,
-calendar request limits, offline errors, and refusal of trading methods.
+The smoke script bypasses cached responses and makes fresh authenticated,
+read-only requests for CoreWeave and Tencent search, metadata, daily and finest
+available intraday OHLCV, anchored history, and each market's calendar. It also
+checks independent July 2026 HK/US holidays. Tests cover keyboard editing,
+chart continuity and alignment, navigation, exchange-local anchored zoom, DST,
+annotation isolation, symbol normalization, short-history zoom limits, permission
+errors, stale-cache notices, and refusal of trading methods.

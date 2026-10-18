@@ -6,11 +6,11 @@ from .data import Market, DataError
 
 
 def main():
-    parser=argparse.ArgumentParser(prog='stock',description='Hong Kong equities · keyboard terminal')
+    parser=argparse.ArgumentParser(prog='stock',description='US and Hong Kong equities · keyboard terminal')
     commands=parser.add_subparsers(dest='command',required=True)
     price=commands.add_parser('price',help='Open historical price terminal')
     price.add_argument('ticker')
-    search=commands.add_parser('search',help='Find HK securities by name or symbol')
+    search=commands.add_parser('search',help='Find US and HK securities by name or symbol')
     search.add_argument('name')
     args=parser.parse_args()
     if args.command=='price':
@@ -23,8 +23,8 @@ def main():
         store=Store();market=Market(store)
         if args.command=='search':
             matches=market.search(args.name)
-            for ticker,name in matches: print(f'{ticker:<10} · {name}')
-            if not matches: print('No matching HK securities')
+            for ticker,name in matches: print(f'{ticker:<12} · {name} · {ticker.rsplit(".",1)[1]}')
+            if not matches: print('No matching US or HK securities')
             for notice in market.notices: print(notice,file=sys.stderr)
         else:
             if not sys.stdin.isatty() or not sys.stdout.isatty():
@@ -33,7 +33,7 @@ def main():
             metadata=market.metadata(args.ticker)
             rows=market.history(args.ticker)
             notices=[]
-            try: metadata["calendar"] = market.calendar(rows[-21:])
+            try: metadata["calendar"] = market.calendar(rows[-21:],args.ticker)
             except DataError as e: notices.append(f'Calendar unavailable · {e}')
             minute=False
             try:

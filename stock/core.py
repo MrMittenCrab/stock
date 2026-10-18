@@ -9,9 +9,12 @@ DB = ROOT / '.data' / 'stock.sqlite3'
 
 
 def symbol(value):
-    if not re.fullmatch(r'[0-9]{1,5}\.HK', value.upper()) or int(value.split('.')[0]) == 0:
-        raise ValueError('Expected a Hong Kong ticker such as 700.HK; use stock search for names')
-    return f"{int(value.split('.')[0])}.HK"
+    value = value.upper()
+    if re.fullmatch(r'[0-9]{1,5}\.HK', value) and int(value.split('.')[0]):
+        return f"{int(value.split('.')[0])}.HK"
+    if re.fullmatch(r'[A-Z][A-Z0-9]*(?:[.-][A-Z0-9]+)*\.US', value):
+        return value
+    raise ValueError('Expected a canonical ticker such as CRWV.US or 700.HK; use stock search for names')
 
 
 class Store:
@@ -36,10 +39,10 @@ class Store:
 
     def annotate(self, ticker, timestamp, text):
         with self.db:
-            self.db.execute('INSERT OR REPLACE INTO annotations VALUES(?,?,?)', (ticker, timestamp, text))
+            self.db.execute('INSERT OR REPLACE INTO annotations VALUES(?,?,?)', (symbol(ticker), timestamp, text))
 
     def annotations(self, ticker):
-        return dict(self.db.execute('SELECT timestamp,text FROM annotations WHERE symbol=?', (ticker,)))
+        return dict(self.db.execute('SELECT timestamp,text FROM annotations WHERE symbol=?', (symbol(ticker),)))
 
 
 # Longest to shortest; daily windows then intraday windows, all observation-based.

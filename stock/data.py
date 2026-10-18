@@ -6,6 +6,9 @@ import time
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 from .core import symbol
+from .exchanges import exchange
+from difflib import SequenceMatcher
+import re
 
 HK = ZoneInfo('Asia/Hong_Kong')
 
@@ -92,29 +95,39 @@ class Market:
             result = self.rpc.call(method, params)
             self.store.put(key, result)
             return result
-        except DataError:
+        except DataError as e:
             if cached:
                 date = datetime.fromtimestamp(cached[1], HK).strftime('%d %b %H:%M HKT')
-                self.notices.add(f'OFFLINE · cached {date}')
+                self.notices.add(f'OFFLINE · cached {date} · {e}')
                 return cached[0]
             raise
 
     def metadata(self, ticker):
+        ticker = symbol(ticker)
         result = self.fetch('quote.static_info', {'symbols':[ticker]}, 86400)
         if not result or result[0].get('symbol') != ticker:
             raise DataError(f'Unknown security: {ticker}')
-        return result[0]
+        info = dict(result[0])
+        expected = exchange(ticker).currency
+        if info.get('currency') != expected:
+            raise DataError(f'Unexpected currency for {ticker}: {info.get("currency")}')
+        return info
 
     def history(self, ticker, period='day', anchor=None):
+        ticker = symbol(ticker)
         if anchor:
-            date = datetime.fromisoformat(anchor.replace('Z','+00:00')).astimezone(HK).date()
+            date = exchange(ticker).date(anchor)
             span = 400 if period == 'day' else 7
             params = {'symbol':ticker, 'period':period, 'adjust':'none',
                       'start':str(date-timedelta(days=span)), 'end':str(date+timedelta(days=span if period=='day' else 1))}
-            result = self.fetch('quote.history_candlesticks_by_date', params)
+            method = 'quote.history_candlesticks_by_date'
         else:
-            result = self.fetch('quote.candlesticks',
-                {'symbol':ticker,'period':period,'count':1000,'adjust':'none'})
+            method = 'quote.candlesticks'
+            params = {'symbol':ticker,'period':period,'count':1000,'adjust':'none'}
+        try:
+            result = self.fetch(method, params)
+        except DataError as e:
+            raise DataError(f'{ticker} · {period} history unavailable · {e}') from e
         rows = sorted({r['timestamp']:r for r in result}.values(), key=lambda r:r['timestamp'])
         if not rows:
             raise DataError(f'No {period} history available for {ticker}')
@@ -135,30 +148,62 @@ class Market:
                 errors.append(f'{period}: {e}')
         raise DataError('Intraday unavailable · '+ '; '.join(errors))
 
-    def calendar(self, observations):
-        start = hk_date(observations[0]['timestamp'])
-        end = hk_date(observations[-1]['timestamp'])
+    def calendar(self, observations, ticker='700.HK'):
+        venue = exchange(symbol(ticker))
+        start = venue.date(observations[0]['timestamp'])
+        end = venue.date(observations[-1]['timestamp'])
         result = {'trading_days': [], 'half_trading_days': []}
         while start <= end:
             stop = min(end, start+timedelta(days=27))
             chunk = self.fetch('quote.trading_days',
-                {'market':'HK','start':str(start),'end':str(stop)}, 86400)
+                {'market':venue.market,'start':str(start),'end':str(stop)}, 86400)
             for key in result:
                 result[key].extend(chunk.get(key, []))
             start = stop+timedelta(days=1)
         return {key:sorted(set(values)) for key,values in result.items()}
 
     def search(self, query):
-        records = self.fetch('quote.security_list', {'market':'HK'}, 86400)
         q = query.casefold().strip()
-        numeric = q.removesuffix('.hk')
-        matches = []
-        for r in records:
+        if not q:
+            return []
+        matches = {}
+        failures = []
+        def clean(value):
+            return ' '.join(re.findall(r'[^\W_]+', value.casefold()))
+        for market in ('HK', 'US'):
             try:
-                ticker = symbol(r['symbol'])
-            except (KeyError, ValueError):
+                records = self.fetch('quote.security_list', {'market':market}, 86400)
+            except DataError as e:
+                failures.append(f'{market} search unavailable · {e}')
                 continue
-            names = ' · '.join(dict.fromkeys(str(r.get(k,'')) for k in ('name_en','name_cn','name_hk') if r.get(k)))
-            if q in (ticker+' '+names).casefold() or (numeric.isdigit() and int(numeric)==int(ticker.split('.')[0])):
-                matches.append((ticker, names))
-        return sorted(set(matches), key=lambda r:int(r[0].split('.')[0]))
+            for r in records:
+                try:
+                    ticker = symbol(r['symbol'])
+                except (KeyError, ValueError):
+                    continue
+                if exchange(ticker).market != market:
+                    continue
+                names = list(dict.fromkeys(str(r[k]) for k in ('name_en','name_cn','name_hk') if r.get(k)))
+                code = ticker.rsplit('.', 1)[0].casefold()
+                exact = q in (ticker.casefold(), code)
+                if market == 'HK' and q.removesuffix('.hk').isdigit():
+                    exact = int(q.removesuffix('.hk')) == int(code)
+                scores = []
+                for name in [code] + names:
+                    n, term = clean(name), clean(q)
+                    if n == term: scores.append(1)
+                    elif n.startswith(term): scores.append(2)
+                    elif term in n: scores.append(3)
+                    elif len(term) >= 4 and SequenceMatcher(None, term, n).ratio() >= .8:
+                        scores.append(4)
+                if exact or scores:
+                    rank = 0 if exact else min(scores)
+                    display = ' · '.join(names)
+                    candidate = (rank, len(display), display)
+                    matches[ticker] = min(candidate, matches.get(ticker, candidate))
+        if failures:
+            self.notices.update(failures)
+            if len(failures) == 2:
+                raise DataError('; '.join(failures))
+        return [(ticker, matches[ticker][2]) for ticker in sorted(matches,
+                key=lambda t:(matches[t][0], matches[t][1], t))]

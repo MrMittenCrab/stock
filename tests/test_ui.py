@@ -65,7 +65,7 @@ async def test_layout_zoom_arrows_and_expansion(tmp_path):
   def zoom(): return str(app.query_one('#zoom').render())
   rendered=str(app.query_one('#chart').render()).splitlines()
   assert len(next(line for line in rendered if '└' in line)) == 78
-  before=zoom();assert '3M←' in before and '→1W' in before
+  before=zoom();assert '—←' in before and '→1W' in before
   await pilot.press('down');assert zoom()==before
   collapsed=app.query_one('#zoom').region.y
   await pilot.press('space');await pilot.pause()
