@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "stock-terminal"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["textual>=6.12,<7"]
+[project.optional-dependencies]
+test = ["pytest>=8", "pytest-asyncio>=0.24"]
+[project.scripts]
+stock = "stock.cli:main"
+[tool.setuptools.packages.find]
+include = ["stock*"]
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "--basetemp=.data/test-tmp"
