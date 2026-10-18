@@ -38,13 +38,15 @@ annotations and is excluded from Git. Back it up to preserve notes.
 ## Price controls
 
 - ↑/↓ selects timeline, annotation, or zoom (`>` marks the selected row).
-- Timeline ←/→ moves one actual observation; ▲ is selected, ● marks notes.
+- Timeline ←/→ moves one actual observation; ▼ is selected, ● marks notes.
 - Annotation Space toggles full text in place. → expands, then → edits.
 - A adds/edits a point note at the selected historical timestamp.
-- While editing, arrows move the cursor, Space inserts a space, Enter inserts
-  a newline, and Esc saves and leaves editing. Esc outside editing exits Stock.
-- Zoom ← widens and → narrows: 1Y, 6M, 3M, 1M, 1W, 1D, 1H. Only the selected
-  zoom row shows directional arrows. The historical anchor survives zooming.
+- While editing, ←/→ moves the caret, Space inserts a space, and Enter inserts
+  a newline. ↑ saves and selects timeline; ↓ saves and selects zoom.
+  Esc always saves pending edits and quits Stock.
+- Zoom ← widens and → narrows: 1Y, 6M, 3M, 1M, 1W, 1D, 1H. Adjacent levels
+  always show directional arrows (— marks unavailable levels).
+  The historical anchor survives zooming.
 
 Use a monospace terminal; Stock uses the terminal's single font size, grayscale,
 and no mouse reporting. 80×24 or larger is recommended. Expanded text pushes
@@ -53,8 +55,9 @@ following rows down; selected rows scroll into view in smaller terminals.
 ## Data behavior and limits
 
 The chart plots **raw closes** from real OHLCV observations, with straight line
-segments between them. It uses observation spacing, not elapsed wall-clock time:
-weekends, holidays, lunch breaks and missing bars receive no invented points.
+segments between them. Chart segments, note markers, selection, and date ticks
+share one elapsed-time scale. The reserved marker row sits immediately above the x-axis. No synthetic
+price observations are added for weekends, holidays, lunch breaks, or missing bars.
 Intraday labels and dates use Asia/Hong_Kong. Month/year zooms are approximate
 trading-observation windows (21/63/126/252 daily bars), not calendar durations.
 The initial fetch contains up to 1,000 daily bars; navigation stops at its edges.

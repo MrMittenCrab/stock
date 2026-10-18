@@ -1,6 +1,7 @@
-"""Compact monochrome price view. Chart x positions represent observations."""
+"""Compact monochrome price view with a shared timestamp scale."""
 import asyncio
 import textwrap
+from bisect import bisect_right
 from datetime import datetime
 from rich.text import Text
 from rich.style import Style
@@ -9,7 +10,7 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import VerticalScroll
 from textual.widgets import Static, TextArea
-from .core import State, ZOOMS
+from .core import State
 from .data import DataError, HK, hk_date
 
 
@@ -18,45 +19,80 @@ def date_label(timestamp, minute=False):
     return date.strftime('%d %b %Y' + (' %H:%M HKT' if minute else '')).upper()
 
 
+ORIGIN = 11
+
+
 def chart(state, annotations, width, height):
     rows, start = state.window()
-    w, h = max(12, width-12), max(5,height)
+    w, h = max(1, width-ORIGIN), max(2, height)
     values = [float(r['close']) for r in rows]
     low, high = min(values), max(values)
     if low == high:
-        low -= max(abs(low)*0.001,0.01)
-        high += max(abs(high)*0.001,0.01)
+        low -= max(abs(low)*0.001, 0.01)
+        high += max(abs(high)*0.001, 0.01)
+    times = [datetime.fromisoformat(r['timestamp'].replace('Z', '+00:00')).timestamp() for r in rows]
+    def x(i):
+        return round((times[i]-times[0]) / (times[-1]-times[0] or 1) * (w-1))
+    def y(value):
+        return round((high-value)/(high-low)*(h-1))
+
+    # Join cell edges, including endpoints: one connected stroke, no point glyphs.
+    ports = {}
+    def join(a, b):
+        dx, dy = b[0]-a[0], b[1]-a[1]
+        ports.setdefault(a, set()).add((dx, dy))
+        ports.setdefault(b, set()).add((-dx, -dy))
+    # Sample the piecewise linear price path once per terminal column. Several
+    # observations may share a cell when zoomed out; drawing each independently
+    # produces retraced vertical strokes and dangling branches.
+    points = [(0, y(values[0]))]
+    if len(rows) > 1:
+        for column in range(1, w):
+            instant = times[0]+(times[-1]-times[0])*column/max(1,w-1)
+            right = min(len(rows)-1, bisect_right(times, instant))
+            left = right-1
+            fraction = (instant-times[left])/(times[right]-times[left] or 1)
+            value = values[left]+(values[right]-values[left])*fraction
+            points.append((column, y(value)))
+    ports[points[0]] = set()
+    for (ax, ay), (bx, by) in zip(points, points[1:]):
+        join((ax, ay), (bx, ay))
+        cy = ay
+        while cy != by:
+            step = 1 if by > cy else -1
+            join((bx, cy), (bx, cy+step));cy += step
+    glyphs = {frozenset(d): c for d, c in [
+        ([(-1,0),(1,0)], '─'), ([(0,-1),(0,1)], '│'),
+        ([(1,0),(0,1)], '╭'), ([(-1,0),(0,1)], '╮'),
+        ([(1,0),(0,-1)], '╰'), ([(-1,0),(0,-1)], '╯')]}
     grid = [[' ']*w for _ in range(h)]
-    def x(i): return round(i*(w-1)/max(1,len(rows)-1))
-    def y(v): return round((high-v)/(high-low)*(h-1))
-    # Straight segments connect observed closes, never spline/smoothed prices.
-    points = [(x(i), y(v)) for i,v in enumerate(values)]
-    for i,(px,py) in enumerate(points):
-        grid[py][px]='•'
-        if not i: continue
-        ax,ay=points[i-1]
-        steps=max(abs(px-ax),abs(py-ay))
-        for step in range(1,steps):
-            gx=round(ax+(px-ax)*step/steps);gy=round(ay+(py-ay)*step/steps)
-            grid[gy][gx]='─' if py==ay else ('╱' if py<ay else '╲')
-    output=[]
-    for i,line in enumerate(grid):
-        label=f'{high-(high-low)*i/(h-1):.2f}' if i in (0,h//2,h-1) else ''
+    for (px, py), directions in ports.items():
+        grid[py][px] = glyphs.get(frozenset(directions),
+                                  '│' if directions and all(dx == 0 for dx,dy in directions) else '─')
+    output = []
+    for i, line in enumerate(grid):
+        label = f'{high-(high-low)*i/(h-1):.2f}' if i in (0,h//2,h-1) else ''
         output.append(f'{label:>9} │'+''.join(line))
-    output.append('          └'+'─'*w)
-    ticks=[' ']*w
-    for i in sorted({0,len(rows)//2,len(rows)-1}):
-        label=date_label(rows[i]['timestamp'])[:6]
-        pos=max(0,min(w-len(label),x(i)-len(label)//2))
-        ticks[pos:pos+len(label)]=label
-    output.append('           '+''.join(ticks))
-    marks=[' ']*w
-    for i,r in enumerate(rows):
-        if any(t==r['timestamp'] or (state.zooms[state.level][1]=='day' and hk_date(t)==hk_date(r['timestamp'])) for t in annotations):
-            marks[x(i)]='●'
-    marks[x(state.index-start)]='▲'
-    output.append(('> ' if state.row==0 else '  ')+'         '+''.join(marks))
-    output.append('           '+date_label(state.selected['timestamp'],state.zooms[state.level][1]!='day'))
+    marks = [' ']*w
+    for i, row in enumerate(rows):
+        if any(t == row['timestamp'] or
+               (state.zooms[state.level][1] == 'day' and hk_date(t) == hk_date(row['timestamp']))
+               for t in annotations):
+            marks[x(i)] = '●'
+    marks[x(state.index-start)] = '▼'
+    output.append(('> ' if state.row == 0 else '  ')+' '*(ORIGIN-2)+''.join(marks))
+    output.append(' '*(ORIGIN-1)+'└'+'─'*w)
+    ticks = [' ']*w
+    occupied = set()
+    for i in dict.fromkeys([len(rows)-1, 0, len(rows)//4, len(rows)//2, 3*len(rows)//4]):
+        label = date_label(rows[i]['timestamp']) if i == len(rows)-1 else date_label(rows[i]['timestamp'])[:2]
+        if len(label) > w: label = label[:2]
+        pos = max(0, min(w-len(label), x(i)-len(label)//2))
+        cells = set(range(pos, pos+len(label)))
+        if not cells & occupied:
+            ticks[pos:pos+len(label)] = label
+            occupied.update(range(max(0,pos-1), min(w,pos+len(label)+1)))
+    output.append(' '*ORIGIN+''.join(ticks))
     return '\n'.join(output)
 
 
@@ -65,15 +101,19 @@ class Body(VerticalScroll):
 
 
 class PriceApp(App):
-    BINDINGS = [Binding("escape", "back", priority=True, show=False)]
+    BINDINGS = [Binding("escape", "back", priority=True, show=False),
+                Binding("up", "row(-1)", priority=True, show=False),
+                Binding("down", "row(1)", priority=True, show=False)]
     AUTO_FOCUS = ""
     ENABLE_COMMAND_PALETTE = False
     CSS = '''
     Screen { background: #111111; color: #dddddd; }
     VerticalScroll { height: 1fr; padding: 1 1; scrollbar-size: 0 0; }
     Static { height: auto; }
-    TextArea { height: auto; min-height: 3; max-height: 12; border: none; padding: 0; background: #111111; color: #dddddd; }
+    TextArea { height: auto; min-height: 1; border: none; padding: 0; background: #111111; color: #dddddd; }
     TextArea:focus { border: none; }
+    TextArea { margin-left: 11; }
+    #heading { margin-bottom: 1; }
     '''
 
     def __init__(self,ticker,metadata,observations,store,market,minute_available,notice=''):
@@ -95,7 +135,7 @@ class PriceApp(App):
             yield TextArea('',id='editor',soft_wrap=True,show_line_numbers=False,tab_behavior='indent')
             yield Static(id='zoom')
             yield Static(id='status')
-            yield Static('↑↓ Row   ←→ Navigate   Space Expand   A Add   Esc Back',id='help')
+            yield Static('↑↓ Row   ←→ Navigate   Space Expand   A Add   Esc Quit',id='help')
 
     def on_mount(self):
         editor = self.query_one('#editor', TextArea)
@@ -111,7 +151,7 @@ class PriceApp(App):
         self.paint()
 
     def on_resize(self):
-        if self.is_mounted: self.paint()
+        if self.is_mounted: self.call_after_refresh(self.paint)
 
     def timestamp(self):
         return self.anchor or self.state.selected['timestamp']
@@ -119,30 +159,34 @@ class PriceApp(App):
     def paint(self):
         if not self.is_mounted: return
         annotations=self.store.annotations(self.ticker)
-        self.query_one('#chart',Static).update(Text(chart(self.state,annotations,self.size.width-3,max(5,min(16,self.size.height-15)))))
+        self.query_one('#chart',Static).update(Text(chart(self.state,annotations,self.size.width-2,max(4,min(16,self.size.height-11)))))
         timestamp=self.timestamp();text=annotations.get(timestamp,'')
         prefix='> ' if self.state.row==1 else '  '
         content=text if self.expanded else (text.splitlines()[0] if text else 'No annotation')
         if not self.expanded and len(content)>max(20,self.size.width-24):
             content=content[:max(20,self.size.width-27)]+'...'
-        wrapped=textwrap.fill(content,width=max(20,self.size.width-6),replace_whitespace=False) if self.expanded else content
-        self.query_one('#annotation',Static).update(Text(prefix+date_label(timestamp)+' · '+wrapped))
-        self.query_one('#annotation').display=not self.editing
+        content = date_label(timestamp, self.state.zooms[self.state.level][1]!='day')+(' · '+content if not self.editing else '')
+        available = max(1, self.size.width-2-ORIGIN)
+        lines = []
+        for paragraph in content.split('\n'):
+            lines.extend(textwrap.wrap(paragraph, width=available, replace_whitespace=False) or [''])
+        aligned = '\n'.join((' '*ORIGIN)+line for line in lines)
+        aligned = prefix+aligned[2:]
+        self.query_one('#annotation',Static).update(Text(aligned))
+        self.query_one('#annotation').display=True
         z=self.state.level;maximum=6 if self.minute_available else 4
         prev=self.state.zooms[z-1][0] if z else '—';nxt=self.state.zooms[z+1][0] if z<maximum else '—'
         selected=self.state.row==2
-        zoom=f"{prev}{'←' if selected and z else ''}        {self.state.zooms[z][0]}        {'→' if selected and z<maximum else ''}{nxt}"
-        self.query_one('#zoom',Static).update(('> ' if selected else '  ')+zoom)
-        status='RAW · '+self.state.zooms[z][1]+' · observation spacing · HKT · HKEX'
-        calendar=self.metadata.get('calendar',{})
-        day=str(hk_date(self.state.selected['timestamp']))
-        if day in calendar.get('half_trading_days',[]): status+=' · half day'
-        elif day in calendar.get('trading_days',[]): status+=' · trading day'
-        if self.loading: status+=' · loading'
-        if self.notice: status+='\n'+self.notice
-        if self.market and self.market.notices: status+='\n'+' · '.join(sorted(self.market.notices))
-        self.query_one('#status',Static).update(Text(status))
-        self.query_one('#help',Static).update('EDIT · Arrows Cursor   Space Insert   Esc Save' if self.editing else '↑↓ Row   ←→ Navigate   Space Expand   A Add   Esc Back')
+        current=self.state.zooms[z][0]
+        gap=' '*max(1,min(8,(self.size.width-2-ORIGIN-len(prev)-len(current)-len(nxt)-2)//2))
+        zoom=f"{prev}←{gap}{current}{gap}→{nxt}"
+        self.query_one('#zoom',Static).update(Text(('> ' if selected else '  ')+' '*(ORIGIN-2)+zoom))
+        notices = [self.notice] if self.notice else []
+        if self.loading: notices.append('Loading…')
+        if self.market and self.market.notices: notices.extend(sorted(self.market.notices))
+        self.query_one('#status',Static).update(Text('\n'.join(notices)))
+        self.query_one('#status').display = bool(notices)
+        self.query_one('#help',Static).update('↑↓ Save / Row   ←→ Caret   Space Insert   Esc Quit' if self.editing else '↑↓ Row   ←→ Navigate   Space Expand   A Add   Esc Quit')
 
     def begin_edit(self,adding=False):
         self.state.row=1;self.expanded=True;self.editing=True
@@ -179,18 +223,24 @@ class PriceApp(App):
                 self.notice=str(e);return
             finally:
                 self.loading=False
+                self.paint()
         self.state.level=new;self.paint()
 
     def action_back(self):
         if self.editing:
             self.save_edit()
-        else:
-            self.exit()
+        self.exit()
+
+    def action_row(self, direction):
+        if self.loading: return
+        if self.editing:
+            self.save_edit()
+        self.state.select_row(direction)
+        self.paint()
+        self.query_one(['#chart','#annotation','#zoom'][self.state.row]).scroll_visible()
 
     async def on_key(self,event):
         if self.editing:
-            if event.key=='escape':
-                event.stop();event.prevent_default();self.save_edit()
             return
         event.stop();event.prevent_default()
         if self.loading: return
