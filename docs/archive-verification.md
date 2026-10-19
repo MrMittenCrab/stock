@@ -84,10 +84,12 @@ Sources remain outside this change.
 - Simulated elapsed time beyond 600 seconds, converter/document timer resets,
   failure/fallback, text-only labeling, conversion-only retry and original
   preservation are covered by `tests/test_archive_conversion.py`. Real child and
-  grandchild cancellation is tested as well. PTY inspection showed `00:00`,
+  grandchild cancellation is tested as well, including children that start a new
+  session. An ancestry snapshot cleans these up on interruption without touching
+  pre-existing shared inference services. PTY inspection showed `00:00`,
   `00:01`, `00:02` replacing one row, then one completion newline; interruption
   similarly restored the row. The cursor is never hidden or moved vertically.
-- Focused Archive tests: **108 passed**. Core, UI, data and US tests: **34 passed**.
+- Focused Archive tests: **109 passed**. Core, UI, data and US tests: **34 passed**.
   `git diff --check` passed. No dependencies were added.
 - Read the actual CoreWeave prospectus cover and corrected local document **4**
   from `Table of Contents` to `CoreWeave, Inc. IPO Prospectus` using the existing

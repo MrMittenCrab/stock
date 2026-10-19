@@ -313,6 +313,26 @@ def basename(info):
     return f"{info['date'] or 'undated'}--{info['type'].lower()}--{sanitize(info['period'] or info['title'])}"
 
 
+def converter_descendants(pid):
+    """Include backend children that detach into their own process sessions.
+
+    Inspect only ancestry, never process names: pre-existing shared inference
+    services do not belong to this conversion and must remain untouched.
+    """
+    try:
+        result=subprocess.run(['ps','-axo','pid=,ppid='],capture_output=True,text=True,timeout=2)
+        if result.returncode: return []
+        pairs=[tuple(map(int,line.split())) for line in result.stdout.splitlines() if len(line.split())==2]
+    except (OSError,ValueError,subprocess.SubprocessError):
+        return []
+    family={pid}
+    descendants=[]
+    while True:
+        children=[child for child,parent in pairs if parent in family and child not in family]
+        if not children: return descendants
+        family.update(children);descendants.extend(children)
+
+
 def run_converter(command, *, converter='Converter', output=None, timeout=None):
     """Observe liveness, never infer progress or impose a conversion deadline.
 
@@ -355,6 +375,9 @@ def run_converter(command, *, converter='Converter', output=None, timeout=None):
                     show('Running · no output; activity unmeasured' if now-last_activity>=300 else 'Running')
     except BaseException as exc:
         status='Interrupted' if isinstance(exc,KeyboardInterrupt) else 'Failed'
+        for child in reversed(converter_descendants(process.pid)):
+            try: os.kill(child,signal.SIGKILL)
+            except ProcessLookupError: pass
         try: os.killpg(process.pid,signal.SIGKILL)
         except ProcessLookupError: pass
         process.communicate()

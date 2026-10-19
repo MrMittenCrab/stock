@@ -2,6 +2,8 @@ import io
 import subprocess
 import sys
 
+import pytest
+
 from stock import archive
 
 
@@ -93,6 +95,7 @@ def test_interrupt_kills_process_group_and_restores_line(monkeypatch):
             self.calls+=1
             if self.calls==1: raise KeyboardInterrupt
             return '',''
+    monkeypatch.setattr(archive,'converter_descendants',lambda pid:[])
     killed=[]
     monkeypatch.setattr(archive.subprocess,'Popen',Process)
     monkeypatch.setattr(archive.os,'killpg',lambda *args:killed.append(args))
@@ -120,12 +123,13 @@ def test_timer_starts_after_process_spawn_and_resets_per_document(monkeypatch):
     assert output.getvalue().count('Marker · 00:00 · Completed')==2
 
 
-def test_real_interrupt_cleans_descendants(tmp_path):
+@pytest.mark.parametrize("detached",[False,True])
+def test_real_interrupt_cleans_descendants(tmp_path,detached):
     import os
     import signal
     import time
     pidfile=tmp_path/'child.pid'
-    child='import subprocess,sys,time; from pathlib import Path; p=subprocess.Popen([sys.executable,"-c","import time; time.sleep(60)"]); Path(sys.argv[1]).write_text(str(p.pid)); time.sleep(60)'
+    child='import subprocess,sys,time; from pathlib import Path; p=subprocess.Popen([sys.executable,"-c","import time; time.sleep(60)"],start_new_session='+str(detached)+'); Path(sys.argv[1]).write_text(str(p.pid)); time.sleep(60)'
     driver='from stock.archive import run_converter; import sys; run_converter([sys.executable,"-c",'+repr(child)+',sys.argv[1]])'
     process=subprocess.Popen([sys.executable,'-c',driver,str(pidfile)],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     descendant=None
