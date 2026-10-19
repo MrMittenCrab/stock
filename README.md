@@ -145,26 +145,29 @@ identify reports, presentations, earnings releases, transcripts and other types.
 SEC accessions are stored separately from titles and periods. For primary SEC
 reports, issuer, accession, form and reporting-end date must match the official
 [SEC submissions record](https://www.sec.gov/search-filings/edgar-application-programming-interfaces)
-before its public filing date is used; exhibits and annual-report booklets do not
-inherit the parent filing's date. Earlier explicit publication evidence takes
-precedence and retains its provenance. Event, period-end and PDF creation dates
+before its filing date is retained as such; exhibits and annual-report booklets do not
+inherit the parent filing's date. Explicit publication evidence remains separate and retains its provenance. Event, period-end and PDF creation dates
 are never used as publication dates. SEC fiscal-calendar metadata can establish
-fiscal quarters; date-derived quarter/half labels otherwise remain suggestions.
+fiscal quarters; date-derived quarter/half labels otherwise remain unknown.
 Set `STOCK_SEC_USER_AGENT` to your identifying SEC request user agent if needed.
-Blocked or unavailable lookups leave unresolved fields for clarification.
+Blocked or unavailable lookups leave unresolved fields unknown.
 
-Interactive imports ask compact single-line questions only for unresolved fields:
-type, period, date, title and publisher. Numbered choices offer the complete type
-taxonomy and plausible periods; blank answers allow Unknown. No TUI opens during
-import. Manual answers are marked user-supplied, including deliberate Unknowns.
-Noninteractive imports retain unresolved metadata as Unknown; an unresolved type
-requires an interactive import before any files are copied.
+Interactive imports ask only for unresolved document classification, preserving
+numbered category choices, typed categories, and blank/Unknown selection. Other
+metadata is extracted automatically or remains Unknown/absent. Noninteractive
+imports require an established document type before any files are copied.
 
-Identical bytes reuse the document ID. Incomplete metadata is identified again,
-with clarification when needed, while manual corrections are preserved. Complete
-metadata leaves the record and files unchanged. Metadata changes do not rerun a
-completed PDF conversion. Ordinary schema upgrades add per-field provenance and
-a separate SEC accession to existing records; existing archives remain editable.
+Use `stock archive TICKER URL` to import a direct PDF or a webpage with an explicit
+`citation_pdf_url` or a single PDF link. Explicit citation/DC title and publisher
+and publication-date tags fill document metadata gaps. Source and resolved document
+URLs are retained; hosting names and download/modified dates are not publication
+evidence. Pages requiring JavaScript, authentication, or a choice among multiple
+PDFs require a direct PDF URL or a local download.
+
+Identical bytes reuse the document ID. Incomplete metadata is identified again
+without metadata questions, while prior manual corrections are preserved. Metadata
+changes do not rerun a completed PDF conversion. Import source URLs are also
+recorded when the same PDF was previously imported locally.
 
 Supported originals are PDF, UTF-8 Markdown, and UTF-8 text. PDF inspection reuses
 a locally installed PyMuPDF interpreter, discovered from Python or the `pymupdf`
@@ -179,15 +182,91 @@ the installed converter. Conversion has a ten-minute limit for pdfmd and five
 minutes for the fallback.
 
 Browser controls: ↑/↓ selects a document, Space expands metadata in place,
-O opens its original, M opens its Markdown, E edits metadata inline, and Esc exits.
-The editor shows existing values: Tab moves between fields, Enter saves changed
-fields, and Esc cancels. Blank/Unknown clears a field; dates use YYYY-MM-DD.
-Corrections keep document/file IDs and original hashes, rename archived files and
-assets together, and update Markdown links and registered paths. Collisions receive
-a hash suffix, and failed updates roll back without replacing existing files. Unknown dates display
-as `Unknown`. Narrow terminals wrap document identity and expanded metadata; PgUp/PgDn scroll
-long expansions.
+O opens its original, M opens its Markdown, and Esc exits. Unknown dates display
+as `Unknown`. Narrow terminals wrap document identity and expanded metadata;
+PgUp/PgDn scroll long expansions.
 The original uses the system viewer; Markdown uses `STOCK_MARKDOWN_VIEWER` when
 set (an executable and optional arguments, without shell expansion), otherwise
 the system viewer. For example, `STOCK_MARKDOWN_VIEWER='open -a Typora'` on macOS.
 Sort, Sources, and commentary topic classification are not implemented.
+
+### Portable metadata enrichment
+
+```sh
+stock archive CRWV.US https://example.com/report.pdf
+stock archive CRWV.US --metadata ~/Downloads/CoreWeave_Archive_Metadata.json
+```
+
+`--metadata` permanently enriches **existing** archive records. It does not
+import documents, duplicate them, or rerun conversion. Run ordinary file imports
+first for documents that are not yet archived. The four supplied CoreWeave files
+can be imported from `~/Downloads/CoreWeave_Test/`. An unmatched or ambiguous
+record rejects the batch before updates. Conflicting manual corrections require
+a one-line keep/JSON choice; Enter keeps the correction. Noninteractive conflicts
+fail without changes. Keep decisions are remembered for the same incoming and retained values, so
+repeated imports do not prompt again. Changed proposals require a new decision.
+
+The versioned envelope and fields are defined in
+[`docs/archive-metadata.schema.json`](docs/archive-metadata.schema.json). Example:
+
+```json
+{
+  "schema_version": "stock.archive.metadata.v1",
+  "ticker": "CRWV.US",
+  "issuer": "CoreWeave, Inc.",
+  "documents": [{
+    "match": {
+      "original_filename": "CoreWeave-Q1-2026-Transcript.pdf",
+      "content_indicators": ["Corrected Transcript", "FactSet CallStreet", "Q1 2026 Earnings Call"]
+    },
+    "metadata": {
+      "type": "Transcript",
+      "period": "Q1-2026",
+      "title": "CoreWeave Q1 2026 Earnings Call — Corrected Transcript",
+      "publisher": "FactSet CallStreet, LLC",
+      "publication_date": null,
+      "publication_date_basis": "First public availability not established",
+      "event_date": "2026-05-07",
+      "document_date": "2026-05-07"
+    }
+  }]
+}
+```
+
+Matching supports `original_filename`, `official_document_url`, `document_id`,
+`sha256` (also `source_sha256`), and `content_indicators`. A filename or database ID
+alone never authorizes enrichment. Supply an exact SHA-256 or at least two
+substantive content indicators (25 normalized characters combined), with an optional known
+filename, URL or ID to narrow candidates. All indicators must occur in the original content; detected
+type, period, accession and claimed issuer must agree. Duplicate records, duplicate
+JSON keys, invalid dates, unsupported versions and unknown fields are rejected.
+Dates use ISO `YYYY-MM-DD` or `null`. Each date can have `_basis` and
+`_evidence_url` fields. Other fields include `report_period_end`, `sec_cik`,
+`sec_accession`, `sec_filing_type` and `publisher_evidence`.
+
+Publication, filing, document, event and reporting-end dates remain distinct.
+The supplied v1 example labels two SEC filing dates as publication dates; the
+importer retains these as **filing dates** and leaves publication unknown. Its
+presentation date based on a dated cover is retained as a **document date**.
+The transcript's May 7 call date never establishes publication. Filenames use
+`undated` when publication is unknown; expanded Archive rows show the other dates
+with their meanings and evidence. Exact titles and publishers remain in SQLite.
+
+Ordinary imports inspect text and embedded metadata, retain original URLs, and
+reuse metadata on duplicate imports. Explicit embedded source-page URLs receive
+a bounded lookup: page metadata is accepted only when the identified PDF's SHA-256
+matches the local document. Primary SEC filings require issuer/accession/form/
+report-end agreement; SEC filed-as-of dates remain filing dates. Missing issuer
+publishers on annual/quarterly reports and presentations can be resolved from SEC
+issuer records when the document cover independently identifies that issuer.
+Third-party transcript publishers are recognized from the document itself.
+Offline, blocked and missing-source results leave fields unknown without research
+prompts. There is no crawler, LLM, or access-restriction workaround. Documents
+without an identifying source link or SEC identity may remain unresolved.
+
+SQLite is authoritative; JSON is portable interchange, never a parallel database.
+The Python API `stock.archive.export_metadata(store, ticker)` returns a v1 envelope
+from stored values for serialization with `json.dump`. Enrichment preserves document
+and file IDs, original bytes/hashes and conversion status. PDF/Markdown/assets are
+renamed together and Markdown asset links updated. Batch database updates and
+file publication roll back together on failure; existing files are never overwritten.

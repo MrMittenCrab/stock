@@ -44,7 +44,8 @@ def test_unknown_fields_prompt_and_all_types_available(monkeypatch):
     archive.clarify(info,interactive=True,read=lambda _: next(answers),output=output)
     assert info['type']=='Research'
     assert 'Type?' in output.getvalue()
-    assert 'Date?' in output.getvalue()
+    assert 'Date?' not in output.getvalue()
+    assert output.getvalue().count('?')==1
     assert all(t in output.getvalue() for t in archive.TYPES)
     with pytest.raises(ValueError,match='interactive|type'):
         archive.clarify(archive.identify('Ambiguous document',{}),interactive=False)

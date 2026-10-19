@@ -6,6 +6,8 @@ import re
 import signal
 import ssl
 import urllib.request
+from urllib.parse import urljoin, urlsplit, unquote
+from html.parser import HTMLParser
 import shutil
 import subprocess
 import sys
@@ -24,7 +26,7 @@ TYPES = ('Annual', 'Interim', 'Quarterly', 'Earnings', 'Filing', 'Release',
 
 def schema(store):
     columns={row[1] for row in store.db.execute('PRAGMA table_info(archive_documents)')}
-    if {'metadata_provenance','sec_accession'} <= columns and store.db.execute("SELECT 1 FROM sqlite_master WHERE name='archive_imports'").fetchone():
+    if {'metadata_provenance','sec_accession','structured_metadata'} <= columns and store.db.execute("SELECT 1 FROM sqlite_master WHERE name='archive_imports'").fetchone():
         return
     store.db.executescript('''
     CREATE TABLE IF NOT EXISTS archive_documents (
@@ -45,7 +47,7 @@ def schema(store):
       UNIQUE(document_id, source_path, original_filename));
     ''')
     columns={row[1] for row in store.db.execute('PRAGMA table_info(archive_documents)')}
-    for name,definition in (('metadata_provenance',"TEXT NOT NULL DEFAULT '{}'"),('sec_accession','TEXT')):
+    for name,definition in (('metadata_provenance',"TEXT NOT NULL DEFAULT '{}'"),('sec_accession','TEXT'),('structured_metadata',"TEXT NOT NULL DEFAULT '{}'")):
         if name not in columns:
             store.db.execute(f'ALTER TABLE archive_documents ADD COLUMN {name} {definition}')
     store.db.commit()
@@ -110,13 +112,13 @@ with pymupdf.open(sys.argv[1]) as doc:
 def parse_date(value):
     value=re.sub(r'(\d)(?:st|nd|rd|th)\b',r'\1',value.strip(),flags=re.I)
     value=re.sub(r'\s+',' ',value)
-    for fmt in ('%Y-%m-%d','%Y/%m/%d','%d %B %Y','%d %b %Y','%B %d, %Y','%b %d, %Y','%B %d %Y','%b %d %Y','%Y年%m月%d日'):
+    for fmt in ('%Y-%m-%d','%d-%b-%Y','%d-%B-%Y','%Y/%m/%d','%d %B %Y','%d %b %Y','%B %d, %Y','%b %d, %Y','%B %d %Y','%b %d %Y','%Y年%m月%d日'):
         try: return datetime.strptime(value,fmt).date().isoformat()
         except ValueError: pass
     return None
 
 
-DATE_PATTERN=r'\b\d{4}[-/]\d{1,2}[-/]\d{1,2}\b|\b\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4}\b|\b[A-Za-z]+\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}\b|\d{4}年\d{1,2}月\d{1,2}日'
+DATE_PATTERN=r'\b\d{1,2}-[A-Za-z]+-\d{4}\b|\b\d{4}[-/]\d{1,2}[-/]\d{1,2}\b|\b\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4}\b|\b[A-Za-z]+\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}\b|\d{4}年\d{1,2}月\d{1,2}日'
 
 
 def identify(text, metadata):
@@ -219,7 +221,21 @@ def identify(text, metadata):
     registrant=re.search(r'([^\n]+)\n?\s*\(Exact name of registrant',head,re.I)
     registrant=registrant[1].strip() if registrant else None
     if not publisher and registrant: publisher=registrant
-    info=dict(title=title,type=kind,period=period,publisher=publisher,accession=accession,registrant=registrant,
+    if not publisher and re.search(r'FactSet CallStreet,?\s+LLC',text[:12000],re.I):
+        publisher='FactSet CallStreet, LLC'
+    structured={}
+    if report_end: structured['report_period_end']=report_end
+    if form: structured['sec_filing_type']=form[1].upper()
+    if accession: structured['sec_accession']=accession
+    if kind in ('Transcript','Presentation'):
+        cover=re.split(r'forward[- ]looking|safe harbor|corporate participants','\n'.join(lines[:20]),flags=re.I)[0]
+        cover_dates={parse_date(m[0]) for m in re.finditer(DATE_PATTERN,cover)}
+        cover_dates.discard(None)
+        if len(cover_dates)==1:
+            dated=cover_dates.pop()
+            structured.update(document_date=dated,document_date_basis='Document cover date')
+            if kind=='Transcript': structured.update(event_date=dated,event_date_basis='Earnings call transcript cover; not publication evidence')
+    info=dict(structured=structured,title=title,type=kind,period=period,publisher=publisher,accession=accession,registrant=registrant,
               date=min((e['date'] for e in evidence),default=None),date_evidence=evidence,report_end=report_end,period_choices=candidates,sec_form=form[1].upper() if form else None)
     info['provenance']={key:{'source':'document text' if key!='date' else min(evidence,key=lambda e:e['date'])['source'], 'value':info[key]}
                         for key in ('type','period','publisher','date') if info[key]}
@@ -235,22 +251,24 @@ def identify(text, metadata):
 
 def clarify(info,interactive=None,read=None,output=None):
     if interactive is None: interactive=sys.stdin.isatty()
+    if info.get('provenance',{}).get('period',{}).get('source')=='reporting-end candidate':
+        info['period']=None
+        info['provenance'].pop('period')
+    if not info.get('provenance',{}).get('title'):
+        info['title']='Unknown'
     if not interactive:
-        if info.get('provenance',{}).get('period',{}).get('source')=='reporting-end candidate':
-            info['period']=None
-            info['provenance'].pop('period')
         if not info['type']: raise ValueError('Document type is uncertain; rerun in an interactive terminal to choose its type')
         return
     read=read or input
     output=output or sys.stdout
     provenance=info.setdefault('provenance',{})
-    for key,label in (('type','Type'),('period','Period'),('date','Date'),('title','Title'),('publisher','Publisher')):
+    for key,label in (('type','Type'),):
         if key in provenance and provenance[key].get('source')!='reporting-end candidate': continue
         options=list(TYPES) if key=='type' else list(info.get(key+'_choices',[]))
         if options: options+=['Unknown','Enter']
         while True:
             hint=' · '.join(f'{i} {v}' for i,v in enumerate(options,1)) if options else ('YYYY-MM-DD · Enter Unknown' if key=='date' else 'Enter value · Enter Unknown')
-            print(f'{label}?  {hint}',file=output,flush=True)
+            print(f'{label}?  {hint}',end=' ',file=output,flush=True)
             try: answer=read('> ').strip()
             except EOFError as exc: raise ValueError('Classification cancelled; rerun in an interactive terminal') from exc
             if answer.isdigit() and 1<=int(answer)<=len(options): answer=options[int(answer)-1]
@@ -343,37 +361,153 @@ def convert_pdf(source, destination):
     raise ValueError('PDF conversion unavailable; configure pdfmd/Marker or local pymupdf4llm'+ (' ('+'; '.join(errors)+')' if errors else ''))
 
 
-def import_document(store,ticker,source,*,root=None,interactive=None):
+class SourcePage(HTMLParser):
+    """Only explicit document metadata; site names and timestamps are not evidence."""
+    def __init__(self):
+        super().__init__()
+        self.metadata={}
+        self.pdfs=[]
+        self.citation_pdf=None
+
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if tag=='meta':
+            name=(attrs.get('name') or attrs.get('property') or '').lower()
+            value=attrs.get('content','').strip()
+            key={'citation_title':'title','dc.title':'title',
+                 'citation_publisher':'publisher','dc.publisher':'publisher',
+                 'citation_publication_date':'publication_date',
+                 'article:published_time':'publication_date','datepublished':'publication_date'}.get(name)
+            if key and value: self.metadata[key]=value
+            if name=='citation_pdf_url' and value: self.citation_pdf=value
+        if tag=='a' and attrs.get('href') and urlsplit(attrs['href']).path.lower().endswith('.pdf'):
+            self.pdfs.append(attrs['href'])
+
+
+def fetch_source(address):
+    if urlsplit(address).scheme not in ('http','https'):
+        raise ValueError('Document URLs must use HTTP or HTTPS')
+    request=urllib.request.Request(address,headers={'User-Agent':'stock-terminal/0.1'})
+    with urllib.request.urlopen(request,timeout=12,context=source_ssl_context()) as response:
+        body=response.read(64*1024*1024+1)
+        if len(body)>64*1024*1024: raise ValueError('Document source exceeds 64 MiB')
+        return body,response.geturl(),response.headers.get('Content-Type','')
+
+
+def resolve_linked_source(info,metadata,source):
+    """A bounded lookup of embedded source links, with byte identity verification.
+
+    No search engine, crawling, or matching based on a similar title. A page's
+    metadata is accepted only when its one identified PDF matches the local hash.
+    """
+    urls=list(dict.fromkeys(str(metadata[k]) for k in ('source_url','document_url','url')
+                            if metadata.get(k) and urlsplit(str(metadata[k])).scheme in ('http','https')))
+    for url in urls[:2]:
+        try:
+            body,final,kind=fetch_source(url)
+            if 'html' not in kind: continue
+            page=SourcePage();page.feed(body.decode('utf-8',errors='replace'))
+            links=list(dict.fromkeys(urljoin(final,v) for v in page.pdfs))
+            pdf=urljoin(final,page.citation_pdf) if page.citation_pdf else links[0] if len(links)==1 else None
+            if not pdf: continue
+            pdf_body,document_url,_=fetch_source(pdf)
+            digest=hashlib.sha256(pdf_body).hexdigest()
+            if digest!=filehash(source): continue
+            context={'source_url':url,'webpage_url':final,'document_url':document_url,**page.metadata}
+            source_info(info,context)
+            for key in ('title','publisher','date'):
+                if info['provenance'].get(key,{}).get('url')==final:
+                    info['provenance'][key]['identity_sha256']=digest
+            info.setdefault('structured',{})['source_information']=context
+            metadata['source_information']=context
+            return
+        except (OSError,ValueError,KeyError,TypeError):
+            continue
+
+
+def import_url(store,ticker,url,*,root=None,interactive=None):
+    body,final,content_type=fetch_source(url)
+    context={'source_url':url,'document_url':final}
+    if not body.startswith(b'%PDF-'):
+        if 'html' not in content_type:
+            raise ValueError('URL must provide a PDF or a webpage linking to one')
+        page=SourcePage();page.feed(body.decode('utf-8',errors='replace'))
+        links=list(dict.fromkeys(urljoin(final,link) for link in page.pdfs))
+        pdf=urljoin(final,page.citation_pdf) if page.citation_pdf else links[0] if len(links)==1 else None
+        if not pdf: raise ValueError('Webpage must identify one PDF; import a direct PDF URL when ambiguous')
+        context.update(page.metadata)
+        context['webpage_url']=final
+        body,final,_=fetch_source(pdf)
+        context['document_url']=final
+    if not body.startswith(b'%PDF-'): raise ValueError('Source did not return a PDF')
+    filename=Path(unquote(urlsplit(final).path)).name or 'document.pdf'
+    if not filename.lower().endswith('.pdf'): filename='document.pdf'
+    with tempfile.TemporaryDirectory(prefix='stock-download-') as folder:
+        path=Path(folder)/filename;path.write_bytes(body)
+        return import_document(store,ticker,path,root=root,interactive=interactive,_source=context)
+
+
+def source_info(info,context):
+    """Fill gaps from explicit metadata on the page identifying this document."""
+    if not context: return
+    url=context.get('webpage_url',context['source_url'])
+    for key in ('title','publisher','date'):
+        value=context.get('publication_date' if key=='date' else key)
+        if key=='date' and value:
+            # ISO publication timestamps are allowed; creation/modified times are never used.
+            value=parse_date(value) or (parse_date(value[:10]) if re.match(r'^\d{4}-\d{2}-\d{2}T',value) else None)
+        missing=not info[key] or (key=='title' and info['provenance'].get('title',{}).get('source')!='document metadata')
+        if value and missing:
+            info[key]=value
+            evidence={'source':'source webpage','url':url,'value':value}
+            info['provenance'][key]=evidence
+            if key=='date': info['date_evidence'].append({**evidence,'date':value})
+
+
+def import_document(store,ticker,source,*,root=None,interactive=None,_source=None):
+    if isinstance(source,str) and urlsplit(source).scheme in ('http','https'):
+        return import_url(store,ticker,source,root=root,interactive=interactive)
     ticker=symbol(ticker);source=Path(source).expanduser().resolve(strict=True)
     if not source.is_file(): raise ValueError('Import source must be a file')
+    origin=_source['source_url'] if _source else str(source)
     schema(store)
     digest=filehash(source)
     existing=next((d for d in documents(store,ticker) if d['source_sha256']==digest),None)
     if existing:
         prior=json.loads(existing['metadata_provenance'])
         keys=('type','period','date','title','publisher')
-        complete=all(key in prior and (prior[key].get('source')=='user-supplied' or (existing['publication_date'] if key=='date' else existing[key])) for key in keys)
+        complete=all(key in prior and (prior[key].get('source') in ('user-supplied','metadata JSON') or (existing['publication_date'] if key=='date' else existing[key])) for key in keys)
         doc=existing
         if not complete:
             text,metadata=read_document(Path(existing['original']))
             info=identify(text,metadata)
+            resolve_linked_source(info,metadata,Path(existing['original']))
+            source_info(info,_source or json.loads(existing['source_metadata']).get('source_information'))
             resolve_sec(ticker,info,metadata)
+            resolve_issuer(ticker,info,text)
             for key in keys:
                 # Manual Unknown is also a deliberate correction.
-                if prior.get(key,{}).get('source')=='user-supplied':
+                if prior.get(key,{}).get('source') in ('user-supplied','metadata JSON'):
                     info[key]=existing['publication_date'] if key=='date' else existing[key]
                     info['provenance'][key]=prior[key]
                     if key=='date': info['date_evidence']=json.loads(existing['date_evidence'])
             clarify(info,interactive)
             changes={key:info[key] for key in keys if key in info['provenance'] and
                      (prior.get(key)!=info['provenance'][key] or info[key]!=(existing['publication_date'] if key=='date' else existing[key]))}
-            if changes:
+            stored_structured=json.loads(existing['structured_metadata'])
+            refreshed_structured={**stored_structured,**{k:v for k,v in info.get('structured',{}).items()
+                if prior.get(k,{}).get('source') not in ('user-supplied','metadata JSON')}}
+            if changes or refreshed_structured!=stored_structured:
                 doc=update_metadata(store,existing,changes,provenance=info['provenance'],
-                                    date_evidence=info['date_evidence'],accession=info.get('accession'))
+                                    date_evidence=info['date_evidence'],accession=info.get('accession'),structured=refreshed_structured)
     else:
         text,metadata=read_document(source)
         info=identify(text,metadata)
+        resolve_linked_source(info,metadata,source)
+        source_info(info,_source)
+        if _source: metadata['source_information']=_source
         resolve_sec(ticker,info,metadata)
+        resolve_issuer(ticker,info,text)
         clarify(info,interactive)
         folder=Path(root or ROOT/'Research')/ticker/'Archive';folder.mkdir(parents=True,exist_ok=True)
         extension=source.suffix.lower();stem=basename(info)
@@ -385,7 +519,7 @@ def import_document(store,ticker,source,*,root=None,interactive=None):
             existing=next((d for d in documents(store,ticker) if d['source_sha256']==digest),None)
             if existing:
                 store.db.rollback()
-                return import_document(store,ticker,source,root=root,interactive=interactive)
+                return import_document(store,ticker,source,root=root,interactive=interactive,_source=_source)
             suffix=0
             while True:
                 candidate=stem if suffix==0 else stem+'--'+digest[:min(64,8+suffix-1)]
@@ -405,18 +539,20 @@ def import_document(store,ticker,source,*,root=None,interactive=None):
             if filehash(target)!=digest: raise ValueError('Source changed during import; retry')
             cursor=store.db.execute('''INSERT INTO archive_documents
                 (ticker,source_sha256,original_filename,source_path,title,type,period,publisher,
-                 publication_date,date_evidence,source_metadata,imported_at,conversion_status,metadata_provenance,sec_accession)
-                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
-                (ticker,digest,source.name,str(source),info['title'],info['type'],info['period'],info['publisher'],info['date'],json.dumps(info['date_evidence']),json.dumps(metadata),time.time(),'pending' if extension=='.pdf' else 'native' if extension=='.md' else 'not-applicable',json.dumps(info['provenance']),info.get('accession')))
+                 publication_date,date_evidence,source_metadata,imported_at,conversion_status,metadata_provenance,sec_accession,structured_metadata)
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+                (ticker,digest,source.name,origin,info['title'],info['type'],info['period'],info['publisher'],info['date'],json.dumps(info['date_evidence']),json.dumps(metadata),time.time(),'pending' if extension=='.pdf' else 'native' if extension=='.md' else 'not-applicable',json.dumps(info['provenance']),info.get('accession'),json.dumps(info.get('structured',{}))))
             ident=cursor.lastrowid
             store.db.execute('INSERT INTO archive_files(document_id,role,path,sha256) VALUES(?,?,?,?)',(ident,'original',str(target),digest))
-            store.db.execute('INSERT INTO archive_imports VALUES(?,?,?,?)',(ident,str(source),source.name,time.time()))
+            store.db.execute('INSERT INTO archive_imports VALUES(?,?,?,?)',(ident,origin,source.name,time.time()))
             store.db.commit()
         except BaseException:
             store.db.rollback()
             if created: target.unlink(missing_ok=True)
             raise
         doc=next(d for d in documents(store,ticker) if d['id']==ident)
+    with store.db:
+        store.db.execute('INSERT OR IGNORE INTO archive_imports VALUES(?,?,?,?)',(doc['id'],origin,source.name,time.time()))
     if Path(doc['original']).suffix.lower()=='.pdf' and doc['conversion_status']!='converted':
         _convert_registered(store,doc)
     return next(d for d in documents(store,ticker) if d['id']==doc['id'])
@@ -456,15 +592,48 @@ def _convert_registered(store,doc):
         if isinstance(exc,(KeyboardInterrupt,SystemExit)): raise
 
 
-def sec_json(url):
-    request=urllib.request.Request(url,headers={'User-Agent':os.environ.get('STOCK_SEC_USER_AGENT','StockArchive/0.1 (+https://github.com/MrMittenCrab/stock)'),'Accept':'application/json'})
+def source_ssl_context():
     context=ssl.create_default_context()
-    # python.org macOS builds can lack their optional bundled CA installation.
-    # Load the OS CA bundle as well; verification always remains enabled.
+    # python.org macOS installations may omit their bundled CA setup. The OS
+    # trust bundle supplements it; TLS certificate verification stays enabled.
     if not ssl.get_default_verify_paths().cafile and Path('/etc/ssl/cert.pem').is_file():
         context.load_verify_locations('/etc/ssl/cert.pem')
+    return context
+
+
+def sec_json(url):
+    request=urllib.request.Request(url,headers={'User-Agent':os.environ.get('STOCK_SEC_USER_AGENT','StockArchive/0.1 (+https://github.com/MrMittenCrab/stock)'),'Accept':'application/json'})
+    context=source_ssl_context()
     with urllib.request.urlopen(request,timeout=8,context=context) as response:
         return json.load(response)
+
+
+def resolve_issuer(ticker,info,text):
+    """Resolve an issuer name from SEC records only when the cover identifies it.
+
+    This establishes an issuer/publisher, never an individual document's dates.
+    """
+    if not ticker.endswith('.US') or info.get('publisher') or info.get('accession') or info.get('type') not in ('Annual','Quarterly','Presentation'):
+        return
+    from .archive_metadata import normalized
+    status={'service':'SEC issuer','status':'unresolved'}
+    info.setdefault('structured',{})['issuer_resolution']=status
+    try:
+        tickers=sec_json('https://www.sec.gov/files/company_tickers.json')
+        issuer=next((v for v in tickers.values() if v['ticker']==ticker[:-3]),None)
+        if not issuer: return
+        url=f"https://data.sec.gov/submissions/CIK{int(issuer['cik_str']):010d}.json"
+        record=sec_json(url)
+        name=record['name']
+        base=re.sub(r',?\s+(?:Inc\.?|Limited|Ltd\.?|Corporation|Corp\.?)$', '',name,flags=re.I)
+        cover=[normalized(line) for line in text.splitlines()[:20] if line.strip()]
+        if normalized(name) not in cover and normalized(base) not in cover: return
+        info['publisher']=name
+        info['provenance']['publisher']={'source':'SEC issuer and document cover','url':url,'value':name}
+        info['structured'].update(issuer=name,sec_cik=str(issuer['cik_str']))
+        status.update(status='matched cover issuer',url=url)
+    except (OSError,ValueError,KeyError,IndexError,TypeError):
+        status['status']='unavailable'
 
 
 def resolve_sec(ticker,info,metadata):
@@ -503,8 +672,8 @@ def resolve_sec(ticker,info,metadata):
                 if not filed: return
                 evidence={'date':filed,'source':'SEC submissions','url':url,'accession':accession,
                           'primary_document':table['primaryDocument'][i],'report_date':report}
-                info['date_evidence'].append(evidence)
-                info['date']=min(e['date'] for e in info['date_evidence'] if e.get('date'))
+                info.setdefault('structured',{}).update(filing_date=filed,filing_date_basis='SEC filed-as-of date',
+                    filing_date_evidence_url=url,sec_accession=accession,sec_filing_type=form,sec_cik=str(issuer['cik_str']),report_period_end=report,filing_evidence=evidence)
                 info['publisher']=submissions['name']
                 fiscal_end=str(submissions.get('fiscalYearEnd',''))
                 if form.upper().startswith('10-Q') and re.fullmatch(r'\d{4}',fiscal_end) and (not info.get('period') or info['provenance'].get('period',{}).get('source')=='reporting-end candidate'):
@@ -514,16 +683,14 @@ def resolve_sec(ticker,info,metadata):
                         year=int(report[:4])+(month>end_month)
                         info['period']=f'Q{quarter}-{year}'
                         info['provenance']['period']={'source':'SEC fiscal calendar','value':info['period'],'url':url,'fiscal_year_end':fiscal_end}
-                earliest=min(info['date_evidence'],key=lambda e:e['date'])
-                info['provenance']['date']={**earliest,'value':info['date']}
                 info['provenance']['publisher']={'source':'SEC submissions','value':info['publisher'],'url':url}
                 return
     except (OSError,ValueError,KeyError,IndexError,TypeError):
-        # Offline or ambiguous matches remain unresolved and go through CLI clarification.
+        # Offline or ambiguous matches remain unresolved without prompting.
         return
 
 
-def update_metadata(store,doc,changes,*,provenance=None,date_evidence=None,accession=None):
+def update_metadata(store,doc,changes,*,provenance=None,date_evidence=None,accession=None,structured=None,_journal=None):
     """Update in place, preserving document/file IDs and source identity.
 
     Stage a complete replacement bundle before changing registered paths. Publish
@@ -545,15 +712,17 @@ def update_metadata(store,doc,changes,*,provenance=None,date_evidence=None,acces
     evidence=json.loads(doc['date_evidence']) if date_evidence is None else date_evidence
     if 'date' in changes and date_evidence is None:
         evidence=[{'date':info['date'],'source':'user-supplied'}] if info['date'] else []
+    if structured is None: structured=json.loads(doc.get('structured_metadata') or '{}')
+    if provenance: prior.update(provenance)
     folder=Path(doc['original']).parent
     oldstem=Path(doc['original']).stem
     stem=oldstem if basename(info)==basename(original_info) else basename(info)
     created=[]
     oldfiles=[]
-    store.db.execute('BEGIN IMMEDIATE')
+    if _journal is None: store.db.execute('BEGIN IMMEDIATE')
     try:
-        current=store.db.execute('SELECT metadata_provenance,title,type,period,publication_date,publisher FROM archive_documents WHERE id=?',(doc['id'],)).fetchone()
-        expected=(doc.get('metadata_provenance','{}'),doc['title'],doc['type'],doc['period'],doc['publication_date'],doc['publisher'])
+        current=store.db.execute('SELECT metadata_provenance,title,type,period,publication_date,publisher,structured_metadata FROM archive_documents WHERE id=?',(doc['id'],)).fetchone()
+        expected=(doc.get('metadata_provenance','{}'),doc['title'],doc['type'],doc['period'],doc['publication_date'],doc['publisher'],doc.get('structured_metadata','{}'))
         if current!=expected: raise ValueError('Document changed; reopen its editor')
         # Preserve all file IDs, including future consumers referencing them.
         registered=store.db.execute('SELECT id,role,path,sha256 FROM archive_files WHERE document_id=?',(doc['id'],)).fetchall()
@@ -591,17 +760,19 @@ def update_metadata(store,doc,changes,*,provenance=None,date_evidence=None,acces
                 store.db.execute('UPDATE archive_files SET path=?,sha256=? WHERE id=?',(str(target),filehash(target),ident))
                 oldfiles.append(original)
             store.db.execute('''UPDATE archive_documents SET title=?,type=?,period=?,publisher=?,publication_date=?,
-                date_evidence=?,metadata_provenance=?,sec_accession=? WHERE id=?''',
+                date_evidence=?,metadata_provenance=?,sec_accession=?,structured_metadata=? WHERE id=?''',
                 (info['title'],info['type'],info['period'],info['publisher'],info['date'],json.dumps(evidence),json.dumps(prior),
-                 accession or doc.get('sec_accession'),doc['id']))
-        store.db.commit()
+                 accession or doc.get('sec_accession'),json.dumps(structured),doc['id']))
+        if _journal is None: store.db.commit()
+        else: _journal.append((created,oldfiles,folder))
     except BaseException:
-        store.db.rollback()
+        if _journal is None: store.db.rollback()
         for path in reversed(created): path.unlink(missing_ok=True)
         _empty_asset_dirs(created,folder)
         raise
-    for path in oldfiles: path.unlink(missing_ok=True)
-    _empty_asset_dirs(oldfiles,folder)
+    if _journal is None:
+        for path in oldfiles: path.unlink(missing_ok=True)
+        _empty_asset_dirs(oldfiles,folder)
     return next(d for d in documents(store,doc['ticker']) if d['id']==doc['id'])
 
 
@@ -615,3 +786,6 @@ def _empty_asset_dirs(files,folder):
     for parent in sorted(parents,key=lambda p:len(p.parts),reverse=True):
         try: parent.rmdir()
         except OSError: pass
+
+
+from .archive_metadata import import_metadata, export_metadata

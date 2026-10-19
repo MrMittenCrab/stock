@@ -15,7 +15,10 @@ def main():
     archive=commands.add_parser('archive',help='Browse or import archived research documents')
     archive.add_argument('ticker')
     archive.add_argument('file',nargs='?')
+    archive.add_argument('--metadata',metavar='JSON',help='Enrich existing archived documents from versioned metadata JSON')
     args=parser.parse_args()
+    if args.command=='archive' and args.metadata and args.file:
+        parser.error('Use either a document or --metadata')
     if args.command in ('price','archive'):
         try: args.ticker=symbol(args.ticker)
         except ValueError as e: parser.error(str(e))
@@ -26,7 +29,11 @@ def main():
     try:
         store=Store()
         if args.command=='archive':
-            if args.file:
+            if args.metadata:
+                from .archive import import_metadata
+                count=import_metadata(store,args.ticker,args.metadata)
+                print(f'Enriched {count} documents')
+            elif args.file:
                 from .archive import import_document
                 doc=import_document(store,args.ticker,args.file)
                 from pathlib import Path

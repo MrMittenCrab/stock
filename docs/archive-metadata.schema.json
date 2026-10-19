@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stock Archive metadata v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "ticker",
+    "documents"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "stock.archive.metadata.v1"
+    },
+    "ticker": {
+      "type": "string"
+    },
+    "issuer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "matching_policy": {
+      "type": "object"
+    },
+    "documents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "match",
+          "metadata"
+        ],
+        "properties": {
+          "match": {
+            "type": "object",
+            "additionalProperties": false,
+            "minProperties": 1,
+            "properties": {
+              "content_indicators": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 5
+                }
+              },
+              "original_filename": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_id": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "official_document_url": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^https?://[^/]+"
+              },
+              "source_sha256": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-fA-F0-9]{64}$"
+              },
+              "sha256": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-fA-F0-9]{64}$"
+              }
+            },
+            "anyOf": [
+              {
+                "required": [
+                  "sha256"
+                ]
+              },
+              {
+                "required": [
+                  "source_sha256"
+                ]
+              },
+              {
+                "required": [
+                  "content_indicators"
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": false,
+            "minProperties": 1,
+            "properties": {
+              "report_period_end_evidence_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^https?://[^/]+"
+              },
+              "sec_filing_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sec_accession": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^\\d{10}-\\d{2}-\\d{6}$"
+              },
+              "publisher": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "event_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "publication_date_evidence_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^https?://[^/]+"
+              },
+              "document_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "filing_date_basis": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "publication_date_basis": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "filing_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "title": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "publication_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "report_period_end_basis": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "document_date_basis": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "publisher_evidence": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "type": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "Annual",
+                  "Interim",
+                  "Quarterly",
+                  "Earnings",
+                  "Filing",
+                  "Release",
+                  "Presentation",
+                  "Transcript",
+                  "Letter",
+                  "Research",
+                  "Article",
+                  "Other",
+                  "Unknown",
+                  null
+                ]
+              },
+              "period": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "event_date_basis": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "document_date_evidence_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^https?://[^/]+"
+              },
+              "event_date_evidence_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^https?://[^/]+"
+              },
+              "sec_cik": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^\\d{1,10}$"
+              },
+              "report_period_end": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "filing_date_evidence_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^https?://[^/]+"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -26,13 +26,13 @@ def test_sec_cover_distinguishes_identifiers():
     assert info['date'] is None  # vendor subject is not an authoritative record
 
 
-def test_missing_prompts_are_compact_and_user_supplied():
+def test_missing_metadata_never_prompts():
     info=archive.identify(COVER,META)
     output=io.StringIO()
-    answers=iter(['1',''])
-    archive.clarify(info,True,read=lambda _:next(answers),output=output)
-    assert output.getvalue()=='Period?  1 Q1-2026 · 2 Unknown · 3 Enter\nDate?  YYYY-MM-DD · Enter Unknown\n'
-    assert info['provenance']['date']['source']=='user-supplied'
+    archive.clarify(info,True,read=lambda _:pytest.fail('metadata prompt'),output=output)
+    assert output.getvalue()==''
+    assert info['date'] is None
+    assert info['period'] is None
 
 
 def test_edit_renames_assets_and_preserves_identity(tmp_path,monkeypatch):
@@ -72,26 +72,18 @@ def test_edit_failure_restores_database_and_files(tmp_path):
     assert len(list(Path(doc['original']).parent.iterdir()))==1
 
 
-async def test_inline_editor_defaults_optional_fields_and_cancel(tmp_path):
+async def test_archive_has_no_manual_metadata_entry(tmp_path):
     from stock.archive_ui import ArchiveApp
-    from textual.widgets import Input
-    source=tmp_path/'report.md';source.write_text('Annual Report 2025\nPublished: 2026-03-19\nPublisher: Example Inc.')
     store=Store(tmp_path/'db')
-    doc=archive.import_document(store,'700.HK',source,root=tmp_path/'Research',interactive=False)
+    source=tmp_path/'source.md';source.write_text('Annual Report 2025')
+    archive.import_document(store,'700.HK',source,root=tmp_path/'Research',interactive=False)
     app=ArchiveApp('700.HK',store)
     async with app.run_test() as pilot:
         await pilot.press('e')
-        assert app.query_one('#edit-date',Input).value=='2026-03-19'
-        app.query_one('#edit-date',Input).value='2026-03-20'
-        await pilot.press('enter')
-        assert not app.editing
-        assert app.docs[0]['publication_date']=='2026-03-20'
-        assert app.docs[0]['id']==doc['id']
-        await pilot.press('e')
-        app.query_one('#edit-title',Input).value='Discarded'
-        await pilot.press('escape')
-        assert app.is_running and not app.editing
-        assert app.docs[0]['title']==doc['title']
+        assert not list(app.query('Input'))
+        assert 'Edit' not in str(app.query_one('#help').render())
+        await pilot.press('space')
+        assert app.expanded=={0}
 
 
 def test_ambiguous_periods_offer_numbered_choices():
@@ -100,8 +92,8 @@ def test_ambiguous_periods_offer_numbered_choices():
     assert info['period_choices']==['Q1-2026','Q2-2026']
     output=io.StringIO();answers=iter(['2','',''])
     archive.clarify(info,True,read=lambda _:next(answers),output=output)
-    assert info['period']=='Q2-2026'
-    assert 'Period?  1 Q1-2026 · 2 Q2-2026 · 3 Unknown · 4 Enter' in output.getvalue()
+    assert info['period'] is None
+    assert output.getvalue()==''
 
 
 @pytest.mark.parametrize('form,ending,kind,period',[
@@ -118,9 +110,10 @@ def test_authoritative_sec_date_and_exact_matching(monkeypatch,form,ending,kind,
             'form':[form],'reportDate':[end],'filingDate':['2026-05-08'],'primaryDocument':['crwv.htm']}}}
     monkeypatch.setattr(archive,'sec_json',fetch)
     archive.resolve_sec('CRWV.US',info,META)
-    assert (info['type'],info['period'],info['date'])==(kind,period,'2026-05-08')
-    assert info['date_evidence'][0]['source']=='SEC submissions'
-    assert info['date_evidence'][0]['primary_document']=='crwv.htm'
+    assert (info['type'],info['period'],info['date'])==(kind,period,None)
+    assert info['structured']['filing_date']=='2026-05-08'
+    assert info['structured']['filing_evidence']['source']=='SEC submissions'
+    assert info['structured']['filing_evidence']['primary_document']=='crwv.htm'
     wrong=archive.identify(text.replace(ending,'June 30, 2026'),META)
     archive.resolve_sec('CRWV.US',wrong,META)
     assert wrong['date'] is None
@@ -203,10 +196,10 @@ def test_legacy_schema_and_existing_accession_title_reidentified(tmp_path,monkey
     monkeypatch.setattr('builtins.input',lambda _:next(answers))
     updated=archive.import_document(store,'CRWV.US',source,root=tmp_path/'Research',interactive=True)
     assert updated['id']==doc['id']
-    assert updated['period']=='Q1-2026' and updated['title']=='Form 10-Q'
-    assert updated['publication_date']=='2026-05-08'
+    assert updated['period'] is None and updated['title']=='Form 10-Q'
+    assert updated['publication_date'] is None
     assert updated['sec_accession']==META['title']
-    assert json.loads(updated['metadata_provenance'])['date']['source']=='user-supplied'
+    assert 'date' not in json.loads(updated['metadata_provenance'])
     assert len(archive.documents(store,'CRWV.US'))==1
 
 
@@ -268,7 +261,7 @@ def test_unknown_title_import_is_supported(tmp_path,monkeypatch):
     assert doc['title']=='Unknown' and doc['type']=='Unknown'
     assert doc['period'] is None and doc['publication_date'] is None
     assert Path(doc['original']).name=='undated--unknown--Unknown.md'
-    assert json.loads(doc['metadata_provenance'])['title']['source']=='user-supplied'
+    assert 'title' not in json.loads(doc['metadata_provenance'])
 
 
 @pytest.mark.parametrize('heading',['2026 Q1 / 2026 Q2 Earnings Presentation','Q1 2026 / 2026 Q2 Earnings Presentation'])
@@ -288,37 +281,6 @@ def test_sec_rejects_conflicting_registrant(monkeypatch):
     assert info['publisher']=='Other Company, Inc.'
 
 
-async def test_narrow_editor_fields_fit_and_scroll(tmp_path):
-    from stock.archive_ui import ArchiveApp
-    from textual.widgets import Input
-    source=tmp_path/'report.md';source.write_text('Annual Report 2025')
-    store=Store(tmp_path/'db')
-    archive.import_document(store,'700.HK',source,root=tmp_path/'Research',interactive=False)
-    app=ArchiveApp('700.HK',store)
-    async with app.run_test(size=(40,16)) as pilot:
-        await pilot.press('e');await pilot.pause()
-        field=app.query_one('#edit-type',Input)
-        assert field.region.right<=field.parent.region.right
-        await pilot.press('tab','tab','tab','tab');await pilot.pause()
-        assert app.focused.id=='edit-publisher'
-        assert app.query_one('#edit-publisher').region.bottom<=app.query_one('#editor').region.bottom
-        await pilot.press('escape','escape')
-
-
-async def test_editor_real_keyboard_edits_only_focused_field(tmp_path):
-    from stock.archive_ui import ArchiveApp
-    from textual.widgets import Input
-    source=tmp_path/'report.md';source.write_text('Annual Report 2025\nPublished: 2026-03-19')
-    store=Store(tmp_path/'db')
-    archive.import_document(store,'700.HK',source,root=tmp_path/'Research',interactive=False)
-    app=ArchiveApp('700.HK',store)
-    async with app.run_test() as pilot:
-        await pilot.press('e','tab','tab')
-        assert app.focused.id=='edit-date'
-        await pilot.press('home','ctrl+k',*list('2026-03-20'),'enter')
-        assert not app.editing, str(app.query_one('#status').render())
-        assert app.docs[0]['publication_date']=='2026-03-20'
-        assert app.docs[0]['type']=='Annual'
 
 
 @pytest.mark.parametrize('text,period',[
@@ -330,3 +292,67 @@ def test_written_reporting_periods(text,period):
     info=archive.identify(text,{})
     assert info['period']==period
     assert info['provenance']['period']['source']=='document text'
+
+
+def test_url_page_metadata_pdf_archive_and_duplicate(tmp_path,monkeypatch):
+    page=b'''<meta name="citation_pdf_url" content="/report.pdf">
+    <meta name="citation_title" content="Results presentation">
+    <meta name="citation_publication_date" content="2026/05/08">
+    <meta name="citation_publisher" content="Example Inc.">'''
+    class Response(io.BytesIO):
+        def __init__(self,url):
+            super().__init__(b'%PDF-fixture' if url.endswith('.pdf') else page)
+            self.url=url
+            self.headers={'Content-Type':'application/pdf' if url.endswith('.pdf') else 'text/html'}
+        def geturl(self): return self.url
+    monkeypatch.setattr(archive.urllib.request,'urlopen',lambda request,**kw:Response(request.full_url))
+    monkeypatch.setattr(archive,'read_document',lambda p:('Investor Presentation',{}))
+    monkeypatch.setattr('builtins.input',lambda _:pytest.fail('unexpected prompt'))
+    def convert(src,dest): dest.write_text('# Converted');return 'fixture'
+    monkeypatch.setattr(archive,'convert_pdf',convert)
+    store=Store(tmp_path/'db')
+    url='https://host.example/report'
+    doc=archive.import_document(store,'700.HK',url,root=tmp_path/'Research',interactive=True)
+    assert doc['publication_date']=='2026-05-08'
+    assert doc['publisher']=='Example Inc.'
+    assert doc['title']=='Results presentation'
+    assert doc['source_path']==url
+    assert json.loads(doc['source_metadata'])['source_information']['source_url']==url
+    assert json.loads(doc['metadata_provenance'])['date']['url']==url
+    assert Path(doc['original']).read_bytes()==b'%PDF-fixture'
+    assert Path(doc['markdown']).read_text()=='# Converted'
+    again=archive.import_document(store,'700.HK','https://host.example/report.pdf',root=tmp_path/'Research',interactive=True)
+    assert again['id']==doc['id']
+    assert {r[0] for r in store.db.execute('SELECT source_path FROM archive_imports')}=={url,'https://host.example/report.pdf'}
+
+
+def test_web_host_and_modified_date_are_not_publication_metadata():
+    page=archive.SourcePage()
+    page.feed('<meta property="og:site_name" content="Hosting Co"><meta property="article:modified_time" content="2026-10-20">')
+    assert page.metadata=={}
+
+
+@pytest.mark.parametrize('answers,expected', [(['10'],'Research'),(['bad','14','research'],'Research'),([''],'Unknown'),(['13'],'Unknown')])
+def test_classification_selection_controls(answers,expected):
+    info=archive.identify('',{})
+    output=io.StringIO();answers=iter(answers)
+    archive.clarify(info,True,read=lambda _:next(answers),output=output)
+    assert info['type']==expected
+    assert all(t in output.getvalue() for t in archive.TYPES)
+    assert all(line.startswith('Type?') for line in output.getvalue().splitlines())
+
+
+def test_missing_pdf_metadata_does_not_block_conversion(tmp_path,monkeypatch):
+    source=tmp_path/'scan.pdf';source.write_bytes(b'%PDF-fixture')
+    monkeypatch.setattr(archive,'read_document',lambda p:('',{'creationDate':'D:20261020000000'}))
+    answers=[]
+    def classify(prompt): answers.append(prompt);return '12'
+    monkeypatch.setattr('builtins.input',classify)
+    def convert(src,dest): dest.write_text('# OCR output');return 'fixture'
+    monkeypatch.setattr(archive,'convert_pdf',convert)
+    doc=archive.import_document(Store(tmp_path/'db'),'700.HK',source,root=tmp_path/'Research',interactive=True)
+    assert len(answers)==1
+    assert doc['type']=='Other' and doc['title']=='Unknown'
+    assert doc['publisher'] is None and doc['publication_date'] is None
+    assert Path(doc['original']).read_bytes()==source.read_bytes()
+    assert Path(doc['markdown']).read_text()=='# OCR output'
