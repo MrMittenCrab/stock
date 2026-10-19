@@ -12,15 +12,37 @@ def main():
     price.add_argument('ticker')
     search=commands.add_parser('search',help='Find US and HK securities by name or symbol')
     search.add_argument('name')
+    archive=commands.add_parser('archive',help='Browse or import archived research documents')
+    archive.add_argument('ticker')
+    archive.add_argument('file',nargs='?')
     args=parser.parse_args()
-    if args.command=='price':
+    if args.command in ('price','archive'):
         try: args.ticker=symbol(args.ticker)
         except ValueError as e: parser.error(str(e))
     elif not args.name.strip():
         parser.error('Search name must not be empty')
     market=None
+    store=None
     try:
-        store=Store();market=Market(store)
+        store=Store()
+        if args.command=='archive':
+            if args.file:
+                from .archive import import_document
+                doc=import_document(store,args.ticker,args.file)
+                from pathlib import Path
+                print('Archived  '+Path(doc['original']).name)
+                if doc['conversion_status']=='converted':
+                    print('Converted '+Path(doc['markdown']).name)
+                elif doc['conversion_status']=='failed':
+                    print('stock: PDF archived; '+doc['conversion_error']+'; reimport to retry conversion',file=sys.stderr)
+                    return 1
+            else:
+                if not sys.stdin.isatty() or not sys.stdout.isatty():
+                    raise ValueError('stock archive requires an interactive terminal; provide a file to import')
+                from .archive_ui import ArchiveApp
+                ArchiveApp(args.ticker,store).run(mouse=False)
+            return 0
+        market=Market(store)
         if args.command=='search':
             matches=market.search(args.name)
             for ticker,name in matches: print(f'{ticker:<12} · {name} · {ticker.rsplit(".",1)[1]}')
@@ -49,4 +71,5 @@ def main():
         return 130
     finally:
         if market: market.rpc.close()
+        if store: store.db.close()
     return 0

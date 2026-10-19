@@ -114,3 +114,60 @@ checks independent July 2026 HK/US holidays. Tests cover keyboard editing,
 chart continuity and alignment, navigation, exchange-local anchored zoom, DST,
 annotation isolation, symbol normalization, short-history zoom limits, permission
 errors, stale-cache notices, and refusal of trading methods.
+
+## Archive
+
+```sh
+stock archive 700.HK                         # keyboard archive browser
+stock archive 700.HK ~/Downloads/report.pdf # copy, identify and convert
+stock archive CRWV.US ~/Downloads/note.md
+```
+
+Archive uses the existing `.data/stock.sqlite3`, independently of Longbridge.
+Originals and converted Markdown live in `Research/<canonical ticker>/Archive/`
+inside this project. This flat archive and its converter assets are excluded from
+Git. Back up both `Research` and the database. Existing research directories,
+market caches, and annotations are retained.
+
+Names follow `YYYY-MM-DD--type--period-or-title.ext`, using `undated` when no
+publication date is verified. The database retains exact titles, original names,
+source paths and metadata, publication-date evidence, SHA-256 hashes, import
+history, conversion status, and an unsorted status reserved for future Sort.
+Distinct documents with colliding names receive a stable hash suffix. Reimporting
+identical bytes for a ticker reuses the same record and paths; a failed PDF
+conversion is retried. Source files are never modified. Similar documents are
+never merged. A PDF is committed before conversion, so a converter failure leaves
+a usable archived original and returns exit status 1 with retry instructions.
+
+Recognition uses front matter, headings, and PDF metadata, without an LLM or
+filename-based guesses. Annual reports/10-K/20-F/40-F, interim and quarterly
+reports/10-Q, calls, presentations, earnings releases, filings, letters, research,
+and explicitly marked articles have deterministic rules. Unrecognized types
+produce a single inline type question. Choose Other to see the complete taxonomy,
+including Other itself. Noninteractive imports that need classification fail
+before copying anything. Missing publisher, reporting period, and publication
+date remain unknown. Only explicit current-document publication labels or
+publication metadata establish dates; file creation/modification timestamps and
+historical narrative dates do not. Fiscal quarters/halves require explicit period
+identifiers (such as `Q2 2026` or `H1 2026`), rather than guesses from calendar months.
+
+Supported originals are PDF, UTF-8 Markdown, and UTF-8 text. PDF inspection reuses
+a locally installed PyMuPDF interpreter, discovered from Python or the `pymupdf`
+launcher. Set `STOCK_PDF_PYTHON=/path/to/python` if needed. PDF conversion reuses
+`pdfmd` and its existing Marker setup, with local `pymupdf4llm` as a fallback when
+installed in the PDF interpreter. Neither conversion route requests an LLM.
+Conversion output is quiet; Markdown and PDF share a basename. Image assets are
+stored in a per-document `.assets` directory with updated Markdown links. No new
+PDF engine or model is bundled. Scans without extractable text may require manual
+type selection and retain an unknown title/period/date; OCR quality depends on
+the installed converter. Conversion has a ten-minute limit for pdfmd and five
+minutes for the fallback.
+
+Browser controls: ↑/↓ selects a document, Space expands metadata in place,
+O opens its original, M opens its Markdown, and Esc exits. Unknown dates display
+as `Unknown`. Narrow terminals wrap document identity and expanded metadata; PgUp/PgDn scroll
+long expansions.
+The original uses the system viewer; Markdown uses `STOCK_MARKDOWN_VIEWER` when
+set (an executable and optional arguments, without shell expansion), otherwise
+the system viewer. For example, `STOCK_MARKDOWN_VIEWER='open -a Typora'` on macOS.
+Sort, Sources, and commentary topic classification are not implemented.
