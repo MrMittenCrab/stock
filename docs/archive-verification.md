@@ -1,35 +1,67 @@
 # Archive verification — 2026-10-19
 
-Implementation follows the supplied Archive specification. The CLI branches before
-constructing Market; Price and Search retain their existing behavior. Archive adds
-three tables to the existing SQLite database and leaves cache/annotations intact.
-No parent repository files or Git history were modified.
+Metadata identification/correction is part of ordinary import and the existing
+Archive browser. No repair/redo command, import TUI, or extra detail screen was
+added. Only this stock repository was changed.
 
-Validation:
+## Validation
 
-- `.venv/bin/python -m pytest -q`: 64 passed, including existing regressions.
+- `.venv/bin/pytest -q`: **94 passed**, including Price, Search, Archive and core
+  regressions. Focused Archive coverage: **60 passed**.
 - `git diff --check`: clean.
-- Generated a real one-page PDF using the installed PyMuPDF interpreter and imported
-  it through CLI into an isolated `.data/archive-real` database/research root.
-  The installed pdfmd/Marker produced matching PDF and Markdown basenames; document
-  text supplied the annual classification, FY2025 period and publication evidence.
-- PTY inspection at 80×24 and 30×18: header/ticker adjacency, grayscale aligned rows,
-  in-place metadata expansion, selection and Esc. Narrow identity/metadata wrap;
-  PgUp/PgDn provide keyboard scrolling for long expansions.
-- PTY uncertain import: one inline type question, selecting Interim archived the
-  file directly without starting Textual. Unknown noninteractive classification
-  fails before copying; automated CLI coverage confirms no Market construction.
-- Tested content/metadata recognition, historical-date exclusion, fiscal-period
-  ambiguity, exact title retention, canonical symbols, stable basename collisions,
-  hash deduplication and provenance persistence, conversion fallback, asset paths,
-  failed conversion retry, source disappearance/change, database registration
-  rollback, concurrent imports, unrelated database writes during conversion,
-  converter timeout cleanup, O/M associations, and empty/narrow navigation.
+- Inspected the actual SQLite schema and all three existing CoreWeave records.
+  Ordinary, idempotent schema upgrades add `metadata_provenance` and
+  `sec_accession`; existing document/file IDs, source hashes and original metadata
+  remain intact. Legacy-schema and existing-record reidentification tests pass.
+- Read the actual CoreWeave 10-Q, annual-report and transcript PDFs through the
+  installed PyMuPDF engine. The 10-Q reports March 31, 2026 separately from its
+  accession and vendor filing-date subject; its title becomes `Form 10-Q`.
+  The annual report stays FY2025. The transcript stays Q1-2026 and retains its
+  transcript title despite a Form 10-Q reference in its body. No live archive or
+  Downloads file was changed during these probes.
+- PTY ordinary import showed only the unresolved fields, without Textual:
 
-Limitations: recognition is deliberately conservative and uses explicit publication
-labels and period identifiers; unfamiliar formats can require manual type selection.
-Unverified date/publisher/period remain unknown. PDF inspection requires local
-PyMuPDF; conversion depends on existing pdfmd/Marker or local pymupdf4llm. The real
-machine's pdfmd path was exercised; fallback behavior was tested with a controlled
-external-converter boundary. Scanned documents without extractable text may have
-incomplete metadata. No Sort or Sources implementation is included.
+  ```text
+  Period?  1 Q1-2026 · 2 Unknown · 3 Enter
+  > 1
+  Date?  YYYY-MM-DD · Enter Unknown
+  >
+  Archived  undated--quarterly--Q1-2026.md
+  ```
+
+- PTY Archive inspection confirmed `E Edit`, five labeled inline fields with
+  existing values, Tab navigation, Enter save, and return to the same browser.
+  Changed a date through actual terminal input and confirmed the saved SQLite
+  value after exiting. Automated keyboard tests also cover editing only the
+  focused field, cancellation, narrow input bounds and scrolling to later fields.
+- Controlled SEC submissions fixtures verify accession, issuer/registrant, primary
+  form and report-end matching, annual versus quarterly reports, fiscal calendars,
+  earlier publication evidence and provenance, and rejection of conflicting
+  registrants, report periods and report booklets. Live requests from this
+  environment return SEC HTTP 403; they cannot verify a live publication date.
+  This leaves fields unresolved for clarification. TLS verification stays enabled;
+  the OS CA bundle handles this Python installation's missing default CA file.
+- Tests cover English/Chinese HK terminology, presentations/transcripts, written
+  quarter names, forward/reverse/mixed period ambiguity, Unknown titles and dates,
+  minimal prompts and user provenance, all taxonomy choices, manually corrected
+  and deliberately Unknown fields surviving repeat imports, and complete duplicate
+  imports leaving SQLite unchanged.
+- Correction tests verify exclusive filename collision handling, PDF/Markdown and
+  nested assets moving together, Markdown asset references and hashes, unchanged
+  source bytes, no reconversion after metadata edits, stable document/file IDs
+  under foreign-key passage/annotation references, SQLite integrity, and rollback
+  after document or mid-bundle asset-registration failures.
+
+## Limits
+
+Dates come from explicit exact-document publication evidence or reliably matched
+SEC primary filing records. Event dates, vendor filing-date subjects, unrelated
+filings, period-end dates and PDF creation/modification timestamps are not used as
+publication dates. Date-derived quarter/half labels are suggestions until confirmed
+by a user or a matched SEC fiscal calendar. Unknown metadata stays Unknown rather
+than inheriting another document's date. Manual answers are user-supplied.
+
+PDF reading/conversion continues to reuse installed PyMuPDF and pdfmd/Marker or
+pymupdf4llm. No converter or model was installed; existing converted PDFs were not
+reconverted. Scans without extractable text may require clarification. Sort and
+Sources remain outside this change.

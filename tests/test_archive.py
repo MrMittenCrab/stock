@@ -37,14 +37,15 @@ def test_dates_are_not_period_or_file_creation_dates():
     assert archive.basename(info)=='undated--annual--FY2025'
 
 
-def test_only_unknown_type_prompts_and_all_types_available(monkeypatch):
+def test_unknown_fields_prompt_and_all_types_available(monkeypatch):
     output=io.StringIO()
-    answers=iter(['other','Research'])
+    answers=iter(['Research','','',''])
     info=archive.identify('GPU economics',{})
     archive.clarify(info,interactive=True,read=lambda _: next(answers),output=output)
     assert info['type']=='Research'
     assert 'Type?' in output.getvalue()
-    assert 'Date?' not in output.getvalue()
+    assert 'Date?' in output.getvalue()
+    assert all(t in output.getvalue() for t in archive.TYPES)
     with pytest.raises(ValueError,match='interactive|type'):
         archive.clarify(archive.identify('Ambiguous document',{}),interactive=False)
 

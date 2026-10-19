@@ -130,7 +130,7 @@ Git. Back up both `Research` and the database. Existing research directories,
 market caches, and annotations are retained.
 
 Names follow `YYYY-MM-DD--type--period-or-title.ext`, using `undated` when no
-publication date is verified. The database retains exact titles, original names,
+publication date is known. The database retains exact titles, original names,
 source paths and metadata, publication-date evidence, SHA-256 hashes, import
 history, conversion status, and an unsorted status reserved for future Sort.
 Distinct documents with colliding names receive a stable hash suffix. Reimporting
@@ -140,16 +140,31 @@ never merged. A PDF is committed before conversion, so a converter failure leave
 a usable archived original and returns exit status 1 with retry instructions.
 
 Recognition uses front matter, headings, and PDF metadata, without an LLM or
-filename-based guesses. Annual reports/10-K/20-F/40-F, interim and quarterly
-reports/10-Q, calls, presentations, earnings releases, filings, letters, research,
-and explicitly marked articles have deterministic rules. Unrecognized types
-produce a single inline type question. Choose Other to see the complete taxonomy,
-including Other itself. Noninteractive imports that need classification fail
-before copying anything. Missing publisher, reporting period, and publication
-date remain unknown. Only explicit current-document publication labels or
-publication metadata establish dates; file creation/modification timestamps and
-historical narrative dates do not. Fiscal quarters/halves require explicit period
-identifiers (such as `Q2 2026` or `H1 2026`), rather than guesses from calendar months.
+filename-based guesses. US forms and English/Chinese HK reporting terminology
+identify reports, presentations, earnings releases, transcripts and other types.
+SEC accessions are stored separately from titles and periods. For primary SEC
+reports, issuer, accession, form and reporting-end date must match the official
+[SEC submissions record](https://www.sec.gov/search-filings/edgar-application-programming-interfaces)
+before its public filing date is used; exhibits and annual-report booklets do not
+inherit the parent filing's date. Earlier explicit publication evidence takes
+precedence and retains its provenance. Event, period-end and PDF creation dates
+are never used as publication dates. SEC fiscal-calendar metadata can establish
+fiscal quarters; date-derived quarter/half labels otherwise remain suggestions.
+Set `STOCK_SEC_USER_AGENT` to your identifying SEC request user agent if needed.
+Blocked or unavailable lookups leave unresolved fields for clarification.
+
+Interactive imports ask compact single-line questions only for unresolved fields:
+type, period, date, title and publisher. Numbered choices offer the complete type
+taxonomy and plausible periods; blank answers allow Unknown. No TUI opens during
+import. Manual answers are marked user-supplied, including deliberate Unknowns.
+Noninteractive imports retain unresolved metadata as Unknown; an unresolved type
+requires an interactive import before any files are copied.
+
+Identical bytes reuse the document ID. Incomplete metadata is identified again,
+with clarification when needed, while manual corrections are preserved. Complete
+metadata leaves the record and files unchanged. Metadata changes do not rerun a
+completed PDF conversion. Ordinary schema upgrades add per-field provenance and
+a separate SEC accession to existing records; existing archives remain editable.
 
 Supported originals are PDF, UTF-8 Markdown, and UTF-8 text. PDF inspection reuses
 a locally installed PyMuPDF interpreter, discovered from Python or the `pymupdf`
@@ -164,7 +179,12 @@ the installed converter. Conversion has a ten-minute limit for pdfmd and five
 minutes for the fallback.
 
 Browser controls: ↑/↓ selects a document, Space expands metadata in place,
-O opens its original, M opens its Markdown, and Esc exits. Unknown dates display
+O opens its original, M opens its Markdown, E edits metadata inline, and Esc exits.
+The editor shows existing values: Tab moves between fields, Enter saves changed
+fields, and Esc cancels. Blank/Unknown clears a field; dates use YYYY-MM-DD.
+Corrections keep document/file IDs and original hashes, rename archived files and
+assets together, and update Markdown links and registered paths. Collisions receive
+a hash suffix, and failed updates roll back without replacing existing files. Unknown dates display
 as `Unknown`. Narrow terminals wrap document identity and expanded metadata; PgUp/PgDn scroll
 long expansions.
 The original uses the system viewer; Markdown uses `STOCK_MARKDOWN_VIEWER` when

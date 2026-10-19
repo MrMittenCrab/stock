@@ -10,10 +10,10 @@ from pathlib import Path
 from rich.text import Text
 from rich.cells import cell_len, set_cell_size
 from textual.app import App, ComposeResult
-from textual.containers import VerticalScroll
-from textual.widgets import Static
+from textual.containers import VerticalScroll, Horizontal
+from textual.widgets import Static, Input
 
-from .archive import documents
+from .archive import documents, update_metadata, TYPES
 from .core import symbol
 
 
@@ -37,10 +37,17 @@ class ArchiveApp(App):
     #heading { margin-bottom: 1; }
     #rows { height: 1fr; scrollbar-size: 0 0; }
     #help { margin-top: 1; }
+    #editor { display: none; height: auto; max-height: 60%; scrollbar-size: 0 0; }
+    .edit-row { height: 1; }
+    .edit-label { width: 12; }
+    Input { width: 1fr; min-width: 0; height: 1; border: none; padding: 0; background: #1e1e1e; }
+    Input:focus { border: none; background: #333333; }
     '''
 
     def __init__(self,ticker,store):
         super().__init__()
+        self.store=store
+        self.editing=False
         self.ticker=symbol(ticker)
         self.docs=documents(store,self.ticker)
         self.selected=0
@@ -53,6 +60,12 @@ class ArchiveApp(App):
             if not self.docs: yield Static('No archived documents')
             for i in range(len(self.docs)):
                 yield Static('',id=f'doc-{i}')
+        with VerticalScroll(id='editor'):
+            yield Static('Type · '+ ' · '.join(f'{i} {t}' for i,t in enumerate(TYPES,1)))
+            for key,label in (('type','Type'),('period','Period'),('date','Date'),('title','Title'),('publisher','Publisher')):
+                with Horizontal(classes='edit-row'):
+                    yield Static(label,classes='edit-label')
+                    yield Input(placeholder='Unknown',id='edit-'+key)
         yield Static('',id='status')
         yield Static('',id='help')
 
@@ -90,9 +103,16 @@ class ArchiveApp(App):
                     lines.extend(textwrap.wrap(detail,width=width,subsequent_indent='    ') if width<55 else [detail])
             rendered=Text('\n'.join(lines),no_wrap=True,overflow='ellipsis')
             self.query_one(f'#doc-{i}',Static).update(rendered)
-        self.query_one('#help',Static).update(Text('↑↓ Navigate   Space '+('Collapse' if self.selected in self.expanded else 'Expand')+'   O Original   M Markdown   Esc Quit',no_wrap=False))
+        self.query_one('#help',Static).update(Text('↑↓ Navigate   Space '+('Collapse' if self.selected in self.expanded else 'Expand')+'   E Edit   O Original   M Markdown   Esc Quit',no_wrap=False))
 
     async def on_key(self,event):
+        if self.editing:
+            if event.key=='escape':
+                event.stop();event.prevent_default();self.close_editor()
+            elif event.key=='enter':
+                event.stop();event.prevent_default()
+                self.save_editor()
+            return
         event.stop();event.prevent_default()
         if event.key=='escape': self.exit();return
         if event.key in ('pageup','pagedown'):
@@ -103,6 +123,17 @@ class ArchiveApp(App):
         if not self.docs: return
         if event.key in ('up','down'):
             self.selected=max(0,min(len(self.docs)-1,self.selected+(-1 if event.key=='up' else 1)))
+        elif event.key.lower()=='e':
+            self.editing=True
+            doc=self.docs[self.selected]
+            self.edit_doc=doc
+            for key in ('type','period','date','title','publisher'):
+                field=self.query_one('#edit-'+key,Input)
+                field.value=(doc['publication_date'] if key=='date' else doc[key]) or ''
+            self.query_one('#editor').display=True
+            self.query_one('#edit-type',Input).focus()
+            self.query_one('#status',Static).update('Tab Next · Enter Save · Esc Cancel · Blank Unknown')
+            return
         elif event.key=='space':
             if self.selected in self.expanded: self.expanded.remove(self.selected)
             else: self.expanded.add(self.selected)
@@ -116,3 +147,31 @@ class ArchiveApp(App):
                 self.query_one('#status',Static).update(Text(str(exc)))
         self.paint()
         self.query_one(f'#doc-{self.selected}').scroll_visible()
+
+    def close_editor(self):
+        self.editing=False
+        self.query_one('#editor').display=False
+        self.set_focus(None)
+        self.query_one('#status',Static).update('')
+        self.paint()
+
+    def save_editor(self):
+        import sqlite3
+        doc=self.edit_doc
+        changes={}
+        for key in ('type','period','date','title','publisher'):
+            value=self.query_one('#edit-'+key,Input).value.strip()
+            value=None if value.lower() in ('','unknown') else value
+            if key=='type':
+                if value and value.isdigit() and 1<=int(value)<=len(TYPES): value=TYPES[int(value)-1]
+                value=next((t for t in TYPES if value and t.lower()==value.lower()),value) or 'Unknown'
+            old=doc['publication_date'] if key=='date' else doc[key]
+            if value!=old: changes[key]=value
+        try:
+            updated=update_metadata(self.store,doc,changes) if changes else doc
+        except (OSError,ValueError,sqlite3.Error) as exc:
+            self.query_one('#status',Static).update(Text(str(exc)))
+            return
+        self.docs=documents(self.store,self.ticker)
+        self.selected=next(i for i,d in enumerate(self.docs) if d['id']==updated['id'])
+        self.close_editor()
