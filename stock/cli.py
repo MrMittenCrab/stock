@@ -16,10 +16,15 @@ def main():
     archive.add_argument('ticker')
     archive.add_argument('file',nargs='?')
     archive.add_argument('--metadata',metavar='JSON',help='Enrich existing archived documents from versioned metadata JSON')
+    sort=commands.add_parser('sort',help='Extract and freeze archived source passages with Cursor')
+    sort.add_argument('ticker')
+    sort.add_argument('--reset',metavar='DOCUMENT',help='Restore frozen topics by Archive ID or filename; no LLM call')
+    sources=commands.add_parser('sources',help='Browse source passages and edit topic memberships')
+    sources.add_argument('ticker')
     args=parser.parse_args()
     if args.command=='archive' and args.metadata and args.file:
         parser.error('Use either a document or --metadata')
-    if args.command in ('price','archive'):
+    if args.command in ('price','archive','sort','sources'):
         try: args.ticker=symbol(args.ticker)
         except ValueError as e: parser.error(str(e))
     elif not args.name.strip():
@@ -28,6 +33,20 @@ def main():
     store=None
     try:
         store=Store()
+        if args.command=='sort':
+            if args.reset:
+                from .sources import reset
+                doc=reset(store,args.ticker,args.reset)
+                print(f"{doc['id']} · {doc['title']} · Restored frozen topics")
+                return 0
+            from .sort import sort_stock
+            return 0 if sort_stock(store,args.ticker,lambda line: print(line,flush=True)) else 1
+        if args.command=='sources':
+            if not sys.stdin.isatty() or not sys.stdout.isatty():
+                raise ValueError('stock sources requires an interactive terminal')
+            from .sources_ui import SourcesApp
+            SourcesApp(args.ticker,store).run(mouse=False)
+            return 0
         if args.command=='archive':
             if args.metadata:
                 from .archive import import_metadata

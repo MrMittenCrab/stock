@@ -10,6 +10,7 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import VerticalScroll
 from textual.widgets import Static, TextArea
+from .native import NATIVE_CSS
 from .core import State
 from .data import DataError, HK
 from .exchanges import exchange
@@ -108,18 +109,18 @@ class PriceApp(App):
                 Binding("down", "row(1)", priority=True, show=False)]
     AUTO_FOCUS = ""
     ENABLE_COMMAND_PALETTE = False
-    CSS = '''
-    Screen { background: #111111; color: #dddddd; }
+    CSS = NATIVE_CSS + '''
+    Screen { background: ansi_default; color: ansi_default; }
     VerticalScroll { height: 1fr; padding: 1 1; scrollbar-size: 0 0; }
     Static { height: auto; }
-    TextArea { height: auto; min-height: 1; border: none; padding: 0; background: #111111; color: #dddddd; }
+    TextArea { height: auto; min-height: 1; max-height: 60vh; border: none; padding: 0; background: ansi_default; color: ansi_default; }
     TextArea:focus { border: none; }
     TextArea { margin-left: 11; }
     #heading { margin-bottom: 1; }
     '''
 
     def __init__(self,ticker,metadata,observations,store,market,minute_available,notice=''):
-        super().__init__()
+        super().__init__(ansi_color=True)
         self.venue=exchange(ticker)
         self.ticker=ticker;self.metadata=metadata;self.state=State(observations)
         self.minimum_level=next((i for i,(_,_,count) in enumerate(self.state.zooms[:5]) if count<=len(observations)),4)
@@ -137,7 +138,7 @@ class PriceApp(App):
             yield Static('STOCK · PRICE\n'+self.ticker+' · '+self.metadata['currency'],id='heading')
             yield Static(id='chart')
             yield Static(id='annotation')
-            yield TextArea('',id='editor',soft_wrap=True,show_line_numbers=False,tab_behavior='indent')
+            yield TextArea('',id='editor',soft_wrap=True,show_line_numbers=False,tab_behavior='indent',highlight_cursor_line=False)
             yield Static(id='zoom')
             yield Static(id='status')
             yield Static('↑↓ Row   ←→ Navigate   Space Expand   A Add   Esc Quit',id='help')
@@ -145,10 +146,12 @@ class PriceApp(App):
     def on_mount(self):
         editor = self.query_one('#editor', TextArea)
         editor.register_theme(TextAreaTheme('mono',
-            base_style=Style(color='#dddddd', bgcolor='#111111'),
-            cursor_style=Style(color='#111111', bgcolor='#dddddd'),
-            cursor_line_style=Style(bgcolor='#111111'),
-            selection_style=Style(color='#ffffff', bgcolor='#444444')))
+            cursor_style=Style(reverse=True),
+            cursor_line_style=Style(),
+            gutter_style=Style(color='default', bgcolor='default'),
+            cursor_line_gutter_style=Style(),
+            bracket_matching_style=Style(underline=True),
+            selection_style=Style(reverse=True)))
         editor.theme='mono'
         self.query_one('#editor').display=False
         self.query_one('#editor').disabled=True

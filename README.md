@@ -270,3 +270,102 @@ from stored values for serialization with `json.dump`. Enrichment preserves docu
 and file IDs, original bytes/hashes and conversion status. PDF/Markdown/assets are
 renamed together and Markdown asset links updated. Batch database updates and
 file publication roll back together on failure; existing files are never overwritten.
+
+## Sort and Sources
+
+```sh
+stock sort CRWV.US
+stock sources CRWV.US
+stock sort CRWV.US --reset DOCUMENT
+```
+
+Sort extracts original commentary from archived Markdown, falling back to local
+PDF text when Markdown is unavailable (including failed conversions). It uses the
+installed, authenticated **Cursor Agent CLI** automatically. `agent --help` and
+`agent status` must support read-only `--mode ask` and `--output-format json`.
+Stock checks those capabilities/authentication before extraction. Cursor returns a
+JSON result envelope; Stock validates its inner passage schema itself because the
+CLI does not offer a JSON-schema enforcement option. No other agent framework is
+used. Missing authentication, invalid output, source changes, timeouts, and
+unverifiable quotations produce a clear failure without marking the document sorted.
+
+Cursor runs in an empty disposable workspace under `.data`, in read-only ask mode,
+with workspace permissions denying shell commands, file reads/writes, web fetches,
+and MCP calls ([Cursor permissions](https://cursor.com/docs/cli/reference/permissions)).
+Document content is explicitly untrusted input. Cursor
+receives bounded text sections and attribution context, and has no responsibility
+for file changes or database publication. Source text is sent to Cursor's service;
+its existing account authentication is reused. Initial account login, if needed,
+is `agent login`; ordinary Sort needs no manual Cursor interaction.
+
+Each successful document is published in a single SQLite transaction. Its passage
+records, source anchors, dates/provenance, and original topics are then frozen.
+Repeated Sort prints **Already sorted** and never calls Cursor for that document.
+Manual additions/removals are stored separately and survive ordinary Sort. Reset
+accepts an Archive document ID or an unambiguous archived filename; it removes only
+that document's manual overrides and restores its exact frozen topic memberships.
+It never calls Cursor or changes passages or sources. There is no redo/resort flag.
+A failed/interrupted document leaves previously saved documents intact; a later Sort
+retries that unsorted document. Per-section progress is printed without a TUI.
+
+The eight fixed topics are **Market, Product, Operations, Financials, Capital,
+Organization, Macro, Valuation**. A passage can have several topics or none;
+Financials covers commentary rather than full tables or BAV calculations.
+Management, Investor, and Media identify the individual speaker's category, even
+when someone else quotes them. Identifiable speakers require a matching attribution
+excerpt. Extraction and category selection still require judgment from the LLM;
+Stock rejects invented text/names and unsupported topic values, but cannot prove
+semantic interpretation mechanically.
+
+Original text is checked before publication. For converted Markdown, Stock also
+requires a unique match in the original PDF text (allowing whitespace, typographic quotes, and Markdown
+presentation differences), and stores the **PDF's original text**, physical page
+and character offsets. Quotations spanning adjacent pages retain separately
+verified page segments; repeated page headers are omitted with explicit provenance.
+Line-end hyphenation is matched while retaining the original PDF spelling. It fails closed if conversion changed wording or made the
+quotation unverifiable; such text is never silently saved as a quotation. PDF text
+extraction may differ from visual layout and is labeled accordingly in source
+provenance. Image-only PDFs need OCR before they can be sorted. Imported documents,
+LLM output, and verification artifacts remain excluded from Git.
+
+Publication dates come only from archived provenance explicitly establishing public
+availability with an evidence URL. Cover dates, call dates, bare user-supplied dates,
+and filing dates without verified public-availability provenance show **Unknown**.
+Stock does not invent earlier publication dates or ask Cursor to supply dates.
+Passages appear newest verified public date first, followed by Unknown dates.
+
+Sources controls:
+
+- ↑/↓ navigates; → opens a topic; ← returns to the topic list; Esc quits Stock.
+- Space expands/collapses the original passage in place. Date/speaker columns stay
+  fixed, and continuation text wraps at the passage column on resize.
+- T opens/closes the inline eight-topic checklist underneath the selected passage.
+  ↑/↓ navigates topics; Space toggles membership and saves immediately to SQLite.
+  A passage removed from the active filter stays visible while its checklist is
+  open. Closing it selects the next available row. Speaker/date editing is excluded.
+- F opens/closes an inline file selector containing All and archived filenames.
+  ↑/↓ selects; →/Enter applies the filter within the current view.
+- O opens the original document in the system viewer and displays its citation,
+  physical page/section/character reference, speaker, verification basis, and date
+  provenance inline. Page navigation in the external viewer is viewer-dependent.
+
+Counts use effective memberships after manual changes and may overlap.
+**Unclassified** filters passages with no effective topic; it is not a ninth topic.
+Internal passage IDs are never displayed. Price, Archive, Sources, their scrolling
+containers, and annotation editing use ANSI terminal-default foreground/background.
+The editor caret and selection use reverse video, preserving light, dark, and
+transparent terminal profiles without fixed RGB fills.
+
+Run focused checks with `.venv/bin/pytest -q`. An opt-in real archive check,
+`PYTHONPATH=. .venv/bin/python tests/verify_sort_real.py`, verifies the existing
+CoreWeave IPO, reports, presentations and transcripts and extracts one transcript
+section with authenticated Cursor. It publishes only to a disposable database copy,
+and caches the real response in `.data` to avoid repeat LLM calls.
+
+For real terminal output verification,
+`tests/verify_native_terminal.py` captures all three apps through a PTY using light
+and dark terminal color responses, and rejects explicit foreground/background SGR
+colors. Run the real archive check first to create its verified evidence fixture. The
+terminal check copies the existing archive database into `.data`, adds that fixture
+only to the copy, and leaves all captures under `.data`. Real Cursor calls are deliberately outside the ordinary test
+suite to avoid repeated calls over full archived reports.

@@ -15,6 +15,7 @@ from textual.containers import VerticalScroll
 from textual.widgets import Static
 
 from .archive import documents
+from .native import NATIVE_CSS
 from .core import symbol
 
 
@@ -32,8 +33,8 @@ class ArchiveApp(App):
     AUTO_FOCUS=''
     ENABLE_COMMAND_PALETTE=False
     BINDINGS=[('escape','quit','')]
-    CSS='''
-    Screen { background: #111111; color: #dddddd; padding: 1 1; }
+    CSS=NATIVE_CSS+'''
+    Screen { background: ansi_default; color: ansi_default; padding: 1 1; }
     Static { height: auto; }
     #heading { margin-bottom: 1; }
     #rows { height: 1fr; scrollbar-size: 0 0; }
@@ -41,7 +42,7 @@ class ArchiveApp(App):
     '''
 
     def __init__(self,ticker,store):
-        super().__init__()
+        super().__init__(ansi_color=True)
         self.store=store
         self.ticker=symbol(ticker)
         self.docs=documents(store,self.ticker)
