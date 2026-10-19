@@ -276,9 +276,10 @@ def test_identical_imports_concurrently_publish_one_document(tmp_path,monkeypatc
     from concurrent.futures import ThreadPoolExecutor
     source=tmp_path/'report.pdf';source.write_bytes(b'pdf')
     monkeypatch.setattr(archive,'read_document',lambda path:('Annual Report 2025',{}))
-    barrier=threading.Barrier(2)
+    started=threading.Event();release=threading.Event();calls=[]
     def convert(source,destination):
-        barrier.wait(timeout=5)
+        calls.append(source);started.set()
+        assert release.wait(timeout=5)
         destination.write_text('# Converted report');return 'test'
     monkeypatch.setattr(archive,'convert_pdf',convert)
     archive.schema(Store(tmp_path/'db'))
@@ -287,10 +288,15 @@ def test_identical_imports_concurrently_publish_one_document(tmp_path,monkeypatc
         try: return archive.import_document(store,'700.HK',source,root=tmp_path/'Research',interactive=False)
         finally: store.db.close()
     with ThreadPoolExecutor() as pool:
-        futures=[pool.submit(run) for _ in range(2)]
-        results=[future.result(timeout=10) for future in futures]
-    assert results[0]['id']==results[1]['id']
-    assert all(d['conversion_status']=='converted' for d in results)
+        first=pool.submit(run)
+        assert started.wait(timeout=5)
+        second=pool.submit(run).result(timeout=5)
+        release.set()
+        completed=first.result(timeout=5)
+    assert completed['id']==second['id']
+    assert completed['conversion_status']=='converted'
+    assert second['conversion_status']!='converted'
+    assert len(calls)==1
     assert len(list((tmp_path/'Research'/'700.HK'/'Archive').iterdir()))==2
 
 

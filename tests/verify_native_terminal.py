@@ -92,7 +92,8 @@ if __name__=='__main__':
   target=Store(ROOT/'.data/native-terminal.sqlite3')
   source.db.backup(target.db)
   sources.schema(target)
-  fixture=ROOT/'.data/verified-sort-evidence.json'
+  fixture=ROOT/'.data/verified-sort-repair-evidence.json'
+  if not fixture.exists(): fixture=ROOT/'.data/verified-sort-evidence.json'
   if not fixture.exists(): fixture=ROOT/'.data/real-sort-evidence.json'
   if not fixture.exists(): raise SystemExit('Run tests/verify_sort_real.py first to create a verified real evidence fixture')
   records=json.loads(fixture.read_text())

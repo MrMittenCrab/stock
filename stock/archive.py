@@ -642,14 +642,35 @@ def import_document(store,ticker,source,*,root=None,interactive=None,_source=Non
     return next(d for d in documents(store,ticker) if d['id']==doc['id'])
 
 
+def conversion_lock(original):
+    directory=ROOT/'.data'/'conversion-locks'
+    directory.mkdir(parents=True,exist_ok=True)
+    key=hashlib.sha256(str(Path(original).resolve()).encode()).hexdigest()
+    return directory/(key+'.lock')
+
+
 def _convert_registered(store,doc):
+    """One converter per original, including callers using different DB copies."""
+    import fcntl
+    original=Path(doc['original'])
+    with conversion_lock(original).open('a') as lock:
+        try:
+            fcntl.flock(lock,fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return 'running'  # Another Archive conversion owns this PDF.
+        fresh=next(d for d in documents(store,doc['ticker']) if d['id']==doc['id'])
+        if fresh['conversion_status']=='converted': return
+        return _convert_registered_locked(store,fresh)
+
+
+def _convert_registered_locked(store,doc):
     original=Path(doc['original']);destination=original.with_suffix('.md')
     created=[]
     try:
         if not original.is_file() or filehash(original)!=doc['source_sha256']:
             raise ValueError('Archived original is missing or changed; restore it before retrying conversion')
-        # Expensive conversion stays outside a database transaction. Concurrent
-        # conversions stage independently; only one may publish the result.
+        # The PDF lock covers conversion and publication; expensive work stays
+        # outside the database transaction. Existing assets are never overwritten.
         with tempfile.TemporaryDirectory(prefix='.stock-convert-',dir=original.parent) as folder:
             staged=Path(folder)/destination.name
             converter=convert_pdf(original,staged)

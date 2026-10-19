@@ -1,4 +1,5 @@
 import io
+from pathlib import Path
 import subprocess
 import sys
 
@@ -167,3 +168,20 @@ def test_interrupted_import_preserves_archived_original(tmp_path,monkeypatch):
     assert doc['conversion_status']=='failed'
     assert archive.filehash(doc['original'])==archive.filehash(source)==doc['source_sha256']
     assert doc['markdown'] is None
+
+
+def test_conversion_lock_skips_concurrent_duplicate(tmp_path,monkeypatch):
+    import fcntl
+    from stock.core import Store
+    source=tmp_path/'source.pdf';source.write_bytes(b'original')
+    store=Store(tmp_path/'db')
+    monkeypatch.setattr(archive,'read_document',lambda p:('Annual Report 2025',{}))
+    monkeypatch.setattr(archive,'convert_pdf',lambda *a:(_ for _ in ()).throw(ValueError('unavailable')))
+    doc=archive.import_document(store,'CRWV.US',source,root=tmp_path/'Research',interactive=False)
+    convert=__import__('unittest.mock',fromlist=['Mock']).Mock()
+    monkeypatch.setattr(archive,'convert_pdf',convert)
+    with archive.conversion_lock(doc['original']).open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX | fcntl.LOCK_NB)
+        archive._convert_registered(store,doc)
+    convert.assert_not_called()
+    assert archive.documents(store,'CRWV.US')[0]['conversion_status']=='failed'

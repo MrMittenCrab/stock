@@ -13,6 +13,10 @@ CATEGORIES = ('Management', 'Investor', 'Media')
 def schema(store):
     archive_schema(store)
     store.db.executescript('''
+    CREATE TABLE IF NOT EXISTS source_sort_sections (
+      document_id INTEGER NOT NULL REFERENCES archive_documents(id),
+      markdown_hash TEXT NOT NULL, section_index INTEGER NOT NULL,
+      payload TEXT NOT NULL, PRIMARY KEY(document_id,markdown_hash,section_index));
     CREATE TABLE IF NOT EXISTS source_passages (
       id TEXT PRIMARY KEY, document_id INTEGER NOT NULL REFERENCES archive_documents(id),
       text TEXT NOT NULL, category TEXT NOT NULL, speaker TEXT,
@@ -49,8 +53,9 @@ def publish(store, doc, passages, source_hash):
             store.db.executemany('INSERT INTO source_topics VALUES(?,?)',
                 [(ident,t) for t in p['topics']])
         now=time.time()
-        store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,1)',(doc['id'],now,source_hash))
+        store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,2)',(doc['id'],now,source_hash))
         store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
+        store.db.execute('DELETE FROM source_sort_sections WHERE document_id=?',(doc['id'],))
     return True
 
 

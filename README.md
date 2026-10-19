@@ -279,8 +279,10 @@ stock sources CRWV.US
 stock sort CRWV.US --reset DOCUMENT
 ```
 
-Sort extracts original commentary from archived Markdown, falling back to local
-PDF text when Markdown is unavailable (including failed conversions). It uses the
+Sort extracts original commentary from archived Markdown. For PDF-only documents,
+it first invokes Archive’s converter with the existing elapsed-time/liveness display
+and no conversion deadline. A per-PDF lock prevents duplicate conversion. Successful
+conversions are reused; failed or busy conversions leave the document unsorted. It uses the
 installed, authenticated **Cursor Agent CLI** automatically. `agent --help` and
 `agent status` must support read-only `--mode ask` and `--output-format json`.
 Stock checks those capabilities/authentication before extraction. Cursor returns a
@@ -306,7 +308,10 @@ accepts an Archive document ID or an unambiguous archived filename; it removes o
 that document's manual overrides and restores its exact frozen topic memberships.
 It never calls Cursor or changes passages or sources. There is no redo/resort flag.
 A failed/interrupted document leaves previously saved documents intact; a later Sort
-retries that unsorted document. Per-section progress is printed without a TUI.
+resumes that unsorted document from Markdown-hash-bound section checkpoints.
+Candidates are validated independently and receive one targeted retry on failure.
+Accepted passages survive interruption and are not extracted again. Rejected
+candidates keep the document incomplete; compact document summaries report errors.
 
 The eight fixed topics are **Market, Product, Operations, Financials, Capital,
 Organization, Macro, Valuation**. A passage can have several topics or none;
@@ -317,16 +322,14 @@ excerpt. Extraction and category selection still require judgment from the LLM;
 Stock rejects invented text/names and unsupported topic values, but cannot prove
 semantic interpretation mechanically.
 
-Original text is checked before publication. For converted Markdown, Stock also
-requires a unique match in the original PDF text (allowing whitespace, typographic quotes, and Markdown
-presentation differences), and stores the **PDF's original text**, physical page
-and character offsets. Quotations spanning adjacent pages retain separately
-verified page segments; repeated page headers are omitted with explicit provenance.
-Line-end hyphenation is matched while retaining the original PDF spelling. It fails closed if conversion changed wording or made the
-quotation unverifiable; such text is never silently saved as a quotation. PDF text
-extraction may differ from visual layout and is labeled accordingly in source
-provenance. Image-only PDFs need OCR before they can be sorted. Imported documents,
-LLM output, and verification artifacts remain excluded from Git.
+Archived Markdown is the authoritative quotation source. Stock stores the exact
+Markdown span, character offsets and SHA-256; it can recover whitespace, escaped
+characters, emphasis and typographic quote differences without changing wording
+or numbers. It requires no PDF punctuation, hyphenation or page-boundary match.
+Verification is labeled **Exact archived Markdown text**. Original PDFs remain
+linked for reference; unknown page references stay unknown. Unidentified speakers
+use null, including company-authored narrative without a named individual.
+Imported documents, LLM output, and verification artifacts remain excluded from Git.
 
 Publication dates come only from archived provenance explicitly establishing public
 availability with an evidence URL. Cover dates, call dates, bare user-supplied dates,
@@ -346,8 +349,9 @@ Sources controls:
 - F opens/closes an inline file selector containing All and archived filenames.
   ↑/↓ selects; →/Enter applies the filter within the current view.
 - O opens the original document in the system viewer and displays its citation,
-  physical page/section/character reference, speaker, verification basis, and date
-  provenance inline. Page navigation in the external viewer is viewer-dependent.
+  physical page when available, Markdown section/character reference, speaker,
+  verification basis, and date provenance inline. Page navigation in the external
+  viewer is viewer-dependent.
 
 Counts use effective memberships after manual changes and may overlap.
 **Unclassified** filters passages with no effective topic; it is not a ninth topic.
@@ -358,9 +362,9 @@ transparent terminal profiles without fixed RGB fills.
 
 Run focused checks with `.venv/bin/pytest -q`. An opt-in real archive check,
 `PYTHONPATH=. .venv/bin/python tests/verify_sort_real.py`, verifies the existing
-CoreWeave IPO, reports, presentations and transcripts and extracts one transcript
-section with authenticated Cursor. It publishes only to a disposable database copy,
-and caches the real response in `.data` to avoid repeat LLM calls.
+CoreWeave transcript, quarterly and annual sections with fresh authenticated Cursor
+extractions, then converts and sorts a copied real presentation PDF. It mutates
+only disposable database/file copies and saves verification responses in `.data`.
 
 For real terminal output verification,
 `tests/verify_native_terminal.py` captures all three apps through a PTY using light
