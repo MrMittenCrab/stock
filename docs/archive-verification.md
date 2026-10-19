@@ -65,3 +65,35 @@ PDF reading/conversion continues to reuse installed PyMuPDF and pdfmd/Marker or
 pymupdf4llm. No converter or model was installed; existing converted PDFs were not
 reconverted. Scans without extractable text may require clarification. Sort and
 Sources remain outside this change.
+
+## Conversion recovery — 2026-10-20
+
+- Removed elapsed-time deadlines from Marker and pymupdf4llm conversion calls.
+  A one-second `communicate` polling interval updates liveness; it is not a
+  conversion deadline. Explicit bounded probe callers retain their timeout.
+- Verified the installed `pdfmd` wrapper accepts `PDF --zip-output ZIP` and invokes
+  the existing `marker_single PDF --output_dir DIR --output_format markdown`.
+  The wrapper waits without a deadline. Marker remains the first converter;
+  failures fall back to installed pymupdf4llm, then labeled PyMuPDF text extraction.
+  Marker images and table Markdown retain the existing asset handling.
+- The timer begins after process creation, resets on each invocation, and writes
+  one terminal row with carriage-return/erase-line updates. Captured converter
+  logs do not scroll. No percentages or claims of measured progress are shown.
+  Five minutes without captured output adds an activity-unmeasured notice; it
+  never triggers termination. Noninteractive output has start/final events only.
+- Simulated elapsed time beyond 600 seconds, converter/document timer resets,
+  failure/fallback, text-only labeling, conversion-only retry and original
+  preservation are covered by `tests/test_archive_conversion.py`. Real child and
+  grandchild cancellation is tested as well. PTY inspection showed `00:00`,
+  `00:01`, `00:02` replacing one row, then one completion newline; interruption
+  similarly restored the row. The cursor is never hidden or moved vertically.
+- Focused Archive tests: **108 passed**. Core, UI, data and US tests: **34 passed**.
+  `git diff --check` passed. No dependencies were added.
+- Read the actual CoreWeave prospectus cover and corrected local document **4**
+  from `Table of Contents` to `CoreWeave, Inc. IPO Prospectus` using the existing
+  transactional metadata editor. The original is now
+  `undated--filing--CoreWeave-Inc.-IPO-Prospectus.pdf`. Document/file identities and
+  SHA-256 `10f8088803d57c58c62e7ee885de27ad13717ead30b6859c8eeec487b4550d53`
+  remain unchanged. Publication date remains unknown. SQLite was backed up under
+  `.data/` before repair. Other archived originals and successful conversions were
+  preserved. Retried only this document's missing conversion.

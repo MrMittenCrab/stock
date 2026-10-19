@@ -121,14 +121,18 @@ def parse_date(value):
 DATE_PATTERN=r'\b\d{1,2}-[A-Za-z]+-\d{4}\b|\b\d{4}[-/]\d{1,2}[-/]\d{1,2}\b|\b\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4}\b|\b[A-Za-z]+\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}\b|\d{4}年\d{1,2}月\d{1,2}日'
 
 
+def generic_title(value):
+    return bool(re.fullmatch(r"(?:table of contents|contents|untitled|index|document)", str(value).strip(), re.I))
+
+
 def identify(text, metadata):
     lines=[re.sub(r'^\s*#+\s*','',line).strip() for line in text.splitlines() if line.strip()]
     lines=[re.sub(r'<[^>]+>|[*`]', '', line).strip() for line in lines]
     raw_title=str(metadata.get('title') or '').strip()
     accession_match=re.search(r'\b\d{10}-\d{2}-\d{6}\b',json.dumps(metadata)+'\n'+text[:4000])
     accession=accession_match[0] if accession_match else None
-    useful_title=raw_title if raw_title and not re.fullmatch(r'\d{10}-\d{2}-\d{6}',raw_title) else None
-    title=useful_title or (lines[0] if lines else 'Untitled')
+    useful_title=raw_title if raw_title and not generic_title(raw_title) and not re.fullmatch(r'\d{10}-\d{2}-\d{6}',raw_title) else None
+    title=useful_title or next((line for line in lines if not generic_title(line)), 'Untitled')
     # Restrict type recognition to front matter/headings; a report's appendix or
     # references to prior reports must not determine its primary type.
     head='\n'.join(([title] if useful_title else [])+lines[:60])
@@ -145,7 +149,7 @@ def identify(text, metadata):
            ('Quarterly',r'\bquarterly (?:report|results)\b|\bform\s+10-q\b|季度報告|季度报告|季度業績|季度业绩'),
            ('Presentation',r'\b(?:investor|results|earnings|corporate) presentation\b'),
            ('Earnings',r'\bearnings (?:release|results|announcement)\b'),
-           ('Filing',r'\bform\s+(?:8-k|6-k|20-f|40-f|s-1|f-1|13f)\b|\bregulatory filing\b'),
+           ('Filing',r'\bform\s+(?:8-k|6-k|20-f|40-f|s-1|f-1|13f|424b[1-8])\b|\bregulatory filing\b|\bprospectus\b'),
            ('Release',r'\b(?:press|news) release\b'),('Article',r'\b(?:article|opinion|byline)\s*:')]
     matches=[(match.start(),index,kind) for index,(kind,pattern) in enumerate(rules)
              if (match:=re.search(pattern,head,re.I|re.S))]
@@ -212,7 +216,7 @@ def identify(text, metadata):
     if not publisher and lines and re.fullmatch(r'.+\b(?:Limited|Ltd\.?|Inc\.?|Corporation|Corp\.?)',lines[0],re.I):
         publisher=lines[0]
     # A primary form heading is distinct from mentions inside other documents.
-    form=re.search(r'^FORM\s+(10-[QK](?:/A)?|20-F|40-F|8-K|6-K)\b',head,re.I|re.M) if kind in ('Annual','Quarterly','Filing') else None
+    form=re.search(r'^FORM\s+(10-[QK](?:/A)?|20-F|40-F|8-K|6-K|[SF]-1(?:/A)?|424B[1-8])\b',head,re.I|re.M) if kind in ('Annual','Quarterly','Filing') else None
     # Prefer a report heading to a company name as its exact title.
     if not useful_title:
         if form: title='Form '+form[1].upper()
@@ -221,6 +225,16 @@ def identify(text, metadata):
     registrant=re.search(r'([^\n]+)\n?\s*\(Exact name of registrant',head,re.I)
     registrant=registrant[1].strip() if registrant else None
     if not publisher and registrant: publisher=registrant
+    ipo=bool(re.search(r'\binitial public offering\b',text[:40000],re.I) and re.search(r'\bprospectus\b',head,re.I))
+    issuer=registrant or next((line for line in lines[:80] if re.fullmatch(r'.+\b(?:Inc\.?|Corporation|Corp\.?|Limited|Ltd\.?)',line,re.I)),None)
+    if ipo:
+        kind='Filing'
+        title=((issuer+' ') if issuer else '')+'IPO Prospectus'
+        useful_title=None
+    elif form and (generic_title(raw_title) or not useful_title) and form[1].upper().startswith(('S-','F-','424B')):
+        title=((issuer+' ') if issuer else '')+'Form '+form[1].upper()
+    if not publisher and issuer and kind=='Filing': publisher=issuer
+
     if not publisher and re.search(r'FactSet CallStreet,?\s+LLC',text[:12000],re.I):
         publisher='FactSet CallStreet, LLC'
     structured={}
@@ -299,18 +313,56 @@ def basename(info):
     return f"{info['date'] or 'undated'}--{info['type'].lower()}--{sanitize(info['period'] or info['title'])}"
 
 
-def run_converter(command, *, timeout):
-    """Keep converter descendants from surviving cancellation or a timeout."""
+def run_converter(command, *, converter='Converter', output=None, timeout=None):
+    """Observe liveness, never infer progress or impose a conversion deadline.
+
+    An explicit timeout is retained for callers running bounded probes only.
+    communicate drains both pipes; converter logs never scroll the terminal.
+    """
+    output=output or sys.stderr
+    interactive=output.isatty()
     process=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,text=True,start_new_session=True)
+                             stderr=subprocess.PIPE,text=True,errors='replace',start_new_session=True)
+    started=time.monotonic()
+    last_activity=started
+    observed=0
+    status='Failed'
+
+    def show(state):
+        elapsed=max(0,int(time.monotonic()-started))
+        line=f'Converting · {converter} · {elapsed//60:02d}:{elapsed%60:02d} · {state}'
+        if interactive:
+            width=shutil.get_terminal_size().columns
+            output.write('\r\x1b[2K'+line[:max(1,width-1)])
+        else:
+            output.write(line+'\n')
+        output.flush()
+
     try:
-        stdout,stderr=process.communicate(timeout=timeout)
-        return subprocess.CompletedProcess(command,process.returncode,stdout,stderr)
-    except BaseException:
+        show('Running')
+        while True:
+            try:
+                remaining=None if timeout is None else max(0,timeout-(time.monotonic()-started))
+                stdout,stderr=process.communicate(timeout=1 if remaining is None else min(1,remaining))
+                status='Completed' if process.returncode==0 else f'Failed (exit {process.returncode})'
+                return subprocess.CompletedProcess(command,process.returncode,stdout,stderr)
+            except subprocess.TimeoutExpired as exc:
+                now=time.monotonic()
+                size=len(exc.output or b'')+len(exc.stderr or b'')
+                if size!=observed: last_activity=now;observed=size
+                if timeout is not None and now-started>=timeout: raise
+                if interactive:
+                    show('Running · no output; activity unmeasured' if now-last_activity>=300 else 'Running')
+    except BaseException as exc:
+        status='Interrupted' if isinstance(exc,KeyboardInterrupt) else 'Failed'
         try: os.killpg(process.pid,signal.SIGKILL)
         except ProcessLookupError: pass
         process.communicate()
         raise
+    finally:
+        show(status)
+        if interactive:
+            output.write('\n');output.flush()
 
 
 def convert_pdf(source, destination):
@@ -321,7 +373,7 @@ def convert_pdf(source, destination):
         with tempfile.TemporaryDirectory(prefix='stock-pdfmd-') as folder:
             bundle=Path(folder)/'converted.zip'
             try:
-                run=run_converter([converter,str(source),'--zip-output',str(bundle)],timeout=600)
+                run=run_converter([converter,str(source),'--zip-output',str(bundle)],converter='Marker')
                 if run.returncode: raise ValueError('pdfmd failed; check the local Marker installation')
                 with zipfile.ZipFile(bundle) as zipped:
                     members=[m for m in zipped.infolist() if not m.is_dir()]
@@ -353,9 +405,18 @@ def convert_pdf(source, destination):
                 errors.append(str(exc))
     try:
         engine=pdf_python()
-        run=run_converter([engine,'-c','import pymupdf4llm,sys; print(pymupdf4llm.to_markdown(sys.argv[1],show_progress=False))',str(source)],timeout=300)
+        run=run_converter([engine,'-c','import pymupdf4llm,sys; print(pymupdf4llm.to_markdown(sys.argv[1],show_progress=False))',str(source)],converter='pymupdf4llm')
         if run.returncode==0 and run.stdout.strip():
             destination.write_text(run.stdout,encoding='utf-8');return 'pymupdf4llm'
+    except (ValueError,OSError,subprocess.SubprocessError) as exc:
+        errors.append(str(exc))
+    try:
+        run=run_converter([pdf_python(),'-c',
+            'import pymupdf,sys; d=pymupdf.open(sys.argv[1]); print("\\n\\n".join(p.get_text(sort=True) for p in d))',str(source)],converter='PyMuPDF text')
+        if run.returncode==0 and run.stdout.strip():
+            destination.write_text('> Text-only fallback: layout, images and financial table structure may be lost. Consult the archived PDF.\n\n'+run.stdout,encoding='utf-8')
+            return 'PyMuPDF text-only (limited fidelity)'
+        errors.append('PyMuPDF text extraction failed or produced no text')
     except (ValueError,OSError,subprocess.SubprocessError) as exc:
         errors.append(str(exc))
     raise ValueError('PDF conversion unavailable; configure pdfmd/Marker or local pymupdf4llm'+ (' ('+'; '.join(errors)+')' if errors else ''))
@@ -457,7 +518,7 @@ def source_info(info,context):
             # ISO publication timestamps are allowed; creation/modified times are never used.
             value=parse_date(value) or (parse_date(value[:10]) if re.match(r'^\d{4}-\d{2}-\d{2}T',value) else None)
         missing=not info[key] or (key=='title' and info['provenance'].get('title',{}).get('source')!='document metadata')
-        if value and missing:
+        if value and missing and not (key=='title' and generic_title(value)):
             info[key]=value
             evidence={'source':'source webpage','url':url,'value':value}
             info['provenance'][key]=evidence
@@ -478,7 +539,7 @@ def import_document(store,ticker,source,*,root=None,interactive=None,_source=Non
         keys=('type','period','date','title','publisher')
         complete=all(key in prior and (prior[key].get('source') in ('user-supplied','metadata JSON') or (existing['publication_date'] if key=='date' else existing[key])) for key in keys)
         doc=existing
-        if not complete:
+        if not complete and existing['conversion_status']!='failed':
             text,metadata=read_document(Path(existing['original']))
             info=identify(text,metadata)
             resolve_linked_source(info,metadata,Path(existing['original']))
