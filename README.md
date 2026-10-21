@@ -1,24 +1,90 @@
-# Stock
+# Stock — A Keyboard-First Market & Research Terminal
 
-Minimal keyboard-only US and Hong Kong securities terminal. Python 3.11+ and Textual;
-read-only market data through Longbridge CLI's supported JSON-RPC interface.
+**A Python terminal application for market data, historical price analysis, and source-traceable investment research across US and Hong Kong securities.**
 
-```sh
-cd ~/Documents/Developer/stock
+Stock brings a market terminal and a local research workflow into one keyboard-driven interface. It combines live read-only market data with historical charts and timestamped notes, then connects those observations to an archive of company filings, presentations, earnings calls, and research documents.
+
+It was built around a practical research problem: investment work is not just finding a ticker or reading a document. It also means navigating market data, preserving context, tracking where claims came from, and keeping a durable record of the evidence behind an investment view.
+
+## What it does
+
+- **US and Hong Kong market lookup.** Search securities by ticker or English/Chinese name, inspect instrument metadata, and retrieve daily and available intraday price history.
+- **Historical price exploration.** Navigate real OHLCV observations with time-based zoom and exchange-local dates. No synthetic prices are inserted for weekends, holidays, or missing bars.
+- **Timestamped research notes.** Attach notes to specific historical observations and keep them in a local SQLite database.
+- **Company research archive.** Import PDFs, Markdown, and text; organize them by canonical ticker; preserve source URLs, hashes, metadata, and conversion status.
+- **Evidence-aware metadata.** Keep publication, filing, document, event, and reporting-period dates distinct. Unknown fields remain unknown rather than being guessed from filenames.
+- **Source-linked commentary.** Extract and classify research passages by topic while retaining exact archived Markdown text, source anchors, and provenance. The optional Sort workflow uses the installed Cursor Agent CLI in read-only ask mode; it is not required for basic market-data use.
+- **Offline resilience.** Cache read-only responses, display stale-cache/offline status, and surface upstream errors when no cached history is available.
+- **Keyboard-first interface.** Designed for a monospace terminal, with no mouse interaction required.
+
+## Why it is technically interesting
+
+Stock sits at the intersection of market-data integration, terminal UI engineering, time-series navigation, local data modeling, document ingestion, metadata provenance, and validation of AI-assisted extraction.
+
+A few design choices are deliberate:
+
+- **Read-only by design:** Stock calls market-data/search methods only. It does not place orders or request trading permissions.
+- **Source traceability over false precision:** It records evidence and distinguishes date types instead of treating a PDF cover date, earnings-call date, or filing date as proof of publication.
+- **Deterministic storage:** SQLite is authoritative for local annotations, archived documents, and research metadata. JSON is an interchange format, not a second database.
+- **Conservative failure behavior:** Failed lookups and unverifiable claims remain unresolved; incomplete extraction is not silently marked complete.
+- **Explicit boundaries:** Market data depends on the connected Longbridge account and its entitlements; source extraction and classification still involve model judgment and are validated rather than treated as infallible.
+
+## Quick start
+
+**Requirements:** Python 3.11+, a terminal, and the official Longbridge CLI authenticated for read-only market-data access. Stock itself depends on Textual; test dependencies are optional.
+
+```bash
+git clone https://github.com/MrMittenCrab/stock.git
+cd stock
 python3 -m venv .venv
 .venv/bin/pip install -e '.[test]'
-# Use the installed launcher, or activate this project's environment:
-source .venv/bin/activate
-stock price 700.HK
-stock search Tencent
-stock search coreweave
-stock price CRWV.US
+
+# Authenticate with Longbridge CLI (follow its official setup instructions).
+longbridge auth login
+longbridge check --format json
+
+# Explore securities and prices.
+.venv/bin/stock search CoreWeave
+.venv/bin/stock price CRWV.US
+.venv/bin/stock search Tencent
+.venv/bin/stock price 700.HK
 ```
 
-The current machine also has `~/.local/bin/stock` symlinked to the project's
-`.venv/bin/stock`, so both commands work without activating the environment.
-For another installation, put that directory on PATH and create the same symlink
-only if no existing `stock` command occupies it.
+For the archive and research workflows, see the commands below and the detailed reference further down this page. Local market caches, annotations, and archived research are stored outside version control; they are not bundled with the repository.
+
+## Main workflows
+
+| Command | Purpose |
+|---|---|
+| `stock search TICKER_OR_NAME` | Search US/HK security catalogues |
+| `stock price TICKER` | Open the interactive historical price view |
+| `stock archive TICKER PATH` | Archive a local document under a security |
+| `stock archive TICKER URL` | Import a directly linked source document |
+| `stock sort TICKER` | Extract and classify source-grounded commentary |
+| `stock sources TICKER` | Browse archived research passages and provenance |
+
+## Verification
+
+Run the local test suite and smoke checks:
+
+```bash
+.venv/bin/python -m pytest -q
+.venv/bin/python tests/smoke.py
+```
+
+The test suite covers keyboard interactions, chart alignment and navigation, exchange-local time handling, annotation isolation, symbol normalization, cache/error behavior, and safeguards against trading methods. The live smoke test makes authenticated read-only requests and therefore requires a working Longbridge CLI session.
+
+## Data, credentials, and limitations
+
+- Stock reuses the official Longbridge CLI's authentication; it does not copy or store brokerage credentials.
+- Local SQLite state, research archives, virtual environments, and environment files are excluded from Git by the repository's ignore rules.
+- Market-data availability and historical depth depend on Longbridge's API, account permissions, and retention limits.
+- Cursor-assisted extraction requires the separately installed and authenticated Cursor Agent CLI. Model-assisted topic classification still involves judgment; Stock validates output structure and source text but cannot guarantee semantic correctness.
+- This is a research and monitoring tool, **not an order-entry system or investment recommendation service**.
+
+## Detailed technical reference
+
+The sections below document implementation behavior, navigation controls, market-data limits, archive metadata rules, and source-extraction validation in detail.
 
 ## Longbridge authentication
 
