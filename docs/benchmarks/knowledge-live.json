@@ -1,0 +1,15 @@
+{
+  "document": 13,
+  "scope": "Disposable SQLite backup, read-only archived Markdown; extraction only, no publication.",
+  "authenticated_requests": 1,
+  "result": "request_timeout_no_response",
+  "wall_seconds": 120.07790024997666,
+  "startup_auth_seconds": 2.5700974999926984,
+  "model_process_seconds": 117.50780274998397,
+  "prompt_characters": 43740,
+  "provider_inference_seconds": null,
+  "queue_seconds": null,
+  "actual_tokens": null,
+  "baseline_comparison": "Not completed: no response from first provider request. No timeout retry.",
+  "production_writes": false
+}

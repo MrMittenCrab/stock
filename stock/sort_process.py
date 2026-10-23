@@ -15,8 +15,8 @@ class DeferredCursor:
         self.factory=factory;self.cursor=None;self.record_metrics=None
 
     @property
-    def supports_distillation(self):
-        return getattr(self.factory,'supports_distillation',False) is True
+    def supports_insights(self):
+        return getattr(self.factory,'supports_insights',False) is True
 
     def extract(self,unit,context):
         from .sort_budget import CURRENT
@@ -44,9 +44,9 @@ class Status:
         if fields[0].isdigit():
             if self.document!=fields[0]:self.section=None
             self.document=fields[0]
-        match=re.search(r'(?:section |batch )(\d+/\d+)',message)
+        match=re.search(r'(?:section |batch | · )(\d+/\d+)',message)
         if match:self.section=match[1]
-        for needle,label in [('semantic review','Review'),('citation recovery','Citations'),('document distillation','Distill'),('selection','Reconstruct'),('preparation','Prepare'),('Semantic comparison','Group'),('Sorting','Prepare'),('validation','Verify')]:
+        for needle,label in [('semantic review','Verify'),('citation recovery','Citations'),('document distillation','Distill'),('selection','Reconstruct'),('preparation','Prepare'),('Semantic comparison','Group'),('Sorting','Prepare'),('validation','Verify')]:
             if needle in message:
                 self.stage=label;break
         self.reviewing=False
@@ -68,9 +68,24 @@ class Status:
             import pydoc, shutil, textwrap
             width=max(20,shutil.get_terminal_size().columns-1)
             wrapped='\n'.join(textwrap.fill(line,width=width,replace_whitespace=False) for line in message.split('\n'))
-            pydoc.ttypager('Space: next · Enter: line · b: back · q: return to approval\n'+wrapped)
+            from .sort_budget import operator_wait
+            with operator_wait():
+                pydoc.ttypager('Space: next · Enter: line · b: back · q: return to approval\n'+wrapped)
         else:
             print(message,flush=True)
+
+    def proposed_details(self,message):
+        self.details=message
+        self.log_event(dict(proposed=message))
+
+    def approval(self):
+        self.reviewing=True
+        from .sort_budget import operator_wait
+        with operator_wait():
+            while True:
+                answer=input('REPLACE · D Details · Enter Cancel: ')
+                if answer.lower()=='d':self.review_all(getattr(self,'details',''));continue
+                return answer=='REPLACE'
 
     def line(self,width=None):
         elapsed=int(time.monotonic()-self.started)

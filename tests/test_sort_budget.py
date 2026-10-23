@@ -83,16 +83,16 @@ def test_cancelled_review_keeps_selection_and_resumes_without_repeating(tmp_path
   supports_distillation=True
   def __new__(cls):return model
  monkeypatch.setattr('stock.sort.Cursor',Factory)
- with Budget(requests=2):
+ with Budget(requests=1):
   with pytest.raises(BudgetExceeded,match='Request limit'):sort_stock(store,'CRWV.US',lambda _:None)
  assert not sources.completed(store,doc['id']) and not sources.passages(store,'CRWV.US')
- assert model.calls==['distill','reconstruct']
- assert store.db.execute('SELECT count(*) FROM source_work_v3').fetchone()[0]>0
+ assert model.calls==['reconstruct']
+ assert store.db.execute('SELECT count(*) FROM knowledge_artifacts').fetchone()[0]>0
  with Budget():assert sort_stock(store,'CRWV.US',lambda _:None)
- assert model.calls==['distill','reconstruct','review'] and insights.current(store,'CRWV.US')
+ assert model.calls==['reconstruct','review'] and insights.current(store,'CRWV.US')
  count=store.db.execute('SELECT count(*) FROM source_insight_revisions').fetchone()[0]
  with Budget():assert sort_stock(store,'CRWV.US',lambda _:None)
- assert model.calls==['distill','reconstruct','review']
+ assert model.calls==['reconstruct','review']
  assert store.db.execute('SELECT count(*) FROM source_insight_revisions').fetchone()[0]==count
 
 

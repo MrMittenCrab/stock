@@ -70,7 +70,7 @@ def test_independent_review_gate_and_checkpoint_tampering():
  accepted[0]['text']='Revenue was $100 million.'
  with pytest.raises(IntegrityError):validate_publication(accepted[0])
 
-@pytest.mark.parametrize('change',[dict(fidelity='unsupported',reason='Invented causality.'),dict(fidelity='unresolved',reason='Unknown unit.'),dict(readability='fragment'),dict(relevance='redundant')])
+@pytest.mark.parametrize('change',[dict(fidelity='unsupported',reason='Invented causality.'),dict(fidelity='unresolved',reason='Unknown unit.'),dict(readability='fragment'),dict(relevance='irrelevant')])
 def test_review_distinguishes_three_qualities(change):
  from stock.editorial import review
  text='Revenue: $10 million';cs=candidates(text,DOC,HASH)
@@ -86,7 +86,7 @@ def test_edited_quote_cannot_hide_paraphrase():
  assert resolve([statement(cs,'Revenue [...] $10 million.','edited_quotation')],cs,text,DOC,HASH)[0]
 
 def test_real_power_mapping_needs_independent_layout(monkeypatch):
- from stock.source_layout import attach,context
+ from legacy_layout import attach,context
  layout=json.loads((FIX/'document-13-power-layout.json').read_text())
  cs=candidates(TEXT,DOC,HASH,include_context=True)
  group=[c for c in cs if c['start'] in (4981,5012)]
@@ -96,7 +96,7 @@ def test_real_power_mapping_needs_independent_layout(monkeypatch):
  from stock.editorial import validate_publication
  from stock.evidence import IntegrityError
  with pytest.raises(IntegrityError):validate_publication(pending[0])
- monkeypatch.setattr('stock.source_layout.pdf_layout',lambda p:[layout])
+ monkeypatch.setattr('legacy_layout.pdf_layout',lambda p:[layout])
  pages=attach(cs,DOC,lambda _:None)
  assert context(group,pages)==[layout]
  by_text={b['text']:b['bbox'] for b in layout['blocks']}
@@ -176,7 +176,7 @@ def test_editorial_override_transfer_and_rollback(staged_editorial):
  ps,_=extract(s,d,m,lambda _:None);sources.publish(s,d,ps,d['source_sha256'])
  old=sources.passages(s,'CRWV.US')[0];sources.set_topic(s,old['id'],'Capital',True)
  before=s.db.execute('select * from source_passages').fetchall()
- with s.db:s.db.execute('delete from source_work_v3')
+ with s.db:s.db.execute('delete from knowledge_artifacts')
  m.wording='In 2025, CoreWeave added 11 data centers.'
  assert not rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,lambda:False)
  assert s.db.execute('select * from source_passages').fetchall()==before
@@ -200,7 +200,7 @@ def test_protocol_review_retries_are_bounded():
  ps,_=resolve([statement(cs,'Revenue was $10 million.')],cs,text,DOC,HASH)
  model=Mock();model.extract.return_value=[]
  with pytest.raises(ProtocolError):review(ps,model,'')
- assert model.extract.call_count==3
+ assert model.extract.call_count==1
 
 async def test_sources_inline_editorial_inspection(staged_editorial):
  from stock.evidence import extract
@@ -232,7 +232,7 @@ def test_original_identity_invalidates_checkpoint(staged_editorial,tmp_path):
  ps,_=extract(s,changed,m,lambda _:None)
  assert m.calls==['selection','review','selection','review']
  assert all(r['original']==str(replacement) for r in ps[0]['location']['references'])
- assert s.db.execute('select count(*) from source_work_v3').fetchone()[0]==2
+ assert s.db.execute('select count(*) from knowledge_propositions').fetchone()[0]==2
 
 def test_protocol_schema_is_distinct_from_evidence_failure():
  from stock.editorial import validate_selections
@@ -282,10 +282,10 @@ def test_table_headers_units_and_qualified_financial_statement():
 
 def test_replay_actual_live_cursor_selection_and_independent_review(monkeypatch):
  from stock.editorial import review,validate_publication
- from stock.source_layout import attach
+ from legacy_layout import attach
  fixture=json.loads((FIX/'document-13-editorial-live.json').read_text())
  layout=json.loads((FIX/'document-13-power-layout.json').read_text())
- monkeypatch.setattr('stock.source_layout.pdf_layout',lambda p:[layout])
+ monkeypatch.setattr('legacy_layout.pdf_layout',lambda p:[layout])
  cs=candidates(TEXT,DOC,HASH,include_context=True);attach(cs,DOC,lambda _:None)
  ps,errors=resolve(fixture['selections'],cs,TEXT,DOC,HASH)
  assert not errors and len(ps)==1

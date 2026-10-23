@@ -57,7 +57,7 @@ def main():
                     try:
                         if args.rebuild:
                             from .rebuild import rebuild
-                            ok=rebuild(store,args.ticker,args.rebuild,Cursor,status,lambda: input('Replace published evidence? Type REPLACE: ')== 'REPLACE')
+                            ok=rebuild(store,args.ticker,args.rebuild,Cursor,status,status.approval)
                         else:ok=sort_stock(store,args.ticker,status,review_only=args.review_only)
                     except BudgetExceeded as exc:
                         elapsed=int(time.monotonic()-status.started)
@@ -69,7 +69,7 @@ def main():
                     from .sources import passages
                     insight_count,source_count=status.preview_counts or (len(entries(store,args.ticker)),len(passages(store,args.ticker)))
                     elapsed=int(time.monotonic()-status.started)
-                    status.review(f"{args.ticker} · {'Preview' if args.review_only else 'Done' if ok else 'Paused'} · {insight_count} insights · {source_count} sources · {elapsed//60:02}:{elapsed%60:02} · Log · {status.log_path}")
+                    status.review(f"{args.ticker} · {'Preview' if args.review_only else 'Done' if ok else 'Paused'} · {insight_count} insights · {source_count} sources · {elapsed//60:02}:{elapsed%60:02}")
                     return 0 if ok else 1
         if args.command=='sources':
             if not sys.stdin.isatty() or not sys.stdout.isatty():

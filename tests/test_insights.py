@@ -351,7 +351,7 @@ def test_complete_recorded_sort_pipeline_retains_all_coreweave_insights(tmp_path
  root=Path(__file__).parents[1]
  module=runpy.run_path(str(root/'scripts/benchmark_unified_sort.py'))
  report=module['worker'](root,tmp_path)
- assert (report['evidence'],report['insights'],report['exact_citations'])==(13,9,21)
+ assert (report['evidence'],report['insights'],report['exact_citations'])==(13,9,22)  # Includes the exact reporting-quarter header.
  assert not report['missing_fixture_claims'] and report['resume_requests']==0
  assert report['stages']['review']['requests']>0
  assert report['stages']['cross-document grouping']['requests']>0

@@ -44,6 +44,10 @@ def review_passages(passages):
 
 def rebuild(store,ticker,reference,cursor_factory,progress,approve):
     sources.schema(store)
+    store.db.execute('''CREATE TABLE IF NOT EXISTS source_publication_history(
+      id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, retired_at REAL NOT NULL,
+      payload TEXT NOT NULL)''')
+    store.db.commit()
     matches=[d for d in documents(store,ticker) if str(d['id'])==reference or any(Path(f['path']).name==reference for f in d['files'])]
     if len(matches)!=1: raise ValueError('DOCUMENT must be an unambiguous Archive ID or archived filename')
     doc=matches[0]
@@ -64,10 +68,16 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
         from .sort_process import DeferredCursor
         worker=DeferredCursor(cursor_factory)
         proposed,verify=extract(store,doc,worker,progress)
-        insight_proposal=None
-        if worker.supports_distillation:
-            from .insights import stage
-            insight_proposal=stage(store,ticker,worker,progress,new_document=(doc,proposed))
+        from .insights import stage
+        insight_proposal=stage(store,ticker,worker,progress,new_document=(doc,proposed))
+        from . import insights
+        active=insights.head(store,ticker)
+        splits=insights.suppressed_pairs(store,insights.load(store,active)) if active else set()
+        replacing={p['id'] for p in previous}
+        incoming={sources.passage_id(doc,p) for p in proposed}
+        if any((a in replacing and a not in incoming) or (b in replacing and b not in incoming) for a,b in splits):
+            progress('Replacement blocked · Manual ungrouping requires reconciliation')
+            return False
         keys={}
         for p in proposed: keys.setdefault(match_key(p),[]).append(p)
         overrides=store.db.execute('''SELECT o.passage_id,o.topic,o.present FROM source_overrides o
@@ -78,19 +88,17 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             if len(keys.get(key,[]))==1: transferred.append((key,topic,present))
             else: unmatched.append((ident,topic,present))
         review=getattr(progress,'review',progress)
-        review(f'Previous {len(previous)} · Proposed {len(proposed)} passages · {len(transferred)} manual topic overrides transferable')
-        review(f"Quality concerns: previous {sum(bool(quality_flags(p['text'])) for p in previous)}; proposed {sum(bool(quality_flags(p['text'])) for p in proposed)} (advisory)")
-        if insight_proposal:
-            from .insights import review_text
-            review(f"Before: {len(previous)} published passages · After: {len(proposed)} support passages")
-            getattr(progress,'review_all',review)(review_text(insight_proposal))
-        else:
-            getattr(progress,'review_all',review)(review_passages(proposed))
-        for ident,topic,present in unmatched: review(f'Unmatched manual correction: {ident} · {topic}={bool(present)}')
+        review(f"{doc['id']} · Replace · {len(previous)} → {len(proposed)} sources · {len(transferred)} corrections")
+        from .insights import review_text
+        details=review_text(insight_proposal)
+        if unmatched:details+='\nUnmatched corrections: '+json.dumps(unmatched)
+        getattr(progress,'proposed_details',getattr(progress,'review_all',review))(details)
         if unmatched:
             progress('Replacement blocked: unmatched manual corrections require explicit reconciliation. Original evidence retained.')
             return False
-        if not approve(): progress('Rebuild rejected; original evidence retained');return False
+        from .sort_budget import operator_wait
+        with operator_wait():approved=approve()
+        if not approved: progress('Rebuild rejected; original evidence retained');return False
         verify()
         check()
         from .editorial import validate_publication
@@ -104,12 +112,17 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             if published_snapshot()!=snapshot: raise IntegrityError('Published evidence changed during rebuild')
             actual_overrides=store.db.execute('SELECT o.passage_id,o.topic,o.present FROM source_overrides o JOIN source_passages p ON p.id=o.passage_id WHERE p.document_id=?',(doc['id'],)).fetchall()
             if sorted(actual_overrides)!=sorted(overrides): raise IntegrityError('Manual corrections changed during rebuild')
+            import time
+            retired=dict(passages=[list(r) for r in snapshot],
+                topics=[list(r) for r in store.db.execute('SELECT t.* FROM source_topics t JOIN source_passages p ON p.id=t.passage_id WHERE p.document_id=?',(doc['id'],))],
+                overrides=[list(r) for r in overrides],
+                sort=[list(r) for r in store.db.execute('SELECT * FROM source_sorts WHERE document_id=?',(doc['id'],))])
+            store.db.execute('INSERT INTO source_publication_history(document_id,retired_at,payload) VALUES(?,?,?)',(doc['id'],time.time(),json.dumps(retired)))
             for table in ('source_overrides','source_topics'):
                 store.db.execute(f'DELETE FROM {table} WHERE passage_id IN (SELECT id FROM source_passages WHERE document_id=?)',(doc['id'],))
             store.db.execute('DELETE FROM source_passages WHERE document_id=?',(doc['id'],))
             store.db.execute('DELETE FROM source_sorts WHERE document_id=?',(doc['id'],))
-            # publish uses its own context; use a savepoint-compatible insertion here.
-            import time
+            # Keep replacement and activation in the same checked transaction.
             ids={}
             for p in proposed:
                 anchor=json.dumps(p['location'],sort_keys=True)
@@ -118,7 +131,7 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
                 store.db.executemany('INSERT INTO source_topics VALUES(?,?)',[(ident,t) for t in p['topics']])
             store.db.executemany('INSERT INTO source_overrides VALUES(?,?,?)',[(ids[k],t,v) for k,t,v in transferred])
             now=time.time()
-            store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,4)',(doc['id'],now,doc['source_sha256']))
+            store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,5)',(doc['id'],now,doc['source_sha256']))
             store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
             if insight_proposal:
                 store.db.execute('INSERT INTO source_insight_heads VALUES(?,?) ON CONFLICT(ticker) DO UPDATE SET revision_id=excluded.revision_id',(ticker,insight_proposal['id']))

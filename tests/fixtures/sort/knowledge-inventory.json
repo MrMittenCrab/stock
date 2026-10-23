@@ -1,0 +1,221 @@
+{
+  "provenance": "Hand-authored expected information, not live model judgments. Source hash and exact original offsets retained; representative inventory, not exhaustive document recall.",
+  "document": {
+    "id": 13,
+    "type": "Presentation",
+    "title": "Q4 2025 earnings presentation",
+    "original": "2026-02-26--presentation--Q4-2025.pdf",
+    "source_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+    "metadata_provenance": null
+  },
+  "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+  "claims": [
+    {
+      "key": "fy-revenue",
+      "text": "CoreWeave reported FY2025 revenue of $5.1 billion, up 168% year over year.",
+      "topic": "Financials",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:12164:12174",
+          "start": 12164,
+          "end": 12174,
+          "text": "**\\$5.1B**"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:12176:12191",
+          "start": 12176,
+          "end": 12191,
+          "text": "Up **168%** YoY"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:12214:12238",
+          "start": 12214,
+          "end": 12238,
+          "text": "### **FY'25 Highlights**"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:12240:12279",
+          "start": 12240,
+          "end": 12279,
+          "text": "**Revenue Revenue Backlog<sup>1</sup>**"
+        }
+      ],
+      "layout": true
+    },
+    {
+      "key": "fy-ebitda",
+      "text": "CoreWeave reported FY2025 adjusted EBITDA of $3.1 billion and an adjusted EBITDA margin of 60%, both non-GAAP measures.",
+      "topic": "Financials",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:12032:12134",
+          "start": 12032,
+          "end": 12134,
+          "text": "**13%** Margin **Adjusted EBITDA<sup>3</sup> Adjusted Operating Income<sup>3</sup> Adjusted Net Loss**"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:12136:12162",
+          "start": 12136,
+          "end": 12162,
+          "text": "**\\$3.1B \\$666M \\$(606)M**"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:12214:12238",
+          "start": 12214,
+          "end": 12238,
+          "text": "### **FY'25 Highlights**"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:12346:12360",
+          "start": 12346,
+          "end": 12360,
+          "text": "**60%** Margin"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:12362:12765",
+          "start": 12362,
+          "end": 12765,
+          "text": "<sup>2.</sup> Capital expenditures is additions to property and equipment plus assets acquired under finance leases, less changes to construction in progress 3. Adjusted EBITDA, Adjusted EBITDA Margin, Adjusted Operating Income, Adjusted Operating Income Margin, Adjusted Net Loss and Adjusted Net Loss Margin are non-GAAP financial measures. Please see the reconciliation from GAAP to non-GAAP measures"
+        }
+      ],
+      "layout": true
+    },
+    {
+      "key": "q4-ebitda",
+      "text": "CoreWeave reported Q4 2025 adjusted EBITDA of $898 million and an adjusted EBITDA margin of 57%, both non-GAAP measures.",
+      "topic": "Financials",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:19909:20637",
+          "start": 19909,
+          "end": 20637,
+          "text": "|                                  |         | Three Months Ended December 31, |\n|----------------------------------|---------|---------------------------------|\n|                                  | 2025    | 2024                            |\n| Adjusted EBITDA                  | \\$898   | \\$486                           |\n| Adjusted EBITDA margin           | 57 %    | 65 %                            |\n| Adjusted operating income        | \\$88    | \\$121                           |\n| Adjusted operating income margin | 6 %     | 16 %                            |\n| Adjusted net loss                | \\$(284) | \\$(36)                          |\n| Adjusted net loss margin         | (18) %  | (5) %                           |"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:20672:20943",
+          "start": 20672,
+          "end": 20943,
+          "text": "1. Adjusted EBITDA, Adjusted EBITDA Margin, Adjusted Operating Income, Adjusted Operating Income Margin, Adjusted Net Loss and Adjusted Net Loss Margin are non-GAAP financial measures. Please see the reconciliation from GAAP to non-GAAP measures contained in the Appendix"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:21043:21078",
+          "start": 21043,
+          "end": 21078,
+          "text": "*(in millions, except percentages)*"
+        }
+      ]
+    },
+    {
+      "key": "active-centers",
+      "text": "CoreWeave reported 43 active data centers as of December 31, 2025.",
+      "topic": "Operations",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5333:5339",
+          "start": 5333,
+          "end": 5339,
+          "text": "**43**"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5341:5360",
+          "start": 5341,
+          "end": 5360,
+          "text": "Active Data Centers"
+        }
+      ]
+    },
+    {
+      "key": "backlog",
+      "text": "As of December 31, 2025, CoreWeave reported revenue backlog of $66.8 billion, including remaining performance obligations and other estimated future revenue under committed customer contracts, subject to delivery and service availability requirements.",
+      "topic": "Financials",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:16787:17602",
+          "start": 16787,
+          "end": 17602,
+          "text": "|                                                                                                       |        | As of December 31, |\n|-------------------------------------------------------------------------------------------------------|--------|--------------------|\n|                                                                                                       | 2025   | 2024               |\n| Remaining performance obligations                                                                     | \\$60.7 | \\$15.1             |\n| Other amounts of estimated future revenue to be recognized from existing committed customer contracts | \\$6.1  | \\$0.0              |\n| Revenue backlog 1                                                                                     | \\$66.8 | \\$15.1             |"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:17604:17619",
+          "start": 17604,
+          "end": 17619,
+          "text": "*(in billions)*"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:17646:17929",
+          "start": 17646,
+          "end": 17929,
+          "text": "<sup>1.</sup> Revenue backlog includes remaining performance obligations, plus other amounts we estimate will be recognized as revenue in future periods under committed customer contracts, in each case, subject to the satisfaction of delivery and availability of service requirements"
+        }
+      ]
+    },
+    {
+      "key": "q4-capex",
+      "text": "CoreWeave reported Q4 2025 capital expenditures of $8.2 billion, defined as additions to property and equipment including assets acquired under finance leases, less changes in construction in progress.",
+      "topic": "Capital",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:16579:16673",
+          "start": 16579,
+          "end": 16673,
+          "text": "**Capital Expenditures:** \\$8.2 billion driven by scaling our platform to meet customer demand"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:17931:18722",
+          "start": 17931,
+          "end": 18722,
+          "text": "| (in millions)                                  | Three Months Ended December 31, |         |          | Year Ended December 31, |\n|------------------------------------------------|---------------------------------|---------|----------|-------------------------|\n|                                                | 2025                            | 2024    | 2025     | 2024                    |\n| Increase in total gross property and equipment | \\$10,707                        | \\$3,151 | \\$21,061 | \\$9,279                 |\n| Less: Change in construction in progress       | \\$2,466                         | \\$741   | \\$6,175  | \\$944                   |\n| Capital expenditures 1                         | \\$8,241                         | \\$2,410 | \\$14,886 | \\$8,335                 |"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:18783:18946",
+          "start": 18783,
+          "end": 18946,
+          "text": "<sup>1.</sup> Capital expenditures are additions to property and equipment including assets acquired under finance leases, less changes in construction in progress"
+        }
+      ]
+    }
+  ],
+  "product": {
+    "key": "platform-products",
+    "document": 12,
+    "text": "CoreWeave said SUNK and Mission Control orchestrate layers of its cloud stack, and that select customers were licensing SUNK as their default research cluster management platform across multiple clouds.",
+    "topic": "Product",
+    "source_sha256": "74071316400f0b13119eb37eec010b76f08021c245a9678babfca77e5e626817",
+    "original_references": [
+      {
+        "start": 7602,
+        "end": 8285,
+        "text": "This is already showing up across our platform. For example, approximately 80% of CoreWeave Cloud customers paying at least \\$1 million per year have adopted one or more of our storage products. Additionally, we are seeing strong cross-selling momentum with Weights & Biases, as we added hundreds of millions of CoreWeave Cloud TCV from Weights & Biases customers in the second half of the year. We have also accelerated the development of CoreWeave's proprietary cloud stack, reference architecture and related software solutions, including SUNK and Mission Control, which orchestrate every layer of our purpose-built cloud and increasingly define the CoreWeave customer experience."
+      },
+      {
+        "start": 8287,
+        "end": 8684,
+        "text": "In January, we announced NVIDIA intends to test and validate our platform, including our software and reference architectures, to work towards including those offerings within NVIDIA's reference architecture for cloud, enterprise and sovereign customers. Already, we are seeing select customers license SUNK as their default research cluster management platform across their multi-cloud footprint."
+      }
+    ]
+  },
+  "negative_cases": [
+    {
+      "text": "FY2025 adjusted EBITDA margin was 13%.",
+      "reason": "13% belongs to adjusted operating income; EBITDA margin is 60%."
+    },
+    {
+      "text": "Revenue backlog is guaranteed revenue.",
+      "reason": "Missing delivery and service availability conditions."
+    },
+    {
+      "text": "CoreWeave had 43 active data centers as of March 31, 2026.",
+      "reason": "Wrong reporting date."
+    },
+    {
+      "text": "Capital expenditures exclude assets acquired under finance leases.",
+      "reason": "Definition explicitly includes them."
+    }
+  ]
+}

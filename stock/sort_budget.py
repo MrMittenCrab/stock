@@ -50,3 +50,25 @@ class Budget:
 def check():
     budget=CURRENT.get()
     if budget:budget.check()
+
+
+from contextlib import contextmanager
+WAITING=ContextVar("sort_operator_waiting",default=False)
+
+@contextmanager
+def operator_wait():
+    """Exclude deliberate human review from every processing deadline."""
+    if WAITING.get():
+        yield
+        return
+    token=WAITING.set(True)
+    budget=CURRENT.get();started=time.monotonic()
+    try:yield
+    finally:
+        WAITING.reset(token)
+        if budget:
+            elapsed=time.monotonic()-started
+            budget.command_end+=elapsed
+            for state in budget.documents.values():state[0]+=elapsed
+            if budget.request_end is not None:budget.request_end+=elapsed
+            budget.request_deadlines={k:v+elapsed for k,v in budget.request_deadlines.items()}

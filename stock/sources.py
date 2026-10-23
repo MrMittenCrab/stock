@@ -12,6 +12,9 @@ CATEGORIES = ('Management', 'Investor', 'Media')
 
 def schema(store):
     archive_schema(store)
+    store.db.execute('''CREATE TABLE IF NOT EXISTS source_correction_events(
+      id INTEGER PRIMARY KEY, passage_id TEXT NOT NULL, topic TEXT NOT NULL,
+      previous INTEGER, present INTEGER, action TEXT NOT NULL, created_at REAL NOT NULL)''')
     # Avoid executescript's implicit COMMIT inside snapshot-checked transactions.
     if store.db.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name IN ('source_sort_sections','source_passages','source_topics','source_overrides','source_sorts')").fetchone()[0]==5:
         return
@@ -93,6 +96,9 @@ def reset(store,ticker,reference):
     doc=matches[0]
     if not completed(store,doc['id']): raise ValueError('Document has not been sorted')
     with store.db:
+        for ident,topic,present in store.db.execute('SELECT o.* FROM source_overrides o JOIN source_passages p ON p.id=o.passage_id WHERE p.document_id=?',(doc['id'],)).fetchall():
+            store.db.execute('INSERT INTO source_correction_events(passage_id,topic,previous,present,action,created_at) VALUES(?,?,?,?,?,?)',
+                (ident,topic,present,None,'reset',time.time()))
         store.db.execute('DELETE FROM source_overrides WHERE passage_id IN (SELECT id FROM source_passages WHERE document_id=?)',(doc['id'],))
     return doc
 
@@ -126,5 +132,8 @@ def set_topic(store,ident,topic,present):
     if not store.db.execute('SELECT 1 FROM source_passages WHERE id=?',(ident,)).fetchone():
         raise ValueError('Unknown passage')
     with store.db:
+        old=store.db.execute('SELECT present FROM source_overrides WHERE passage_id=? AND topic=?',(ident,topic)).fetchone()
+        store.db.execute('INSERT INTO source_correction_events(passage_id,topic,previous,present,action,created_at) VALUES(?,?,?,?,?,?)',
+            (ident,topic,old[0] if old else None,int(present),'topic',time.time()))
         store.db.execute('INSERT INTO source_overrides VALUES(?,?,?) ON CONFLICT(passage_id,topic) DO UPDATE SET present=excluded.present',
                          (ident,topic,int(present)))

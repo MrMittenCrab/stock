@@ -1,0 +1,123 @@
+{
+  "before": {
+    "by_document": {
+      "1": {
+        "requests": 5,
+        "prompt_characters": 54183
+      },
+      "4": {
+        "requests": 5,
+        "prompt_characters": 54893
+      },
+      "6": {
+        "requests": 5,
+        "prompt_characters": 57147
+      },
+      "12": {
+        "requests": 5,
+        "prompt_characters": 67348
+      },
+      "13": {
+        "requests": 8,
+        "prompt_characters": 102670
+      }
+    },
+    "stages": {
+      "distillation": {
+        "requests": 11,
+        "prompt_characters": 130965
+      },
+      "reconstruction": {
+        "requests": 5,
+        "prompt_characters": 103614
+      },
+      "review": {
+        "requests": 5,
+        "prompt_characters": 21980
+      },
+      "within-document grouping": {
+        "requests": 2,
+        "prompt_characters": 12164
+      },
+      "cross-document grouping": {
+        "requests": 5,
+        "prompt_characters": 67518
+      },
+      "citation recovery": {
+        "requests": 0,
+        "prompt_characters": 0
+      }
+    },
+    "requests": 28,
+    "prompt_characters": 336241,
+    "cold_local_seconds": 0.21455112495459616,
+    "resumed_local_seconds": 0.0023767920210957527,
+    "resume_requests": 0,
+    "evidence": 13,
+    "insights": 9,
+    "exact_citations": 21,
+    "missing_fixture_claims": [],
+    "live_latency": null,
+    "actual_tokens": null
+  },
+  "after": {
+    "by_document": {
+      "1": {
+        "requests": 3,
+        "prompt_characters": 34330
+      },
+      "4": {
+        "requests": 3,
+        "prompt_characters": 35119
+      },
+      "6": {
+        "requests": 3,
+        "prompt_characters": 35186
+      },
+      "12": {
+        "requests": 4,
+        "prompt_characters": 53303
+      },
+      "13": {
+        "requests": 5,
+        "prompt_characters": 83965
+      }
+    },
+    "stages": {
+      "understand": {
+        "requests": 5,
+        "prompt_characters": 131605
+      },
+      "review": {
+        "requests": 5,
+        "prompt_characters": 22819
+      },
+      "within-document grouping": {
+        "requests": 2,
+        "prompt_characters": 12404
+      },
+      "cross-document grouping": {
+        "requests": 6,
+        "prompt_characters": 75075
+      },
+      "citation recovery": {
+        "requests": 0,
+        "prompt_characters": 0
+      }
+    },
+    "requests": 18,
+    "prompt_characters": 241903,
+    "cold_local_seconds": 0.18850120902061462,
+    "resumed_local_seconds": 0.0027549590449780226,
+    "resume_requests": 0,
+    "evidence": 13,
+    "insights": 9,
+    "exact_citations": 22,
+    "missing_fixture_claims": [],
+    "live_latency": null,
+    "actual_tokens": null
+  },
+  "baseline": "a076578",
+  "provenance": "Hand-recorded fixture decisions replayed through actual prompt transport and publication gates. Local wall times exclude live model service. No production writes.",
+  "authenticated_requests": 0
+}

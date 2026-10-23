@@ -6,7 +6,8 @@ import pytest
 from stock.core import Store
 from stock.archive import import_document, documents
 from stock import sources
-from stock.sort import units, validate, public_date, legacy_sort_document as sort_document, sort_stock, Cursor, original_match
+from stock.sort import units, validate, public_date, sort_stock, Cursor, original_match
+from legacy_sort import legacy_sort_document as sort_document
 from stock.sources_ui import SourcesApp, passage_lines
 
 QUOTE='Demand is growing across our markets, and we are expanding our capacity.'

@@ -61,7 +61,13 @@ def staged(tmp_path,monkeypatch):
  store=Store(tmp_path/'db');d=import_document(store,'CRWV.US',p);sources.schema(store)
  class Model:
   def __init__(self):self.calls=0
-  def extract(self,u,ctx):self.calls+=1;return [selection(u['candidates'][:1])]
+  def extract(self,u,ctx):
+   self.calls+=1
+   if 'semantic_pairs' in u:
+    return [dict(pair=p['id'],equivalent=False,relation='different',dimensions_agree=False,information_preserved=False,reason='Different propositions.',differences=['Different facts.']) for p in u['semantic_pairs']]
+   if 'review' in u:return [dict(index=i,fidelity='supported',readability='clear',relevance='useful',warnings=[],reason='Exact source quotation.') for i,_ in enumerate(u['review'])]
+   cs=[c for c in u['candidates'] if not c.get('context_only')]
+   return [dict(**selection(cs[getattr(self,'selected',0):getattr(self,'selected',0)+1]),representation='verbatim',text=None,ambiguities=[])]
  return store,d,Model()
 
 def test_protocol_retry_resume_and_legacy_isolation(staged):
@@ -73,8 +79,8 @@ def test_protocol_retry_resume_and_legacy_isolation(staged):
   return original(u,c)
  m.extract=retry
  ps,_=extract(s,d,m,lambda _:None)
- assert len(ps)==1 and m.calls==2
- assert extract(s,d,m,lambda _:None)[0]==ps and m.calls==2
+ assert len(ps)==1 and m.calls==3
+ assert extract(s,d,m,lambda _:None)[0]==ps and m.calls==3
  assert s.db.execute('select count(*) from source_sort_sections').fetchone()[0]==1
 
 def test_frozen_rebuild_rejection_approval_overrides(staged):
@@ -133,22 +139,17 @@ def test_status_timer_and_child_cancellation(monkeypatch):
  with pytest.raises(KeyboardInterrupt):run(['agent'],text=True)
  kill.assert_called_once()
 
-def test_interruption_preserves_completed_v3_section(staged,monkeypatch):
- s,d,m=staged
- import stock.evidence as ev
- original_batches=ev.batches
- monkeypatch.setattr(ev,'batches',lambda cs:iter([[c] for c in cs]))
- original=m.extract
+def test_interruption_preserves_generation(staged):
+ s,d,m=staged;original=m.extract
  def interrupted(u,c):
-  if m.calls:raise KeyboardInterrupt
+  if 'review' in u:raise KeyboardInterrupt
   return original(u,c)
  m.extract=interrupted
  with pytest.raises(KeyboardInterrupt):extract(s,d,m,lambda _:None)
- assert s.db.execute('select count(*) from source_work_v3').fetchone()[0]==1
+ assert s.db.execute('select count(*) from knowledge_artifacts').fetchone()[0]==1
  m.extract=original
- ps,_=extract(s,d,m,lambda _:None)
- assert len(ps)==1 and m.calls==3
- # Overlapping context can produce repeated selections; identical results are deduplicated.
+ assert extract(s,d,m,lambda _:None)[0] and m.calls==2
+
 
 def test_continuation_is_coherent_and_raw_table_excluded():
  text='Our customers include AI enterprises. We\n\nbelieve demand is strong.'
@@ -157,24 +158,18 @@ def test_continuation_is_coherent_and_raw_table_excluded():
  broken=(FIX/'unreadable-table.md').read_text()
  assert candidates(broken,doc(),digest(broken))==[]
 
-def test_targeted_retry_excludes_accepted_ids(staged):
- s,d,m=staged;calls=[]
- def model(u,c):
-  calls.append(u['candidates'])
-  if len(calls)==1:
-   return [selection(u['candidates'][:1]),{**selection(u['candidates'][1:]),'category':'Executive'}]
-  return [selection(u['candidates'])]
- m.extract=model
- ps,_=extract(s,d,m,lambda _:None)
- assert len(ps)==2 and len(calls)==2 and len(calls[1])==2
- assert calls[1][0]['id']!=calls[0][0]['id']
+def test_invalid_protocol_is_bounded_and_never_publishes(staged):
+ s,d,m=staged;m.extract=Mock(return_value=[{'ids':7}])
+ with pytest.raises(ProtocolError):extract(s,d,m,lambda _:None)
+ assert m.extract.call_count==2 and not sources.passages(s,'CRWV.US')
+
 
 def test_unmatched_corrections_block_replacement(staged):
  s,d,m=staged;ps,_=extract(s,d,m,lambda _:None);sources.publish(s,d,ps,d['source_sha256'])
  ident=sources.passages(s,'CRWV.US')[0]['id'];sources.set_topic(s,ident,'Capital',True)
  # New staging selects a different claim; the old correction must never disappear.
- s.db.execute('delete from source_work_v3');s.db.commit()
- m.extract=lambda u,c:[selection(u['candidates'][1:])]
+ s.db.execute('delete from knowledge_artifacts');s.db.commit()
+ m.selected=1
  approval=Mock(return_value=True)
  assert not rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,approval)
  approval.assert_not_called()
@@ -208,9 +203,9 @@ def test_moderator_operator_and_unknown_identity():
 def test_checkpoint_integrity_failure(staged):
  from stock.evidence import IntegrityError
  s,d,m=staged;extract(s,d,m,lambda _:None)
- row=s.db.execute('select payload from source_work_v3').fetchone();payload=json.loads(row[0]);payload['accepted'][0]['text']='invented'
- with s.db:s.db.execute('update source_work_v3 set payload=?',(json.dumps(payload),))
- with pytest.raises(IntegrityError,match='anchor'):extract(s,d,m,lambda _:None)
+ with s.db:s.db.execute("update knowledge_artifacts set payload='[]'")
+ with pytest.raises(IntegrityError,match='artifact'):extract(s,d,m,lambda _:None)
+
 
 def test_document_specific_rebuild_and_reset(staged,tmp_path):
  s,d,m=staged;ps,_=extract(s,d,m,lambda _:None);sources.publish(s,d,ps,d['source_sha256'])
@@ -277,7 +272,7 @@ def test_checkpoint_contract_isolated_preserved(staged):
  schema(s)
  with s.db:s.db.execute('insert into source_work_v3 values(?,?,?,?)',(d['id'],digest(Path(d['original']).read_text()),0,json.dumps(dict(version=3,complete=True,accepted=[]))))
  assert extract(s,d,m,lambda _:None)[0]
- assert s.db.execute('select count(*) from source_work_v3').fetchone()[0]==2
+ assert s.db.execute('select count(*) from source_work_v3').fetchone()[0]==1
 
 def test_actual_eight_live_passages_and_readability():
  from stock.evidence import layout_errors,quality_flags
@@ -345,7 +340,6 @@ def test_rejected_rebuild_on_database_copy_preserves_all_frozen_tables(staged,tm
  assert snapshot(copied)==before==snapshot(s)
 
 def test_exclusion_report_handles_invalid_selection_shape(staged):
- s,d,m=staged;m.extract=lambda u,c:[dict(ids=7,topics=['Market'],category='Management',speaker=None)]
- log=[]
- assert extract(s,d,m,log.append)[0]==[]
- assert any('1 unresolved' in line for line in log)
+ s,d,m=staged;m.extract=Mock(return_value=[dict(ids=7,topics=['Market'],category='Management',speaker=None)])
+ with pytest.raises(ProtocolError):extract(s,d,m,lambda _:None)
+ assert m.extract.call_count==2

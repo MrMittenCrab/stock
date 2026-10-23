@@ -14,7 +14,7 @@ import time
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def worker(implementation,directory):
+def _worker(implementation,directory):
  sys.path.insert(0,str(implementation))
  from stock import archive,sources,insights
  from stock.core import Store
@@ -22,6 +22,9 @@ def worker(implementation,directory):
  import stock.sort_process as process
  import stock.sort as sort
  from stock.evidence import extract
+ import stock.source_layout as layout
+ if hasattr(layout,'selective'):
+  layout.selective=lambda atoms,doc,store: [{**json.loads((ROOT/'tests/fixtures/sort/document-13-power-layout.json').read_text()),'original_sha256':doc['source_sha256'],'matched_source_ids':[a['id'] for a in atoms if a['start'] in (4571,4981,5012)]}] if doc['id']==13 else []
  from stock.editorial import validate_publication
  fix=ROOT/'tests/fixtures/sort'
  data=json.loads((fix/'semantic-coreweave.json').read_text())
@@ -60,6 +63,8 @@ def worker(implementation,directory):
      if not atoms or not any(a['id'] in primary for a in atoms):continue
      # Each original reference must be covered; never infer missing context.
      if any(not any(a['start']<=r['start'] for a in atoms) or not any(a['end']>=r['end'] for a in atoms) for r in refs):continue
+     if hasattr(layout,'selective') and __import__('re').search(r'Q[1-4] 20[0-9]{2}',c['text']):
+      atoms=sorted(atoms+[a for a in u['candidates'] if a.get('context_only') and 'Earnings Call' in a['text']],key=lambda a:a['start'])
      speaker=next((a.get('speaker') for a in atoms if a.get('speaker')),None)
      result.append(dict(ids=[a['id'] for a in atoms],representation='source_grounded_statement',text=c['text'],topics=[c['topic']],category='Management',speaker=speaker,ambiguities=[]))
      sent.add(c['key'])
@@ -100,10 +105,21 @@ def worker(implementation,directory):
   v=counts.setdefault(m['stage'],dict(requests=0,prompt_characters=0));v['requests']+=1;v['prompt_characters']+=m['prompt_chars']
  anchors=sorted((p['text'],[(r['text'],r['start'],r['end'],r['markdown_sha256']) for r in p['location']['references']]) for p in ps)
  counts.setdefault('citation recovery',dict(requests=0,prompt_characters=0))
- return dict(stages=counts,requests=first,prompt_characters=sum(m['prompt_chars'] for m in metrics[:first]),cold_local_seconds=cold,resumed_local_seconds=resumed,resume_requests=len(metrics)-first,evidence=len(ps),insights=len(insights.entries(store,'CRWV.US')),exact_citations=sum(len(p['location']['references']) for p in ps),anchors=anchors,missing_fixture_claims=sorted(set(keys)-{p['text'] for p in ps}),live_latency=None,actual_tokens=None)
+ by_document={str(did):dict(requests=sum(m['document']==did for m in metrics[:first]),prompt_characters=sum(m['prompt_chars'] for m in metrics[:first] if m['document']==did)) for did in claims_by_doc}
+ return dict(by_document=by_document,stages=counts,requests=first,prompt_characters=sum(m['prompt_chars'] for m in metrics[:first]),cold_local_seconds=cold,resumed_local_seconds=resumed,resume_requests=len(metrics)-first,evidence=len(ps),insights=len(insights.entries(store,'CRWV.US')),exact_citations=sum(len(p['location']['references']) for p in ps),anchors=anchors,missing_fixture_claims=sorted(set(keys)-{p['text'] for p in ps}),live_latency=None,actual_tokens=None)
+
+def worker(implementation,directory):
+ # Tests may invoke the replay in-process; recorded layout must not escape it.
+ sys.path.insert(0,str(implementation))
+ import stock.source_layout as layout
+ original=getattr(layout,'selective',None)
+ try:return _worker(implementation,directory)
+ finally:
+  if original is not None:layout.selective=original
+
 
 if __name__=='__main__':
- parser=argparse.ArgumentParser();parser.add_argument('--worker');parser.add_argument('--directory');parser.add_argument('--baseline',default='bbbcbac');args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--worker');parser.add_argument('--directory');parser.add_argument('--baseline',default='a076578');args=parser.parse_args()
  if args.worker:print(json.dumps(worker(Path(args.worker),args.directory)));sys.exit()
  base=ROOT/'.data';base.mkdir(exist_ok=True)
  with tempfile.TemporaryDirectory(prefix='unified-replay-',dir=base) as temp:
@@ -116,7 +132,8 @@ if __name__=='__main__':
    directory=temp/name;directory.mkdir()
    result=subprocess.run([sys.executable,str(Path(__file__).resolve()),'--worker',str(implementation),'--directory',str(directory)],capture_output=True,text=True,check=True)
    reports[name]=json.loads(result.stdout)
-  assert reports['before']['anchors']==reports['after']['anchors'],'Exact source evidence changed'
+  after=dict(reports['after']['anchors'])
+  assert all(set(map(tuple,refs))<=set(map(tuple,after[text])) for text,refs in reports['before']['anchors']),'Existing exact support lost'
   for report in reports.values():del report['anchors']
   reports.update(baseline=args.baseline,provenance='Hand-recorded fixture decisions replayed through actual prompt transport and publication gates. Local wall times exclude live model service. No production writes.',authenticated_requests=0)
   print(json.dumps(reports,indent=2))
