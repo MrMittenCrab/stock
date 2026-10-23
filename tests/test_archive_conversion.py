@@ -53,7 +53,7 @@ def test_noninteractive_events():
     assert '\r' not in output.getvalue()
 
 
-def test_failed_reimport_only_retries_conversion(tmp_path,monkeypatch):
+def test_failed_reimport_only_retries_conversion(tmp_path,monkeypatch,fake_pdf_quality):
     from stock.core import Store
     source=tmp_path/'source.pdf';source.write_bytes(b'original PDF')
     store=Store(tmp_path/'db')

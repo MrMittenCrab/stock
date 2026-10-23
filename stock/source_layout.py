@@ -52,7 +52,8 @@ def selective(atoms,doc,store):
         index=cached(prefix+':index',lambda:read("import sys,json,pymupdf\nwith pymupdf.open(sys.argv[1]) as d: print(json.dumps([p.get_text() for p in d]))"))
         normalized_index=[normalized(t) for t in index];numbers=set();matched={}
         for a in atoms:
-            matches=matched_pages(a,index,normalized_index=normalized_index)
+            region=a.get('pdf_region')
+            matches=([region['page']] if region and a.get('source_kind') in ('native_pdf_region','local_ocr_region') else matched_pages(a,index,normalized_index=normalized_index))
             if len(matches)==1:
                 numbers.add(matches[0]);matched.setdefault(matches[0],[]).append(a['id'])
         pages=[]

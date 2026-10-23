@@ -51,6 +51,10 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
     matches=[d for d in documents(store,ticker) if str(d['id'])==reference or any(Path(f['path']).name==reference for f in d['files'])]
     if len(matches)!=1: raise ValueError('DOCUMENT must be an unambiguous Archive ID or archived filename')
     doc=matches[0]
+    candidate=store.db.execute('SELECT id,markdown,manifest,quality_status FROM archive_evidence_versions WHERE document_id=? AND active=0 AND id>(SELECT COALESCE(MAX(id),0) FROM archive_evidence_versions WHERE document_id=? AND active=1) ORDER BY id DESC LIMIT 1',(doc['id'],doc['id'])).fetchone()
+    if candidate:
+        if candidate[3]=='needs_repair':raise ValueError('Archive candidate still needs repair; original publication retained')
+        doc={**doc,'evidence_version':candidate[0],'markdown':candidate[1],'evidence':candidate[2],'quality_status':candidate[3]}
     from .sort_budget import CURRENT, check
     budget=CURRENT.get()
     if budget:budget.use_document(doc['id'])
@@ -136,6 +140,9 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             if insight_proposal:
                 store.db.execute('INSERT INTO source_insight_heads VALUES(?,?) ON CONFLICT(ticker) DO UPDATE SET revision_id=excluded.revision_id',(ticker,insight_proposal['id']))
             check()
+            if candidate:
+                store.db.execute('UPDATE archive_evidence_versions SET active=0 WHERE document_id=?',(doc['id'],))
+                store.db.execute('UPDATE archive_evidence_versions SET active=1 WHERE id=?',(candidate[0],))
             # Retain staging checkpoints and model selections for audit.
         progress(f'Replaced document {doc["id"]} · {len(proposed)} passages')
         return True

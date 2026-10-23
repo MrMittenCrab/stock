@@ -26,6 +26,10 @@ TYPES = ('Annual', 'Interim', 'Quarterly', 'Earnings', 'Filing', 'Release',
 
 def schema(store):
     columns={row[1] for row in store.db.execute('PRAGMA table_info(archive_documents)')}
+    store.db.execute('''CREATE TABLE IF NOT EXISTS archive_evidence_versions(
+      id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, markdown TEXT NOT NULL,
+      manifest TEXT NOT NULL, quality_status TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 0,
+      created_at REAL NOT NULL)''')
     if {'metadata_provenance','sec_accession','structured_metadata'} <= columns and store.db.execute("SELECT 1 FROM sqlite_master WHERE name='archive_imports'").fetchone():
         return
     store.db.executescript('''
@@ -70,6 +74,9 @@ def documents(store, ticker):
         doc['markdown']=next((f['path'] for f in doc['files'] if f['role']=='markdown'),None)
         if doc['original'] and Path(doc['original']).suffix.lower()=='.md':
             doc['markdown']=doc['original']
+        version=store.db.execute('SELECT id,markdown,manifest,quality_status FROM archive_evidence_versions WHERE document_id=? AND active=1 ORDER BY id DESC LIMIT 1',(doc['id'],)).fetchone()
+        if version:
+            doc.update(evidence_version=version[0],markdown=version[1],evidence=version[2],quality_status=version[3])
         result.append(doc)
     return result
 
@@ -345,7 +352,8 @@ def run_converter(command, *, converter='Converter', output=None, timeout=None):
     output=output or sys.stderr
     interactive=output.isatty()
     process=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,text=True,errors='replace',start_new_session=True)
+                             stderr=subprocess.PIPE,text=True,errors='replace',start_new_session=True,
+                             env=dict(os.environ,HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_HUB_DISABLE_TELEMETRY='1'))
     started=time.monotonic()
     last_activity=started
     observed=0
@@ -399,7 +407,7 @@ def convert_pdf(source, destination):
         with tempfile.TemporaryDirectory(prefix='stock-pdfmd-') as folder:
             bundle=Path(folder)/'converted.zip'
             try:
-                run=run_converter([converter,str(source),'--zip-output',str(bundle)],converter='Marker')
+                run=run_converter([converter,str(source),'fast','--zip-output',str(bundle)],converter='Marker')
                 if run.returncode: raise ValueError('pdfmd failed; check the local Marker installation')
                 with zipfile.ZipFile(bundle) as zipped:
                     members=[m for m in zipped.infolist() if not m.is_dir()]
@@ -415,7 +423,7 @@ def convert_pdf(source, destination):
                     for member in members:
                         path=Path(member.filename)
                         if path.is_absolute() or '..' in path.parts: raise ValueError('Unsafe converter output path')
-                        if member==markdown[0] or path.suffix.lower()=='.json': continue
+                        if member==markdown[0]: continue
                         try: relative=path.relative_to(base)
                         except ValueError: continue
                         assets.append((relative,zipped.read(member)))
@@ -676,8 +684,12 @@ def _convert_registered_locked(store,doc):
         # outside the database transaction. Existing assets are never overwritten.
         with tempfile.TemporaryDirectory(prefix='.stock-convert-',dir=original.parent) as folder:
             staged=Path(folder)/destination.name
+            conversion_started=time.monotonic()
             converter=convert_pdf(original,staged)
+            conversion_seconds=time.monotonic()-conversion_started
             if not staged.is_file() or not staged.stat().st_size: raise ValueError('Converter produced no Markdown')
+            from .archive_quality import prepare, local_ocr
+            quality=prepare(original,staged,converter,ocr=local_ocr,document_type=doc['type'],conversion_seconds=conversion_seconds)
             store.db.execute('BEGIN IMMEDIATE')
             status=store.db.execute('SELECT conversion_status FROM archive_documents WHERE id=?',(doc['id'],)).fetchone()[0]
             if status=='converted': store.db.rollback();return
@@ -690,6 +702,8 @@ def _convert_registered_locked(store,doc):
                     created.append(target);stream.write(path.read_bytes())
                 role='markdown' if path==staged else 'asset'
                 store.db.execute('INSERT INTO archive_files(document_id,role,path,sha256) VALUES(?,?,?,?)',(doc['id'],role,str(target),filehash(target)))
+            store.db.execute('INSERT INTO archive_evidence_versions(document_id,markdown,manifest,quality_status,active,created_at) VALUES(?,?,?,?,1,?)',
+                (doc['id'],str(destination),str(destination.with_suffix('.evidence.json')),quality['quality_status'],time.time()))
             store.db.execute("UPDATE archive_documents SET conversion_status='converted',conversion_error=NULL,converter=? WHERE id=?",(converter,doc['id']))
             store.db.commit()
     except BaseException as exc:
@@ -827,6 +841,7 @@ def update_metadata(store,doc,changes,*,provenance=None,date_evidence=None,acces
     stem=oldstem if basename(info)==basename(original_info) else basename(info)
     created=[]
     oldfiles=[]
+    versioned=bool(store.db.execute('SELECT 1 FROM archive_evidence_versions WHERE document_id=?',(doc['id'],)).fetchone())
     if _journal is None: store.db.execute('BEGIN IMMEDIATE')
     try:
         current=store.db.execute('SELECT metadata_provenance,title,type,period,publication_date,publisher,structured_metadata FROM archive_documents WHERE id=?',(doc['id'],)).fetchone()
@@ -872,15 +887,18 @@ def update_metadata(store,doc,changes,*,provenance=None,date_evidence=None,acces
                 (info['title'],info['type'],info['period'],info['publisher'],info['date'],json.dumps(evidence),json.dumps(prior),
                  accession or doc.get('sec_accession'),json.dumps(structured),doc['id']))
         if _journal is None: store.db.commit()
-        else: _journal.append((created,oldfiles,folder))
+        else: _journal.append((created,[] if versioned else oldfiles,folder))
     except BaseException:
         if _journal is None: store.db.rollback()
         for path in reversed(created): path.unlink(missing_ok=True)
         _empty_asset_dirs(created,folder)
         raise
     if _journal is None:
-        for path in oldfiles: path.unlink(missing_ok=True)
-        _empty_asset_dirs(oldfiles,folder)
+        # Version manifests and historical citations retain their original paths
+        # and bytes, including image links. Metadata renaming creates new copies.
+        if not versioned:
+            for path in oldfiles: path.unlink(missing_ok=True)
+            _empty_asset_dirs(oldfiles,folder)
     return next(d for d in documents(store,doc['ticker']) if d['id']==doc['id'])
 
 
@@ -897,3 +915,95 @@ def _empty_asset_dirs(files,folder):
 
 
 from .archive_metadata import import_metadata, export_metadata
+
+
+def repair_document(store,ticker,reference):
+    """Assess existing conversion, recover native omissions, retain a candidate.
+
+    No ordinary repair repeats successful Marker conversion. Sorted evidence stays
+    active until the existing reviewed rebuild transaction explicitly replaces it.
+    """
+    import fcntl
+    from .archive_quality import prepare, local_ocr
+    matches=[d for d in documents(store,ticker) if str(d['id'])==str(reference)]
+    if len(matches)!=1:raise ValueError('Repair requires an Archive document ID')
+    doc=matches[0]
+    if Path(doc['original']).suffix.lower()!='.pdf':raise ValueError('Repair requires an original PDF')
+    with conversion_lock(doc['original']).open('a') as lock:
+        try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:raise ValueError('Archive preparation already running; retry after it finishes')
+        if filehash(doc['original'])!=doc['source_sha256']:raise ValueError('Original changed')
+        latest=store.db.execute('SELECT id,manifest,active FROM archive_evidence_versions WHERE document_id=? ORDER BY id DESC LIMIT 1',(doc['id'],)).fetchone()
+        if latest:
+            from .archive_quality import VERSION, POLICY, load
+            try:data=json.loads(Path(latest[1]).read_text())
+            except (OSError,ValueError):data={}
+            if data.get('version')==VERSION and data.get('policy')==POLICY and data.get('original_sha256')==doc['source_sha256']:
+                candidate={**doc,'evidence':latest[1],'markdown':str(Path(latest[1]).parent/'source.md')}
+                if Path(candidate['markdown']).is_file():
+                    try:load(candidate)
+                    except (OSError,ValueError):pass  # Invalid evidence needs a fresh candidate.
+                    else:return dict(id=latest[0],active=bool(latest[2]),manifest=latest[1],reused=True,**data)
+        from .archive_quality import POLICY
+        preparation_key='archive-preparation:'+doc['source_sha256']+':'+POLICY
+        prior_work=store.get(preparation_key)
+        prior_manifest=prior_work[0]['manifest'] if prior_work else (latest[1] if latest else None)
+        # Unique immutable candidate directories survive interruption and never
+        # replace historical files. A failed candidate is not registered/activated.
+        folder=Path(tempfile.mkdtemp(prefix=Path(doc['original']).stem+'.evidence-',dir=Path(doc['original']).parent))
+        staged=folder/'source.md'
+        store.put(preparation_key,{'manifest':str(staged.with_suffix('.evidence.json'))})
+        if doc.get('markdown') and Path(doc['markdown']).is_file():
+            # Reuse the original conversion, not a previous supplemental bundle.
+            base=next((f['path'] for f in doc['files'] if f['role']=='markdown'),doc['markdown'])
+            body=Path(base).read_text()
+            # Relative Marker assets still resolve from the version directory.
+            body=re.sub(r'(!\[[^\]]*\]\()((?!/|https?:)[^)]+)(\))',lambda m:m[1]+'../'+m[2]+m[3],body)
+            staged.write_text(body)
+            converter=doc.get('converter') or 'existing archived conversion'
+        else:converter=convert_pdf(Path(doc['original']),staged)
+        quality=prepare(doc['original'],staged,converter,
+            ocr=lambda src,pages,out:local_ocr(src,pages,out,previous=prior_manifest),document_type=doc['type'])
+        from . import sources
+        sources.schema(store)
+        with store.db:
+            store.db.execute('BEGIN IMMEDIATE')
+            active=not sources.completed(store,doc['id']) and quality['quality_status']!='needs_repair'
+            if active:store.db.execute('UPDATE archive_evidence_versions SET active=0 WHERE document_id=?',(doc['id'],))
+            c=store.db.execute('INSERT INTO archive_evidence_versions(document_id,markdown,manifest,quality_status,active,created_at) VALUES(?,?,?,?,?,?)',
+                (doc['id'],str(staged),str(staged.with_suffix('.evidence.json')),quality['quality_status'],int(active),time.time()))
+            for path in folder.rglob('*'):
+                if path.is_file():store.db.execute('INSERT INTO archive_files(document_id,role,path,sha256) VALUES(?,?,?,?)',(doc['id'],'evidence',str(path),filehash(path)))
+            if active:store.db.execute("UPDATE archive_documents SET conversion_status='converted',conversion_error=NULL WHERE id=?",(doc['id'],))
+        return dict(id=c.lastrowid,active=active,manifest=str(staged.with_suffix('.evidence.json')),**quality)
+
+
+def prepare_for_sort(store,doc,progress=print):
+    """One Archive request per Sort invocation; successful legacy sources stay put."""
+    if Path(doc['original']).suffix.lower()!='.pdf':return doc
+    invalid=not doc.get('markdown') or not Path(doc['markdown']).is_file() or not Path(doc['markdown']).stat().st_size
+    evidence_invalid=False
+    try:
+        from .archive_quality import load
+        load(doc)
+    except (OSError,ValueError):evidence_invalid=True
+    if doc.get('quality_status')=='needs_repair' or evidence_invalid:
+        progress(f"{doc['id']} · Archive selective repair")
+        repair_document(store,doc['ticker'],doc['id'])
+        doc=next(d for d in documents(store,doc['ticker']) if d['id']==doc['id'])
+        from .archive_quality import load
+        load(doc)
+        if doc.get('quality_status')=='needs_repair':
+            raise ValueError('Archive evidence still needs repair; inspect the retained candidate')
+    invalid=not doc.get('markdown') or not Path(doc['markdown']).is_file() or not Path(doc['markdown']).stat().st_size
+    if invalid or doc['conversion_status'] in ('pending','failed'):
+        progress(f"{doc['id']} · Archive preparation")
+        if invalid and doc['conversion_status']=='converted':
+            repair_document(store,doc['ticker'],doc['id'])
+        else:_convert_registered(store,doc)
+        doc=next(d for d in documents(store,doc['ticker']) if d['id']==doc['id'])
+        if not doc.get('markdown') or not Path(doc['markdown']).is_file() or doc.get('quality_status')=='needs_repair':
+            raise ValueError('Archive preparation incomplete; resume after Archive finishes')
+    if doc.get('quality_status')=='prepared_with_visual_limitations':
+        progress(f"{doc['id']} · Archive visual limitations retained in original PDF")
+    return doc

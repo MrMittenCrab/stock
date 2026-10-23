@@ -487,3 +487,8 @@ Marker page metadata, configuration, source/output hashes, versions and resource
 metrics. Marker `{n}` page markers are zero-based: PDF page = n + 1. Diagrams and
 chart relationships still require visual review; this is not verified investment
 evidence. See [the measured comparison](docs/benchmarks/marker-ocr/report.md).
+
+Selective Archive conversion repair is available with `stock archive CRWV.US --repair 13`.
+It preserves published evidence and prepares an immutable candidate for the existing
+reviewed Sort rebuild. See [Archive quality workflow](docs/archive-quality-workflow.md)
+for commands, provenance, measured local results and the fresh-extraction limitation.

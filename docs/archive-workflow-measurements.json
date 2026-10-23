@@ -1,0 +1,113 @@
+{
+  "document_13": {
+    "source_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+    "candidate_status": "prepared_with_visual_limitations",
+    "candidate_active": false,
+    "original_repair_seconds": 107.437,
+    "final_assessment_seconds": 1.794,
+    "repeat_repair_seconds": 0.008,
+    "regions": 60,
+    "native_regions": 58,
+    "ocr_pages": [
+      [
+        5
+      ],
+      [
+        6
+      ]
+    ],
+    "ocr_initial_seconds": [
+      53.96,
+      51.77
+    ],
+    "native_terms": {
+      "W&B Models": true,
+      "SUNK": true,
+      "CKS": true,
+      "Cognition": true,
+      "Cursor": true
+    },
+    "page_diagnostics": [
+      {
+        "page": 4,
+        "word_recall": 0.6561,
+        "recovered_regions": 11,
+        "defects": [
+          "unresolved_visual_relationships"
+        ]
+      },
+      {
+        "page": 5,
+        "word_recall": 0.8723,
+        "recovered_regions": 3,
+        "defects": [
+          "unresolved_visual_relationships",
+          "damaged_reading_order"
+        ]
+      },
+      {
+        "page": 6,
+        "word_recall": 0.9185,
+        "recovered_regions": 7,
+        "defects": [
+          "damaged_reading_order"
+        ]
+      },
+      {
+        "page": 14,
+        "word_recall": 0.9139,
+        "recovered_regions": 8,
+        "defects": [
+          "unresolved_visual_relationships"
+        ]
+      },
+      {
+        "page": 15,
+        "word_recall": 1.0,
+        "defects": []
+      }
+    ],
+    "converter_versions": {
+      "marker-pdf": "2.0.0",
+      "surya-ocr": "0.22.1"
+    },
+    "converter_versions_basis": "Stored versions.json and per-page OCR attempt metadata; legacy baseline settings were not recorded"
+  },
+  "transcript": {
+    "document_id": 1,
+    "seconds": 1.053,
+    "ocr_calls": 0,
+    "AI_before": 33,
+    "AI_after": 49,
+    "native_regions": 28
+  },
+  "live_sort": {
+    "error": "BudgetExceeded('Request timeout')",
+    "elapsed_seconds": 122.13246129220352
+  },
+  "sources": {
+    "published_insights": 1796,
+    "published_passages": 1796,
+    "topic_navigation": true,
+    "document_filter": true,
+    "inline_evidence": true,
+    "original_open_routing": true,
+    "reopen": true,
+    "publication_unchanged": true,
+    "elapsed_seconds": 8.546
+  },
+  "semantic_grouping_seconds": null,
+  "resumed_sort_seconds": null,
+  "total_to_new_published_evidence_seconds": null,
+  "tests": {
+    "full_suite": {
+      "passed": 378,
+      "seconds": 156.65
+    },
+    "final_focused": {
+      "passed": 54,
+      "seconds": 18.38
+    },
+    "fresh_model_extraction_succeeded": false
+  }
+}

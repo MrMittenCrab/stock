@@ -1,8 +1,8 @@
 """Compact model transport; canonical evidence and provenance stay in Stock."""
 import json
 
-SOURCE_FIELDS=('id','text','section','turn','speaker','role','speaker_role','context_only','source_kind','page','table')
-REFERENCE_FIELDS=('source_id','text','section','turn','page','table')
+SOURCE_FIELDS=('id','text','section','turn','speaker','role','speaker_role','context_only','source_kind','page','table','evidence_type')
+REFERENCE_FIELDS=('source_id','text','section','turn','page','table','evidence_type')
 
 
 def source_payload(source):

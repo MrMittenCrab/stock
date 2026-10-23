@@ -46,7 +46,12 @@ Never return quotations copied into JSON. Stock owns original source wording and
 Select every necessary source ID, including material headers, labels, units, periods,
 footnotes and qualifications. Table cell spans retain row/column and parent identity;
 row or column order in a flattened table is NOT proof of label/value association.
-Use supplied original PDF geometry only when Markdown associations are ambiguous.
+Use supplied original PDF geometry only when source associations are ambiguous.
+Native PDF regions preserve exact text, not inferred column relationships. Local OCR
+regions are conversion evidence, not independent proof of label/value associations.
+Verify damaged relationships against supplied original geometry or mark ambiguity.
+Unresolved diagrams remain visual evidence in the original PDF; never describe an
+unseen image or invent relationships from text proximity.
 Do not infer pages from image filenames or use converter summaries as verified facts.
 If support is incomplete, retain a specific ambiguity, never guess. Choose the narrowest
 complete set of exact spans. Do not include whole tables when a few cells suffice.

@@ -422,6 +422,11 @@ def sort_stock(store,ticker,progress=print,review_only=False):
         if budget:budget.use_document(doc['id'])
         progress(f"{doc['id']} · Sorting")
         try:
+            from .archive import prepare_for_sort
+            preparation_started=time.monotonic()
+            doc=prepare_for_sort(store,doc,progress)
+            if hasattr(progress,'log_event'):
+                progress.log_event({'archive_preparation_seconds':time.monotonic()-preparation_started,'document_id':doc['id']})
             if review_only:
                 from .evidence import extract
                 passages,verify=extract(store,doc,cursor,progress)

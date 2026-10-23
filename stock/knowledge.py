@@ -98,6 +98,17 @@ def prepare_atoms(text,doc,sha):
     for c in atoms:
         if c['text'].lstrip().startswith('#'):heading=c.get('section')
         elif c.get('table'):c['section']=heading
+    from .archive_quality import load
+    evidence=load(doc)
+    if evidence:
+        for c in atoms:
+            for region in evidence['regions']:
+                if region['start']<=c['start'] and c['end']<=region['end']:
+                    c.update(source_kind=region['kind'],page=region['page'],pdf_region=region)
+                    if doc.get('type')=='Transcript':
+                        c.update(turn='native-'+region['block'],speaker=None,role=None,speaker_role=None)
+                        # Never inherit the last Markdown speaker for supplemental PDF text.
+                    break
     return atoms
 
 
@@ -242,6 +253,8 @@ def extract(store,doc,cursor,progress):
     data=md.read_bytes();sha=hashlib.sha256(data).hexdigest();text=data.decode('utf-8-sig')
     if not text.strip():raise IntegrityError('Archived Markdown is empty')
     def verify():
+        from .archive_quality import load
+        load(doc)
         if filehash(md)!=sha or filehash(original)!=doc['source_sha256']:raise IntegrityError('Source changed during sorting')
         from .sort_budget import check
         check()
@@ -263,8 +276,12 @@ def extract(store,doc,cursor,progress):
     # Keep full outline identities; headings alone are not substantive claim support.
     from .source_layout import selective
     # Only demonstrably damaged tables get original geometry during understanding.
-    table_layout=selective([c for c in atoms if c.get('table',{}).get('fragmented')],doc,store) if any(c.get('table',{}).get('fragmented') for c in atoms) else []
-    context=packed(dict(document=metadata,outline=outline,original_pdf_layout=table_layout))
+    damaged=[c for c in atoms if c.get('table',{}).get('fragmented') or c.get('source_kind')=='local_ocr_region']
+    table_layout=selective(damaged,doc,store) if damaged else []
+    from .archive_quality import load as load_archive_evidence
+    load_quality=load_archive_evidence(doc)
+    context=packed(dict(document=metadata,outline=outline,original_pdf_layout=table_layout,
+        archive_quality=({'status':doc.get('quality_status'),'unresolved_visual_pages':[p['page'] for p in load_quality['pages'] if p['visual']]} if load_quality else None)))
     ops=Operations(store,{**metadata,'markdown_sha256':sha,'original':str(original),'markdown':str(md)},cursor,verify)
     def metrics(metric):
         if hasattr(progress,'log_event'):progress.log_event(dict(model=metric))

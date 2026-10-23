@@ -73,7 +73,7 @@ def test_import_dedup_collision_and_persistence(tmp_path):
     assert len(saved[0]['files'][0]['sha256'])==64
 
 
-def test_pdf_failure_preserves_original_and_retry(tmp_path,monkeypatch):
+def test_pdf_failure_preserves_original_and_retry(tmp_path,monkeypatch,fake_pdf_quality):
     source=tmp_path/'random.pdf';source.write_bytes(b'%PDF-1.4 test fixture')
     monkeypatch.setattr(archive,'read_document',lambda p: ('Annual Report 2025\nPublished: 2026-03-19',{'title':'Exact Title'}))
     def fail(src,dest): raise ValueError('converter unavailable')
@@ -148,7 +148,7 @@ def test_noninteractive_unknown_import_writes_nothing(tmp_path):
     assert not (tmp_path/'Research').exists()
 
 
-def test_local_converter_zip_retains_images_and_basename(tmp_path,monkeypatch):
+def test_local_converter_zip_retains_images_and_basename(tmp_path,monkeypatch,fake_pdf_quality):
     import subprocess
     import zipfile
     source=tmp_path/'source.pdf';source.write_bytes(b'pdf')
@@ -226,7 +226,7 @@ def test_failed_file_registration_rolls_back_copy_and_document(tmp_path):
     assert list((tmp_path/'Research'/'700.HK'/'Archive').iterdir())==[]
 
 
-def test_conversion_does_not_block_database_writes(tmp_path,monkeypatch):
+def test_conversion_does_not_block_database_writes(tmp_path,monkeypatch,fake_pdf_quality):
     import threading
     from concurrent.futures import ThreadPoolExecutor
     source=tmp_path/'report.pdf';source.write_bytes(b'pdf')
@@ -271,7 +271,7 @@ def test_converter_process_timeout_and_captured_output():
         archive.run_converter([sys.executable,'-c','import time; time.sleep(5)'],timeout=.05)
 
 
-def test_identical_imports_concurrently_publish_one_document(tmp_path,monkeypatch):
+def test_identical_imports_concurrently_publish_one_document(tmp_path,monkeypatch,fake_pdf_quality):
     import threading
     from concurrent.futures import ThreadPoolExecutor
     source=tmp_path/'report.pdf';source.write_bytes(b'pdf')
@@ -297,7 +297,7 @@ def test_identical_imports_concurrently_publish_one_document(tmp_path,monkeypatc
     assert completed['conversion_status']=='converted'
     assert second['conversion_status']!='converted'
     assert len(calls)==1
-    assert len(list((tmp_path/'Research'/'700.HK'/'Archive').iterdir()))==2
+    assert len(list((tmp_path/'Research'/'700.HK'/'Archive').iterdir()))==3
 
 
 def test_source_disappearing_before_copy_leaves_no_empty_file(tmp_path,monkeypatch):
@@ -315,7 +315,7 @@ def test_source_disappearing_before_copy_leaves_no_empty_file(tmp_path,monkeypat
     assert list((tmp_path/'Research'/'700.HK'/'Archive').iterdir())==[]
 
 
-def test_markdown_registration_failure_preserves_pdf_only(tmp_path,monkeypatch):
+def test_markdown_registration_failure_preserves_pdf_only(tmp_path,monkeypatch,fake_pdf_quality):
     source=tmp_path/'report.pdf';source.write_bytes(b'pdf')
     monkeypatch.setattr(archive,'read_document',lambda path:('Annual Report 2025',{}))
     def convert(source,destination): destination.write_text('# Report');return 'test'

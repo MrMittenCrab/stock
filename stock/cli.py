@@ -15,6 +15,7 @@ def main():
     archive=commands.add_parser('archive',help='Browse or import archived research documents')
     archive.add_argument('ticker')
     archive.add_argument('file',nargs='?')
+    archive.add_argument('--repair',metavar='DOCUMENT',help='Assess and repair one PDF into an immutable evidence version')
     archive.add_argument('--metadata',metavar='JSON',help='Enrich existing archived documents from versioned metadata JSON')
     sort=commands.add_parser('sort',help='Build distinct, verified investment insights from archived sources')
     sort.add_argument('ticker')
@@ -78,7 +79,15 @@ def main():
             SourcesApp(args.ticker,store).run(mouse=False)
             return 0
         if args.command=='archive':
-            if args.metadata:
+            if args.repair:
+                if args.file or args.metadata:raise ValueError('Use --repair separately')
+                from .archive import repair_document
+                print(f'{args.repair} · Archive assessment and selective repair',flush=True)
+                result=repair_document(store,args.ticker,args.repair)
+                print(f"{args.repair} · {result['quality_status']} · {'Active' if result['active'] else 'Candidate retained'} · {result['elapsed_seconds']}s")
+                print(result['manifest'])
+                if not result['active']:print(f'Stage replacement · stock sort {args.ticker} --rebuild {args.repair}')
+            elif args.metadata:
                 from .archive import import_metadata
                 count=import_metadata(store,args.ticker,args.metadata)
                 print(f'Enriched {count} documents')

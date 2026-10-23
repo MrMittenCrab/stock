@@ -107,13 +107,14 @@ def resolve_selection(selection,batch,text,doc,digest):
                markdown_sha256=digest,sha256=digest,start=c['start'],end=c['end'],
                markdown_start=c['start'],markdown_end=c['end'],text=c['text'],
                original=doc['original'],original_sha256=doc['source_sha256'],
+               evidence_version=doc.get('evidence_version'),evidence_file=doc.get('evidence'),markdown_path=doc.get('markdown'),
                section=c['section'],turn=c['turn'],page=c.get('page'),
-               visual=c.get('visual'),**({'table':c['table']} if c.get('table') else {})) for c in group]
+               visual=c.get('visual'),evidence_type=c.get('source_kind','archived_markdown'),pdf_region=c.get('pdf_region'),**({'table':c['table']} if c.get('table') else {})) for c in group]
     for previous,current in zip(refs,refs[1:]):
         gap=text[previous['end']:current['start']]
         if not gap.strip(): current['gap_before']=gap
     # Top-level start/end describe ONLY the first reference, never an artificial union.
-    loc={**refs[0], 'kind':'archived Markdown','contract':4,'representation':kind,
+    loc={**refs[0], 'kind':('original PDF region' if any(c.get('source_kind') in ('native_pdf_region','local_ocr_region') for c in group) else 'archived Markdown'),'contract':4,'representation':kind,
          'references':refs,'verification':'Exact source anchors; semantic review pending',
          'review':{'state':'pending'},'ambiguities':[]}
     return dict(text=readable,topics=topics.copy(),category=role,
@@ -222,6 +223,8 @@ def inspection(p):
         lines.append(f"Source {loc.get('original','archived document')} · characters {loc['start']+1}–{loc['end']} · {loc.get('markdown_sha256',loc.get('sha256','legacy hash unavailable'))}")
     for r in loc.get('references',[]):
         lines.append(f"Source {r['source_id']} · {r['original']} · characters {r['start']+1}–{r['end']}"+(f" · page {r['page']}" if r.get('page') else ''))
+        if r.get('evidence_type') in ('native_pdf_region','local_ocr_region'):
+            lines.append(f"{r['evidence_type']} · PDF region {r['pdf_region']['bbox']} · original SHA-256 {r['original_sha256']}")
         lines.append(r['text'])
     return '\n'.join(lines)
 

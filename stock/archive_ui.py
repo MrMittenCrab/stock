@@ -86,7 +86,7 @@ class ArchiveApp(App):
                 details=[('Title',doc['title']),('Publisher',doc['publisher'] or 'Unknown'),
                          ('Original',Path(doc['original']).name if doc['original'] else 'Unavailable'),
                          ('Markdown',Path(doc['markdown']).name if doc['markdown'] and Path(doc['markdown']).is_file() else 'Unavailable'),
-                         ('Conversion',doc['conversion_status']),('Sorted','Yes' if doc['sorted_at'] else 'No')]
+                         ('Conversion',doc.get('quality_status',doc['conversion_status'])),('Sorted','Yes' if doc['sorted_at'] else 'No')]
                 details.append(('Published',doc['publication_date'] or 'Unknown'))
                 structured=json.loads(doc.get('structured_metadata') or '{}')
                 provenance=json.loads(doc.get('metadata_provenance') or '{}')

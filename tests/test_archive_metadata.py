@@ -35,7 +35,7 @@ def test_missing_metadata_never_prompts():
     assert info['period'] is None
 
 
-def test_edit_renames_assets_and_preserves_identity(tmp_path,monkeypatch):
+def test_edit_renames_assets_and_preserves_identity(tmp_path,monkeypatch,fake_pdf_quality):
     source=tmp_path/'source.pdf';source.write_bytes(b'pdf')
     monkeypatch.setattr(archive,'read_document',lambda p:(COVER,META))
     monkeypatch.setattr(archive,'resolve_sec',lambda *a:None)
@@ -49,10 +49,12 @@ def test_edit_renames_assets_and_preserves_identity(tmp_path,monkeypatch):
     edited=archive.update_metadata(store,doc,{'period':'Q1-2026','date':'2026-05-08','title':'Quarterly results'})
     assert edited['id']==doc['id'] and edited['source_sha256']==doc['source_sha256']
     assert Path(edited['original']).name=='2026-05-08--quarterly--Q1-2026.pdf'
-    assert '2026-05-08--quarterly--Q1-2026.assets/chart.png' in Path(edited['markdown']).read_text()
+    assert Path(edited['markdown']).read_bytes()==Path(doc['markdown']).read_bytes()
+    renamed=next(f['path'] for f in edited['files'] if f['role']=='markdown')
+    assert '2026-05-08--quarterly--Q1-2026.assets/chart.png' in Path(renamed).read_text()
     assert all(Path(f['path']).is_file() and archive.filehash(f['path'])==f['sha256'] for f in edited['files'])
     assert source.read_bytes()==b'pdf'
-    assert not Path(doc['original']).exists()
+    assert Path(doc['original']).read_bytes()==b'pdf'  # historical evidence remains openable
     monkeypatch.setattr(archive,'convert_pdf',lambda *a:pytest.fail('reconversion'))
     again=archive.import_document(store,'CRWV.US',source,root=tmp_path/'Research',interactive=False)
     assert again['title']=='Quarterly results' and again['publication_date']=='2026-05-08'
@@ -219,7 +221,7 @@ def test_correction_keeps_future_foreign_key_references(tmp_path):
     assert store.db.execute('PRAGMA foreign_key_check').fetchall()==[]
 
 
-def test_mid_bundle_failure_restores_pdf_md_assets(tmp_path,monkeypatch):
+def test_mid_bundle_failure_restores_pdf_md_assets(tmp_path,monkeypatch,fake_pdf_quality):
     source=tmp_path/'source.pdf';source.write_bytes(b'pdf')
     monkeypatch.setattr(archive,'read_document',lambda p:('Annual Report 2025',{}))
     def convert(src,dest):
@@ -294,7 +296,7 @@ def test_written_reporting_periods(text,period):
     assert info['provenance']['period']['source']=='document text'
 
 
-def test_url_page_metadata_pdf_archive_and_duplicate(tmp_path,monkeypatch):
+def test_url_page_metadata_pdf_archive_and_duplicate(tmp_path,monkeypatch,fake_pdf_quality):
     page=b'''<meta name="citation_pdf_url" content="/report.pdf">
     <meta name="citation_title" content="Results presentation">
     <meta name="citation_publication_date" content="2026/05/08">
@@ -342,7 +344,7 @@ def test_classification_selection_controls(answers,expected):
     assert all(line.startswith('Type?') for line in output.getvalue().splitlines())
 
 
-def test_missing_pdf_metadata_does_not_block_conversion(tmp_path,monkeypatch):
+def test_missing_pdf_metadata_does_not_block_conversion(tmp_path,monkeypatch,fake_pdf_quality):
     source=tmp_path/'scan.pdf';source.write_bytes(b'%PDF-fixture')
     monkeypatch.setattr(archive,'read_document',lambda p:('',{'creationDate':'D:20261020000000'}))
     answers=[]

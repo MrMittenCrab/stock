@@ -228,7 +228,7 @@ def test_malformed_or_duplicate_json_keys(tmp_path,raw):
     assert archive.documents(store,'CRWV.US')[0]==doc
 
 
-def test_mid_publication_disk_failure_restores_bundle(tmp_path,monkeypatch):
+def test_mid_publication_disk_failure_restores_bundle(tmp_path,monkeypatch,fake_pdf_quality):
     store=Store(tmp_path/'db');source=tmp_path/'source.pdf';source.write_bytes(b'pdf')
     monkeypatch.setattr(archive,'read_document',lambda p:('Annual Report 2025',{}))
     def convert(src,dest): dest.write_text('# Original conversion');return 'fixture'

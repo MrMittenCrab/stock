@@ -179,7 +179,7 @@ def test_unknown_dates_after_known(fixture):
  assert rows[1]['publication_date'] is None
 
 @pytest.mark.parametrize('markdown',['missing','converted'])
-def test_pdf_conversion_prerequisite_and_reuse(fixture,tmp_path,monkeypatch,markdown):
+def test_pdf_conversion_prerequisite_and_reuse(fixture,tmp_path,monkeypatch,markdown,fake_pdf_quality):
  store,doc=fixture
  original=tmp_path/'original.pdf';original.write_bytes(Path(doc['original']).read_bytes())
  with store.db:
