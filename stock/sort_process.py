@@ -18,6 +18,17 @@ class Status:
         if not self.reviewing and sys.stdout.isatty(): print()
         self.reviewing=True
         print(message,flush=True)
+    def review_all(self,message):
+        self.reviewing=True
+        if sys.stdout.isatty() and sys.stdin.isatty():
+            # stdlib plain pager: keyboard paging, independent of PAGER settings.
+            import pydoc, shutil, textwrap
+            width=max(20,shutil.get_terminal_size().columns-1)
+            wrapped='\n'.join(textwrap.fill(line,width=width,replace_whitespace=False) for line in message.split('\n'))
+            pydoc.ttypager('Space: next · Enter: line · b: back · q: return to approval\n'+wrapped)
+        else:
+            print(message,flush=True)
+
     def __enter__(self):
         def refresh():
             while not self.stop.wait(.5):

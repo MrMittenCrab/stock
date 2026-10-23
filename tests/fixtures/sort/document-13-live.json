@@ -1,0 +1,193 @@
+{
+  "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+  "passages": [
+    {
+      "text": "**11**\n\nData Centers Added in 2025",
+      "category": "Management",
+      "speaker": null,
+      "location": {
+        "candidate_id": "d13:9f4f0f20f24a91c8:4945:4951",
+        "candidate_ids": [
+          "d13:9f4f0f20f24a91c8:4945:4951",
+          "d13:9f4f0f20f24a91c8:4953:4979"
+        ],
+        "contract": 3,
+        "end": 4979,
+        "kind": "archived Markdown",
+        "markdown_end": 4979,
+        "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "markdown_start": 4945,
+        "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "page": null,
+        "section": "Our Platform is Purpose-Built for AI",
+        "sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "start": 4945,
+        "turn": null,
+        "verification": "Exact archived Markdown text"
+      }
+    },
+    {
+      "text": "Active Power Contracted Power\n\n**850MW+ 3.1GW+**",
+      "category": "Management",
+      "speaker": null,
+      "location": {
+        "candidate_id": "d13:9f4f0f20f24a91c8:4981:5010",
+        "candidate_ids": [
+          "d13:9f4f0f20f24a91c8:4981:5010",
+          "d13:9f4f0f20f24a91c8:5012:5029"
+        ],
+        "contract": 3,
+        "end": 5029,
+        "kind": "archived Markdown",
+        "markdown_end": 5029,
+        "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "markdown_start": 4981,
+        "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "page": null,
+        "section": "Our Platform is Purpose-Built for AI",
+        "sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "start": 4981,
+        "turn": null,
+        "verification": "Exact archived Markdown text"
+      }
+    },
+    {
+      "text": "**43**\n\nActive Data Centers",
+      "category": "Management",
+      "speaker": null,
+      "location": {
+        "candidate_id": "d13:9f4f0f20f24a91c8:5333:5339",
+        "candidate_ids": [
+          "d13:9f4f0f20f24a91c8:5333:5339",
+          "d13:9f4f0f20f24a91c8:5341:5360"
+        ],
+        "contract": 3,
+        "end": 5360,
+        "kind": "archived Markdown",
+        "markdown_end": 5360,
+        "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "markdown_start": 5333,
+        "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "page": null,
+        "section": "Large and Growing Footprint of AI Data Centers",
+        "sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "start": 5333,
+        "turn": null,
+        "verification": "Exact archived Markdown text"
+      }
+    },
+    {
+      "text": "**Revenue:** \\$1.6 billion, up 110% YoY driven by strong demand for CoreWeave's AI Cloud Platform",
+      "category": "Management",
+      "speaker": null,
+      "location": {
+        "candidate_id": "d13:9f4f0f20f24a91c8:13569:13666",
+        "contract": 3,
+        "end": 13666,
+        "kind": "archived Markdown",
+        "markdown_end": 13666,
+        "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "markdown_start": 13569,
+        "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "page": null,
+        "section": "Q4'25 Highlights",
+        "sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "start": 13569,
+        "turn": null,
+        "verification": "Exact archived Markdown text"
+      }
+    },
+    {
+      "text": "**Adjusted Net Loss:**\n\n\\$(284) million, compared to \\$(36) million in Q4'24\n\n**Adjusted Net Loss Margin:** \n\n(18)%",
+      "category": "Management",
+      "speaker": null,
+      "location": {
+        "candidate_id": "d13:9f4f0f20f24a91c8:14151:14227",
+        "candidate_ids": [
+          "d13:9f4f0f20f24a91c8:14151:14227",
+          "d13:9f4f0f20f24a91c8:14229:14266"
+        ],
+        "contract": 3,
+        "end": 14266,
+        "kind": "archived Markdown",
+        "markdown_end": 14266,
+        "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "markdown_start": 14151,
+        "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "page": null,
+        "section": "Adjusted Net Loss<sup>1</sup>",
+        "sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "start": 14151,
+        "turn": null,
+        "verification": "Exact archived Markdown text"
+      }
+    },
+    {
+      "text": "#### **Adjusted EBITDA:**\n\n\\$898 million compared to \\$486 million in Q4'24\n\n**Adjusted EBITDA Margin:**\n\n57%",
+      "category": "Management",
+      "speaker": null,
+      "location": {
+        "candidate_id": "d13:9f4f0f20f24a91c8:15222:15297",
+        "candidate_ids": [
+          "d13:9f4f0f20f24a91c8:15222:15297",
+          "d13:9f4f0f20f24a91c8:15299:15331"
+        ],
+        "contract": 3,
+        "end": 15331,
+        "kind": "archived Markdown",
+        "markdown_end": 15331,
+        "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "markdown_start": 15222,
+        "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "page": null,
+        "section": "Adjusted EBITDA:",
+        "sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "start": 15222,
+        "turn": null,
+        "verification": "Exact archived Markdown text"
+      }
+    },
+    {
+      "text": "#### **Revenue Backlog:**\n\n\\$66.8 billion, up 342% YoY driven by substantial growth from existing and new customers including large deals with AI labs, hyperscaler cloud customers, enterprises and AI natives",
+      "category": "Management",
+      "speaker": null,
+      "location": {
+        "candidate_id": "d13:9f4f0f20f24a91c8:15473:15680",
+        "contract": 3,
+        "end": 15680,
+        "kind": "archived Markdown",
+        "markdown_end": 15680,
+        "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "markdown_start": 15473,
+        "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "page": null,
+        "section": "Revenue Backlog:",
+        "sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "start": 15473,
+        "turn": null,
+        "verification": "Exact archived Markdown text"
+      }
+    },
+    {
+      "text": "**Capital Expenditures:** \\$8.2 billion driven by scaling our platform to meet customer demand",
+      "category": "Management",
+      "speaker": null,
+      "location": {
+        "candidate_id": "d13:9f4f0f20f24a91c8:16579:16673",
+        "contract": 3,
+        "end": 16673,
+        "kind": "archived Markdown",
+        "markdown_end": 16673,
+        "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "markdown_start": 16579,
+        "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "page": null,
+        "section": "Revenue Backlog <sup>1</sup>",
+        "sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "start": 16579,
+        "turn": null,
+        "verification": "Exact archived Markdown text"
+      }
+    }
+  ]
+}

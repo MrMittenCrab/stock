@@ -6,13 +6,24 @@ from pathlib import Path
 from . import sources
 from .archive import documents
 from .core import ROOT
-from .evidence import extract, IntegrityError
+from .evidence import extract, IntegrityError, quality_flags
 
 
 def match_key(p):
     loc=p['location']
     return (loc.get('markdown_sha256',loc.get('sha256')),loc.get('markdown_start',loc.get('start')),
             loc.get('markdown_end',loc.get('end')),p['text'])
+
+
+def review_passages(passages):
+    lines=['All proposed passages. Exact source verification does not prove relevance.',
+           'Review warnings are advisory; unflagged text still requires judgment.']
+    for i,p in enumerate(passages,1):
+        flags=quality_flags(p['text'])
+        lines.append(f"\n[{i}/{len(passages)}] {p['location']['candidate_id']} · {', '.join(p['topics'])}")
+        lines.extend('! '+flag for flag in flags)
+        lines.append(p['text'])
+    return '\n'.join(lines)
 
 
 def rebuild(store,ticker,reference,cursor_factory,progress,approve):
@@ -41,11 +52,8 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             else: unmatched.append((ident,topic,present))
         review=getattr(progress,'review',progress)
         review(f'Previous {len(previous)} · Proposed {len(proposed)} passages · {len(transferred)} manual topic overrides transferable')
-        def quality(ps):
-            return f'{sum("|" in p["text"] for p in ps)} table-containing; {sum(len(p["text"].split())<8 for p in ps)} short; {sum(bool(p["speaker"]) for p in ps)} named'
-        review('Previous: '+quality(previous)+' · Proposed: '+quality(proposed))
-        review('Relevance is model-judged; inspect these source quotations before approval:')
-        for p in proposed[:5]: review(f'{p["location"]["candidate_id"]} · {", ".join(p["topics"])}\n{p["text"]}')
+        review(f"Quality concerns: previous {sum(bool(quality_flags(p['text'])) for p in previous)}; proposed {sum(bool(quality_flags(p['text'])) for p in proposed)} (advisory)")
+        getattr(progress,'review_all',review)(review_passages(proposed))
         for ident,topic,present in unmatched: review(f'Unmatched manual correction: {ident} · {topic}={bool(present)}')
         if unmatched:
             progress('Replacement blocked: unmatched manual corrections require explicit reconciliation. Original evidence retained.')
@@ -73,6 +81,6 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             now=time.time()
             store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,3)',(doc['id'],now,doc['source_sha256']))
             store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
-            store.db.execute('DELETE FROM source_work_v3 WHERE document_id=?',(doc['id'],))
+            # Retain staging checkpoints and model selections for audit.
         progress(f'Replaced document {doc["id"]} · {len(proposed)} passages')
         return True

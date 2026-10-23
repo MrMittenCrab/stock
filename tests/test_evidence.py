@@ -250,3 +250,100 @@ def test_cursor_http_auth_failure_stops_document_calls(monkeypatch):
  monkeypatch.setattr('stock.sort_process.run',run)
  with pytest.raises(AuthenticationError):cursor.extract(dict(candidates=[],text=''),'')
  assert run.call_count==1
+
+@pytest.mark.parametrize('text', ['**11**\n\nData Centers Added in 2025', 'Active Power Contracted Power\n\n**850MW+ 3.1GW+**', '**43**\n\nActive Data Centers'])
+def test_layout_fragments_cannot_be_selected(text):
+ cs=candidates(text,doc(),digest(text))
+ ps,errors=resolve([selection(cs)],cs,text,doc(),digest(text))
+ assert not ps and errors
+
+@pytest.mark.parametrize('text', ['Demand exceeds supply.', '**Revenue:** $1.6 billion, up 110% YoY driven by demand.', '**Adjusted Net Loss:**\n\n$(284) million, compared to $(36) million in Q4\'24', 'We expect margins to decline.'])
+def test_short_and_quantitative_claims_remain_selectable(text):
+ cs=candidates(text,doc(),digest(text))
+ assert resolve([selection(cs)],cs,text,doc(),digest(text))[0]
+
+def test_review_all_passages(staged):
+ from stock.rebuild import review_passages
+ ps=[dict(text=f'Demand exceeds supply {i}.',topics=['Market'],location={'candidate_id':str(i)}) for i in range(8)]
+ rendered=review_passages(ps)
+ assert all(f'{i+1}/8' in rendered and p['text'] in rendered for i,p in enumerate(ps))
+ assert 'verification' in rendered.lower() and 'relevance' in rendered.lower()
+
+def test_checkpoint_contract_isolated_preserved(staged):
+ s,d,m=staged
+ from stock.evidence import schema
+ schema(s)
+ with s.db:s.db.execute('insert into source_work_v3 values(?,?,?,?)',(d['id'],digest(Path(d['original']).read_text()),0,json.dumps(dict(version=3,complete=True,accepted=[]))))
+ assert extract(s,d,m,lambda _:None)[0]
+ assert s.db.execute('select count(*) from source_work_v3').fetchone()[0]==2
+
+def test_actual_eight_live_passages_and_readability():
+ from stock.evidence import layout_errors,quality_flags
+ frozen=json.loads((FIX/'document-13-live.json').read_text())
+ text=(FIX/'document-13-live.md').read_text();h=digest(text)
+ assert h==frozen['markdown_sha256']
+ cs=candidates(text,doc(),h);lookup={c['id']:c for c in cs}
+ assert len(frozen['passages'])==8
+ for i,p in enumerate(frozen['passages']):
+  loc=p['location'];assert text[loc['start']:loc['end']]==p['text']
+  ids=loc.get('candidate_ids',[loc['candidate_id']]);group=[lookup[x] for x in ids]
+  accepted,errors=resolve([selection(group)],cs,text,doc(),h)
+  assert bool(errors)==(i<3)
+  assert bool(accepted)==(i>=3)
+  assert bool(layout_errors(p['text']))==(i<3)
+ # The ambiguous power layout is a readability failure. Count tiles can be
+ # interpreted, but do not offer commentary. Neither is measured by table count.
+ assert all('|' not in p['text'] for p in frozen['passages'])
+ assert quality_flags(frozen['passages'][1]['text'])
+
+@pytest.mark.parametrize('text', ['**Capacity:**\n\n850MW', '# Capacity\n\n**43**\n\n# Demand\n\nDemand exceeds supply.'])
+def test_label_boundary_never_invents_association(text):
+ from stock.evidence import layout_errors
+ cs=candidates(text,doc(),digest(text))
+ assert all(text[c['start']:c['end']]==c['text'] for c in cs)
+ if text.startswith('**Capacity:'):
+  assert len(cs)==1 and not layout_errors(cs[0]['text'])
+ else:
+  assert layout_errors(cs[0]['text'])
+  assert cs[-1]['text']=='Demand exceeds supply.'
+
+def test_terminal_review_keyboard_pager_receives_all(monkeypatch):
+ from stock.sort_process import Status
+ import pydoc
+ seen=[]
+ monkeypatch.setattr('sys.stdout.isatty',lambda:True)
+ monkeypatch.setattr('sys.stdin.isatty',lambda:True)
+ monkeypatch.setattr(pydoc,'ttypager',seen.append)
+ Status().review_all('All eight\nLast passage')
+ assert len(seen)==1 and 'All eight\nLast passage' in seen[0] and 'b: back' in seen[0]
+
+def test_paired_metrics_colon_does_not_establish_mapping():
+ from stock.evidence import layout_errors
+ assert layout_errors('**Active Power Contracted Power:**\n\n850MW+ 3.1GW+')
+ assert not layout_errors('**Active Power:**\n\n850MW+')
+
+@pytest.mark.parametrize('complete',[False,True])
+def test_old_contract_never_resumes_even_same_hash(staged,complete):
+ from stock.evidence import schema
+ s,d,m=staged;schema(s)
+ payload=dict(version=3,complete=complete,accepted=[],raw=[],rejected=[])
+ with s.db:s.db.execute('insert into source_work_v3 values(?,?,?,?)',(d['id'],digest(Path(d['original']).read_text()),0,json.dumps(payload)))
+ assert extract(s,d,m,lambda _:None)[0]
+ assert json.loads(s.db.execute('select payload from source_work_v3 where markdown_hash=?',(digest(Path(d['original']).read_text()),)).fetchone()[0])==payload
+
+def test_rejected_rebuild_on_database_copy_preserves_all_frozen_tables(staged,tmp_path):
+ import sqlite3
+ s,d,m=staged;ps,_=extract(s,d,m,lambda _:None);sources.publish(s,d,ps,d['source_sha256'])
+ sources.set_topic(s,sources.passages(s,'CRWV.US')[0]['id'],'Capital',True)
+ copied=Store(tmp_path/'copy.sqlite3');s.db.backup(copied.db)
+ tables=('source_passages','source_topics','source_overrides','source_sorts','archive_documents')
+ def snapshot(store):return {t:store.db.execute(f'SELECT * FROM {t} ORDER BY 1').fetchall() for t in tables}
+ before=snapshot(s)
+ assert not rebuild(copied,'CRWV.US',str(d['id']),lambda:m,lambda _:None,lambda:False)
+ assert snapshot(copied)==before==snapshot(s)
+
+def test_exclusion_report_handles_invalid_selection_shape(staged):
+ s,d,m=staged;m.extract=lambda u,c:[dict(ids=7,topics=['Market'],category='Management',speaker=None)]
+ log=[]
+ assert extract(s,d,m,log.append)[0]==[]
+ assert any('1 unresolved' in line for line in log)

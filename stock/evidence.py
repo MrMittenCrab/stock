@@ -23,6 +23,15 @@ individual names, otherwise null. Respect supplied speaker identity and role.
 Select independently useful, self-contained investment claims about competition,
 customers, demand, pricing, products, capacity, financial quality, financing, capital
 intensity, strategy, organization, macro exposure or business/security valuation.
+Sources is primarily original investment commentary and interpretable claims.
+Prefer explanations, causal relationships, forecasts, risks, qualifications and specific
+research insights. Quantitative comparisons are useful when metric, units and meaning
+are independently clear. Mere KPI tiles (even understandable counts) are not enough.
+Do not infer label/value associations from visual column order. Reject orphan values,
+ambiguous paired metrics, presentation residue and repetitive disclosures. Exact Markdown
+is authoritative: never mentally repair unreadable source or invent explanatory prose.
+Distinguish unreadable source from readable but unhelpful selection. Short substantive
+claims are welcome; length and presence of numbers do not determine quality.
 A number or topic mention alone is insufficient. Reject isolated slide slogans and
 generic leadership or optimized-platform assertions without concrete supporting evidence. Be selective; omit legal boilerplate,
 repeated claims, fragments, raw tables, greetings and operator instructions.
@@ -31,6 +40,46 @@ The selected text must identify its metric or claim without relying on a section
 material qualifications by selecting adjacent context IDs. Do not extract all substantive
 text. No arbitrary passage count or word limit. Empty selections are valid.
 '''
+
+
+# Bump when segmentation, screening, batching, or selection/validation rules change.
+# Kept separate from the published v3 provenance schema.
+CONTRACT = 'v3-quality-1'
+
+
+def plain(text):
+    return re.sub(r'[#*`\\]|<[^>]*>', '', text).strip()
+
+
+def layout_errors(text):
+    """Certain layout debris only; relevance remains a semantic judgment.
+
+    A standalone numeric block has no independent meaning. A single value with a colon label directly
+    preceding it is an explicit association; column order alone is not.
+    """
+    blocks=re.split(r'\n\s*\n', text)
+    errors=[]
+    for i,block in enumerate(blocks):
+        value=plain(block)
+        residue=re.sub(r'(?i)\b(?:MW|GW|KW|MWh|GWh|million|billion|trillion|thousand|bps)\b', '', value)
+        # Units attached to numbers (850MW) have no word boundary before M.
+        residue=re.sub(r'(?i)(?<=\d)(?:MW|GW|KW|MWh|GWh|[KMBT])\b', '', residue)
+        if re.search(r'\d',value) and not re.search(r'[A-Za-z]',residue):
+            scalar_count=len(re.findall(r'\d[\d,.]*',value))
+            if scalar_count!=1 or not (i and plain(blocks[i-1]).endswith(':')):
+                errors.append('Orphan numeric block / ambiguous layout association')
+    return sorted(set(errors))
+
+
+def quality_flags(text):
+    flags=layout_errors(text)
+    if re.search(r'<[^>]+>|!\[|\|',text): flags.append('Formatting or table residue: inspect source readability')
+    # Advisory only: short claims and readable comparisons need not have verbs.
+    if not re.search(r'[.!?]|\b(?:compared|driven|because|due|expect|risk|growth|decline|increase)\b',plain(text),re.I):
+        flags.append('Possible fragment or raw metric: inspect investment usefulness')
+    if re.search(r'\d',text) and not layout_errors(text):
+        flags.append('Quantitative evidence: check metric, units, period and qualifications')
+    return flags
 
 
 def candidates(text, doc, digest):
@@ -130,6 +179,8 @@ def resolve(raw, batch, text, doc, digest):
             for left,right in zip(group,group[1:]):
                 gap=text[left['end']:right['start']]
                 if gap.strip(): raise ValueError('Span crosses excluded source block')
+            problems=layout_errors(text[group[0]['start']:group[-1]['end']])
+            if problems: raise ValueError('; '.join(problems))
             links.update((left['id'],right['id']) for left,right in zip(group,group[1:]))
             # Canonical atoms resolve overlaps without dropping distinct claims. Merge topic votes.
             for c in group:
@@ -181,17 +232,25 @@ def extract(store,doc,cursor,progress):
     if not md.is_file() or md.suffix.lower()!='.md': raise IntegrityError('Archived Markdown unavailable; restore or convert through Archive')
     data=md.read_bytes();digest=hashlib.sha256(data).hexdigest();text=data.decode('utf-8-sig')
     if not text.strip(): raise IntegrityError('Archived Markdown is empty')
-    work=list(batches(candidates(text,doc,digest)));all_passages=[];schema(store)
+    atoms=candidates(text,doc,digest)
+    excluded=[c for c in atoms if layout_errors(c['text'])]
+    work=list(batches([c for c in atoms if c not in excluded]));all_passages=[];schema(store)
+    for c in excluded:
+        progress(f"Excluded {c['id']}: {'; '.join(layout_errors(c['text']))}")
+    progress(f'{len(excluded)} layout candidates excluded; semantic omissions are model-judged, not source verification')
+    checkpoint_key=digest+':'+CONTRACT
+    rejected_count=0;selected_ids=set()
+
     def verify():
         if filehash(md)!=digest or filehash(original)!=doc['source_sha256']: raise IntegrityError('Source changed during sorting')
     for index,batch in enumerate(work):
         progress(f'{doc["id"]} · {doc["title"]} · section {index+1}/{len(work)} · preparation')
-        row=store.db.execute('SELECT payload FROM source_work_v3 WHERE document_id=? AND markdown_hash=? AND section_index=?',(doc['id'],digest,index)).fetchone()
+        row=store.db.execute('SELECT payload FROM source_work_v3 WHERE document_id=? AND markdown_hash=? AND section_index=?',(doc['id'],checkpoint_key,index)).fetchone()
         def save(state):
             verify()
             with store.db:
                 store.db.execute('INSERT OR REPLACE INTO source_work_v3 VALUES(?,?,?,?)',
-                    (doc['id'],digest,index,json.dumps(state)))
+                    (doc['id'],checkpoint_key,index,json.dumps(state)))
         def request(items, clarification=None):
             for attempt in range(3):
                 progress(f'{doc["id"]} · section {index+1}/{len(work)} · '+('Cursor' if not attempt else f'retry {attempt}/2'))
@@ -204,8 +263,11 @@ def extract(store,doc,cursor,progress):
                     if attempt==2: raise
         try: state=json.loads(row[0]) if row else None
         except (ValueError,TypeError) as exc: raise IntegrityError('Corrupt v3 checkpoint') from exc
-        if state and state.get('version')!=VERSION: raise IntegrityError('Unsupported checkpoint contract')
+        if state and (state.get('version')!=VERSION or state.get('contract')!=CONTRACT): raise IntegrityError('Unsupported checkpoint contract')
         if state and state['complete']:
+            rejected_count+=len(state.get('rejected',[]))
+            selected_ids.update(x for r in state.get('raw',[]) if isinstance(r,dict) and isinstance(r.get('ids'),list) for x in r['ids'] if isinstance(x,str))
+            progress(f"Reused compatible checkpoint: {len(state['accepted'])} passages; {len(state.get('rejected',[]))} unresolved exclusions (audit retained)")
             all_passages.extend(state['accepted']);continue
         if state:
             raw=state['raw']
@@ -213,13 +275,14 @@ def extract(store,doc,cursor,progress):
             raw=request(batch)
             accepted,rejected=resolve(raw,batch,text,doc,digest)
             # Persist the accepted response before any targeted clarification.
-            state=dict(raw=raw,accepted=accepted,rejected=rejected,complete=False,version=VERSION)
+            state=dict(raw=raw,accepted=accepted,rejected=rejected,complete=False,version=VERSION,contract=CONTRACT)
             save(state)
         rejected=state['rejected']
         allowed={c['id']:c for c in batch}
         clarify_ids=set()
         for rejection in rejected:
             selection=rejection.get('selection')
+            if rejection.get('error','').startswith('Orphan numeric block'): continue
             if isinstance(selection,dict) and isinstance(selection.get('ids'),list):
                 clarify_ids.update(x for x in selection['ids'] if isinstance(x,str) and x in allowed)
         if clarify_ids:
@@ -238,9 +301,12 @@ def extract(store,doc,cursor,progress):
             raw=retained+repaired
         progress(f'{doc["id"]} · section {index+1}/{len(work)} · validation')
         accepted,remaining=resolve(raw,batch,text,doc,digest)
-        save(dict(accepted=accepted,rejected=remaining,initial_rejections=rejected,complete=True,version=VERSION))
+        save(dict(raw=raw,accepted=accepted,rejected=remaining,initial_rejections=rejected,complete=True,version=VERSION,contract=CONTRACT))
         all_passages.extend(accepted)
-        if remaining: progress(f'{doc["id"]} · section {index+1} · {len(accepted)} accepted · {len(remaining)} rejected (audit checkpoint retained)')
+        rejected_count+=len(remaining)
+        selected_ids.update(x for r in raw if isinstance(r,dict) and isinstance(r.get('ids'),list) for x in r['ids'] if isinstance(x,str))
+        progress(f'{doc["id"]} · section {index+1} · {len(accepted)} passages · {len(remaining)} unresolved exclusions (audit checkpoint retained)')
+        for rejection in remaining: progress('Excluded selection: '+rejection['error'])
     verify()
     for p in all_passages:
         loc=p['location'];start,end=loc['start'],loc['end']
@@ -249,4 +315,7 @@ def extract(store,doc,cursor,progress):
             raise IntegrityError('Checkpoint quotation or source anchor failed verification')
         # The archived source, never the checkpoint/model copy, supplies the quotation.
         p['text']=text[start:end]
+    review=getattr(progress,'review',progress)
+    omitted_count=len({c['id'] for batch in work for c in batch}-selected_ids)
+    review(f'Exclusions: {len(excluded)} detached numeric/layout candidates; {omitted_count} candidates not selected by Cursor; {rejected_count} unresolved rejected selections. Semantic omissions are not a source-readability verdict.')
     return all_passages,verify
