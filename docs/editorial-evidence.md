@@ -145,14 +145,10 @@ Source-grounded statement: CoreWeave reported revenue of $1.6 billion, up 110% Y
 
 Exact contributing source text (each paragraph can remain a separate reference):
 
-```text
-**Adjusted Net Loss:**
+Serialized as a JSON string to preserve the original trailing formatting space:
 
-\$(284) million, compared to \$(36) million in Q4'24
-
-**Adjusted Net Loss Margin:** 
-
-(18)%
+```json
+"**Adjusted Net Loss:**\n\n\\$(284) million, compared to \\$(36) million in Q4'24\n\n**Adjusted Net Loss Margin:** \n\n(18)%"
 ```
 
 Source-grounded statement: Adjusted net loss was $(284) million, compared to $(36) million in Q4’24; the adjusted net loss margin was negative 18%.
