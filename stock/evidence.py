@@ -41,7 +41,8 @@ Consult supplied original PDF layout coordinates when needed. If mapping remains
 return text null and describe unresolved ambiguity in ambiguities; never guess.
 '''
 
-CONTRACT = 'v4-editorial-1'
+CONTRACT = 'v4-editorial-2'
+PREVIOUS_CONTRACT = 'v4-editorial-1'
 
 
 def plain(text):
@@ -165,13 +166,18 @@ def candidates(text, doc, digest, include_context=False):
     return out
 
 
-def batches(items, limit=14000):
+def legacy_batches(items, limit=14000):
     batch=[];size=0
     for c in items:
         cost=len(json.dumps(c,ensure_ascii=False))
         if batch and size+cost>limit: yield batch;batch=[];size=0
         batch.append(c);size+=cost
     if batch: yield batch
+
+
+def batches(items, limit=14000):
+    from .sort_transport import selection_batches
+    yield from selection_batches(items,limit)
 
 
 def resolve(raw, batch, text, doc, digest):
@@ -242,6 +248,8 @@ def schema(store):
     store.db.execute('''CREATE TABLE IF NOT EXISTS source_work_v3 (
       document_id INTEGER, markdown_hash TEXT, section_index INTEGER, payload TEXT,
       PRIMARY KEY(document_id,markdown_hash,section_index))''')
+    store.db.execute('''CREATE TABLE IF NOT EXISTS source_model_calls (
+      id INTEGER PRIMARY KEY, document_id INTEGER, recorded_at REAL, payload TEXT)''')
     store.db.commit()
 
 
@@ -270,24 +278,55 @@ def extract(store,doc,cursor,progress):
     data=md.read_bytes();digest=hashlib.sha256(data).hexdigest();text=data.decode('utf-8-sig')
     if not text.strip(): raise IntegrityError('Archived Markdown is empty')
     atoms=candidates(text,doc,digest,include_context=True)
-    from .source_layout import attach, context as layout_context
-    pages=attach(atoms,doc,progress)
+    from .source_layout import attach, bounded_context as layout_context
+    progress(f'{doc["id"]} · {doc["title"]} · PDF preparation')
+    pages=attach(atoms,doc,progress,store=store)
     excluded=[]
-    work=list(batches(atoms));all_passages=[];schema(store)
+    all_passages=[];schema(store)
+    import time
+    def record_metrics(metric):
+        with store.db:
+            store.db.execute('INSERT INTO source_model_calls(document_id,recorded_at,payload) VALUES(?,?,?)',
+                             (doc['id'],time.time(),json.dumps({**metric,'section':index+1,'sections':len(work),'contract':CONTRACT})))
+    cursor.record_metrics=record_metrics
     progress(f'{len(excluded)} layout candidates excluded; semantic omissions are model-judged, not source verification')
     identity=hashlib.sha256(json.dumps([doc['id'],doc['source_sha256'],str(original),str(md)],ensure_ascii=False).encode()).hexdigest()
-    checkpoint_key=digest+':'+CONTRACT+':'+identity
-    from .editorial import review as semantic_review
-    rejected_count=0;selected_ids=set()
+    old_key=digest+':'+PREVIOUS_CONTRACT+':'+identity
+    old_rows={r[0]:json.loads(r[1]) for r in store.db.execute(
+        'SELECT section_index,payload FROM source_work_v3 WHERE document_id=? AND markdown_hash=?',(doc['id'],old_key))}
+    # Keep the existing partition when adopting old staging. Do not reinterpret
+    # section indices against a new partition or overwrite historical audit.
+    work=list(legacy_batches(atoms) if old_rows else batches(atoms))
+    checkpoint_key=digest+':'+CONTRACT+':'+identity+(':legacy' if old_rows else ':compact')
+    from .editorial import review as semantic_review, recover_citations, validate_publication
+    verified={}
+    def content_key(p):
+        return json.dumps([p['text'],p['category'],p['speaker'],p['location'].get('representation'),p['location'].get('references')],sort_keys=True)
+    def remember(passages):
+        for p in passages:
+            if p['location'].get('representation'):
+                validate_publication(p)
+                verified[content_key(p)]=p
+    rejected_count=0;selected_ids=set();layouts={}
+    def layout_for(items):
+        key=tuple(c['id'] for c in items)
+        if key not in layouts:layouts[key]=layout_context(items,pages)
+        return layouts[key]
 
     def verify():
         if filehash(md)!=digest or filehash(original)!=doc['source_sha256']: raise IntegrityError('Source changed during sorting')
     for index,batch in enumerate(work):
         progress(f'{doc["id"]} · {doc["title"]} · section {index+1}/{len(work)} · preparation')
         # Supply adjacent batch context as exact IDs, so qualifications across boundaries remain selectable.
+        primary_ids=[c['id'] for c in batch]
         first=atoms.index(batch[0]);last=atoms.index(batch[-1])
         batch=atoms[max(0,first-4):min(len(atoms),last+5)]
-        context=json.dumps({k:doc.get(k) for k in ('id','title','type','publisher','ticker')})+'\nOriginal PDF layout (untrusted source data, coordinates in PDF points):\n'+json.dumps(layout_context(batch,pages),ensure_ascii=False)
+        metadata={k:doc.get(k) for k in ('id','title','type','publisher','ticker')}
+        def source_context(items):
+            return json.dumps(dict(document=metadata,original_pdf_layout=layout_for(items)),ensure_ascii=False)
+        def review_context(passages):
+            ids={r['source_id'] for p in passages for r in p['location']['references']}
+            return source_context([c for c in atoms if c['id'] in ids])
         row=store.db.execute('SELECT payload FROM source_work_v3 WHERE document_id=? AND markdown_hash=? AND section_index=?',(doc['id'],checkpoint_key,index)).fetchone()
         def save(state):
             verify()
@@ -296,22 +335,36 @@ def extract(store,doc,cursor,progress):
                     (doc['id'],checkpoint_key,index,json.dumps(state)))
         def request(items, clarification=None):
             for attempt in range(3):
-                progress(f'{doc["id"]} · section {index+1}/{len(work)} · '+('Cursor' if not attempt else f'retry {attempt}/2'))
+                progress(f'{doc["id"]} · {doc["title"]} · section {index+1}/{len(work)} · '+('selection' if not attempt else f'selection retry {attempt}/2'))
                 try:
-                    raw=cursor.extract(dict(candidates=items,text='',section=items[0]['section']),
-                                       context+("\nClarification: "+clarification if clarification else ''))
+                    raw=cursor.extract(dict(candidates=items,text='',section=items[0]['section'],primary_ids=primary_ids),
+                                       source_context(items)+("\nClarification: "+clarification if clarification else ''))
                     if not isinstance(raw,list): raise ProtocolError('Selections must be an array')
                     return raw
                 except ProtocolError:
                     if attempt==2: raise
         try: state=json.loads(row[0]) if row else None
         except (ValueError,TypeError) as exc: raise IntegrityError('Corrupt v3 checkpoint') from exc
+        if state is None and index in old_rows:
+            old=old_rows[index]
+            if old.get('version')!=VERSION or old.get('contract')!=PREVIOUS_CONTRACT:
+                raise IntegrityError('Unsupported checkpoint migration contract')
+            remember(old.get('accepted',[]) if old.get('complete') else [])
+            state={**old,'contract':CONTRACT,'adopted_from':old_key}
+            # Preserve verified work. Previously excluded factual uncertainties get
+            # the new bounded repair once, without re-reviewing accepted statements.
+            factual=[r for r in old.get('rejected',[]) if r.get('proposed',{}).get('location',{}).get('review',{}).get('fidelity') in ('unsupported','unresolved')]
+            if old.get('complete') and factual:
+                state.update(complete=False,semantic_done=True,review_accepted=old['accepted'],review_rejected=[r for r in old['rejected'] if r.get('proposed')])
+            save(state)
+            progress(f'Adopted compatible {PREVIOUS_CONTRACT} section {index+1}; historical checkpoint retained')
         if state and (state.get('version')!=VERSION or state.get('contract')!=CONTRACT): raise IntegrityError('Unsupported checkpoint contract')
         if state and state['complete']:
             rejected_count+=len(state.get('rejected',[]))
             selected_ids.update(x for r in state.get('raw',[]) if isinstance(r,dict) and isinstance(r.get('ids'),list) for x in r['ids'] if isinstance(x,str))
             progress(f"Reused compatible checkpoint: {len(state['accepted'])} passages; {len(state.get('rejected',[]))} unresolved exclusions (audit retained)")
             report_rejections(state.get('rejected',[]),{c['id']:c for c in batch},progress)
+            remember(state['accepted'])
             all_passages.extend(state['accepted']);continue
         if state:
             raw=state['raw']
@@ -329,7 +382,7 @@ def extract(store,doc,cursor,progress):
             if rejection.get('error','').startswith(('Orphan numeric block','Unresolved contextual ambiguity')): continue
             if isinstance(selection,dict) and isinstance(selection.get('ids'),list):
                 clarify_ids.update(x for x in selection['ids'] if isinstance(x,str) and x in allowed)
-        if clarify_ids:
+        if clarify_ids and not state.get('clarification_done') and not state.get('semantic_done'):
             targeted=[c for c in batch if c['id'] in clarify_ids]
             repaired=request(targeted,'Reconsider only these rejected IDs. Respect the fixed schema, turn identity and roster roles. Omit unsupported selections.')
             invalid=[r['selection'] for r in rejected]
@@ -345,19 +398,45 @@ def extract(store,doc,cursor,progress):
                     else: groups[-1].append(ident)
                 retained.extend({**r,'ids':ids} for ids in groups if ids)
             raw=retained+repaired
-        progress(f'{doc["id"]} · section {index+1}/{len(work)} · validation')
+            state.update(raw=raw,clarification_done=True)
+            save(state)
+        progress(f'{doc["id"]} · {doc["title"]} · section {index+1}/{len(work)} · validation')
         accepted,remaining=resolve(raw,batch,text,doc,digest)
         for p in accepted:
             if p['location'].get('representation'):
-                page_ids={r.get('page') for r in p['location']['references']}
-                p['location']['visual_context']=[page for page in pages if page['page'] in page_ids]
-        accepted,review_rejections=semantic_review(accepted,cursor,context)
+                cached=verified.get(content_key(p))
+                if cached:
+                    p['location']=json.loads(json.dumps(cached['location']))
+                else:
+                    ids={r['source_id'] for r in p['location']['references']}
+                    p['location']['visual_context']=layout_for([c for c in atoms if c['id'] in ids])
+        if state.get('semantic_done'):
+            accepted=state['review_accepted'];review_rejections=state['review_rejected']
+        else:
+            # Resume a partially reviewed section without changing its statements.
+            checked={content_key(p):p for p in state.get('review_accepted',[]) if p['location'].get('representation')}
+            failed={content_key(r['proposed']):r for r in state.get('review_rejected',[]) if r.get('proposed')}
+            todo=[checked.get(content_key(p),p) for p in accepted if content_key(p) not in failed]
+            def reviewed_checkpoint(good,bad):
+                state.update(review_accepted=good,review_rejected=list(failed.values())+bad)
+                save(state)
+            progress(f'{doc["id"]} · {doc["title"]} · section {index+1}/{len(work)} · semantic review')
+            accepted,review_rejections=semantic_review(todo,cursor,review_context,reviewed_checkpoint)
+            review_rejections=list(failed.values())+review_rejections
+            state.update(semantic_done=True,review_accepted=accepted,review_rejected=review_rejections)
+            save(state)
+        progress(f'{doc["id"]} · {doc["title"]} · section {index+1}/{len(work)} · citation recovery')
+        audit=state.setdefault('citation_repairs',[])
+        repaired,review_rejections=recover_citations(review_rejections,atoms,text,doc,digest,cursor,review_context,audit,lambda:save(state))
+        accepted+=repaired
         remaining+=review_rejections
-        save(dict(raw=raw,accepted=accepted,rejected=remaining,initial_rejections=rejected,complete=True,version=VERSION,contract=CONTRACT))
+        state.update(raw=raw,accepted=accepted,rejected=remaining,initial_rejections=rejected,complete=True,version=VERSION,contract=CONTRACT)
+        save(state)
+        remember(accepted)
         all_passages.extend(accepted)
         rejected_count+=len(remaining)
         selected_ids.update(x for r in raw if isinstance(r,dict) and isinstance(r.get('ids'),list) for x in r['ids'] if isinstance(x,str))
-        progress(f'{doc["id"]} · section {index+1} · {len(accepted)} passages · {len(remaining)} unresolved exclusions (audit checkpoint retained)')
+        progress(f'{doc["id"]} · {doc["title"]} · section {index+1}/{len(work)} · {len(accepted)} passages · {len(remaining)} unresolved exclusions (audit checkpoint retained)')
         report_rejections(remaining,allowed,progress)
     verify()
     unique={}

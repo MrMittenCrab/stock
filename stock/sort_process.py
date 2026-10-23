@@ -1,5 +1,6 @@
 """Single-line terminal status and cancellable Cursor process groups."""
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -8,12 +9,30 @@ import time
 
 ACTIVE_PROCESS = None
 
+class DeferredCursor:
+    """Completed staging can be inspected without starting or authenticating Cursor."""
+    def __init__(self,factory):
+        self.factory=factory;self.cursor=None;self.record_metrics=None
+
+    def extract(self,unit,context):
+        if self.cursor is None:self.cursor=self.factory()
+        self.cursor.record_metrics=self.record_metrics
+        return self.cursor.extract(unit,context)
+
+
 class Status:
     def __init__(self):
-        self.message='Preparing';self.started=time.monotonic();self.stop=threading.Event();self.reviewing=False
+        self.message='Preparing';self.started=time.monotonic();self.stage_started=self.started;self.document=None;self.section=None;self.stop=threading.Event();self.reviewing=False
     def __call__(self,message):
+        if message!=self.message:self.stage_started=time.monotonic()
         self.message=message
-        if self.reviewing or not sys.stdout.isatty(): print(message,flush=True)
+        fields=message.split(' · ')
+        if fields[0].isdigit():
+            self.document=fields[0]
+            match=re.search(r'section (\d+/\d+)',message)
+            if match:self.section=match[1]
+        self.reviewing=False
+        if not sys.stdout.isatty(): print(message,flush=True)
     def review(self,message):
         if not self.reviewing and sys.stdout.isatty(): print()
         self.reviewing=True
@@ -29,13 +48,26 @@ class Status:
         else:
             print(message,flush=True)
 
+    def line(self,width=None):
+        now=time.monotonic()
+        child=ACTIVE_PROCESS
+        state=('running (waiting for result; progress unknown)' if child.poll() is None else 'exited') if child is not None else 'idle'
+        timers=f'stage {now-self.stage_started:.0f}s · total {now-self.started:.0f}s · child {state}'
+        line=f'{self.message} · {timers}'
+        if width is not None and len(line)>=width:
+            stage=self.message.split(' · ')[-1].replace('semantic review','review').replace('citation recovery','repair').replace('preparation','prep')
+            child_state='running; progress unknown' if child is not None and child.poll() is None else ('exited' if child else 'idle')
+            line=f'{self.document or "Stock"} · {self.section or "prep"} · {stage} · stage {now-self.stage_started:.0f}s · total {now-self.started:.0f}s · child {child_state}'
+            if len(line)>=width:
+                line=f'{self.document or "Stock"} {self.section or "prep"} {stage[:10]} · stage {now-self.stage_started:.0f}s total {now-self.started:.0f}s · child {child_state}'
+        return line if width is None else line[:max(1,width-1)]
+
     def __enter__(self):
         def refresh():
             while not self.stop.wait(.5):
                 if sys.stdout.isatty() and not self.reviewing:
                     width=__import__('shutil').get_terminal_size().columns
-                    alive=ACTIVE_PROCESS is not None and ACTIVE_PROCESS.poll() is None
-                    line=f'{self.message} · {time.monotonic()-self.started:.0f}s · '+('child alive; activity is not progress' if alive else 'working')
+                    line=self.line(width)
                     print('\r'+line[:max(1,width-1)].ljust(max(1,width-1)),end='',flush=True)
         self.thread=threading.Thread(target=refresh,daemon=True);self.thread.start();return self
     def __exit__(self,*args):

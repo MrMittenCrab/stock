@@ -1,0 +1,148 @@
+{
+  "baseline_commit": "b3b311d",
+  "same_quality": true,
+  "limitations": "No live model calls; local wall time includes real PDF extraction, matching, serialization and SQLite staging. Replay times cannot establish live model or end-to-end speedup. No tokenizer estimate is presented as actual usage.",
+  "environment": {
+    "os": "Darwin",
+    "architecture": "arm64",
+    "python": "3.14 (project .venv)"
+  },
+  "material": {
+    "document": 13,
+    "source_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+    "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+    "sections": "First two original primary sections, identically covered, 32 primary spans",
+    "accepted_statements": 17,
+    "primary_spans": 32,
+    "pdf_pages": 24
+  },
+  "old": {
+    "accepted": 17,
+    "runs": [
+      {
+        "pdf_parse_seconds": 3.0820952497888356,
+        "layout_prepare_seconds": 3.209493499947712,
+        "normalization_seconds": 0.11119916592724621,
+        "normalization_calls": 2823,
+        "run": "cold",
+        "cursor_calls": 4,
+        "selection_calls": 2,
+        "review_calls": 2,
+        "prompt_chars": 161425,
+        "response_chars": 24540,
+        "local_wall_seconds": 3.2916274999734014,
+        "replay_response_seconds": 0.0005699167959392071,
+        "model_processing_seconds": null,
+        "total_live_wall_seconds": null,
+        "calls": [
+          {
+            "stage": "selection",
+            "prompt_chars": 34434,
+            "prompt_bytes": 34545,
+            "response_chars": 5871,
+            "replay_seconds": 0.0002276250161230564
+          },
+          {
+            "stage": "review",
+            "prompt_chars": 46699,
+            "prompt_bytes": 46810,
+            "response_chars": 7804,
+            "replay_seconds": 0.0001132078468799591
+          },
+          {
+            "stage": "selection",
+            "prompt_chars": 35422,
+            "prompt_bytes": 35438,
+            "response_chars": 5167,
+            "replay_seconds": 0.0001207499299198389
+          },
+          {
+            "stage": "review",
+            "prompt_chars": 44870,
+            "prompt_bytes": 44884,
+            "response_chars": 5698,
+            "replay_seconds": 0.00010833400301635265
+          }
+        ]
+      },
+      {
+        "pdf_parse_seconds": 3.10768604115583,
+        "layout_prepare_seconds": 3.228895249776542,
+        "normalization_seconds": 0.1064238385297358,
+        "normalization_calls": 2823,
+        "run": "resume",
+        "cursor_calls": 0,
+        "selection_calls": 0,
+        "review_calls": 0,
+        "prompt_chars": 0,
+        "response_chars": 0,
+        "local_wall_seconds": 3.2613478328567,
+        "replay_response_seconds": 0,
+        "model_processing_seconds": null,
+        "total_live_wall_seconds": null,
+        "calls": []
+      }
+    ]
+  },
+  "new": {
+    "accepted": 17,
+    "runs": [
+      {
+        "pdf_parse_seconds": 3.126977332867682,
+        "layout_prepare_seconds": 3.140249207848683,
+        "normalization_seconds": 0.006673648487776518,
+        "normalization_calls": 801,
+        "run": "cold",
+        "cursor_calls": 3,
+        "selection_calls": 1,
+        "review_calls": 2,
+        "prompt_chars": 71447,
+        "response_chars": 16593,
+        "local_wall_seconds": 3.242888124892488,
+        "replay_response_seconds": 0.0006070421077311039,
+        "model_processing_seconds": null,
+        "total_live_wall_seconds": null,
+        "calls": [
+          {
+            "stage": "selection",
+            "prompt_chars": 30116,
+            "prompt_bytes": 30225,
+            "response_chars": 7548,
+            "replay_seconds": 0.00038820900954306126
+          },
+          {
+            "stage": "review",
+            "prompt_chars": 33283,
+            "prompt_bytes": 33392,
+            "response_chars": 8499,
+            "replay_seconds": 0.00020108302123844624
+          },
+          {
+            "stage": "review",
+            "prompt_chars": 8048,
+            "prompt_bytes": 8048,
+            "response_chars": 546,
+            "replay_seconds": 1.7750076949596405e-05
+          }
+        ]
+      },
+      {
+        "pdf_parse_seconds": 0,
+        "layout_prepare_seconds": 0.005449334159493446,
+        "normalization_seconds": 0,
+        "normalization_calls": 0,
+        "run": "resume",
+        "cursor_calls": 0,
+        "selection_calls": 0,
+        "review_calls": 0,
+        "prompt_chars": 0,
+        "response_chars": 0,
+        "local_wall_seconds": 0.04006895795464516,
+        "replay_response_seconds": 0,
+        "model_processing_seconds": null,
+        "total_live_wall_seconds": null,
+        "calls": []
+      }
+    ]
+  }
+}

@@ -296,3 +296,14 @@ def test_replay_actual_live_cursor_selection_and_independent_review(monkeypatch)
  validate_publication(accepted[0])
  assert len(accepted[0]['location']['references'])==7
  assert 'illustrative' in accepted[0]['text'] and '850MW+' in accepted[0]['text']
+
+
+def test_completed_rebuild_review_does_not_launch_cursor(staged_editorial):
+ from stock.evidence import extract
+ from stock.rebuild import rebuild
+ from unittest.mock import Mock
+ s,d,m=staged_editorial
+ extract(s,d,m,lambda _:None)
+ factory=Mock(side_effect=AssertionError('Verified staging does not require Cursor'))
+ assert not rebuild(s,'CRWV.US',str(d['id']),factory,lambda _:None,lambda:False)
+ factory.assert_not_called()

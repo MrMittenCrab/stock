@@ -126,7 +126,7 @@ def test_status_timer_and_child_cancellation(monkeypatch):
  with Status() as status:
   status('13 · section 1 · Cursor');time.sleep(.6)
  assert '\r13 · section 1 · Cursor' in output.getvalue()
- assert 'working' in output.getvalue()
+ assert 'child idle' in output.getvalue() and 'stage ' in output.getvalue() and 'total ' in output.getvalue()
  p=Mock();p.communicate.side_effect=[KeyboardInterrupt,('','')];p.poll.return_value=None;p.pid=123
  monkeypatch.setattr(process.subprocess,'Popen',lambda *a,**k:p)
  kill=Mock();monkeypatch.setattr(process.os,'killpg',kill)

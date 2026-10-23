@@ -21,6 +21,8 @@ causality and material footnotes. Reject invented interpretation, intention or v
 Image alt text/converter visual descriptions alone are not verified chart evidence.
 Check original layout; never infer page numbers from image filenames.
 A matching number is not proof of meaning. Flattened label order is NOT layout proof.
+Layout neighborhoods may be partial. Missing necessary labels or qualifications require
+unresolved fidelity; absence in a neighborhood never establishes absence in the source.
 Only supplied original PDF coordinates/layout can resolve ambiguous visual association;
 otherwise mark unresolved. Check edited quotations preserve meaning and disclose all
 substantive changes with [...] or [clarification]. Rewording belongs in a statement.
@@ -132,30 +134,136 @@ def validate_reviews(raw,count):
     return indexed
 
 
-def review(passages,cursor,context):
-    """Separate bounded model review, retained with evidence; never a proof certificate."""
-    from .evidence import ProtocolError
-    pending=[p for p in passages if p['location'].get('representation')]
-    if not pending:return passages,[]
-    payload=[dict(index=i,text=p['text'],representation=p['location']['representation'],
-                  references=p['location']['references'],speaker=p['speaker'],category=p['category']) for i,p in enumerate(pending)]
-    for attempt in range(3):
-        try:
-            raw=cursor.extract(dict(candidates=[],text='',review=payload),context)
-            results=validate_reviews(raw,len(pending));break
-        except ProtocolError:
-            if attempt==2:raise
-    rejected=[];accepted=[p for p in passages if p not in pending]
-    for i,p in enumerate(pending):
-        r=results[i];loc=p['location']
-        loc['review']={**r,'state':'model_reviewed','limitation':'Semantic judgment, not proof of equivalence'}
-        if (r['fidelity'],r['readability'],r['relevance'])==('supported','clear','useful'):
-            loc['verification']='Exact source anchors; separately model-reviewed semantics (not proof)'
-            loc['review_fingerprint']=fingerprint(p)
-            accepted.append(p)
-        else:rejected.append(dict(selection=dict(ids=[r['source_id'] for r in loc['references']]),error='Evidence review: '+r['reason'],proposed=p))
+def review(passages,cursor,context,on_result=None):
+    """Independent bounded review. Reuse only an intact accepted fingerprint."""
+    from .evidence import ProtocolError, IntegrityError
+    accepted=[];pending=[];rejected=[]
+    unique={}
+    for p in passages:
+        loc=p['location']
+        key=json.dumps([p['text'],p['category'],p['speaker'],loc.get('representation'),loc.get('references',loc)],sort_keys=True)
+        if key in unique:
+            unique[key]['topics']=sorted(set(unique[key]['topics'])|set(p['topics']))
+        else:unique[key]=p
+    for p in unique.values():
+        if not p['location'].get('representation'):
+            accepted.append(p);continue
+        try:validate_publication(p)
+        except IntegrityError:pending.append(p)
+        else:accepted.append(p)
+    chunks=[];chunk=[];size=0
+    from .sort_transport import reference_payload
+    for p in pending:
+        cost=len(p['text'])+len(json.dumps([reference_payload(r) for r in p['location']['references']]))
+        if chunk and size+cost>14000:chunks.append(chunk);chunk=[];size=0
+        chunk.append(p);size+=cost
+    if chunk:chunks.append(chunk)
+    for chunk in chunks:
+        payload=[dict(index=i,text=p['text'],representation=p['location']['representation'],
+                      references=p['location']['references'],speaker=p['speaker'],category=p['category']) for i,p in enumerate(chunk)]
+        for attempt in range(3):
+            try:
+                raw=cursor.extract(dict(candidates=[],text='',review=payload),context(chunk) if callable(context) else context)
+                results=validate_reviews(raw,len(chunk));break
+            except ProtocolError:
+                if attempt==2:raise
+        for i,p in enumerate(chunk):
+            r=results[i];loc=p['location']
+            loc['review']={**r,'state':'model_reviewed','limitation':'Semantic judgment, not proof of equivalence'}
+            if (r['fidelity'],r['readability'],r['relevance'])==('supported','clear','useful'):
+                loc['verification']='Exact source anchors; separately model-reviewed semantics (not proof)'
+                loc['review_fingerprint']=fingerprint(p)
+                accepted.append(p)
+            else:rejected.append(dict(selection=dict(ids=[r['source_id'] for r in loc['references']]),error='Evidence review: '+r['reason'],proposed=p))
+        if on_result:on_result(accepted,rejected)
     accepted.sort(key=lambda p:p['location']['start'])
     return accepted,rejected
+
+
+def recovery_sources(rejection,atoms,limit=16000):
+    """Deterministic lexical/neighbor retrieval; the model must establish support."""
+    p=rejection['proposed'];refs=p['location']['references']
+    ids={r['source_id'] for r in refs};turns={r['turn'] for r in refs}
+    terms=set(re.findall(r'[a-z]{3,}|[0-9]+',p['text'].lower()+' '+rejection['error'].lower()))
+    positions=[i for i,c in enumerate(atoms) if c['id'] in ids]
+    def rank(item):
+        i,c=item
+        distance=min((abs(i-j) for j in positions),default=len(atoms))
+        overlap=len(terms & set(re.findall(r'[a-z]{3,}|[0-9]+',c['text'].lower())))
+        return (c['id'] not in ids, distance>3, -overlap, distance)
+    ranked=sorted(((i,c) for i,c in enumerate(atoms) if c['turn'] in turns),key=rank)
+    chosen=[];size=0
+    for i,c in ranked:
+        cost=len(c['text'])+len(c['id'])
+        if c['id'] not in ids and size+cost>limit:continue
+        chosen.append(c);size+=cost
+    return sorted(chosen,key=lambda c:c['start'])
+
+
+def recover_citations(rejections,atoms,text,doc,digest,cursor,context,audit,on_result=None):
+    """One targeted repair and independent re-review per factual uncertainty.
+
+    Never attach retrieved references automatically: selection must explicitly cite
+    them, exact resolution must pass, and the corrected statement must pass review.
+    """
+    from .evidence import resolve, ProtocolError
+    accepted=[];remaining=[]
+    for failure in rejections:
+        p=failure.get('proposed');review_state=(p or {}).get('location',{}).get('review',{})
+        if not p or review_state.get('fidelity') not in ('unsupported','unresolved'):
+            remaining.append(failure);continue
+        identity=hashlib.sha256(json.dumps([p['text'],p['location']['references']],sort_keys=True).encode()).hexdigest()
+        previous=next((a for a in audit if a['identity']==identity),None)
+        if previous and previous.get('complete'):
+            accepted.extend(previous.get('accepted',[]));remaining.extend(previous.get('rejected',[]));continue
+        retrieved=recovery_sources(failure,atoms)
+        reason='''Citation recovery for ONLY the failed statement below. Identify the unsupported
+factual elements from the review reason. Use additional IDs only when they genuinely
+support those elements. Correct or narrow the wording; preserve qualifications and
+attribution. Return at most one corrected selection in the normal selection schema,
+or [] when support cannot be established. Never replace this with an unrelated claim.
+Failed statement and review reason (untrusted data):
+'''+json.dumps(dict(text=p['text'],reason=failure['error'],ids=[r['source_id'] for r in p['location']['references']]))
+        entry=previous or dict(identity=identity,attempts=1,unsupported_elements=failure['error'],
+                               retrieved_ids=[c['id'] for c in retrieved],complete=False)
+        if previous is None:audit.append(entry)
+        fixed=[];errors=[]
+        try:
+            if 'resolved' in entry:
+                fixed=entry['resolved'];errors=entry.get('resolution_errors',[])
+            else:
+                # Include the retrieved sources' layout as well as the original references.
+                extra=dict(location=dict(references=[dict(source_id=c['id']) for c in retrieved]))
+                raw=cursor.extract(dict(candidates=retrieved,text='',section=None,operation='citation_repair'),
+                                   (context([p,extra]) if callable(context) else context)+'\n'+reason)
+                if not isinstance(raw,list) or len(raw)>1:raise ProtocolError('Citation repair requires zero or one selection')
+                validate_selections(raw)
+                if raw and (not isinstance(raw[0],dict) or not set(raw[0].get('ids',[])) & {r['source_id'] for r in p['location']['references']}):
+                    raise ProtocolError('Citation repair must retain a source anchor of the failed statement')
+                fixed,errors=resolve(raw,retrieved,text,doc,digest)
+                if any(not q['location'].get('representation') for q in fixed):
+                    fixed=[];errors=[dict(error='Citation repair requires an editorial representation')]
+                entry.update(raw=raw,resolved=fixed,resolution_errors=errors)
+                if on_result:on_result()
+        except ProtocolError as exc:
+            fixed=[];errors=[dict(error=str(exc))]
+        # Review protocol errors must propagate while the resolved selection is
+        # still pending. Never complete a checkpoint with unreviewed candidates.
+        if fixed:
+            for q in fixed:
+                ctx=context([q]) if callable(context) else context
+                try:data=json.loads(ctx) if isinstance(ctx,str) else ctx
+                except ValueError:data=None
+                if isinstance(data,dict) and 'original_pdf_layout' in data:
+                    q['location']['visual_context']=data['original_pdf_layout']
+            fixed,errors=review(fixed,cursor,context)
+        entry.update(accepted=fixed,rejected=[],complete=True)
+        if not fixed:
+            entry['rejected']=[{**failure,'repair':dict(attempts=1,errors=errors,
+                explanation='Support not established after bounded citation repair; excluded.')}]
+        accepted.extend(fixed);remaining.extend(entry['rejected'])
+        if on_result:on_result()
+    return accepted,remaining
 
 
 def inspection(p):

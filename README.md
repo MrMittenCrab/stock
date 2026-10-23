@@ -351,14 +351,16 @@ stable document/hash/offset candidate IDs to coherent paragraphs and sentence gr
 Cursor judges relevance, fixed topics and supported speaker categories, returning
 compact IDs rather than reproduced quotations. Stock reconstructs selected text
 from verified source characters; repeated wording at different locations is distinct.
-Raw Markdown tables and non-substantive operator turns are excluded.
+Tables and layout context can support explicit editorial reconstructions;
+non-substantive operator turns are excluded.
 
 The installed, authenticated Cursor Agent CLI runs in an empty disposable workspace
 under `.data`, in read-only ask mode with shell, file, web and MCP permissions denied.
 Source text is sent to Cursor's service using existing authentication (`agent login`).
-Stock validates JSON, IDs, topics, roles and source hashes. Protocol errors receive
-bounded retries; authentication/quota rejection stops further calls. The terminal
-shows document/section, stage, elapsed time and child liveness on one line. Ctrl+C
+Stock validates JSON, IDs, topics, roles and source hashes. JSON/schema errors receive
+bounded retries; process timeouts retain staging without automatic retries, and
+authentication/quota rejection stops further calls. The terminal shows document/section,
+stage elapsed, total elapsed and child state; child liveness never implies progress. Ctrl+C
 terminates active Cursor processes and preserves completed checkpoints.
 
 Successful documents publish atomically and freeze their original topics/citations.
@@ -389,6 +391,10 @@ name/role rosters, including plain name lines, before Cursor classifies evidence
 Unverified individual names stay null. Original PDFs and Markdown are unchanged;
 new quotations carry exact Markdown offsets, its SHA-256, and original references.
 Sources preserves frozen legacy citations, native terminal colors and topic editing.
+
+See [the workflow profile, benchmark and resume behavior](docs/sort-efficiency.md)
+for compact source transport, cached PDF preparation, independent review reuse and
+bounded missing-citation repair.
 
 See [the diagnosis and sample evaluation](docs/sort-diagnosis.md) for demonstrated
 failures, regressions, quality findings and remaining limits. Archived user documents

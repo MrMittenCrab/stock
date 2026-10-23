@@ -57,7 +57,8 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
         def published_snapshot():
             return tuple(store.db.execute('SELECT * FROM source_passages WHERE document_id=? ORDER BY id',(doc['id'],)).fetchall())
         snapshot=published_snapshot()
-        proposed,verify=extract(store,doc,cursor_factory(),progress)
+        from .sort_process import DeferredCursor
+        proposed,verify=extract(store,doc,DeferredCursor(cursor_factory),progress)
         keys={}
         for p in proposed: keys.setdefault(match_key(p),[]).append(p)
         overrides=store.db.execute('''SELECT o.passage_id,o.topic,o.present FROM source_overrides o
