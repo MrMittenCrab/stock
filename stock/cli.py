@@ -5,6 +5,16 @@ from .core import Store, symbol
 from .data import Market, DataError
 
 
+def sort_resume_command(args):
+    import shlex
+    command=['stock','sort',args.ticker]
+    if args.rebuild:command+=['--rebuild',args.rebuild]
+    elif args.review_only:command+=['--review-only']
+    for name in ('document_seconds','command_seconds','cursor_requests','request_seconds'):
+        command+=['--'+name.replace('_','-'),str(getattr(args,name))]
+    return shlex.join(command)
+
+
 def main():
     parser=argparse.ArgumentParser(prog='stock',description='US and Hong Kong equities · keyboard terminal')
     commands=parser.add_subparsers(dest='command',required=True)
@@ -63,7 +73,7 @@ def main():
                     except BudgetExceeded as exc:
                         elapsed=int(time.monotonic()-status.started)
                         status.review(f"{status.document or args.ticker} · Paused · {exc} · {elapsed//60:02}:{elapsed%60:02}")
-                        resume=f"stock sort {args.ticker}"+(f" --rebuild {args.rebuild}" if args.rebuild else ' --review-only' if args.review_only else '')
+                        resume=sort_resume_command(args)
                         status.review(f'Resume · {resume} · Log · {status.log_path}')
                         return 1
                     from .insights import entries

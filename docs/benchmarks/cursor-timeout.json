@@ -1,0 +1,167 @@
+{
+  "scope": "Offline reconstruction on SQLite backup; no provider requests or production writes.",
+  "before": {
+    "document": {
+      "id": 13,
+      "evidence_version": 4,
+      "quality_status": "prepared_with_visual_limitations"
+    },
+    "requests": [
+      {
+        "key": "87ad8a3da2ee6feaad20db5442fb6102769e6e09a9b0e4805bb83aa070bb4178",
+        "prompt_chars": 67048,
+        "prompt_bytes": 67232,
+        "anchors": 135,
+        "source_text_chars": 11829,
+        "context_chars": 27703,
+        "context_components": {
+          "archive_quality": 123,
+          "document": 2150,
+          "original_pdf_layout": 14781,
+          "outline": 10576
+        },
+        "layout_pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "key": "349bf3dc2cb04158474c72442f8a6254f9961605cc3c37c64d5f4cd407ad43d1",
+        "prompt_chars": 64925,
+        "prompt_bytes": 65136,
+        "anchors": 89,
+        "source_text_chars": 12572,
+        "context_chars": 27703,
+        "context_components": {
+          "archive_quality": 123,
+          "document": 2150,
+          "original_pdf_layout": 14781,
+          "outline": 10576
+        },
+        "layout_pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "key": "c359965e4dd7d6a6f5da58bda466c16997835618db86112f9f87b0535f36ba18",
+        "prompt_chars": 65871,
+        "prompt_bytes": 66392,
+        "anchors": 138,
+        "source_text_chars": 8873,
+        "context_chars": 27703,
+        "context_components": {
+          "archive_quality": 123,
+          "document": 2150,
+          "original_pdf_layout": 14781,
+          "outline": 10576
+        },
+        "layout_pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "key": "da7f561a2d30f3868aa4e2810daeb8d593ae3cb94e7e5ab3d63c3fdf6ec7e4a6",
+        "prompt_chars": 35220,
+        "prompt_bytes": 35400,
+        "anchors": 9,
+        "source_text_chars": 1556,
+        "context_chars": 27703,
+        "context_components": {
+          "archive_quality": 123,
+          "document": 2150,
+          "original_pdf_layout": 14781,
+          "outline": 10576
+        },
+        "layout_pages": [
+          5,
+          6
+        ]
+      }
+    ]
+  },
+  "after": {
+    "document": {
+      "id": 13,
+      "evidence_version": 4,
+      "quality_status": "prepared_with_visual_limitations"
+    },
+    "requests": [
+      {
+        "key": "87ad8a3da2ee6feaad20db5442fb6102769e6e09a9b0e4805bb83aa070bb4178",
+        "prompt_chars": 64131,
+        "prompt_bytes": 64315,
+        "anchors": 135,
+        "source_text_chars": 11829,
+        "context_chars": 27703,
+        "context_components": {
+          "archive_quality": 123,
+          "document": 2150,
+          "original_pdf_layout": 14781,
+          "outline": 10576
+        },
+        "layout_pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "key": "349bf3dc2cb04158474c72442f8a6254f9961605cc3c37c64d5f4cd407ad43d1",
+        "prompt_chars": 62288,
+        "prompt_bytes": 62499,
+        "anchors": 89,
+        "source_text_chars": 12572,
+        "context_chars": 27703,
+        "context_components": {
+          "archive_quality": 123,
+          "document": 2150,
+          "original_pdf_layout": 14781,
+          "outline": 10576
+        },
+        "layout_pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "key": "c359965e4dd7d6a6f5da58bda466c16997835618db86112f9f87b0535f36ba18",
+        "prompt_chars": 62978,
+        "prompt_bytes": 63499,
+        "anchors": 138,
+        "source_text_chars": 8873,
+        "context_chars": 27703,
+        "context_components": {
+          "archive_quality": 123,
+          "document": 2150,
+          "original_pdf_layout": 14781,
+          "outline": 10576
+        },
+        "layout_pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "key": "da7f561a2d30f3868aa4e2810daeb8d593ae3cb94e7e5ab3d63c3fdf6ec7e4a6",
+        "prompt_chars": 33869,
+        "prompt_bytes": 34049,
+        "anchors": 9,
+        "source_text_chars": 1556,
+        "context_chars": 27703,
+        "context_components": {
+          "archive_quality": 123,
+          "document": 2150,
+          "original_pdf_layout": 14781,
+          "outline": 10576
+        },
+        "layout_pages": [
+          5,
+          6
+        ]
+      }
+    ]
+  },
+  "semantic_payloads_equal": true,
+  "context_measurement_note": "context_chars and context_components describe original default-spaced JSON serialization in both snapshots; prompt_chars/prompt_bytes measure actual before/after wire serialization."
+}

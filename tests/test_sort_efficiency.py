@@ -179,3 +179,44 @@ def test_corrupt_layout_cache_is_recomputed(tmp_path,monkeypatch):
  with store.db:store.db.execute("update cache set payload='invalid' where key=?",('sort-layout-v2:'+doc['source_sha256'],))
  assert attach(cs,doc,lambda _:None,store=store)==layout
  assert parse.call_count==2
+
+def test_transport_compacts_json_without_changing_payload(monkeypatch):
+ from stock.sort import Cursor
+ import stock.sort_process as process
+ from subprocess import CompletedProcess
+ prompts=[]
+ def run(command,**kwargs):
+  prompts.append(command[-1]);return CompletedProcess(command,0,json.dumps({'type':'result','result':'{"selections":[]}'}),'')
+ monkeypatch.setattr(process,'run',run)
+ cursor=Cursor.__new__(Cursor);cursor.command='offline'
+ body='Exact  spacing\n\nSecond line'
+ anchors=candidates(body,DOC,hashlib.sha256(body.encode()).hexdigest(),True)
+ cursor.extract(dict(candidates=anchors,text=''),{'document':{'title':'Exact title'}})
+ assert '"document":{"title":"Exact title"}' in prompts[0]
+ assert cursor.metrics[0]['prompt_sha256']==hashlib.sha256(prompts[0].encode()).hexdigest()
+ assert cursor.metrics[0]['source_anchors']==len(anchors)
+ payload=json.loads(prompts[0][prompts[0].index('{"context":'):])
+ assert [s['text'] for s in payload['untrusted_section']]==[a['text'] for a in anchors]
+
+
+def test_resume_preserves_budgets_and_quotes_document():
+ from stock.cli import sort_resume_command
+ import argparse,shlex
+ args=argparse.Namespace(ticker='CRWV.US',rebuild='a b.md',review_only=False,document_seconds=1800.,command_seconds=2400.,cursor_requests=19,request_seconds=300.)
+ words=shlex.split(sort_resume_command(args))
+ assert words[:5]==['stock','sort','CRWV.US','--rebuild','a b.md']
+ for flag,value in [('--document-seconds','1800.0'),('--command-seconds','2400.0'),('--cursor-requests','19'),('--request-seconds','300.0')]:
+  assert words[words.index(flag)+1]==value
+
+def test_timeout_records_partial_output_without_content():
+ import sys,pytest
+ from stock.sort_process import run
+ from stock.sort_budget import Budget,BudgetExceeded
+ with Budget(request_seconds=1):
+  with pytest.raises(BudgetExceeded) as caught:
+   run([sys.executable,'-c','import time; print("private-source",flush=True); time.sleep(5)'],text=True,timeout=.2)
+ diagnostic=caught.value.process_diagnostics
+ assert diagnostic['timed_out'] and diagnostic['stdout_bytes']==15
+ assert diagnostic['effective_timeout_seconds']<=.2
+ assert diagnostic['returncode'] is not None
+ assert 'private-source' not in json.dumps(diagnostic)

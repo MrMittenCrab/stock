@@ -118,19 +118,26 @@ def run(command,**kwargs):
     from .sort_budget import CURRENT, BudgetExceeded
     budget=CURRENT.get()
     if budget:timeout=budget.timeout(timeout)
+    started=time.monotonic()
     process=subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True,**kwargs)
     ACTIVE_PROCESS=process
     try:
         stdout,stderr=process.communicate(timeout=timeout)
         return subprocess.CompletedProcess(command,process.returncode,stdout,stderr)
     except BaseException as exc:
+        diagnostic=dict(effective_timeout_seconds=timeout,wall_seconds=time.monotonic()-started,
+            stdout_bytes=len((getattr(exc,'output',None) or b'')),
+            stderr_bytes=len((getattr(exc,'stderr',None) or b'')),timed_out=isinstance(exc,subprocess.TimeoutExpired))
         if process.poll() is None:
             os.killpg(process.pid,signal.SIGTERM)
             try: process.communicate(timeout=3)
             except subprocess.TimeoutExpired:
                 os.killpg(process.pid,signal.SIGKILL);process.communicate()
         if isinstance(exc,subprocess.TimeoutExpired) and budget:
-            raise BudgetExceeded('Time limit' if budget.remaining()<=0 else 'Request timeout') from exc
+            failure=BudgetExceeded('Time limit' if budget.remaining()<=0 else 'Request timeout')
+            failure.process_diagnostics={**diagnostic,'returncode':process.returncode}
+            raise failure from exc
+        exc.process_diagnostics={**diagnostic,'returncode':process.returncode}
         raise
     finally:
         ACTIVE_PROCESS=None
