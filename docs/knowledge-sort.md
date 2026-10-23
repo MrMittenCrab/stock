@@ -1,5 +1,9 @@
 # Sort knowledge architecture: implementation and evidence
 
+Current strategic-commentary contract and document-13 evaluation: [strategic commentary audit](strategic-commentary-audit.md). The `knowledge-2-strategic` refinement retains this architecture while prioritizing distinct strategy, corporate events, execution, source perspective and standalone readability. Its source-specific inventory accepts 24 human-corrected recorded propositions versus 17 surviving the observed live baseline; this does not establish fresh-model recall. Use `.venv/bin/python scripts/validate_knowledge.py` for safe offline validation. Detailed statements require `--show-statements`; another authenticated extraction requires explicit authorization.
+
+The measurements and financial examples below document the original architecture delivery. They are historical evidence, not the current strategic coverage standard. In particular, the timeout below preceded the completed 650.6-second live run audited in the linked report.
+
 Normal `stock sort TICKER` now uses document-level selection and factual reconstruction together, independently reviews batches of cited propositions, resolves uncertainty in one bounded follow-up wave, compares verified facts with plausible library neighbors, and publishes evidence and grouping atomically. A complete 31,048-character document-13 Markdown fixture fits one generation request. Large documents use bounded heading-aware sections and a shared outline; follow-up work can span multiple requests without discarding later claims to satisfy a request cap.
 
 The architecture decision and stage-by-stage diagnosis are in [sort-knowledge.md](architecture/sort-knowledge.md). This supersedes the execution architecture described in `unified-sort.md`, `sort-efficiency.md`, and their historical section benchmark. Historical measurement files remain evidence about those older implementations.
@@ -61,7 +65,7 @@ Original PDF coordinates captured from pages 8, 13 and 18 establish that 60% bel
 
 Other representative recorded propositions retain supplier concentration and equipment availability risks from IPO/filing sources; transcript facts retain actual 2025 capacity separately from 2026 forecasts and period developments. Their exact citations and semantic distinctions are checked by the paired replay. This inventory is representative, not an exhaustive recall score for an entire prospectus or filing.
 
-## Live observation and blocker
+## Historical initial live timeout
 
 One authenticated, extraction-only request used an isolated backup of document 13. It returned no model output before the configured request deadline: **120.08 seconds** total, approximately **2.57 seconds** startup/authentication and **117.51 seconds** inside the model subprocess. No timeout retry ran; no evidence was published anywhere. Retained failure state: `.data/knowledge-validation-1t_z9cqo`.
 
@@ -79,7 +83,7 @@ Final full suite: **347 passed in 126.21 seconds** (`.venv/bin/python -m pytest 
 
 Residual limits: semantic fidelity and materiality are model judgments; long-document global completeness is unproven; lexical equivalence retrieval can miss paraphrases; changed-anchor manual corrections/splits conservatively block replacement rather than guessing a transfer; some charts require visual interpretation beyond text geometry and remain excluded. Artifact contracts are versioned, so future prompt/schema changes must bump the contract rather than silently reuse old reasoning. Exactly-once provider calls cannot be guaranteed if a process dies between a response and its checkpoint commit.
 
-First safe live validation (isolated database; no production publication):
+Historical live-validation command (isolated database; no production publication). Run only with explicit authorization for another authenticated extraction:
 
 ```sh
 .venv/bin/python scripts/validate_knowledge.py --live-document 13 --request-seconds 240

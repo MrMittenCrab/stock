@@ -66,7 +66,7 @@ Risks: model completeness and independent verification remain judgments; lexical
 
 Independent review found and fixed: explicit quarter normalization; scale-header scope for unrelated counts; ambiguity across separate numeric tiles and damaged table headers; original layout must match both source hash and contributing anchors. Period headers in transcripts are neutral exact context anchors, not attributed utterances. Replacement archives historical publication rows and blocks loss of manual split IDs. Correction changes/reset append an audit event. The short-document packer first tests the complete serialized source size, avoiding premature half-budget cuts. Large targeted evidence continues in bounded request batches rather than truncating later claims. Historical eager PDF/extraction helpers are now test-only; their section benchmark is retired. A new replay wrapper restores recorded layout after in-process tests.
 
-Live validation did not return a response within 120 seconds; the complete fresh-model quality/latency and naive baseline comparisons remain acceptance work, not achieved results. See docs/knowledge-sort.md for measurements and a safe isolated validation command.
+The initial live validation timed out after 120 seconds. A later isolated document-13 run completed in 650.6 seconds with 22 verified statements; its actual operations and strategic omissions are examined in [the strategic commentary audit](../strategic-commentary-audit.md). Fresh-model quality and latency for the subsequent strategic refinement remain unverified. Safe offline validation: `.venv/bin/python scripts/validate_knowledge.py`; another authenticated extraction requires explicit authorization.
 
 ## Strategic refinement (`knowledge-2-strategic`)
 

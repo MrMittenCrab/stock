@@ -86,3 +86,9 @@ Safe next validation (offline, no authentication, no publication):
 ```
 
 Detailed offline output: append `--show-statements`. A fresh authenticated document-13 run remains subject to the user's explicit authorization; it is necessary before asserting improved live selection recall or latency.
+
+## Independent delivery recheck
+
+Rechecked the existing refinement against the original isolated database: all five committed operation outputs exactly equal the stored artifacts, all five attempts completed, and only call IDs 4–8 belong to the observed run. All inventory support offsets and the Markdown/PDF hashes match the archived originals. Selective original-PDF reads confirm page 6 corporate-event relationships and pages 14–15 backlog qualifications and capacity-investment rationale.
+
+Fresh offline validation accepted 24/24 corrected recorded propositions. The paired `--baseline 4a58069` replay reproduced 18 → 17 requests and 241,903 → 263,349 prompt characters, preserving all 13 propositions and nine groups with zero resume requests. Full regression: **361 passed in 127.37 seconds**; compilation and `git diff --check` passed. The 200-file preservation manifest still matches exactly. No authenticated extraction or production publication was run. The historical architecture-delivery guide now explicitly distinguishes its earlier timeout and financial examples from this strategic audit and the completed live baseline.
