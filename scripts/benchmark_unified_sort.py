@@ -24,7 +24,14 @@ def _worker(implementation,directory):
  from stock.evidence import extract
  import stock.source_layout as layout
  if hasattr(layout,'selective'):
-  layout.selective=lambda atoms,doc,store: [{**json.loads((ROOT/'tests/fixtures/sort/document-13-power-layout.json').read_text()),'original_sha256':doc['source_sha256'],'matched_source_ids':[a['id'] for a in atoms if a['start'] in (4571,4981,5012)]}] if doc['id']==13 else []
+  def recorded_layout(atoms,doc,store):
+   if doc['id']!=13:return []
+   page=json.loads((ROOT/'tests/fixtures/sort/document-13-power-layout.json').read_text())
+   normalized=layout.normalized
+   body=normalized(''.join(b['text'] for b in page['blocks']))
+   matched=[a['id'] for a in atoms if len(normalized(a['text']))>=12 and normalized(a['text']) in body]
+   return [{**page,'original_sha256':doc['source_sha256'],'matched_source_ids':matched}]
+  layout.selective=recorded_layout
  from stock.editorial import validate_publication
  fix=ROOT/'tests/fixtures/sort'
  data=json.loads((fix/'semantic-coreweave.json').read_text())

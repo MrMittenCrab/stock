@@ -140,7 +140,7 @@ def staged_editorial(tmp_path,monkeypatch):
  from stock.core import Store
  import stock.archive as archive
  monkeypatch.setattr(archive,'ROOT',tmp_path)
- source=tmp_path/'input.md';source.write_text('# Investor Presentation\n\n**11**\n\nData Centers Added in 2025')
+ source=tmp_path/'input.md';source.write_text('# Investor Presentation\n\nData Centers Added in 2025: **11**')
  store=Store(tmp_path/'copy.sqlite3');doc=import_document(store,'CRWV.US',source)
  class Model:
   def __init__(self):self.calls=[];self.wording='CoreWeave added 11 data centers in 2025.';self.fail_review=False

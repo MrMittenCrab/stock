@@ -1,0 +1,1035 @@
+{
+  "provenance": "Immutable knowledge-1 live outputs, 2026-10-23; no simulated model judgments.",
+  "operations": [
+    {
+      "operation": "understand",
+      "output": [
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:3454:3500",
+            "d13:9f4f0f20f24a91c8:3502:3611",
+            "d13:9f4f0f20f24a91c8:4064:4178"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "CoreWeave describes its cloud platform as purpose-built for artificial intelligence and bases a performance claim on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and a SemiAnalysis ClusterMAX rating.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:3613:3748"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "The company says it is rapidly delivering new generations of infrastructure at scale and has an unparalleled track record of being among the first to market.",
+          "topics": [
+            "Product",
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:3750:3855"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "The company says it continues to invest up and down the technology stack to deliver a full-service AI cloud platform.",
+          "topics": [
+            "Product",
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:3857:3937"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "The company says it serves most of the world's leading AI labs, hyperscalers, and AI enterprises.",
+          "topics": [
+            "Market"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:4180:4224",
+            "d13:9f4f0f20f24a91c8:4296:4500"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "CoreWeave Cloud is described as having every layer purpose-built for AI workloads and as optimized for low latency, high throughput, and operational efficiency to support large-scale AI training and inference.",
+          "topics": [
+            "Product",
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:4571:4761",
+            "d13:9f4f0f20f24a91c8:4945:4951",
+            "d13:9f4f0f20f24a91c8:4953:4979"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "As of December 31, 2025, the company reported 11 data centers added in 2025; the related footprint graphic is an illustrative representation and may not precisely reflect all current locations or capacities.",
+          "topics": [
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:4571:4761",
+            "d13:9f4f0f20f24a91c8:5276:5331",
+            "d13:9f4f0f20f24a91c8:5333:5339",
+            "d13:9f4f0f20f24a91c8:5341:5360"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "As of December 31, 2025, the company reported 43 active data centers, subject to the same illustrative-footprint qualification.",
+          "topics": [
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [
+            "Active-versus-contracted pairing is taken from adjacent labels Active Power and Contracted Power next to 850MW+ and 3.1GW+."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:4571:4761",
+            "d13:9f4f0f20f24a91c8:4981:5010",
+            "d13:9f4f0f20f24a91c8:5012:5029"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "As of December 31, 2025, adjacent labels report more than 850 MW of active power and more than 3.1 GW of contracted power, subject to the illustrative-footprint qualification.",
+          "topics": [
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [
+            "The updates table is flattened and cell order is disordered, but this milestone phrase is intact."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In a Q4 noteworthy-updates list, the company said it was named the first NVIDIA Exemplar Cloud for GB200 NVL72.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [
+            "The updates table is flattened and cell order is disordered, but this milestone phrase is intact."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it achieved the only SemiAnalysis Platinum ClusterMAX rating.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [
+            "The bullet ends with 'and' and does not clearly identify a second launched item."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it launched AI Object Storage.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it acquired Monolith and Marimo.",
+          "topics": [
+            "Organization",
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [
+            "The bullet is truncated after 'accelerate enterprise' and does not complete the intended object."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it expanded CoreWeave Mission Control.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [
+            "The bullet is truncated after 'enabling' and does not complete the intended object."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it launched Serverless RL.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it priced an inaugural convertible senior note offering that raised about $2.6 billion.",
+          "topics": [
+            "Capital"
+          ]
+        },
+        {
+          "ambiguities": [
+            "Nearby words about financial flexibility and growth support are interleaved with other bullets and are not reliably attached to this facility."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it expanded its revolving credit facility to $2.5 billion.",
+          "topics": [
+            "Capital"
+          ]
+        },
+        {
+          "ambiguities": [
+            "This bullet is interleaved with 'in an upsized offering' and other phrases, so only the Federal launch and public-sector purpose are clearly separable."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it launched CoreWeave Federal to support government and public-sector use cases.",
+          "topics": [
+            "Product",
+            "Market"
+          ]
+        },
+        {
+          "ambiguities": [
+            "Genesis Mission wording is interleaved with unrelated phrases about financial flexibility, Zero Egress Migration, national security, and energy innovation, so those added characterizations are not reliably attributable."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it joined the Genesis Mission, identified there as a U.S. Department of Energy initiative.",
+          "topics": [
+            "Macro",
+            "Organization"
+          ]
+        },
+        {
+          "ambiguities": [
+            "CrowdStrike wording is interleaved with phrases such as a cloud foundation for an agentic era and faster feedback loops; the exact partnership description is not reliably attributable."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the same Q4 updates list, the company said it announced a partnership with CrowdStrike.",
+          "topics": [
+            "Market",
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [
+            "Flattened table cells do not clearly state the relationship of these names to CoreWeave."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "The same Q4 updates table includes the names Mercado Libre, Midjourney, and Runway.",
+          "topics": [
+            "Market"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:12214:12238",
+            "d13:9f4f0f20f24a91c8:12240:12279",
+            "d13:9f4f0f20f24a91c8:12164:12174",
+            "d13:9f4f0f20f24a91c8:12176:12191",
+            "d13:9f4f0f20f24a91c8:23396:24907"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "FY 2025 revenue was $5.1 billion, up 168% year over year; the GAAP-to-non-GAAP reconciliation shows FY 2025 revenue of $5,131 million versus $1,915 million in FY 2024.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:12214:12238",
+            "d13:9f4f0f20f24a91c8:12240:12279",
+            "d13:9f4f0f20f24a91c8:12281:12296",
+            "d13:9f4f0f20f24a91c8:12193:12212",
+            "d13:9f4f0f20f24a91c8:15473:15680",
+            "d13:9f4f0f20f24a91c8:15787:16385",
+            "d13:9f4f0f20f24a91c8:16787:17602",
+            "d13:9f4f0f20f24a91c8:17604:17619",
+            "d13:9f4f0f20f24a91c8:17646:17929"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "Revenue backlog was $66.8 billion as of December 31, 2025, up 342% year over year from $15.1 billion as of December 31, 2024, and is described as driven by substantial growth from existing and new customers including large deals with AI labs, hyperscaler cloud customers, enterprises, and AI natives. Backlog comprises $60.7 billion of remaining performance obligations plus $6.1 billion of other estimated future revenue from existing committed customer contracts, in each case subject to delivery and service-availability requirements, and is expected to fluctuate period to period.",
+          "topics": [
+            "Financials",
+            "Market"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:12214:12238",
+            "d13:9f4f0f20f24a91c8:12298:12324",
+            "d13:9f4f0f20f24a91c8:12193:12212",
+            "d13:9f4f0f20f24a91c8:12362:12765",
+            "d13:9f4f0f20f24a91c8:17931:18722",
+            "d13:9f4f0f20f24a91c8:18783:18946"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "FY 2025 capital expenditures were $14.9 billion, calculated as additions to property and equipment including assets acquired under finance leases, less changes in construction in progress; the calculation table shows $14,886 million versus $8,335 million in FY 2024.",
+          "topics": [
+            "Financials",
+            "Capital",
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:12214:12238",
+            "d13:9f4f0f20f24a91c8:12346:12360",
+            "d13:9f4f0f20f24a91c8:12136:12162",
+            "d13:9f4f0f20f24a91c8:12362:12765",
+            "d13:9f4f0f20f24a91c8:22072:22440",
+            "d13:9f4f0f20f24a91c8:28478:30869"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "FY 2025 adjusted EBITDA, a non-GAAP measure defined as net loss excluding depreciation and amortization, interest expense net, stock-based compensation, acquisition-related costs, fair-value adjustments, other income net, and income taxes, was $3.1 billion, or 60% of revenue; the reconciliation shows $3,093 million versus $1,219 million and 64% margin in FY 2024.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:12214:12238",
+            "d13:9f4f0f20f24a91c8:12032:12134",
+            "d13:9f4f0f20f24a91c8:12136:12162",
+            "d13:9f4f0f20f24a91c8:12362:12765",
+            "d13:9f4f0f20f24a91c8:23125:23394",
+            "d13:9f4f0f20f24a91c8:23396:24907"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "FY 2025 adjusted operating income, a non-GAAP measure defined as operating income excluding stock-based compensation, acquisition-related costs, and amortization of acquired intangibles, was $666 million, or 13% of revenue, versus $356 million and 19% margin in FY 2024.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:12214:12238",
+            "d13:9f4f0f20f24a91c8:12326:12344",
+            "d13:9f4f0f20f24a91c8:12136:12162",
+            "d13:9f4f0f20f24a91c8:12362:12765",
+            "d13:9f4f0f20f24a91c8:22499:23050",
+            "d13:9f4f0f20f24a91c8:25430:27795"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "FY 2025 adjusted net loss, a non-GAAP measure defined as net loss attributable to common stockholders excluding stock-based compensation, loss on extinguishment of debt, acquisition-related costs, amortization of acquired intangibles, fair-value adjustments, income tax including the tax effect of those adjustments, and certain other non-cash or non-routine items, was $(606) million, or (12)% of revenue, versus $(65) million and (3)% margin in FY 2024.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:12858:12882",
+            "d13:9f4f0f20f24a91c8:13569:13666",
+            "d13:9f4f0f20f24a91c8:18948:19907"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "Q4 2025 revenue was $1.6 billion, up 110% year over year, described as driven by strong demand for CoreWeave's AI Cloud Platform; the financial-summary table shows $1,572 million versus $747 million in Q4 2024.",
+          "topics": [
+            "Financials",
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:12858:12882",
+            "d13:9f4f0f20f24a91c8:16579:16673",
+            "d13:9f4f0f20f24a91c8:16425:16577",
+            "d13:9f4f0f20f24a91c8:17931:18722"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "Q4 2025 capital expenditures were $8.2 billion, described as driven by scaling the platform to meet customer demand, using the same additions-to-PPE-including-finance-leases-less-CIP definition; the calculation table shows $8,241 million versus $2,410 million in Q4 2024.",
+          "topics": [
+            "Financials",
+            "Capital",
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:15185:15220",
+            "d13:9f4f0f20f24a91c8:15222:15297",
+            "d13:9f4f0f20f24a91c8:15299:15331",
+            "d13:9f4f0f20f24a91c8:19909:20637"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "Q4 2025 adjusted EBITDA was $898 million, compared with $486 million in Q4 2024, and adjusted EBITDA margin was 57%, compared with 65% in Q4 2024.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:13685:13730",
+            "d13:9f4f0f20f24a91c8:13919:14007",
+            "d13:9f4f0f20f24a91c8:14009:14039",
+            "d13:9f4f0f20f24a91c8:19909:20637"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "Q4 2025 adjusted operating income was $88 million, compared with $121 million in Q4 2024, and adjusted operating margin was 6%, compared with 16% in Q4 2024.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:14112:14149",
+            "d13:9f4f0f20f24a91c8:14151:14227",
+            "d13:9f4f0f20f24a91c8:14229:14266",
+            "d13:9f4f0f20f24a91c8:19909:20637"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "Q4 2025 adjusted net loss was $(284) million, compared with $(36) million in Q4 2024, and adjusted net loss margin was (18)%, compared with (5)% in Q4 2024.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:18948:19907",
+            "d13:9f4f0f20f24a91c8:20639:20670",
+            "d13:9f4f0f20f24a91c8:20945:21002"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "For the three months ended December 31, 2025, GAAP results were revenue $1,572 million, operating expenses $1,661 million, operating loss $(89) million or (6)% margin, interest expense net $(388) million, net loss $(452) million or (29)% margin, and basic and diluted net loss per share $(0.89), versus Q4 2024 revenue $747 million, operating income $113 million or 15% margin, interest expense net $(149) million, net loss $(51) million or (7)% margin, and net loss per share $(0.34).",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [
+            "FY GAAP net-loss figures are taken from the adjusted-net-loss reconciliation table, not from a standalone FY GAAP summary table in this excerpt."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:18948:19907",
+            "d13:9f4f0f20f24a91c8:25430:27795"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "GAAP net loss was $(1,167) million for FY 2025, or (23)% of revenue, versus $(863) million, or (45)% of revenue, in FY 2024.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [
+            "FY GAAP operating-income figures are taken from the adjusted-operating-income reconciliation table, not from a standalone FY GAAP summary table in this excerpt."
+          ],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:23396:24907"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "GAAP operating loss was $(46) million for FY 2025, or (1)% of revenue, versus operating income of $324 million, or 17% of revenue, in FY 2024.",
+          "topics": [
+            "Financials"
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "verify",
+      "output": [
+        {
+          "fidelity": "supported",
+          "index": 0,
+          "readability": "clear",
+          "reason": "Cited text titles CoreWeave as an AI cloud, calls the cloud platform purpose-built for artificial intelligence, and footnotes unmatched performance to MLPerf results, NVIDIA Exemplar Cloud status, and a SemiAnalysis ClusterMAX rating. The statement treats those items as the basis of an issuer performance claim and does not add scores or a verdict.",
+          "relevance": "useful",
+          "warnings": [
+            "The cited footnote names MLPerf benchmark results, NVIDIA Exemplar Cloud status, and a SemiAnalysis ClusterMAX rating as the basis for an unmatched-performance claim but gives no scores, dates, peer set, or other quantified results."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 1,
+          "readability": "clear",
+          "reason": "The cited excerpt states the company is rapidly delivering new generations of infrastructure at scale with an unparalleled track record of being among the first to market. The statement attributes that wording to the company and adds no metrics.",
+          "relevance": "useful",
+          "warnings": [
+            "Rapid delivery, unparalleled track record, and first-to-market are issuer characterizations; the cited excerpt gives no period, product set, or comparative evidence."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 2,
+          "readability": "clear",
+          "reason": "The cited excerpt states the company is continuing to invest up and down the technology stack to deliver a full-service AI cloud platform. The statement is a close paraphrase and attributes the claim to the company.",
+          "relevance": "useful",
+          "warnings": [
+            "Investing up and down the stack and full-service platform are qualitative issuer claims; the cited excerpt gives no spend, layer, or scope figures."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 3,
+          "readability": "clear",
+          "reason": "The cited excerpt says the company is serving most of the world's leading AI labs, hyperscalers, and AI enterprises. The statement attributes that claim to the company without adding names or quantities.",
+          "relevance": "useful",
+          "warnings": [
+            "Most and world's leading are undefined in the cited excerpt (no count, share, or named customer set)."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 4,
+          "readability": "clear",
+          "reason": "Cited text states every layer is purpose-built for AI workloads and that CoreWeave Cloud is optimized for low latency, high throughput, and operational efficiency to support the complexity of large-scale AI training and inference. Dropping the complexity of does not change the supported operational claim.",
+          "relevance": "useful",
+          "warnings": [
+            "Low latency, high throughput, and operational efficiency are qualitative design claims with no measured values in the cited excerpts."
+          ]
+        },
+        {
+          "fidelity": "unresolved",
+          "index": 5,
+          "readability": "clear",
+          "reason": "Cited chunks separately contain that as-of/illustrative note, a bold 11, and the label Data Centers Added in 2025 in the same converted section. Original PDF coordinates for that slide were not supplied, so pairing 11 with that label and attaching the note to that figure cannot be confirmed. Flattened chunk order is not layout proof, and a bare 11 is not proof of meaning.",
+          "relevance": "useful",
+          "warnings": [
+            "The cited note says figures are as of December 31, 2025 and that the graphic is illustrative and may not precisely reflect all current locations or capacities."
+          ]
+        },
+        {
+          "fidelity": "unresolved",
+          "index": 6,
+          "readability": "clear",
+          "reason": "Cited sources include a bold 43 and Active Data Centers under Large and Growing Footprint of AI Data Centers, plus an as-of/illustrative note from a different section. Original PDF layout for those slides was not supplied, so the 43\u2013label pairing and whether that note applies to the 43 figure remain unproven. Missing a qualification in one neighborhood does not establish its scope on another slide.",
+          "relevance": "useful",
+          "warnings": [
+            "The December 31, 2025 as-of and illustrative-footprint language is cited from Our Platform is Purpose-Built for AI, not from the Large and Growing Footprint section that contains 43 and Active Data Centers."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 7,
+          "readability": "clear",
+          "reason": "Under Continued Momentum with Exceptional Execution in Q4, the cited table includes the intact phrase Acquired Monolith and Marimo. The statement places that item on the Q4 updates list and does not add deal terms or a close date beyond that heading.",
+          "relevance": "useful",
+          "warnings": [
+            "The cited Q4 updates table is a garbled multi-column extract; the Monolith and Marimo bullet ends with a colon, so surrounding words may be missing."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 8,
+          "readability": "clear",
+          "reason": "The cited Q4 updates table states the company priced an inaugural convertible senior note offering, raising ~$2.6 billion. About $2.6 billion keeps that approximation; currency and billions scale match the excerpt.",
+          "relevance": "useful",
+          "warnings": [
+            "The cited extract says raising ~$2.6 billion (approximate). Nearby revolver and other dollar amounts in the same garbled table are not this offering."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 9,
+          "readability": "clear",
+          "reason": "Cited slide text states adjusted operating income of $88 million versus $121 million in Q4'24. The cited table for the three months ended December 31, 2025 versus 2024 repeats $88 / $121 and shows adjusted operating income margin of 6% versus 16%. Supplied page-11 layout places 6% under Adjusted Operating Margin. Units are millions.",
+          "relevance": "useful",
+          "warnings": [
+            "Adjusted operating income and adjusted operating income margin are non-GAAP (title footnote 1); cited excerpts do not include the GAAP reconciliation.",
+            "The slide labels the 6% figure Adjusted Operating Margin; the 16% year-ago comparison is the table's adjusted operating income margin for the three months ended December 31, 2024."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 10,
+          "readability": "clear",
+          "reason": "Cited slide text states adjusted net loss of $(284) million versus $(36) million in Q4'24 and adjusted net loss margin of (18)%. The cited table for the three months ended December 31, 2025 versus 2024 repeats $(284) / $(36) and (18)% / (5)%. Signs, millions scale, and year-ago basis match.",
+          "relevance": "useful",
+          "warnings": [
+            "Adjusted net loss and adjusted net loss margin are non-GAAP (title footnote 1); cited excerpts do not include the GAAP reconciliation."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 11,
+          "readability": "clear",
+          "reason": "Cited slide text states adjusted EBITDA of $898 million versus $486 million in Q4'24 and adjusted EBITDA margin of 57%. The cited table for the three months ended December 31, 2025 versus 2024 repeats $898 / $486 and 57% / 65%. Supplied page-13 layout places 57% with the Q4'25 bar. Units are millions.",
+          "relevance": "useful",
+          "warnings": [
+            "Adjusted EBITDA and adjusted EBITDA margin are non-GAAP (title footnote 1); cited excerpts do not include the GAAP reconciliation."
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "resolve-uncertainty",
+      "output": [
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:4571:4761",
+            "d13:9f4f0f20f24a91c8:4981:5010",
+            "d13:9f4f0f20f24a91c8:5012:5029"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "As of December 31, 2025, the infrastructure-footprint slide shows more than 850 MW labeled Active Power and more than 3.1 GW labeled Contracted Power; the slide states the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+          "topics": [
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:4571:4761",
+            "d13:9f4f0f20f24a91c8:4945:4951",
+            "d13:9f4f0f20f24a91c8:4953:4979"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "As of December 31, 2025, the same footprint slide shows 11 labeled Data Centers Added in 2025, subject to that illustrative-footprint qualification.",
+          "topics": [
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:4571:4761",
+            "d13:9f4f0f20f24a91c8:5276:5331",
+            "d13:9f4f0f20f24a91c8:5333:5339",
+            "d13:9f4f0f20f24a91c8:5341:5360"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "As of December 31, 2025, the same footprint slide shows 43 labeled Active Data Centers, subject to that illustrative-footprint qualification.",
+          "topics": [
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On the Q4 2025 execution slide, under Customer Wins Across AI Labs, Hyperscalers and Enterprises, the company described itself as a partner of choice for leading AI pioneers and enterprises and listed Cognition, CrowdStrike, Cursor, Mercado Libre, Midjourney, and Runway.",
+          "topics": [
+            "Market"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that Q4 2025 execution slide, under Key Technology Leadership Milestones, the company said it was named the first NVIDIA Exemplar Cloud for GB200 NVL72.",
+          "topics": [
+            "Product",
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that slide, under the same milestones heading, the company said it achieved the only SemiAnalysis Platinum ClusterMAX rating.",
+          "topics": [
+            "Product",
+            "Operations"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that slide, under the same milestones heading, the company said it launched AI Object Storage and Zero Egress Migration.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that slide, under the same milestones heading, the company said it expanded CoreWeave Mission Control to speed enterprise AI adoption.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that slide, under the same milestones heading, the company said it launched Serverless RL so developers can train AI agents with shorter feedback cycles.",
+          "topics": [
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that slide, under Strengthened Financial Position, the company said it expanded its revolving credit facility to $2.5 billion to increase financial flexibility for growth initiatives.",
+          "topics": [
+            "Capital"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that slide, under Other Noteworthy Updates, the company said it launched CoreWeave Federal to extend its AI cloud platform to government and public-sector use cases.",
+          "topics": [
+            "Product",
+            "Market"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that slide, under Other Noteworthy Updates, the company said it joined the Genesis Mission, described as a U.S. Department of Energy initiative directed at discovery science, national security, and U.S. energy innovation.",
+          "topics": [
+            "Macro",
+            "Market"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:5362:5421",
+            "d13:9f4f0f20f24a91c8:5423:11934"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "On that slide, under Other Noteworthy Updates, the company said it announced a major global partnership with CrowdStrike to collaborate on a secure AI cloud foundation for the agentic era.",
+          "topics": [
+            "Market",
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:23396:24907",
+            "d13:9f4f0f20f24a91c8:24909:24998",
+            "d13:9f4f0f20f24a91c8:25000:25085",
+            "d13:9f4f0f20f24a91c8:25087:25391",
+            "d13:9f4f0f20f24a91c8:25393:25428"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the appendix reconciliation of operating income (loss) and operating income (loss) margin, identified as the most directly comparable GAAP measures, to adjusted operating income, FY 2025 operating loss was $(46) million, or a (1)% operating margin, versus FY 2024 operating income of $324 million, or a 17% operating margin; figures are in millions except percentages.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "ids": [
+            "d13:9f4f0f20f24a91c8:25430:27795",
+            "d13:9f4f0f20f24a91c8:27797:27850",
+            "d13:9f4f0f20f24a91c8:27852:27907",
+            "d13:9f4f0f20f24a91c8:27909:28167"
+          ],
+          "representation": "source_grounded_statement",
+          "speaker": null,
+          "text": "In the appendix reconciliation of net loss and net loss margin, identified as the most directly comparable GAAP measures, to adjusted net loss, FY 2025 net loss was $(1,167) million, or a (23)% net loss margin, versus FY 2024 net loss of $(863) million, or a (45)% net loss margin; the accompanying original-PDF header states figures are in millions except percentages.",
+          "topics": [
+            "Financials"
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "verify",
+      "output": [
+        {
+          "fidelity": "supported",
+          "index": 0,
+          "readability": "clear",
+          "reason": "Cited note supplies the as-of date and illustrative-footprint caveat. Page-5 coordinates bind 850MW+ to Active Power and 3.1GW+ to Contracted Power as two aligned columns; + is rendered as more than, with MW/GW preserved.",
+          "relevance": "useful",
+          "warnings": [
+            "Figures as of December 31, 2025; the slide states the graphic is illustrative and may not precisely reflect all current locations or capacities."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 1,
+          "readability": "clear",
+          "reason": "Page-5 coordinates place 11 directly above Data Centers Added in 2025 in one column. The cited note supplies the as-of date and the illustrative-footprint qualification the statement retains.",
+          "relevance": "useful",
+          "warnings": [
+            "Figures as of December 31, 2025; the slide states the graphic is illustrative and may not precisely reflect all current locations or capacities."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 2,
+          "readability": "clear",
+          "reason": "Page-5 coordinates place 43 directly above Active Data Centers in one column, under the cited footprint heading. The same note supplies the as-of date and illustrative-footprint qualification.",
+          "relevance": "useful",
+          "warnings": [
+            "Figures as of December 31, 2025; the slide states the graphic is illustrative and may not precisely reflect all current locations or capacities."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 3,
+          "readability": "clear",
+          "reason": "Cited Q4-execution title plus body text include Achieved the only SemiAnalysis\u2019 Platinum ClusterMAX\u2122 rating. Page-6 coordinates put that bullet in the Key Technology Leadership Milestones column; the flattened table is scrambled and is not used as layout proof.",
+          "relevance": "useful",
+          "warnings": []
+        },
+        {
+          "fidelity": "supported",
+          "index": 4,
+          "readability": "clear",
+          "reason": "Page-6 coordinates stack Launched AI Object Storage and Zero Egress Migration as consecutive lines in the Key Technology Leadership Milestones column. Flattened-table order is not relied on.",
+          "relevance": "useful",
+          "warnings": []
+        },
+        {
+          "fidelity": "supported",
+          "index": 5,
+          "readability": "clear",
+          "reason": "Page-6 milestones column reads Expanded CoreWeave Mission Control\u2122 to accelerate enterprise AI adoption. Speed is a meaning-preserving restatement of accelerate; the \u2122 mark is omitted but the claim is unchanged.",
+          "relevance": "useful",
+          "warnings": []
+        },
+        {
+          "fidelity": "supported",
+          "index": 6,
+          "readability": "clear",
+          "reason": "Page-6 milestones column reads Launched Serverless RL, enabling developers to train AI agents with faster feedback loops. Shorter feedback cycles restates that wording without adding a new metric or causal claim.",
+          "relevance": "useful",
+          "warnings": []
+        },
+        {
+          "fidelity": "supported",
+          "index": 7,
+          "readability": "clear",
+          "reason": "Page-6 coordinates place Expanded our revolving credit facility to $2.5 billion, enhancing financial flexibility to support growth initiatives under Strengthened Financial Position. Currency, scale, and purpose match; increase restates enhancing.",
+          "relevance": "useful",
+          "warnings": []
+        },
+        {
+          "fidelity": "supported",
+          "index": 8,
+          "readability": "clear",
+          "reason": "Page-6 coordinates place Launched CoreWeave Federal, extending our AI cloud platform to support government and public sector use cases under Other Noteworthy Updates. To extend restates extending without adding scope.",
+          "relevance": "useful",
+          "warnings": []
+        },
+        {
+          "fidelity": "supported",
+          "index": 9,
+          "readability": "clear",
+          "reason": "Page-6 Other Noteworthy Updates column states CoreWeave joined the Genesis Mission, a U.S. Department of Energy initiative with those three focus areas. Directed at drops the source verbs but does not change the named initiative or domains.",
+          "relevance": "useful",
+          "warnings": [
+            "Slide wording is focused on accelerating discovery science, strengthening national security, and advancing U.S. energy innovation."
+          ]
+        },
+        {
+          "fidelity": "supported",
+          "index": 10,
+          "readability": "clear",
+          "reason": "Page-6 Other Noteworthy Updates column states a major global partnership with CrowdStrike, collaborating to power a secure AI cloud foundation for the agentic era. Collaborate on is a looser restatement of collaborating to power; counterparty and announced partnership are unchanged.",
+          "relevance": "useful",
+          "warnings": [
+            "Slide wording is collaborating to power a secure AI cloud foundation for the agentic era."
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "verify",
+      "output": [
+        {
+          "fidelity": "supported",
+          "index": 0,
+          "readability": "clear",
+          "reason": "Page-21 coordinates place Operating income (loss) $324 and margin 17% under FY 2024, and $(46) and (1)% under FY 2025; cited copy states figures are in millions except percentages and identifies operating income (loss) and operating income (loss) margin as the most directly comparable GAAP measures in the reconciliation to adjusted operating income (and margin).",
+          "relevance": "useful",
+          "warnings": [
+            "Cited sources and the page-21 layout do not label this reconciliation an \"appendix.\""
+          ]
+        }
+      ]
+    }
+  ]
+}

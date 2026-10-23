@@ -1,16 +1,20 @@
 """Compact model transport; canonical evidence and provenance stay in Stock."""
 import json
 
-SOURCE_FIELDS=('id','text','section','turn','speaker','role','speaker_role','context_only','source_kind','page')
-REFERENCE_FIELDS=('source_id','text','section','turn','page')
+SOURCE_FIELDS=('id','text','section','turn','speaker','role','speaker_role','context_only','source_kind','page','table')
+REFERENCE_FIELDS=('source_id','text','section','turn','page','table')
 
 
 def source_payload(source):
-    return {k:source[k] for k in SOURCE_FIELDS if source.get(k) is not None}
+    payload={k:source[k] for k in SOURCE_FIELDS if source.get(k) is not None}
+    if source.get('table'):payload['table']={k:v for k,v in source['table'].items() if k in ('id','row','column','ambiguous')}
+    return payload
 
 
 def reference_payload(ref):
-    return {k:ref[k] for k in REFERENCE_FIELDS if ref.get(k) is not None}
+    payload={k:ref[k] for k in REFERENCE_FIELDS if ref.get(k) is not None}
+    if ref.get('table'):payload['table']={k:v for k,v in ref['table'].items() if k in ('id','row','column','ambiguous')}
+    return payload
 
 
 def selection_batches(atoms, limit=14000):

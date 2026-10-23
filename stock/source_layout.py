@@ -10,6 +10,22 @@ def normalized(text):
     return re.sub(r'[^a-z0-9]+','',re.sub(r'<[^>]*>','',text).lower())
 
 
+def matched_pages(atom,pages,*,normalized_index=None):
+    """Locate evidence, never prove a table's relationships by text matching."""
+    needle=normalized(atom['text'])
+    if len(needle)<12:return []
+    normalized_pages=normalized_index if normalized_index is not None else [normalized(t) for t in pages]
+    matches=[i+1 for i,t in enumerate(normalized_pages) if needle in t]
+    if len(matches)==1:return matches
+    if not matches and atom.get('table',{}).get('ambiguous'):
+        # Interleaved table cells can contain fragments from several columns.
+        # Literal windows may locate a page only when all matches agree uniquely.
+        windows=[needle[i:i+24] for i in range(0,len(needle)-23,8)]
+        found={i+1 for i,t in enumerate(normalized_pages) if any(w in t for w in windows)}
+        if len(found)==1:return sorted(found)
+    return []
+
+
 def selective(atoms,doc,store):
     """Read text index once on demand; fetch geometry only for uniquely located pages.
 
@@ -34,11 +50,9 @@ def selective(atoms,doc,store):
     prefix='selective-layout-1:'+doc['source_sha256']
     try:
         index=cached(prefix+':index',lambda:read("import sys,json,pymupdf\nwith pymupdf.open(sys.argv[1]) as d: print(json.dumps([p.get_text() for p in d]))"))
-        normalized_pages=[normalized(t) for t in index];numbers=set();matched={}
+        normalized_index=[normalized(t) for t in index];numbers=set();matched={}
         for a in atoms:
-            needle=normalized(a['text'])
-            if len(needle)<12:continue
-            matches=[i+1 for i,t in enumerate(normalized_pages) if needle in t]
+            matches=matched_pages(a,index,normalized_index=normalized_index)
             if len(matches)==1:
                 numbers.add(matches[0]);matched.setdefault(matches[0],[]).append(a['id'])
         pages=[]

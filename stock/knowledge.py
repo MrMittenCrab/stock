@@ -13,7 +13,7 @@ from .evidence import IntegrityError, ProtocolError, candidates, resolve
 from .insights import digest, packed
 from .sort_transport import source_payload
 
-CONTRACT='knowledge-1'
+CONTRACT='knowledge-2-strategic'
 CONTEXT=60000
 
 
@@ -47,6 +47,83 @@ def schema(store):
     ''')
 
 
+def table_spans(line):
+    """Markdown cell offsets, including optional outer pipes and escaped literals."""
+    bars=[]
+    for i,char in enumerate(line):
+        if char!='|':continue
+        slashes=0;j=i-1
+        while j>=0 and line[j]=='\\':slashes+=1;j-=1
+        if not slashes%2:bars.append(i)
+    edges=bars[:]
+    if not bars or line[:bars[0]].strip():edges.insert(0,-1)
+    if not bars or line[bars[-1]+1:].strip():edges.append(len(line))
+    return [(a+1,z) for a,z in zip(edges,edges[1:])]
+
+
+def prepare_atoms(text,doc,sha):
+    """Exact cell spans; preserve archived table structure without pretending it is PDF layout."""
+    atoms=[]
+    for c in candidates(text,doc,sha,include_context=True):
+        if c['text'].lstrip().startswith('|'):
+            rows=[[line[a:z] for a,z in table_spans(line)] for line in c['text'].splitlines()]
+            ambiguous=bool(rows and (len({len(row) for row in rows})>1 or sum(bool(x.strip()) for x in rows[0])<=1))
+            fragmented=ambiguous and (len(c['text'])>2400 or len({len(row) for row in rows})>1)
+            parent=dict(id=c['id'],start=c['start'],end=c['end'],ambiguous=ambiguous,fragmented=fragmented,
+                        sha256=hashlib.sha256(c['text'].encode()).hexdigest())
+            offset=c['start']
+            for row,line in enumerate(c['text'].splitlines(keepends=True)):
+                if not fragmented:
+                    body=line.strip()
+                    if body and not re.fullmatch(r'[|: \-]+',body):
+                        start=offset+len(line)-len(line.lstrip());end=start+len(body)
+                        atoms.append({**c,'id':f'd{doc["id"]}:{sha[:16]}:{start}:{end}',
+                                      'start':start,'end':end,'text':text[start:end],
+                                      'table':dict(parent,row=row),'context_only':False,'source_kind':'table_row'})
+                    offset+=len(line)
+                    continue
+                # Only unescaped Markdown delimiters establish cell boundaries.
+                for column,(left,right) in enumerate(table_spans(line)):
+                    body=line[left:right];trimmed=body.strip()
+                    if not trimmed or re.fullmatch(r':?-+:?',trimmed):continue
+                    start=offset+left+len(body)-len(body.lstrip());end=start+len(trimmed)
+                    atoms.append({**c,'id':f'd{doc["id"]}:{sha[:16]}:{start}:{end}',
+                                  'start':start,'end':end,'text':text[start:end],
+                                  'table':dict(parent,row=row,column=column),
+                                  'context_only':False,'source_kind':'table_cell'})
+                offset+=len(line)
+        else:atoms.append(c)
+    # Context-only tables were historically assigned the following heading.
+    heading=None
+    for c in atoms:
+        if c['text'].lstrip().startswith('#'):heading=c.get('section')
+        elif c.get('table'):c['section']=heading
+    return atoms
+
+
+def review_context_for(context,ids,allowed_pages=None):
+    try:data=json.loads(context) if isinstance(context,str) else context
+    except ValueError:return context
+    if isinstance(data,dict) and 'original_pdf_layout' in data:
+        pages=[]
+        for page in data['original_pdf_layout']:
+            if allowed_pages is not None and (page.get('original_sha256'),page.get('page')) not in allowed_pages:continue
+            matched=sorted(ids & set(page.get('matched_source_ids',[])))
+            if matched:pages.append({**page,'matched_source_ids':matched})
+        return packed({**data,'original_pdf_layout':sorted(pages,key=lambda p:(p.get('original_sha256',''),p.get('page',0)))})
+    return context
+
+
+def layout_context(passages):
+    pages={}
+    for p in passages:
+        for page in p['location'].get('visual_context',[]):
+            key=(page.get('original_sha256'),page.get('page'))
+            if key not in pages:pages[key]={**page,'matched_source_ids':list(page.get('matched_source_ids',[]))}
+            else:pages[key]['matched_source_ids']=sorted(set(pages[key]['matched_source_ids'])|set(page.get('matched_source_ids',[])))
+    return list(pages.values())
+
+
 def sections(atoms,limit=CONTEXT):
     """Pack complete heading sections. Oversized sections split at exact anchors.
 
@@ -64,10 +141,65 @@ def sections(atoms,limit=CONTEXT):
     return groups
 
 
+def repair_work(rejections,atoms,limit=CONTEXT):
+    """Pack complete uncertainty cases, never split sources then repeat a failure."""
+    lookup={c['id']:c for c in atoms};batch=[];failures=[];ids=set();size=0
+    for r in rejections:
+        selection=r.get('selection',{});p=r.get('proposed')
+        refs=[x['source_id'] for x in p['location']['references']] if p else selection.get('ids',[])
+        chosen={x for x in refs if x in lookup}
+        # Readability repair needs the original support, not a document search.
+        if p and 'standalone' not in r['error'].lower():
+            chosen.update(c['id'] for c in editorial.recovery_sources(r,atoms,limit=6000))
+        elif not p:
+            original_ids=set(chosen)
+            for pos,c in enumerate(atoms):
+                if c['id'] in original_ids:chosen.update(a['id'] for a in atoms[max(0,pos-2):pos+3])
+        extra=[c for c in atoms if c['id'] in chosen-ids]
+        cost=sum(len(packed(source_payload(c))) for c in extra)
+        if failures and size+cost>limit:
+            yield sorted(batch,key=lambda c:c['start']),failures
+            batch=[];failures=[];ids=set();size=0
+            extra=[c for c in atoms if c['id'] in chosen]
+            cost=sum(len(packed(source_payload(c))) for c in extra)
+        batch+=extra;ids.update(chosen);size+=cost
+        failures.append(dict(text=p['text'] if p else selection.get('text'),reason=r['error'],ids=refs))
+    if failures:yield sorted(batch,key=lambda c:c['start']),failures
+
+
 class Operations:
     def __init__(self,store,doc,cursor,verify):
         self.store=store;self.doc=doc;self.cursor=cursor;self.verify=verify
-    def extract(self,unit,context):
+    def review_claims(self,unit,context):
+        # Independent judgments keyed by complete evidence, not batch index/order.
+        cached={};pending=[];keys={}
+        for i,p in enumerate(unit['review']):
+            claim={k:v for k,v in p.items() if k!='index'}
+            data=review_context_for(context,{r['source_id'] for r in p['references']},{tuple(v) for v in p.get('layout_pages',[])} if 'layout_pages' in p else None)
+            key=digest([CONTRACT,self.doc,'claim-review',claim,data]);keys[i]=key
+            row=self.store.db.execute('SELECT payload,checksum FROM knowledge_artifacts WHERE id=? AND contract=?',(key,CONTRACT)).fetchone()
+            if row:
+                if hashlib.sha256(row[0].encode()).hexdigest()!=row[1]:raise IntegrityError('Corrupt claim review artifact')
+                judgment=json.loads(row[0]);editorial.validate_reviews([dict(judgment,index=0)],1)
+                cached[i]=dict(judgment,index=i)
+            else:pending.append((i,p))
+        if pending:
+            subset=[dict(p,index=i) for i,(_,p) in enumerate(pending)]
+            # Filter page context again after removing already reviewed claims.
+            data=review_context_for(context,{r['source_id'] for p in subset for r in p['references']},{tuple(v) for p in subset for v in p.get('layout_pages',[])} if all('layout_pages' in p for p in subset) else None)
+            results=editorial.validate_reviews(self.extract({**unit,'review':subset},data,_batch_review=True),len(subset))
+            with self.store.db:
+                for j,(i,_) in enumerate(pending):
+                    judgment={k:v for k,v in results[j].items() if k!='index'};payload=packed(judgment);key=keys[i]
+                    if (judgment['fidelity'],judgment['readability'],judgment['relevance'])==('supported','clear','useful'):
+                        self.store.db.execute('INSERT OR IGNORE INTO knowledge_artifacts VALUES(?,?,?,?,?,?,?,?)',
+                            (key,CONTRACT,self.doc['id'],'claim-review',key,payload,hashlib.sha256(payload.encode()).hexdigest(),time.time()))
+                    cached[i]=dict(judgment,index=i)
+        self.verify()
+        return [cached[i] for i in range(len(unit['review']))]
+
+    def extract(self,unit,context,_batch_review=False):
+        if 'review' in unit and not _batch_review:return self.review_claims(unit,context)
         operation=unit.get('operation','verify' if 'review' in unit else 'understand')
         identity=[CONTRACT,self.doc,unit,context]
         key=digest(identity)
@@ -114,7 +246,7 @@ def extract(store,doc,cursor,progress):
         from .sort_budget import check
         check()
     schema(store)
-    atoms=candidates(text,doc,sha,include_context=True)
+    atoms=prepare_atoms(text,doc,sha)
     # Bound unusually large raw tables without dropping any archived text.
     bounded=[]
     for c in atoms:
@@ -129,7 +261,10 @@ def extract(store,doc,cursor,progress):
     metadata={k:doc.get(k) for k in ('id','title','type','ticker','publisher','period','source_sha256','metadata_provenance')}
     outline=[dict(id=c['id'],heading=c['text']) for c in atoms if c['text'].lstrip().startswith('#')]
     # Keep full outline identities; headings alone are not substantive claim support.
-    context=packed(dict(document=metadata,outline=outline))
+    from .source_layout import selective
+    # Only demonstrably damaged tables get original geometry during understanding.
+    table_layout=selective([c for c in atoms if c.get('table',{}).get('fragmented')],doc,store) if any(c.get('table',{}).get('fragmented') for c in atoms) else []
+    context=packed(dict(document=metadata,outline=outline,original_pdf_layout=table_layout))
     ops=Operations(store,{**metadata,'markdown_sha256':sha,'original':str(original),'markdown':str(md)},cursor,verify)
     def metrics(metric):
         if hasattr(progress,'log_event'):progress.log_event(dict(model=metric))
@@ -150,13 +285,9 @@ def extract(store,doc,cursor,progress):
             body=re.sub(r'(?i)(?<=\d)[KMBT]\b','',body)
             return bool(re.search(r'\d',body)) and not re.search(r'[A-Za-z]',body)
         numeric=[r for r in refs if numeric_tile(r['text'])]
-        if numeric:
-            for r in numeric:
-                pos=next(i for i,c in enumerate(atoms) if c['id']==r['source_id'])
-                neighborhood=atoms[max(0,pos-2):pos+3]
-                if sum(len(re.findall(r'\d+(?:[,.]\d+)*',c['text'])) for c in neighborhood if numeric_tile(c['text']))>1:
-                    return True
+        if numeric:return True
         for r in refs:
+            if r.get('table',{}).get('ambiguous'):return True
             if r['text'].lstrip().startswith('|'):
                 rows=[line.strip().strip('|').split('|') for line in r['text'].splitlines() if line.strip().startswith('|')]
                 if rows and (len({len(row) for row in rows})>1 or
@@ -181,39 +312,29 @@ def extract(store,doc,cursor,progress):
         for p in risky:p['location']['visual_context']=claim_layout(p,layout)
     # Independent review is cached per exact input, never inferred from generation.
     def review_context(ps):
-        return packed(dict(document=metadata,original_pdf_layout=[v for p in ps for v in p['location'].get('visual_context',[])]))
+        return packed(dict(document=metadata,original_pdf_layout=layout_context(ps)))
     progress(f'{doc["id"]} · 1/1 · semantic review')
     accepted,failed=editorial.review(accepted,ops,review_context)
     rejected+=failed
     # A single targeted operation for the document, followed by independent review.
     # Deterministic unsupported numbers are excluded; semantic missing support/visual
     # ambiguity can retrieve original evidence. No per-claim retry fanout.
-    uncertain=[r for r in rejected if r.get('proposed') or r.get('error','').startswith('Unresolved contextual ambiguity')]
+    uncertain=[r for r in rejected if (r.get('proposed') or r.get('error','').startswith('Unresolved contextual ambiguity'))
+               and r.get('proposed',{}).get('location',{}).get('review',{}).get('relevance') not in ('irrelevant','redundant')]
     if uncertain:
-        ids=set();failures=[]
-        for r in uncertain:
-            selection=r.get('selection',{});p=r.get('proposed')
-            refs=[x['source_id'] for x in p['location']['references']] if p else selection.get('ids',[])
-            ids.update(x for x in refs if x in lookup)
-            failures.append(dict(text=p['text'] if p else selection.get('text'),reason=r['error'],ids=refs))
-            if p:ids.update(c['id'] for c in editorial.recovery_sources(r,atoms,limit=12000))
-            else:
-                positions=[i for i,c in enumerate(atoms) if c['id'] in refs]
-                for pos in positions:ids.update(c['id'] for c in atoms[max(0,pos-4):pos+5])
-        selected=[c for c in atoms if c['id'] in ids]
-        # A short document gets one follow-up. Large evidence sets continue in
-        # bounded requests; never discard a later claim merely to fit the first.
         repaired=[];errors=[]
-        followups=sections(selected)
-        for i,targeted in enumerate(followups,1):
-            batch_ids={c['id'] for c in targeted}
-            relevant=[f for f in failures if batch_ids & set(f['ids'])]
-            if not relevant:continue
-            needs_layout=any(re.search(r'(?i)layout|visual|chart|column|mapping|label.*value',r['reason']) for r in relevant)
-            layout=selective(targeted,doc,store) if needs_layout else []
+        prior_layout=layout_context([r['proposed'] for r in uncertain if r.get('proposed')])
+        followups=list(repair_work(uncertain,atoms))
+        for i,(targeted,relevant) in enumerate(followups,1):
+            needs_layout=(any(c.get('table',{}).get('ambiguous') for c in targeted) or
+                          any(re.search(r'(?i)layout|visual|chart|column|mapping|pairing|flattened|interleav|label.*value',r['reason']) for r in relevant))
+            targeted_ids={c['id'] for c in targeted}
+            inherited=[v for v in prior_layout if targeted_ids & set(v.get('matched_source_ids',[]))]
+            fetched=selective(targeted,doc,store) if needs_layout else []
+            layout=layout_context([dict(location=dict(visual_context=inherited+fetched))])
             progress(f'{doc["id"]} · {i}/{len(followups)} · citation recovery')
             repair_context=packed(dict(document=metadata,failed_claims=relevant,original_pdf_layout=layout,
-                task='Correct or narrow only failed claims; cite all required support. Keep an original anchor per correction. Omit unsupported claims. Do not repeat supported claims.'))
+                task='Correct or narrow only these failed claims; make each standalone. Cite required support and keep an original anchor per correction. Preserve source stance and strategic purpose. Omit unsupported claims. Do not repeat supported claims or analyze unrelated evidence.'))
             fixed=ops.extract(dict(candidates=targeted,text='',operation='resolve-uncertainty'),repair_context)
             allowed=[set(f['ids']) for f in relevant]
             fixed=[r for r in fixed if any(set(r['ids']) & refs for refs in allowed)]
@@ -243,5 +364,10 @@ def extract(store,doc,cursor,progress):
                 [(ident,r['source_id'],i) for i,r in enumerate(p['location']['references'])])
             store.db.execute('INSERT OR IGNORE INTO knowledge_judgments VALUES(?,?,?,?)',
                 (ident,CONTRACT,editorial.fingerprint(p),packed(p['location']['review'])))
-    if hasattr(progress,'log_event'):progress.log_event(dict(document=doc['id'],excluded=rejected,verified=len(unique),contract=CONTRACT))
+    if hasattr(progress,'log_event'):
+        selected_ids={x for r in raw for x in r['ids']}
+        verified_ids={r['source_id'] for p in unique.values() for r in p['location']['references']}
+        progress.log_event(dict(document=doc['id'],excluded=rejected,verified=len(unique),contract=CONTRACT,
+            coverage=[dict(id=c['id'],section=c.get('section'),selected=c['id'] in selected_ids,
+                           verified=c['id'] in verified_ids) for c in atoms if not c.get('context_only')]))
     return list(unique.values()),verify

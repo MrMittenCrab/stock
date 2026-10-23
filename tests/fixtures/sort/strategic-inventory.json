@@ -1,0 +1,753 @@
+{
+  "provenance": "Human-authored source-grounded strategic inventory; not fresh model recall. Read original archived PDF pages 3, 5, 6, 14, 15 selectively; exact references are archived Markdown, PDF geometry is auxiliary.",
+  "document": {
+    "id": 13,
+    "type": "Presentation",
+    "original": "2026-02-26--presentation--Q4-2025.pdf",
+    "source_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6"
+  },
+  "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+  "claims": [
+    {
+      "key": "positioning",
+      "text": "CoreWeave describes its AI cloud as purpose-built for artificial intelligence and bases its unmatched-performance claim on MLPerf results, NVIDIA Exemplar Cloud status and SemiAnalysis ClusterMAX ratings.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:3502:3611",
+          "start": 3502,
+          "end": 3611,
+          "text": "Cloud Platform **Purpose-Built for Artificial Intelligence** Delivering **Unmatched Performance**<sup>1</sup>"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:4064:4178",
+          "start": 4064,
+          "end": 4178,
+          "text": "<sup>1.</sup> Based on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX\u2122 rating"
+        }
+      ],
+      "why": "Issuer positioning and stated basis, not independently proven superiority.",
+      "status": "current opinion",
+      "selected_indices": [
+        0
+      ],
+      "verified_indices": [
+        0
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": true,
+      "layout": false,
+      "baseline_note": "Published with adequate strategic meaning."
+    },
+    {
+      "key": "infrastructure-leadership",
+      "text": "CoreWeave claims a track record of being among the first to market with new infrastructure generations at scale.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:3613:3748",
+          "start": 3613,
+          "end": 3748,
+          "text": "Rapidly Delivering **New Generations of Infrastructure at Scale** with Unparalleled Track Record of Being Among the **First to Market**"
+        }
+      ],
+      "why": "Management competitive execution claim.",
+      "status": "historical/current opinion",
+      "selected_indices": [
+        1
+      ],
+      "verified_indices": [
+        1
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": true,
+      "layout": false,
+      "baseline_note": "Published with adequate strategic meaning."
+    },
+    {
+      "key": "full-stack-investment",
+      "text": "CoreWeave says it continues investing up and down the technology stack to deliver a full-service AI cloud platform.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:3750:3855",
+          "start": 3750,
+          "end": 3855,
+          "text": "Continuing to **Invest Up and Down** the Technology Stack to Deliver a **Full Service AI Cloud Platform**"
+        }
+      ],
+      "why": "Stated investment direction and platform scope.",
+      "status": "current intention",
+      "selected_indices": [
+        2
+      ],
+      "verified_indices": [
+        2
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": true,
+      "layout": false,
+      "baseline_note": "Published with adequate strategic meaning."
+    },
+    {
+      "key": "customer-position",
+      "text": "CoreWeave says it serves most of the world\u2019s leading AI labs, hyperscalers and AI enterprises.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:3857:3937",
+          "start": 3857,
+          "end": 3937,
+          "text": "Serving Most of the **World's Leading** AI Labs, Hyperscalers and AI Enterprises"
+        }
+      ],
+      "why": "Breadth of customer segments and attributed leadership claim.",
+      "status": "current opinion",
+      "selected_indices": [
+        3
+      ],
+      "verified_indices": [
+        3
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": true,
+      "layout": false,
+      "baseline_note": "Published with adequate strategic meaning."
+    },
+    {
+      "key": "platform-design",
+      "text": "CoreWeave describes its cloud as optimized for low latency, high throughput and operational efficiency to support large-scale AI training and inference.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:4296:4500",
+          "start": 4296,
+          "end": 4500,
+          "text": "Every layer is purpose-built for AI workloads. CoreWeave Cloud is optimized for low latency, high throughput, and operational efficiency to support the complexity of large-scale AI training and inference."
+        }
+      ],
+      "why": "Specific design priorities and workload scope, distinct from benchmark claim.",
+      "status": "current description",
+      "selected_indices": [
+        4
+      ],
+      "verified_indices": [
+        4
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": true,
+      "layout": false,
+      "baseline_note": "Published with adequate strategic meaning."
+    },
+    {
+      "key": "footprint",
+      "text": "CoreWeave reported 43 active data centers and 11 additions in 2025; its December 31, 2025 footprint graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:4945:4951",
+          "start": 4945,
+          "end": 4951,
+          "text": "**11**"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:4953:4979",
+          "start": 4953,
+          "end": 4979,
+          "text": "Data Centers Added in 2025"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5333:5339",
+          "start": 5333,
+          "end": 5339,
+          "text": "**43**"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5341:5360",
+          "start": 5341,
+          "end": 5360,
+          "text": "Active Data Centers"
+        }
+      ],
+      "why": "Delivered infrastructure scale and expansion, preserving caveat.",
+      "status": "historical/current",
+      "selected_indices": [
+        5,
+        6
+      ],
+      "verified_indices": [
+        11,
+        12
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "power-pipeline",
+      "text": "CoreWeave reported more than 850 MW of active power versus more than 3.1 GW of contracted power as of December 31, 2025; the footprint graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:4981:5010",
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5012:5029",
+          "start": 5012,
+          "end": 5029,
+          "text": "**850MW+ 3.1GW+**"
+        }
+      ],
+      "why": "Deployed capacity versus contracted expansion pipeline; numbers integral.",
+      "status": "current",
+      "selected_indices": [
+        7
+      ],
+      "verified_indices": [
+        10
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": true,
+      "layout": true,
+      "baseline_note": "Published with adequate strategic meaning."
+    },
+    {
+      "key": "operating-capabilities",
+      "text": "CoreWeave highlights liquid cooling, rack-density technology, modular deployments, embedded security and high-speed interconnects as capabilities of its data-center network.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:5031:5068",
+          "start": 5031,
+          "end": 5068,
+          "text": "Technologies to Maximize Rack Density"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5070:5116",
+          "start": 5070,
+          "end": 5116,
+          "text": "Systematized Processes and Modular Deployments"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5118:5135",
+          "start": 5118,
+          "end": 5135,
+          "text": "Embedded Security"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5195:5233",
+          "start": 5195,
+          "end": 5233,
+          "text": "Cutting-Edge Liquid Cooling Technology"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:5250:5274",
+          "start": 5250,
+          "end": 5274,
+          "text": "High-Speed Interconnects"
+        }
+      ],
+      "why": "Specific operational capabilities supporting platform execution.",
+      "status": "current description",
+      "selected_indices": [],
+      "verified_indices": [],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": false,
+      "baseline_note": "Never selected."
+    },
+    {
+      "key": "nvidia-milestone",
+      "text": "CoreWeave said it was named the first NVIDIA Exemplar Cloud for GB200 NVL72.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:6942:6973",
+          "start": 6942,
+          "end": 6973,
+          "text": "Named the first NVIDIA Exemplar"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:7238:7253",
+          "start": 7238,
+          "end": 7253,
+          "text": "for GB200 NVL72"
+        }
+      ],
+      "why": "Specific technology qualification and competitive milestone.",
+      "status": "historical claim",
+      "selected_indices": [
+        8
+      ],
+      "verified_indices": [],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Selected but not published."
+    },
+    {
+      "key": "cluster-rating",
+      "text": "CoreWeave said it achieved the only SemiAnalysis Platinum ClusterMAX rating.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:7534:7565",
+          "start": 7534,
+          "end": 7565,
+          "text": "Achieved the only SemiAnalysis\u2019"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:7830:7857",
+          "start": 7830,
+          "end": 7857,
+          "text": "Platinum ClusterMAX\u2122 rating"
+        }
+      ],
+      "why": "Attributed third-party rating milestone, not an unqualified superiority verdict.",
+      "status": "historical claim",
+      "selected_indices": [
+        9
+      ],
+      "verified_indices": [
+        13
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "storage-migration",
+      "text": "CoreWeave launched AI Object Storage and Zero Egress Migration.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:8126:8156",
+          "start": 8126,
+          "end": 8156,
+          "text": "Launched AI Object Storage and"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:11086:11340",
+          "start": 11086,
+          "end": 11340,
+          "text": "\u25cf Joined the Genesis Mission , a U.S. financial flexibility to support Department of Energy initiative Zero Egress Migration growth initiatives science, strengthening national expanding our AI cloud platform security, and advancing U.S. energy innovation"
+        }
+      ],
+      "why": "Concrete product developments, including missing second launch.",
+      "status": "historical",
+      "selected_indices": [
+        10
+      ],
+      "verified_indices": [
+        14
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "acquisitions",
+      "text": "CoreWeave said it acquired Monolith and Marimo to expand its AI cloud platform.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:8422:8452",
+          "start": 8422,
+          "end": 8452,
+          "text": "Acquired Monolith and Marimo :"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:11086:11340",
+          "start": 11086,
+          "end": 11340,
+          "text": "\u25cf Joined the Genesis Mission , a U.S. financial flexibility to support Department of Energy initiative Zero Egress Migration growth initiatives science, strengthening national expanding our AI cloud platform security, and advancing U.S. energy innovation"
+        }
+      ],
+      "why": "Corporate events plus source-stated platform expansion rationale.",
+      "status": "historical",
+      "selected_indices": [
+        11
+      ],
+      "verified_indices": [
+        5
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "mission-control",
+      "text": "CoreWeave expanded Mission Control to accelerate enterprise AI adoption.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:8718:8744",
+          "start": 8718,
+          "end": 8744,
+          "text": "Expanded CoreWeave Mission"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:9014:9047",
+          "start": 9014,
+          "end": 9047,
+          "text": "Control\u2122 to accelerate enterprise"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:11382:11420",
+          "start": 11382,
+          "end": 11420,
+          "text": "\u25cf Announced a major global AI adoption"
+        }
+      ],
+      "why": "Specific product expansion and enterprise purpose.",
+      "status": "historical",
+      "selected_indices": [
+        12
+      ],
+      "verified_indices": [
+        15
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "serverless-rl",
+      "text": "CoreWeave launched Serverless RL to enable developers to train AI agents with faster feedback loops.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:9310:9343",
+          "start": 9310,
+          "end": 9343,
+          "text": "Launched Serverless RL , enabling"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:11678:11767",
+          "start": 11678,
+          "end": 11767,
+          "text": "partnership with CrowdStrike , cloud foundation for the agentic faster feedback loops era"
+        }
+      ],
+      "why": "Product launch and stated training benefit.",
+      "status": "historical",
+      "selected_indices": [
+        13
+      ],
+      "verified_indices": [
+        16
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "convertible-financing",
+      "text": "CoreWeave priced its inaugural convertible senior note offering, raising approximately $2.6 billion in an upsized offering.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:9606:9643",
+          "start": 9606,
+          "end": 9643,
+          "text": "\u25cf Priced inaugural convertible senior"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:9902:9939",
+          "start": 9902,
+          "end": 9939,
+          "text": "note offering, raising ~\\$2.6 billion"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:10790:10890",
+          "start": 10790,
+          "end": 10890,
+          "text": "\u25cf Launched CoreWeave Federal , in an upsized offering support government and public sector use cases"
+        }
+      ],
+      "why": "Material financing event and size; strategically significant capital access.",
+      "status": "historical",
+      "selected_indices": [
+        14
+      ],
+      "verified_indices": [
+        6
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "revolver",
+      "text": "CoreWeave expanded its revolving credit facility to $2.5 billion to enhance financial flexibility for growth initiatives.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:10198:10229",
+          "start": 10198,
+          "end": 10229,
+          "text": "\u25cf Expanded our revolving credit"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:10494:10531",
+          "start": 10494,
+          "end": 10531,
+          "text": "facility to \\$2.5 billion , enhancing"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:11086:11340",
+          "start": 11086,
+          "end": 11340,
+          "text": "\u25cf Joined the Genesis Mission , a U.S. financial flexibility to support Department of Energy initiative Zero Egress Migration growth initiatives science, strengthening national expanding our AI cloud platform security, and advancing U.S. energy innovation"
+        }
+      ],
+      "why": "Funding capacity and explicit strategic purpose.",
+      "status": "historical",
+      "selected_indices": [
+        15
+      ],
+      "verified_indices": [
+        17
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "federal",
+      "text": "CoreWeave launched CoreWeave Federal to extend its AI cloud platform to government and public-sector use cases.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:10790:10890",
+          "start": 10790,
+          "end": 10890,
+          "text": "\u25cf Launched CoreWeave Federal , in an upsized offering support government and public sector use cases"
+        }
+      ],
+      "why": "New market entry and platform extension.",
+      "status": "historical",
+      "selected_indices": [
+        16
+      ],
+      "verified_indices": [
+        18
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "genesis",
+      "text": "CoreWeave joined the U.S. Department of Energy\u2019s Genesis Mission, which focuses on discovery science, national security and U.S. energy innovation.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:11086:11340",
+          "start": 11086,
+          "end": 11340,
+          "text": "\u25cf Joined the Genesis Mission , a U.S. financial flexibility to support Department of Energy initiative Zero Egress Migration growth initiatives science, strengthening national expanding our AI cloud platform security, and advancing U.S. energy innovation"
+        }
+      ],
+      "why": "Participation in named government initiative and its scope.",
+      "status": "historical",
+      "selected_indices": [
+        17
+      ],
+      "verified_indices": [
+        19
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "crowdstrike",
+      "text": "CoreWeave announced a global partnership with CrowdStrike to collaborate on a secure AI cloud foundation for the agentic era.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:11382:11420",
+          "start": 11382,
+          "end": 11420,
+          "text": "\u25cf Announced a major global AI adoption"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:11678:11767",
+          "start": 11678,
+          "end": 11767,
+          "text": "partnership with CrowdStrike , cloud foundation for the agentic faster feedback loops era"
+        }
+      ],
+      "why": "Named partnership and security/platform purpose.",
+      "status": "historical",
+      "selected_indices": [
+        18
+      ],
+      "verified_indices": [
+        20
+      ],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Published; standalone wording or rationale needs repair."
+    },
+    {
+      "key": "named-customers",
+      "text": "CoreWeave named Cognition, CrowdStrike, Cursor, Mercado Libre, Midjourney and Runway as AI pioneer and enterprise customers.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:6017:6051",
+          "start": 6017,
+          "end": 6051,
+          "text": "\u25cf Partner of choice for leading AI"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:10753:10786",
+          "start": 10753,
+          "end": 10786,
+          "text": "Mercado Libre, Midjourney, Runway"
+        }
+      ],
+      "why": "Specific customer adoption, more informative than a list of unconnected names.",
+      "status": "current",
+      "selected_indices": [
+        19
+      ],
+      "verified_indices": [],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Selected but not published."
+    },
+    {
+      "key": "hyperscaler-expansion",
+      "text": "CoreWeave said it expanded relationships with both existing hyperscaler cloud customers.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:4763:4843",
+          "start": 4763,
+          "end": 4843,
+          "text": "1. Region represents a local grouping of data centers where customers can deploy"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:6313:6347",
+          "start": 6313,
+          "end": 6347,
+          "text": "\u25cf Expanded relationships with both"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:6609:6635",
+          "start": 6609,
+          "end": 6635,
+          "text": "existing hyperscaler cloud"
+        }
+      ],
+      "why": "Relationship expansion with both existing hyperscalers, distinct from new customer names.",
+      "status": "historical",
+      "selected_indices": [],
+      "verified_indices": [],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": true,
+      "baseline_note": "Never selected."
+    },
+    {
+      "key": "backlog-visibility",
+      "text": "CoreWeave reported $66.8 billion of revenue backlog, up 342% year over year, driven by substantial growth from existing and new customers across AI labs, hyperscalers, enterprises and AI natives; committed contracts remain subject to delivery and service availability, and backlog is expected to fluctuate between periods.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:15473:15680",
+          "start": 15473,
+          "end": 15680,
+          "text": "#### **Revenue Backlog:**\n\n\\$66.8 billion, up 342% YoY driven by substantial growth from existing and new customers including large deals with AI labs, hyperscaler cloud customers, enterprises and AI natives"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:15787:16385",
+          "start": 15787,
+          "end": 16385,
+          "text": "1. Revenue backlog includes remaining performance obligations plus other amounts we estimate will be recognized as revenue in future periods under committed customer contracts, in each case, subject to the satisfaction of delivery and availability of service requirements. Revenue backlog is expected to fluctuate from period to period, given the nature of our committed contract business and the size of committed contracts. The percentages shown in the bar charts represent the percentage of revenue backlog we expect to recognize in the months following the end of the quarterly reporting period"
+        }
+      ],
+      "why": "Demand visibility, customer mix and conditional future conversion; not recognized revenue.",
+      "status": "current and prospective estimate",
+      "selected_indices": [
+        21
+      ],
+      "verified_indices": [],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": false,
+      "baseline_note": "Selected but not published."
+    },
+    {
+      "key": "capacity-investment",
+      "text": "CoreWeave said $8.2 billion of capital expenditures was driven by scaling its platform to meet customer demand; its measure includes property and equipment additions and finance-leased assets, less changes in construction in progress.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:16425:16577",
+          "start": 16425,
+          "end": 16577,
+          "text": "1. Capital expenditures are additions to property and equipment including assets acquired under finance leases, less changes in construction in progress"
+        },
+        {
+          "id": "d13:9f4f0f20f24a91c8:16579:16673",
+          "start": 16579,
+          "end": 16673,
+          "text": "**Capital Expenditures:** \\$8.2 billion driven by scaling our platform to meet customer demand"
+        }
+      ],
+      "why": "Capital requirements and stated expansion rationale; metric definition retained.",
+      "status": "historical explanation",
+      "selected_indices": [
+        27
+      ],
+      "verified_indices": [],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": false,
+      "baseline_note": "Selected but not published."
+    },
+    {
+      "key": "demand-execution",
+      "text": "CoreWeave attributed revenue of $1.6 billion, up 110% year over year, to strong demand for its AI Cloud Platform.",
+      "references": [
+        {
+          "id": "d13:9f4f0f20f24a91c8:13569:13666",
+          "start": 13569,
+          "end": 13666,
+          "text": "**Revenue:** \\$1.6 billion, up 110% YoY driven by strong demand for CoreWeave's AI Cloud Platform"
+        }
+      ],
+      "why": "Management attribution of execution to demand, without asserting independent causality.",
+      "status": "historical explanation",
+      "selected_indices": [
+        26
+      ],
+      "verified_indices": [],
+      "materially_duplicated": false,
+      "wording_adequate": false,
+      "layout": false,
+      "baseline_note": "Selected but not published."
+    }
+  ],
+  "appropriate_exclusions": [
+    "Forward-looking legal boilerplate is not a substantive management forecast.",
+    "Standalone GAAP and non-GAAP reconciliation inventories without strategic explanation.",
+    "Systematic financing at scale and attractive unit economics slogans lack distinct detail beyond specific financing and positioning claims.",
+    "Every standalone revenue, margin, loss and capex figure is not a required strategic insight."
+  ],
+  "baseline_model_record_ids": [
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
+}
