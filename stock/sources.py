@@ -48,6 +48,8 @@ def passage_id(doc,p):
 
 def publish(store, doc, passages, source_hash, extraction_version=3,insight_proposal=None):
     """No LLM/file I/O in this transaction. Competing sorts never replace a winner."""
+    from .sort_budget import check
+    check()
     from .editorial import validate_publication
     for p in passages: validate_publication(p)
     with store.db:
@@ -77,6 +79,7 @@ def publish(store, doc, passages, source_hash, extraction_version=3,insight_prop
         if insight_proposal:
             store.db.execute('INSERT INTO source_insight_heads VALUES(?,?) ON CONFLICT(ticker) DO UPDATE SET revision_id=excluded.revision_id',
                 (doc['ticker'],insight_proposal['id']))
+        check()
         # Legacy checkpoints remain available for audit and recovery.
     return True
 

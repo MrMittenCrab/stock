@@ -291,6 +291,7 @@ def extract(store,doc,cursor,progress):
     all_passages=[];schema(store)
     import time
     def record_metrics(metric):
+        if hasattr(progress,'log_event'):progress.log_event(dict(model=metric))
         with store.db:
             store.db.execute('INSERT INTO source_model_calls(document_id,recorded_at,payload) VALUES(?,?,?)',
                              (doc['id'],time.time(),json.dumps({**metric,'section':index+1,'sections':len(work),'contract':CONTRACT})))

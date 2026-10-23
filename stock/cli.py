@@ -16,12 +16,16 @@ def main():
     archive.add_argument('ticker')
     archive.add_argument('file',nargs='?')
     archive.add_argument('--metadata',metavar='JSON',help='Enrich existing archived documents from versioned metadata JSON')
-    sort=commands.add_parser('sort',help='Extract and freeze archived source passages with Cursor')
+    sort=commands.add_parser('sort',help='Build distinct, verified investment insights from archived sources')
     sort.add_argument('ticker')
     sort.add_argument('--rebuild',metavar='DOCUMENT',help='Stage and review replacement evidence for one document')
-    sort.add_argument('--insights',action='store_true',help='Stage reversible semantic groups over frozen evidence; REPLACE to activate')
-    sort.add_argument('--review-only',action='store_true',help='Review semantic groups without activation (requires --insights)')
+    sort.add_argument('--insights',action='store_true',help=argparse.SUPPRESS)
+    sort.add_argument('--review-only',action='store_true',help='Preview insights without publishing evidence or activating groups')
     sort.add_argument('--reset',metavar='DOCUMENT',help='Restore frozen topics by Archive ID or filename; no LLM call')
+    sort.add_argument('--document-seconds',type=float,default=720,help='Per-document wall-clock budget (default: 720)')
+    sort.add_argument('--command-seconds',type=float,default=1200,help='Command wall-clock budget (default: 1200)')
+    sort.add_argument('--cursor-requests',type=int,default=12,help='Cursor requests per document (default: 12)')
+    sort.add_argument('--request-seconds',type=float,default=120,help='Request timeout (default: 120)')
     sources=commands.add_parser('sources',help='Browse source passages and edit topic memberships')
     sources.add_argument('ticker')
     args=parser.parse_args()
@@ -37,37 +41,36 @@ def main():
     try:
         store=Store()
         if args.command=='sort':
-            if sum(bool(x) for x in (args.reset,args.rebuild,args.insights))>1:raise ValueError('Use one of --reset, --rebuild or --insights')
-            if args.review_only and not args.insights:raise ValueError('--review-only requires --insights')
-            if args.insights:
-                from .insights import stage,review_text,activate
-                from .sort import Cursor
-                from .sort_process import Status,DeferredCursor
-                with Status() as status:
-                    proposal=stage(store,args.ticker,DeferredCursor(Cursor),status)
-                    status.review_all(review_text(proposal))
-                    status.review('Staged revision '+proposal['id'])
-                    if args.review_only:return 0
-                    if input('Activate insight groups? Type REPLACE: ')!='REPLACE':
-                        status.review('Grouping rejected; published evidence and active groups retained');return 1
-                    activate(store,proposal['id'])
-                    status.review('Insight groups activated; every original passage and topic edit retained')
-                    return 0
-            if args.rebuild:
-                from .rebuild import rebuild
-                from .sort import Cursor
-                from .sort_process import Status
-                with Status() as status:
-                    return 0 if rebuild(store,args.ticker,args.rebuild,Cursor,status,lambda: input('Replace published evidence? Type REPLACE: ')== 'REPLACE') else 1
+            if args.reset and (args.rebuild or args.review_only):raise ValueError('Use --reset separately')
+            if args.rebuild and args.review_only:raise ValueError('Use --review-only separately from --rebuild')
             if args.reset:
                 from .sources import reset
                 doc=reset(store,args.ticker,args.reset)
-                print(f"{doc['id']} · {doc['title']} · Restored frozen topics")
+                print(f"{doc['id']} · Restored frozen topics")
                 return 0
-            from .sort import sort_stock
+            from .sort import sort_stock,Cursor
             from .sort_process import Status
-            with Status() as status:
-                return 0 if sort_stock(store,args.ticker,status) else 1
+            from .sort_budget import Budget,BudgetExceeded
+            import time
+            with Budget(args.document_seconds,args.command_seconds,args.cursor_requests,args.request_seconds):
+                with Status() as status:
+                    try:
+                        if args.rebuild:
+                            from .rebuild import rebuild
+                            ok=rebuild(store,args.ticker,args.rebuild,Cursor,status,lambda: input('Replace published evidence? Type REPLACE: ')== 'REPLACE')
+                        else:ok=sort_stock(store,args.ticker,status,review_only=args.review_only)
+                    except BudgetExceeded as exc:
+                        elapsed=int(time.monotonic()-status.started)
+                        status.review(f"{status.document or args.ticker} · Paused · {exc} · {elapsed//60:02}:{elapsed%60:02}")
+                        resume=f"stock sort {args.ticker}"+(f" --rebuild {args.rebuild}" if args.rebuild else ' --review-only' if args.review_only else '')
+                        status.review(f'Resume · {resume} · Log · {status.log_path}')
+                        return 1
+                    from .insights import entries
+                    from .sources import passages
+                    insight_count,source_count=status.preview_counts or (len(entries(store,args.ticker)),len(passages(store,args.ticker)))
+                    elapsed=int(time.monotonic()-status.started)
+                    status.review(f"{args.ticker} · {'Preview' if args.review_only else 'Done' if ok else 'Paused'} · {insight_count} insights · {source_count} sources · {elapsed//60:02}:{elapsed%60:02} · Log · {status.log_path}")
+                    return 0 if ok else 1
         if args.command=='sources':
             if not sys.stdin.isatty() or not sys.stdout.isatty():
                 raise ValueError('stock sources requires an interactive terminal')

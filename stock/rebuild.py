@@ -46,7 +46,11 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
     sources.schema(store)
     matches=[d for d in documents(store,ticker) if str(d['id'])==reference or any(Path(f['path']).name==reference for f in d['files'])]
     if len(matches)!=1: raise ValueError('DOCUMENT must be an unambiguous Archive ID or archived filename')
-    doc=matches[0];directory=ROOT/'.data'/'sort-locks';directory.mkdir(exist_ok=True)
+    doc=matches[0]
+    from .sort_budget import CURRENT, check
+    budget=CURRENT.get()
+    if budget:budget.use_document(doc['id'])
+    directory=ROOT/'.data'/'sort-locks';directory.mkdir(exist_ok=True)
     # DB identity avoids interference between disposable verification databases.
     dbpath=store.db.execute('PRAGMA database_list').fetchone()[2]
     lockname=hashlib.sha256(f'{dbpath}:{doc["id"]}'.encode()).hexdigest()
@@ -88,13 +92,15 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             return False
         if not approve(): progress('Rebuild rejected; original evidence retained');return False
         verify()
+        check()
         from .editorial import validate_publication
         for p in proposed: validate_publication(p)
         with store.db:
             store.db.execute('BEGIN IMMEDIATE')
             if insight_proposal:
-                from .insights import head
-                if head(store,ticker)!=insight_proposal['parent']:raise IntegrityError('Insight groups changed during rebuild')
+                from .insights import head,snapshot as insight_snapshot
+                if head(store,ticker)!=insight_proposal['parent'] or insight_snapshot(store,ticker)!=insight_proposal['snapshot']:
+                    raise IntegrityError('Evidence, topics or insight groups changed during rebuild')
             if published_snapshot()!=snapshot: raise IntegrityError('Published evidence changed during rebuild')
             actual_overrides=store.db.execute('SELECT o.passage_id,o.topic,o.present FROM source_overrides o JOIN source_passages p ON p.id=o.passage_id WHERE p.document_id=?',(doc['id'],)).fetchall()
             if sorted(actual_overrides)!=sorted(overrides): raise IntegrityError('Manual corrections changed during rebuild')
@@ -116,6 +122,7 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
             if insight_proposal:
                 store.db.execute('INSERT INTO source_insight_heads VALUES(?,?) ON CONFLICT(ticker) DO UPDATE SET revision_id=excluded.revision_id',(ticker,insight_proposal['id']))
+            check()
             # Retain staging checkpoints and model selections for audit.
         progress(f'Replaced document {doc["id"]} · {len(proposed)} passages')
         return True

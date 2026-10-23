@@ -18,7 +18,8 @@ with pymupdf.open(sys.argv[1]) as pdf:
  blocks=[dict(bbox=l['bbox'],text=''.join(s['text'] for s in l['spans']))
  for b in p.get_text('dict')['blocks'] if 'lines' in b for l in b['lines']]) for i,p in enumerate(pdf)]))
 '''
-    result=subprocess.run([pdf_python(),'-c',script,str(path)],capture_output=True,text=True,timeout=120)
+    from .sort_process import run
+    result=run([pdf_python(),'-c',script,str(path)],capture_output=True,text=True,timeout=120)
     if result.returncode: raise ValueError('Original PDF layout unavailable')
     return json.loads(result.stdout)
 

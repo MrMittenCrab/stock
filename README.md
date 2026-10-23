@@ -341,12 +341,14 @@ file publication roll back together on failure; existing files are never overwri
 
 ```sh
 stock sort CRWV.US
+stock sort CRWV.US --review-only
 stock sources CRWV.US
 stock sort CRWV.US --reset DOCUMENT
 ```
 
-Sort builds a selective source-grounded evidence library from existing archived
-Markdown. Convert or restore missing Markdown through Archive first. Stock assigns
+Sort builds distinct, material investment insights by default: source preparation →
+materiality distillation → editorial reconstruction → factual verification → semantic
+deduplication → insight publication. It uses existing archived Markdown. Convert or restore missing Markdown through Archive first. Stock assigns
 stable document/hash/offset candidate IDs to coherent paragraphs and sentence groups.
 Cursor judges relevance, fixed topics and supported speaker categories, returning
 compact IDs rather than reproduced quotations. Stock reconstructs selected text
@@ -359,13 +361,16 @@ under `.data`, in read-only ask mode with shell, file, web and MCP permissions d
 Source text is sent to Cursor's service using existing authentication (`agent login`).
 Stock validates JSON, IDs, topics, roles and source hashes. JSON/schema errors receive
 bounded retries; process timeouts retain staging without automatic retries, and
-authentication/quota rejection stops further calls. The terminal shows document/section,
-stage elapsed, total elapsed and child state; child liveness never implies progress. Ctrl+C
-terminates active Cursor processes and preserves completed checkpoints.
+authentication/quota rejection stops further calls. A single in-place line shows
+`Document · Progress · Stage · Total elapsed`. Diagnostics stay in `.data/sort-logs/*.jsonl`
+and the local audit tables. Ctrl+C terminates active child process groups and preserves
+completed checkpoints.
 
 Successful documents publish atomically and freeze their original topics/citations.
-Ordinary Sort prints **Already sorted** and preserves completed evidence and manual
-topic overrides. Version 3 checkpoints are isolated from legacy checkpoints, which
+Ordinary Sort preserves completed evidence and manual topic overrides. It automatically
+builds missing or stale semantic groups as reversible audited revisions, using cached
+equivalence judgments. When evidence and groups are current, it makes no Cursor calls
+and creates no revision. Version 3 checkpoints are isolated from legacy checkpoints, which
 remain available for audit. Rejected candidates are recorded independently; valid
 selections survive. Source integrity failure prevents publication.
 
@@ -392,12 +397,23 @@ Unverified individual names stay null. Original PDFs and Markdown are unchanged;
 new quotations carry exact Markdown offsets, its SHA-256, and original references.
 Sources preserves frozen legacy citations, native terminal colors and topic editing.
 
-For staged cross-document semantic grouping of existing evidence, use
-`.venv/bin/stock sort CRWV.US --insights --review-only`. This retains every passage
-and manual edit, stages a reversible proposal, and does not activate it. Omit
-`--review-only` to review and optionally type `REPLACE`. Fresh sorts distill source
-material before reconstruction and group only their own newly verified evidence.
-See [semantic rules, CoreWeave replay results and safe review commands](docs/semantic-insights.md).
+`stock sort CRWV.US --review-only` previews proposed insights across pending documents
+and frozen evidence without publishing evidence or activating groups. It may call Cursor
+for uncached judgments. Normal Sort activates fully validated grouping revisions
+automatically; only `--rebuild DOCUMENT` requires `REPLACE`. `--insights` remains a hidden
+compatibility alias. Manual topic corrections and explicit ungrouping remain intact.
+
+Defaults are **12 minutes per document**, **20 minutes per command**, **12 Cursor
+requests per document**, and **120 seconds per request**. Override with
+`--document-seconds`, `--command-seconds`, `--cursor-requests`, and `--request-seconds`.
+Preparation, startup, retries and grouping share monotonic deadlines. A grouping-only
+run uses one document-sized Insights budget. Exhaustion cancels the child group,
+retains staging and cached decisions, and prints the resume command and log path.
+Incomplete evidence or semantic grouping is never activated; run the same command
+to resume. Human review time counts against the deadline; publication rechecks it.
+
+See [the unified replay measurements and limitations](docs/unified-sort.md) and
+[semantic rules and the original CoreWeave replay](docs/semantic-insights.md).
 
 See [the workflow profile, benchmark and resume behavior](docs/sort-efficiency.md)
 for compact source transport, cached PDF preparation, independent review reuse and

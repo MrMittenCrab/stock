@@ -89,9 +89,9 @@ def test_status_reports_stage_elapsed_without_claiming_forward_progress(monkeypa
  now=[10.];monkeypatch.setattr(sp.time,'monotonic',lambda:now[0])
  s=sp.Status();s('13 · CoreWeave · section 3/9 · semantic review');now[0]=14.
  line=s.line()
- assert 'section 3/9' in line and 'stage 4s' in line and 'total 4s' in line and 'child idle' in line
+ assert line=='13 · 3/9 · Review · 00:04'
  now[0]=15.;s('13 · CoreWeave · section 3/9 · citation recovery');now[0]=17.
- assert 'stage 2s' in s.line() and 'total 7s' in s.line()
+ assert s.line()=='13 · 3/9 · Citations · 00:07'
  assert 'working' not in s.line()
 
 
@@ -200,7 +200,8 @@ def test_terminal_width_keeps_document_section_stage_and_timers():
  s=Status();s('13 · CoreWeave Q4-2025 Earnings Presentation · section 3/9 · semantic review')
  line=s.line(width=80)
  assert len(line)<=79
- for term in ('13','3/9','review','stage','total','child'):assert term in line
+ for term in ('13','3/9','Review','00:'):assert term in line
+ assert not any(word in line for word in ('child','stage','total','unknown'))
 
 
 def test_duplicate_selections_do_not_duplicate_review_work():

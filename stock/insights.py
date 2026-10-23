@@ -171,35 +171,68 @@ def identical_support(a,b):
     return anchors(a)==anchors(b)
 
 
-def stage(store,ticker,cursor,progress=print,new_document=None):
-    """Stage only. Activation is an explicit, separately approved operation."""
+def suppressed_pairs(store,previous):
+    """Recover old manual splits once, without modifying historical revisions."""
+    from itertools import combinations
+    suppressed=set();ancestor=previous;seen=set()
+    while ancestor:
+        if 'suppressed_pairs' in ancestor:
+            suppressed.update(tuple(pair) for pair in ancestor['suppressed_pairs']);break
+        parent_id=ancestor.get('parent')
+        if not parent_id or parent_id in seen:break
+        seen.add(parent_id);prior=load(store,parent_id)
+        if ancestor.get('action')=='ungroup':
+            for group in prior['groups']:
+                if group['id']==ancestor.get('ungrouped'):
+                    suppressed.update(tuple(sorted(pair)) for pair in combinations(group['members'],2))
+        ancestor=prior
+    return suppressed
+
+
+def stage(store,ticker,cursor,progress=print,new_document=None,new_documents=None):
+    """Stage a complete reversible view; publication/activation is transactional."""
     schema(store)
     from .archive import documents
     docs={d['id']:{k:d.get(k) for k in ('id','title','type','publisher','period','publication_date','source_sha256','metadata_provenance')} for d in documents(store,ticker)}
     rows=sources.passages(store,ticker)
-    if new_document:
-        doc,passages=new_document
-        rows=[dict(p,id=sources.passage_id(doc,p),document_id=doc['id']) for p in passages]
+    for doc,passages in (new_documents or ([new_document] if new_document else [])):
+        rows=[p for p in rows if p['document_id']!=doc['id']]+[dict(p,id=sources.passage_id(doc,p),document_id=doc['id']) for p in passages]
     from .editorial import validate_publication
     for p in rows:validate_publication(p)
     lookup={p['id']:p for p in rows}
     initial=snapshot(store,ticker);parent=head(store,ticker)
     fingerprints={p['id']:passage_fingerprint(p,docs[p['document_id']]) for p in rows}
-    candidates=retrieve(rows);judgments={};pending=[];cache_hits=0;deterministic=0
+    previous=load(store,parent) if parent else {}
+    prior_fingerprints=previous.get('fingerprints',{})
+    candidates=set(retrieve(rows))
+    from itertools import combinations
+    for group in previous.get('groups',[]):
+        candidates.update(tuple(sorted(pair)) for pair in combinations(group['members'],2) if all(m in lookup for m in pair))
+    candidates=sorted(candidates)
+    suppressed=suppressed_pairs(store,previous)
+    suppressed={pair for pair in suppressed if all(m in lookup for m in pair)}
+    candidates=sorted(set(candidates)|suppressed)
+    judgments={};pending=[];cache_hits=0;deterministic=0
     for a,b in candidates:
+        from .sort_budget import check
+        check()
         key=digest([CONTRACT,*sorted((fingerprints[a],fingerprints[b]))])
         cached=store.db.execute('SELECT payload FROM source_semantic_cache WHERE fingerprint=? AND contract=?',(key,CONTRACT)).fetchone()
         pair=dict(id=key,left=evidence_payload(lookup[a],docs[lookup[a]['document_id']]),right=evidence_payload(lookup[b],docs[lookup[b]['document_id']]))
-        if cached:
+        if (a,b) in suppressed:
+            judgments[(a,b)]=dict(pair=key,equivalent=False,relation='different',dimensions_agree=False,information_preserved=False,reason='Manual ungroup retained; original evidence remains separate.',differences=['Manual grouping correction.'])
+            deterministic+=1
+        elif cached:
             r=json.loads(cached[0]);validate([r],[pair]);judgments[(a,b)]=r;cache_hits+=1
         else:
             exact=identical_support(lookup[a],lookup[b])
             oversized=len(packed(comparison_payload([pair])))>REQUEST_BUDGET
-            if exact or oversized:
+            unchanged=all(prior_fingerprints.get(i)==fingerprints[i] for i in (a,b))
+            if exact or oversized or unchanged:
                 r=dict(pair=key,equivalent=exact,relation='repeated_assertion' if exact else 'unknown',
                     dimensions_agree=exact,information_preserved=exact,
-                    reason='Deterministic identical statement, attribution, period and exact support anchors.' if exact else 'Full evidence exceeds comparison budget; uncertainty preserved as separate insights.',
-                    differences=[] if exact else ['Not semantically compared: oversized source context.'])
+                    reason='Deterministic identical statement, attribution, period and exact support anchors.' if exact else ('Unchanged evidence without a verified equivalence; retained separately.' if unchanged else 'Full evidence exceeds comparison budget; uncertainty preserved as separate insights.'),
+                    differences=[] if exact else ['Equivalence unverified; uncertainty preserved.'])
                 judgments[(a,b)]=r;deterministic+=1
                 with store.db:store.db.execute('INSERT OR REPLACE INTO source_semantic_cache VALUES(?,?,?)',(key,CONTRACT,packed(r)))
             else:pending.append((a,b,pair))
@@ -211,6 +244,7 @@ def stage(store,ticker,cursor,progress=print,new_document=None):
     if chunk:batches.append(chunk)
     metrics=[]
     def record(metric):
+        if hasattr(progress,'log_event'):progress.log_event(dict(model=metric))
         metrics.append(metric)
         with store.db:
             store.db.execute('INSERT INTO source_model_calls(document_id,recorded_at,payload) VALUES(?,?,?)',
@@ -245,19 +279,8 @@ def stage(store,ticker,cursor,progress=print,new_document=None):
         g['canonical']=min(g['members'],key=lambda m:(lookup[m]['location'].get('review',{}).get('readability')!='clear',len(lookup[m]['text']),m))
         g['id']='i:'+digest(sorted(g['members']))[:24]
         g['basis']=basis_for[group_index]
-    if new_document and parent:
-        existing_rows={p['id']:p for p in sources.passages(store,ticker)}
-        preserved=[]
-        for old in load(store,parent)['groups']:
-            remaining=[m for m in old['members'] if m in existing_rows and existing_rows[m]['document_id']!=new_document[0]['id']]
-            if not remaining:continue
-            if remaining==old['members']:preserved.append(old)
-            else:preserved.append(dict(id='i:'+digest(sorted(remaining))[:24],members=remaining,canonical=old['canonical'] if old['canonical'] in remaining else remaining[0],basis=[]))
-        # Publishing a new document may group its own evidence, but cannot regroup
-        # any frozen existing document without the explicit --insights review.
-        groups=preserved+groups
     proposal=dict(contract=CONTRACT,ticker=ticker,parent=parent,snapshot=initial,
-        groups=groups,new_document_id=new_document[0]['id'] if new_document else None,passage_count=len(rows),comparison_count=len(candidates),
+        groups=groups,preview_only=bool(new_documents),fingerprints=fingerprints,suppressed_pairs=sorted(suppressed),new_document_id=new_document[0]['id'] if new_document else None,passage_count=len(rows),comparison_count=len(candidates),
         model_requests=len(batches),cached_decisions=cache_hits,deterministic_decisions=deterministic,
         differences=[dict(members=[a,b],**r) for (a,b),r in judgments.items() if not r['equivalent']],
         evidence=rows_to_json(rows),
@@ -268,24 +291,43 @@ def stage(store,ticker,cursor,progress=print,new_document=None):
 
 
 def save_revision(store,proposal):
-    # Each stage/ungroup is retained, even if content matches an earlier stage.
-    proposal={**proposal,'id':digest([proposal,time.time_ns()])}
+    # Identical substantive proposals reuse a deterministic revision ID. All historical rows remain.
+    identity={k:v for k,v in proposal.items() if k not in ('model_requests','cached_decisions','deterministic_decisions')}
+    proposal={**proposal,'id':digest(identity)}
+    from .sort_budget import check
+    check()
     with store.db:
-        store.db.execute('INSERT INTO source_insight_revisions VALUES(?,?,?,?)',
+        store.db.execute('INSERT OR IGNORE INTO source_insight_revisions VALUES(?,?,?,?)',
             (proposal['id'],proposal['ticker'],time.time(),packed(proposal)))
     return proposal
 
 
 def activate(store,revision_id):
+    from .sort_budget import check
+    check()
     schema(store);p=load(store,revision_id)
+    if p.get('preview_only'):raise ValueError('Preview proposal cannot be activated')
     if p.get('new_document_id'):raise ValueError('Document proposal must be activated atomically with publication')
     with store.db:
         store.db.execute('BEGIN IMMEDIATE')
         if head(store,p['ticker'])!=p['parent'] or snapshot(store,p['ticker'])!=p['snapshot']:
             raise ValueError('Evidence, topics or active grouping changed; stage again')
+        check()
         store.db.execute('INSERT INTO source_insight_heads VALUES(?,?) ON CONFLICT(ticker) DO UPDATE SET revision_id=excluded.revision_id',
             (p['ticker'],revision_id))
+        check()
     return True
+
+
+def current(store,ticker):
+    schema(store)
+    active=head(store,ticker)
+    if not active:return False
+    p=load(store,active)
+    from .archive import documents
+    docs={d['id']:{k:d.get(k) for k in ('id','title','type','publisher','period','publication_date','source_sha256','metadata_provenance')} for d in documents(store,ticker)}
+    rows=sources.passages(store,ticker)
+    return p.get('fingerprints')=={r['id']:passage_fingerprint(r,docs[r['document_id']]) for r in rows}
 
 
 def entries(store,ticker,document_id=None,topic=None):
@@ -312,13 +354,16 @@ def ungroup(store,ticker,group_id):
     schema(store);active=head(store,ticker)
     if not active:raise ValueError('No active insight grouping')
     previous=load(store,active);groups=[];found=False
+    suppressed=suppressed_pairs(store,previous)
     for g in previous['groups']:
         if g['id']==group_id:
             found=True
+            from itertools import combinations
+            suppressed.update(tuple(sorted(pair)) for pair in combinations(g['members'],2))
             groups.extend(dict(id='i:'+digest([m])[:24],members=[m],canonical=m,basis=[]) for m in g['members'])
         else:groups.append(g)
     if not found:raise ValueError('Unknown insight group')
-    p=save_revision(store,{**previous,'parent':active,'snapshot':snapshot(store,ticker),'groups':groups,'action':'ungroup','ungrouped':group_id,'new_document_id':None})
+    p=save_revision(store,{**previous,'parent':active,'snapshot':snapshot(store,ticker),'groups':groups,'action':'ungroup','ungrouped':group_id,'new_document_id':None,'suppressed_pairs':sorted(suppressed)})
     activate(store,p['id']);return p
 
 

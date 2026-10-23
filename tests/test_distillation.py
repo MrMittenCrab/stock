@@ -16,9 +16,9 @@ def test_source_id_plan_empty_short_kpi_and_cached_resume(tmp_path):
  s=Store(tmp_path/'db');m=Model()
  atoms=[atom(0,'Thank you for attending.'),atom(1,'Active Data Centers: 43 as of December 31, 2025.')]
  result=distillation.plan(s,{'id':13,'title':'CoreWeave'},atoms,m,lambda _:None)
- assert result=={'1'} and len(m.calls)==2
+ assert result=={'1'} and len(m.calls)==1
  assert distillation.plan(s,{'id':13,'title':'CoreWeave'},atoms,m,lambda _:None)==result
- assert len(m.calls)==2
+ assert len(m.calls)==1
  assert not distillation.plan(s,{'id':13},atoms[:1],m,lambda _:None)
 
 
@@ -27,11 +27,11 @@ def test_plan_rejects_unknown_ids_and_never_silently_truncates(tmp_path):
  class Bad:
   def extract(self,u,c):return [dict(ids=['unknown'],topics=[],reason='material')]
  with pytest.raises(ValueError):distillation.plan(s,{'id':1},[atom(0,'Active power: 850MW+.')],Bad(),lambda _:None)
- # Large selections get document-wide substantive reassessment, no quota.
+ # Large selections retain all material candidates, without a second selection quota.
  m=Model();atoms=[atom(i,f'Data center {i} has separately contracted power.') for i in range(220)]
  result=distillation.plan(s,{'id':1},atoms,m,lambda _:None)
  assert len(result)==220
- assert any(u.get('selection_assessment') for u in m.calls)
+ assert not any(u.get('selection_assessment') for u in m.calls)
 
 
 def test_fresh_sort_distills_before_reconstruction_and_freezes(tmp_path,monkeypatch):
@@ -52,7 +52,7 @@ def test_fresh_sort_distills_before_reconstruction_and_freezes(tmp_path,monkeypa
    cs=[x for x in u['candidates'] if 'Active power:' in x['text']]
    return [dict(ids=[x['id']],representation='source_grounded_statement',text='CoreWeave reported active power of 850MW.',topics=['Operations'],category='Management',speaker=None,ambiguities=[]) for x in cs]
  m=Full();assert sort_document(s,doc,m,lambda _:None)==1
- assert len([u for u in m.calls if 'distill' in u])==2
+ assert len([u for u in m.calls if 'distill' in u])==1
  assert len(sources.passages(s,'CRWV.US'))==1
  states=[json.loads(r[0]) for r in s.db.execute('SELECT payload FROM source_work_v3')]
  assert all(state['document_plan'] for state in states)
@@ -85,4 +85,4 @@ def test_cross_batch_duplicate_ownership_keeps_at_least_one(tmp_path,monkeypatch
    if u['selection_assessment'] and json.loads(c)['document_shortlist_context']:return []
    return [dict(ids=[u['distill'][0]['id']],topics=['Market'],reason='Material capacity constraint.')]
  result=distillation.plan(s,{'id':13},[atom(0,'Demand exceeds capacity.'),atom(1,'Customer demand outpaces capacity.')],Symmetric(),lambda _:None)
- assert result=={'0'}
+ assert result=={'0','1'}

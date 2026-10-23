@@ -26,24 +26,19 @@ This deliberately uses SQLite/JSON and an inverted token index, with no vector
 service, agent framework or new runtime dependency. Existing archived documents,
 passage hashes/offsets/references, review results and representation types remain
 authoritative. Frozen legacy evidence falls back to singleton insights until
-explicitly reviewed. Legacy exact-source status is shown; grouping does not
+automatically analyzed by Sort. Legacy exact-source status is shown; grouping does not
 upgrade it to independently verified editorial fidelity.
 
 ## Document distillation
 
-Fresh Sort first selects potentially distinct material source IDs from bounded
-source batches. It evaluates materiality, specificity, incremental information,
-distinctiveness, factual support and qualifications. It then reassesses the
-collected shortlist across sections before expensive reconstruction and independent
-factual review. Empty selection is valid; short KPIs and reconstructable chart/table
-facts are expressly eligible. Hundreds/thousands of shortlisted items require a
-substantive selection-quality assessment rather than count truncation.
-
-There is no hard passage quota. Cross-batch duplicate context contains only claims
-already retained by preceding assessments. Thus two batches cannot each discard a
-fact in favor of the other future batch. Selection reasons and exact IDs are cached
-in `source_distillation` under `distillation-2`. New editorial checkpoints retain the
-whole document plan, so partially completed resumes preserve selection scope.
+Fresh Sort selects potentially distinct material source IDs from bounded batches,
+then reconstructs the selected claims and independently checks their factual fidelity.
+The former second shortlist assessment is removed: equivalent verified propositions
+are consolidated by semantic grouping, retaining every support record. Empty selection
+is valid; short KPIs and reconstructable charts/tables remain eligible. There is no
+hard insight quota. Reasons and exact IDs are cached under `distillation-3`; historical
+`distillation-2` decisions remain untouched. Editorial checkpoints retain their whole
+document plan, so resumes preserve selection scope without rerunning materiality.
 Old completed/partial editorial checkpoints retain their original selections,
 partitions, review fingerprints and repair state; they are not reinterpreted under
 the new planning contract. Accepted old statements are grouped after verification.
@@ -142,35 +137,31 @@ No authenticated requests or live latency/token/quality measurements were made.
 
 ## Preservation, UI and safe review
 
-Ordinary Sort still freezes on success. It only groups the newly sorted document,
-in the same publication transaction. A failed semantic stage does not freeze an
-incomplete publication. Selective `--rebuild DOCUMENT` stages its target's proposed
-groups, evidence and override transfer report before the existing REPLACE approval;
-evidence and target group changes commit/roll back together. It does not regroup
-other frozen documents. Existing rebuild reconciliation still blocks unmatched
-manual corrections; old staging remains available for audit.
+Normal `stock sort CRWV.US` now builds and activates complete reversible semantic
+views automatically, including cross-document comparisons before publication of new
+evidence. Completed evidence is never re-extracted. Current evidence/grouping makes
+repeated Sort a no-op; topic edits remain on member evidence and do not cause model calls.
+Failed or budget-exhausted grouping retains cached decisions without partial activation.
 
-For an existing ticker, preview cross-document grouping without activating:
+Preview the unified operation without publication or activation:
 
 ```sh
-.venv/bin/stock sort CRWV.US --insights --review-only
+.venv/bin/stock sort CRWV.US --review-only
 ```
 
-This analyzes **existing published evidence only**, stages an audited revision and
-opens the keyboard review pager. It does not re-extract archived documents or change
-active Sources groups. To review and optionally activate:
+This may stage extraction for pending documents and compare their proposed evidence
+with frozen evidence. Exact source references and every published row remain intact.
+To activate a complete semantic view, use normal Sort. Grouping-only updates do not
+need REPLACE. Stale evidence, topics or a changed active head block activation.
+
+Evidence replacement still requires explicit `REPLACE` after full review:
 
 ```sh
-.venv/bin/stock sort CRWV.US --insights
+stock sort TICKER --rebuild DOCUMENT
 ```
 
-Only typing `REPLACE` activates. Stale evidence, topic edits or a changed active head
-block activation. Declining/cancelling retains active groups and every evidence row.
-The existing extraction rebuild remains:
-
-```sh
-.venv/bin/stock sort CRWV.US --rebuild 13
-```
+Do not automatically rebuild document 13. Existing checkpoints remain resumable.
+See [unified budgets, measurements and limitations](unified-sort.md).
 
 Review shows passage/insight counts, equivalent members with exact sources,
 material differences retained, potential information-loss limitations and manual
@@ -187,8 +178,8 @@ selects the explicit member used by T (topic edits) and O (source opening). Topi
 edits affect that member only, with no inherited consent to propagate changes.
 U ungroups by creating/activating another audited revision; it removes no evidence
 or overrides. Historical group revisions remain. Rebuilding a document retains
-other active groups and replaces only the target's group memberships alongside the
-explicitly approved evidence replacement.
+verified comparisons and activates the complete validated semantic view alongside the
+explicitly approved evidence replacement. Frozen evidence from other documents is retained.
 
 ## Known limits
 

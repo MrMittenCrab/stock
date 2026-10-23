@@ -1,0 +1,183 @@
+{
+  "before": {
+    "stages": {
+      "distillation": {
+        "requests": 16,
+        "prompt_characters": 153017
+      },
+      "reconstruction": {
+        "requests": 5,
+        "prompt_characters": 103614
+      },
+      "review": {
+        "requests": 5,
+        "prompt_characters": 21980
+      },
+      "within-document grouping": {
+        "requests": 4,
+        "prompt_characters": 29241
+      },
+      "cross-document grouping": {
+        "requests": 4,
+        "prompt_characters": 55240
+      },
+      "citation recovery": {
+        "requests": 0,
+        "prompt_characters": 0
+      }
+    },
+    "requests": 34,
+    "prompt_characters": 363092,
+    "cold_local_seconds": 0.349832208128646,
+    "resumed_local_seconds": 0.0100147919729352,
+    "resume_requests": 0,
+    "evidence": 13,
+    "insights": 9,
+    "exact_citations": 21,
+    "missing_fixture_claims": [],
+    "live_latency": null,
+    "actual_tokens": null
+  },
+  "after": {
+    "stages": {
+      "distillation": {
+        "requests": 11,
+        "prompt_characters": 130965
+      },
+      "reconstruction": {
+        "requests": 5,
+        "prompt_characters": 103614
+      },
+      "review": {
+        "requests": 5,
+        "prompt_characters": 21980
+      },
+      "within-document grouping": {
+        "requests": 2,
+        "prompt_characters": 12164
+      },
+      "cross-document grouping": {
+        "requests": 5,
+        "prompt_characters": 67518
+      },
+      "citation recovery": {
+        "requests": 0,
+        "prompt_characters": 0
+      }
+    },
+    "requests": 28,
+    "prompt_characters": 336241,
+    "cold_local_seconds": 0.24641454103402793,
+    "resumed_local_seconds": 0.0026445419061928988,
+    "resume_requests": 0,
+    "evidence": 13,
+    "insights": 9,
+    "exact_citations": 21,
+    "missing_fixture_claims": [],
+    "live_latency": null,
+    "actual_tokens": null
+  },
+  "baseline": "bbbcbac",
+  "provenance": "Hand-recorded fixture decisions replayed through actual prompt transport and publication gates. Local wall times exclude live model service. No production writes.",
+  "authenticated_requests": 0,
+  "pdf_checkpoint_regression": {
+    "old": {
+      "accepted": 17,
+      "runs": [
+        {
+          "pdf_parse_seconds": 3.085315665928647,
+          "layout_prepare_seconds": 3.0997390830889344,
+          "normalization_seconds": 0.00622221827507019,
+          "normalization_calls": 801,
+          "run": "cold",
+          "cursor_calls": 3,
+          "selection_calls": 1,
+          "review_calls": 2,
+          "prompt_chars": 71921,
+          "response_chars": 16593,
+          "local_wall_seconds": 3.2002549590542912,
+          "replay_response_seconds": 0.00042241672053933144,
+          "model_processing_seconds": null,
+          "total_live_wall_seconds": null
+        },
+        {
+          "pdf_parse_seconds": 0,
+          "layout_prepare_seconds": 0.004170084139332175,
+          "normalization_seconds": 0,
+          "normalization_calls": 0,
+          "run": "resume",
+          "cursor_calls": 0,
+          "selection_calls": 0,
+          "review_calls": 0,
+          "prompt_chars": 0,
+          "response_chars": 0,
+          "local_wall_seconds": 0.038250708021223545,
+          "replay_response_seconds": 0,
+          "model_processing_seconds": null,
+          "total_live_wall_seconds": null
+        }
+      ]
+    },
+    "new": {
+      "accepted": 17,
+      "runs": [
+        {
+          "pdf_parse_seconds": 3.3163173750508577,
+          "layout_prepare_seconds": 3.3291015829890966,
+          "normalization_seconds": 0.006386086344718933,
+          "normalization_calls": 801,
+          "run": "cold",
+          "cursor_calls": 3,
+          "selection_calls": 1,
+          "review_calls": 2,
+          "prompt_chars": 71921,
+          "response_chars": 16593,
+          "local_wall_seconds": 3.4406662499532104,
+          "replay_response_seconds": 0.00046191667206585407,
+          "model_processing_seconds": null,
+          "total_live_wall_seconds": null
+        },
+        {
+          "pdf_parse_seconds": 0,
+          "layout_prepare_seconds": 0.00531745795160532,
+          "normalization_seconds": 0,
+          "normalization_calls": 0,
+          "run": "resume",
+          "cursor_calls": 0,
+          "selection_calls": 0,
+          "review_calls": 0,
+          "prompt_chars": 0,
+          "response_chars": 0,
+          "local_wall_seconds": 0.04157904186286032,
+          "replay_response_seconds": 0,
+          "model_processing_seconds": null,
+          "total_live_wall_seconds": null
+        }
+      ]
+    },
+    "same_quality": true,
+    "scope": "Identical two historical CoreWeave presentation sections; real PDF processing, read-only archive input, disposable staging."
+  },
+  "preservation": {
+    "unchanged": true,
+    "checks": {
+      "passages": true,
+      "sorts": true,
+      "work": true,
+      "overrides": true,
+      "topics": true,
+      "source_passages_other_documents": true,
+      "source_sorts_other_documents": true,
+      "topics_other_documents": true,
+      "archive_registration": true,
+      "all_registered_files": true,
+      "protected_document13_files": true,
+      "no_production_semantic_tables": true
+    },
+    "published_passages": 1796,
+    "document13_passages": 8,
+    "registered_files": 197,
+    "basis": "Other frozen documents match pre-repair snapshot; document13 frozen evidence/topics/sorts, all overrides and all historical checkpoints match existing protected hashes. All registered archive-file bytes match their unchanged registration hashes."
+  },
+  "session_live_transport_note": "One disposable legacy transport test reached Cursor before its outdated subprocess mock was corrected. Excluded from replay metrics; no measured live service latency or tokens, no production evidence rebuilt. Subsequent tests use recorded transport."
+}

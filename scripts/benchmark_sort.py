@@ -80,6 +80,7 @@ def worker(args):
             profile['normalization_seconds']+=time.perf_counter()-start
             profile['normalization_calls']+=1
     layout.pdf_layout=timed_parse;layout.attach=timed_prepare;layout.normalized=timed_normalize
+    local_run=process.run
     class Replay:
         def __init__(self):
             self.calls=[];self.cursor=Cursor.__new__(Cursor);self.cursor.command='REPLAY-NO-PROCESS'
@@ -87,6 +88,7 @@ def worker(args):
             self.unit=unit
             return self.cursor.extract(unit,context)
         def run(self,command,**kwargs):
+            if command[0]!='REPLAY-NO-PROCESS':return local_run(command,**kwargs)
             u=self.unit;start=time.perf_counter()
             if 'review' in u:
                 result={'reviews':[{k:v for k,v in recorded[p['text']]['location']['review'].items() if k in ('fidelity','readability','relevance','warnings','reason')} | {'index':i} for i,p in enumerate(u['review'])]}
@@ -101,7 +103,7 @@ def worker(args):
             self.calls.append(dict(stage='review' if 'review' in u else 'selection',prompt_chars=len(command[-1]),prompt_bytes=len(command[-1].encode()),response_chars=len(response),replay_seconds=time.perf_counter()-start))
             return subprocess.CompletedProcess(command,0,response,'')
     replay=Replay();process.run=replay.run
-    with tempfile.TemporaryDirectory(prefix='sort-replay-') as temp:
+    with tempfile.TemporaryDirectory(prefix='sort-replay-',dir=ROOT/'.data') as temp:
         store=Store(Path(temp)/'staging.sqlite3')
         runs=[]
         for label in ('cold','resume'):
@@ -124,7 +126,7 @@ def main():
     parser.add_argument('--worker',action='store_true');parser.add_argument('--implementation')
     args=parser.parse_args()
     if args.worker:return worker(args)
-    with tempfile.TemporaryDirectory(prefix='stock-sort-baseline-') as temp:
+    with tempfile.TemporaryDirectory(prefix='stock-sort-baseline-',dir=ROOT/'.data') as temp:
         base=Path(temp);archive=base/'baseline.tar'
         subprocess.run(['git','archive','--output',str(archive),args.baseline,'stock'],cwd=ROOT,check=True)
         with tarfile.open(archive) as tar:tar.extractall(base,filter='data')

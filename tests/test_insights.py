@@ -65,7 +65,7 @@ def test_paraphrase_cross_document_reversible_and_cached(library):
  insights.ungroup(s,'CRWV.US',rows[0]['id'])
  assert len(insights.entries(s,'CRWV.US'))==2
  assert s.db.execute('SELECT * FROM source_passages').fetchall()==before
- assert s.db.execute('SELECT count(*) FROM source_insight_revisions').fetchone()[0]>=3
+ assert s.db.execute('SELECT count(*) FROM source_insight_revisions').fetchone()[0]>=2
 
 @pytest.mark.parametrize('text',[
  'Inference demand is exceeding available capacity.',
@@ -159,7 +159,7 @@ async def test_keyboard_group_members_filter_topics_and_ungroup(library,monkeypa
   await pilot.press('escape')
 
 
-def test_new_document_groups_publish_atomically_without_regrouping_existing(library):
+def test_new_document_groups_publish_atomically_across_existing_evidence(library):
  s,docs,add=library;add('Demand exceeds available capacity.')
  new=[dict(text=t,topics=['Market'],category='Management',speaker=None,
   location=dict(start=i,end=i+1,section='Demand',verification='Exact archived Markdown text'),
@@ -167,7 +167,8 @@ def test_new_document_groups_publish_atomically_without_regrouping_existing(libr
    'Demand exceeds available capacity.','Customer demand exceeds available capacity.'])]
  p=insights.stage(s,'CRWV.US',Replay(),lambda _:None,new_document=(docs[1],new))
  assert sources.publish(s,docs[1],new,docs[1]['source_sha256'],insight_proposal=p)
- assert len(insights.entries(s,'CRWV.US'))==2
+ assert len(insights.entries(s,'CRWV.US'))==1
+ assert insights.current(s,'CRWV.US')
  assert len(sources.passages(s,'CRWV.US'))==3
  assert not sources.publish(s,docs[1],new,docs[1]['source_sha256'],insight_proposal=p)
 
@@ -253,3 +254,123 @@ def test_rebuild_semantic_group_activation_rolls_back_on_failure(library,monkeyp
  with pytest.raises(sqlite3.IntegrityError):rebuild(s,'CRWV.US',str(docs[1]['id']),Real,lambda _:None,lambda:True)
  assert before==s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
  assert insights.head(s,'CRWV.US')==initial['id']
+
+
+def test_default_sort_groups_completed_evidence_and_is_idempotent(library,monkeypatch):
+ from stock.sort import sort_stock
+ s,docs,add=library
+ a=add('Demand exceeds available capacity.')
+ add('Customer demand exceeds available capacity.',1)
+ for d in docs:
+  s.db.execute('INSERT INTO source_sorts VALUES(?,?,?,4)',(d['id'],0,d['source_sha256']))
+ s.db.commit()
+ model=Replay();monkeypatch.setattr('stock.sort.Cursor',lambda:model)
+ before=s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
+ assert sort_stock(s,'CRWV.US',lambda _:None)
+ active=insights.head(s,'CRWV.US');assert active and len(model.calls)==1
+ revisions=s.db.execute('SELECT count(*) FROM source_insight_revisions').fetchone()[0]
+ sources.set_topic(s,a,'Capital',True)
+ assert sort_stock(s,'CRWV.US',lambda _:None)
+ assert insights.head(s,'CRWV.US')==active and len(model.calls)==1
+ assert s.db.execute('SELECT count(*) FROM source_insight_revisions').fetchone()[0]==revisions
+ assert before==s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
+ assert s.db.execute('SELECT * FROM source_overrides').fetchall()==[(a,'Capital',1)]
+ insights.ungroup(s,'CRWV.US',insights.entries(s,'CRWV.US')[0]['id'])
+ ungrouped=insights.head(s,'CRWV.US')
+ assert sort_stock(s,'CRWV.US',lambda _:None)
+ assert insights.head(s,'CRWV.US')==ungrouped and len(model.calls)==1
+
+
+def test_review_only_groups_without_activation(library,monkeypatch):
+ from stock.sort import sort_stock
+ s,docs,add=library
+ add('Demand exceeds available capacity.');add('Customer demand exceeds available capacity.',1)
+ for d in docs:s.db.execute('INSERT INTO source_sorts VALUES(?,?,?,4)',(d['id'],0,d['source_sha256']))
+ s.db.commit()
+ model=Replay();monkeypatch.setattr('stock.sort.Cursor',lambda:model)
+ output=[]
+ assert sort_stock(s,'CRWV.US',output.append,review_only=True)
+ assert insights.head(s,'CRWV.US') is None and len(model.calls)==1
+ assert any('Proposed 1 distinct insights' in line for line in output)
+ assert sort_stock(s,'CRWV.US',lambda _:None)
+ assert len(model.calls)==1 and insights.head(s,'CRWV.US')
+
+
+def test_grouping_budget_preserves_cached_decisions_without_partial_activation(library):
+ from stock.sort_budget import Budget,BudgetExceeded
+ from stock.sort_process import DeferredCursor
+ s,_,add=library
+ for i in range(15):add(f'Customer demand exceeds available capacity for separate region {i}.')
+ m=Replay(False)
+ with Budget(requests=1) as budget:
+  budget.use_document('Insights')
+  with pytest.raises(BudgetExceeded,match='Request limit'):
+   insights.stage(s,'CRWV.US',DeferredCursor(lambda:m),lambda _:None)
+ assert insights.head(s,'CRWV.US') is None
+ cached=s.db.execute('SELECT count(*) FROM source_semantic_cache').fetchone()[0]
+ assert cached>0 and len(m.calls)==1
+ p=insights.stage(s,'CRWV.US',m,lambda _:None)
+ assert p['cached_decisions']==cached
+ insights.activate(s,p['id'])
+ assert len(insights.entries(s,'CRWV.US'))==15
+
+
+def test_rebuild_checks_other_document_snapshot_before_commit(library,monkeypatch):
+ from stock.rebuild import rebuild
+ from stock.evidence import IntegrityError
+ s,docs,add=library
+ a=add('Demand exceeds available capacity.')
+ add('Customer demand exceeds available capacity.',1)
+ new=[dict(text='Demand exceeds available capacity.',topics=['Market'],category='Management',speaker=None,
+  location=dict(start=0,end=34,candidate_id='new'),publication_date=None,date_provenance={})]
+ monkeypatch.setattr('stock.rebuild.extract',lambda *args:(new,lambda:None))
+ class Real(Replay):supports_distillation=True
+ before=s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
+ def approve():
+  sources.set_topic(s,a,'Capital',True)
+  return True
+ with pytest.raises(IntegrityError,match='changed'):rebuild(s,'CRWV.US',str(docs[1]['id']),Real,lambda _:None,approve)
+ assert before==s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
+ assert not insights.head(s,'CRWV.US')
+ assert s.db.execute('SELECT * FROM source_overrides').fetchall()==[(a,'Capital',1)]
+
+
+def test_manual_ungroup_survives_incremental_new_evidence(library):
+ s,_,add=library
+ add('Demand exceeds available capacity.');add('Customer demand exceeds available capacity.',1)
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None);insights.activate(s,p['id'])
+ insights.ungroup(s,'CRWV.US',insights.entries(s,'CRWV.US')[0]['id'])
+ add('Different period: demand exceeds available capacity in 2026.')
+ p=insights.stage(s,'CRWV.US',Replay(False),lambda _:None);insights.activate(s,p['id'])
+ assert len(insights.entries(s,'CRWV.US'))==3
+ assert any('Manual ungroup' in d['reason'] for d in p['differences'])
+
+
+def test_complete_recorded_sort_pipeline_retains_all_coreweave_insights(tmp_path):
+ import runpy
+ root=Path(__file__).parents[1]
+ module=runpy.run_path(str(root/'scripts/benchmark_unified_sort.py'))
+ report=module['worker'](root,tmp_path)
+ assert (report['evidence'],report['insights'],report['exact_citations'])==(13,9,21)
+ assert not report['missing_fixture_claims'] and report['resume_requests']==0
+ assert report['stages']['review']['requests']>0
+ assert report['stages']['cross-document grouping']['requests']>0
+ assert report['actual_tokens'] is report['live_latency'] is None
+
+
+def test_historical_manual_split_survives_another_split_and_staging(library):
+ s,_,add=library
+ for text in ['Demand exceeds capacity.','Demand outpaces capacity.','Power capacity expanded.','Power capacity increased.']:add(text)
+ class TwoGroups(Replay):
+  def extract(self,u,c):
+   return [decision(p,p['left']['text'].split()[0]==p['right']['text'].split()[0]) for p in u['semantic_pairs']]
+ p=insights.stage(s,'CRWV.US',TwoGroups(),lambda _:None);insights.activate(s,p['id'])
+ groups=insights.entries(s,'CRWV.US');assert len(groups)==2
+ old=insights.ungroup(s,'CRWV.US',groups[0]['id'])
+ # Emulate the actual historical payload written before suppression was persisted.
+ old.pop('suppressed_pairs')
+ with s.db:s.db.execute('UPDATE source_insight_revisions SET payload=? WHERE id=?',(insights.packed(old),old['id']))
+ insights.ungroup(s,'CRWV.US',groups[1]['id'])
+ assert len(insights.entries(s,'CRWV.US'))==4
+ p=insights.stage(s,'CRWV.US',TwoGroups(),lambda _:None);insights.activate(s,p['id'])
+ assert len(p['suppressed_pairs'])==2 and len(insights.entries(s,'CRWV.US'))==4

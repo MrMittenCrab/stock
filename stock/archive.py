@@ -83,9 +83,12 @@ def pdf_python():
             first=stream.readline().strip()
         if first.startswith('#!'):
             candidates.append(first[2:])
+    from .sort_budget import CURRENT
+    from .sort_process import run
+    runner=run if CURRENT.get() else subprocess.run
     for candidate in dict.fromkeys(c for c in candidates if c):
         try:
-            if subprocess.run([candidate,'-c','import pymupdf'],capture_output=True,timeout=15).returncode==0:
+            if runner([candidate,'-c','import pymupdf'],capture_output=True,timeout=15).returncode==0:
                 return candidate
         except (OSError,subprocess.SubprocessError):
             continue
