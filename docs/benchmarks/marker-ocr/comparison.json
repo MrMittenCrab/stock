@@ -1,0 +1,353 @@
+{
+  "A": {
+    "profile": "A",
+    "command": [
+      "/Users/lizhiguo/.venvs/marker/bin/python",
+      "/tmp/stock-marker-investigation/guarded_marker.py",
+      "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.pdf",
+      "--page_range",
+      "3,4,5,13,14",
+      "--output_dir",
+      "/tmp/stock-marker-investigation/A",
+      "--output_format",
+      "markdown"
+    ],
+    "elapsed_seconds": 22.85,
+    "peak_tree_rss_mib": 831.3,
+    "returncode": 0,
+    "limit": null,
+    "vlm_blocked": true,
+    "network": "loopback only; HF offline"
+  },
+  "B_LOCAL": {
+    "profile": "B",
+    "command": [
+      "/Users/lizhiguo/.venvs/marker/bin/python",
+      "/tmp/stock-marker-investigation/guarded_marker.py",
+      "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.pdf",
+      "--page_range",
+      "3,4,5,13,14",
+      "--output_dir",
+      "/tmp/stock-marker-investigation/B_LOCAL",
+      "--output_format",
+      "markdown",
+      "--mode",
+      "balanced"
+    ],
+    "elapsed_seconds": 65.54,
+    "peak_tree_rss_mib": 623.4,
+    "returncode": 0,
+    "limit": null,
+    "vlm_blocked": false,
+    "network": "loopback only; HF offline",
+    "source_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+    "converter": "marker-pdf 2.0.0 / surya-ocr 0.22.1",
+    "ocr": "automatic",
+    "layout": "balanced",
+    "quality_mode": "investigation-B",
+    "pdf_page_numbers": [
+      4,
+      5,
+      6,
+      14,
+      15
+    ],
+    "active_archive": false
+  },
+  "C_LOCAL": {
+    "profile": "C",
+    "command": [
+      "/Users/lizhiguo/.venvs/marker/bin/python",
+      "/tmp/stock-marker-investigation/guarded_marker.py",
+      "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.pdf",
+      "--page_range",
+      "3,4,5,13,14",
+      "--output_dir",
+      "/tmp/stock-marker-investigation/C_LOCAL",
+      "--output_format",
+      "markdown",
+      "--force_ocr"
+    ],
+    "elapsed_seconds": 190.68,
+    "peak_tree_rss_mib": 632.3,
+    "returncode": 0,
+    "limit": null,
+    "vlm_blocked": false,
+    "network": "loopback only; HF offline",
+    "source_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+    "converter": "marker-pdf 2.0.0 / surya-ocr 0.22.1",
+    "ocr": "forced",
+    "layout": "fast (device default: MPS)",
+    "quality_mode": "investigation-C",
+    "pdf_page_numbers": [
+      4,
+      5,
+      6,
+      14,
+      15
+    ],
+    "active_archive": false
+  },
+  "D_LOCAL": {
+    "profile": "D",
+    "command": [
+      "/Users/lizhiguo/.venvs/marker/bin/python",
+      "/tmp/stock-marker-investigation/guarded_marker.py",
+      "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.pdf",
+      "--page_range",
+      "3,4,5,13,14",
+      "--output_dir",
+      "/tmp/stock-marker-investigation/D_LOCAL",
+      "--output_format",
+      "markdown",
+      "--force_ocr",
+      "--mode",
+      "balanced"
+    ],
+    "elapsed_seconds": 113.77,
+    "peak_tree_rss_mib": 629.7,
+    "returncode": 0,
+    "limit": null,
+    "vlm_blocked": false,
+    "network": "loopback only; HF offline",
+    "source_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+    "converter": "marker-pdf 2.0.0 / surya-ocr 0.22.1",
+    "ocr": "forced",
+    "layout": "balanced",
+    "quality_mode": "investigation-D",
+    "pdf_page_numbers": [
+      4,
+      5,
+      6,
+      14,
+      15
+    ],
+    "active_archive": false
+  },
+  "semantic_checks": {
+    "A": {
+      "missing_platform_products": [
+        "W&B Models",
+        "SUNK",
+        "CKS"
+      ],
+      "customer_list_complete": false,
+      "capacity_label_pairs_in_order": false,
+      "backlog_delivery_qualification": true,
+      "recognition_is_expected": true,
+      "inclusive_24_month_boundary": false,
+      "backlog_chart_values_as_text": false,
+      "capex_series_as_text": false,
+      "diagram_asset_retained": true
+    },
+    "B_LOCAL": {
+      "missing_platform_products": [
+        "W&B Models",
+        "SUNK",
+        "CKS"
+      ],
+      "customer_list_complete": true,
+      "capacity_label_pairs_in_order": false,
+      "backlog_delivery_qualification": true,
+      "recognition_is_expected": true,
+      "inclusive_24_month_boundary": false,
+      "backlog_chart_values_as_text": false,
+      "capex_series_as_text": false,
+      "diagram_asset_retained": true
+    },
+    "C_LOCAL": {
+      "missing_platform_products": [
+        "W&B Models",
+        "SUNK",
+        "CKS"
+      ],
+      "customer_list_complete": true,
+      "capacity_label_pairs_in_order": true,
+      "backlog_delivery_qualification": true,
+      "recognition_is_expected": true,
+      "inclusive_24_month_boundary": true,
+      "backlog_chart_values_as_text": false,
+      "capex_series_as_text": false,
+      "diagram_asset_retained": true
+    },
+    "D_LOCAL": {
+      "missing_platform_products": [
+        "W&B Models",
+        "SUNK",
+        "CKS"
+      ],
+      "customer_list_complete": true,
+      "capacity_label_pairs_in_order": true,
+      "backlog_delivery_qualification": true,
+      "recognition_is_expected": true,
+      "inclusive_24_month_boundary": true,
+      "backlog_chart_values_as_text": false,
+      "capex_series_as_text": false,
+      "diagram_asset_retained": true
+    }
+  },
+  "ordinary": {
+    "ORDINARY_CURRENT_LOCAL": {
+      "source": "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.pdf",
+      "source_sha256": "5e2306cfd4f4f732395049b2cdd3cdb2909a4e8c6712de3009c962b13de833ba",
+      "profile": "current",
+      "configuration": {
+        "mode": "fast",
+        "force_ocr": false,
+        "use_llm": false,
+        "paginate_output": true,
+        "disable_tqdm": true,
+        "page_range": [
+          1,
+          2,
+          3
+        ]
+      },
+      "pdf_pages": [
+        2,
+        3,
+        4
+      ],
+      "active_archive": false,
+      "command": [
+        "/Users/lizhiguo/.venvs/marker/bin/python",
+        "-u",
+        "/Users/lizhiguo/Documents/Developer/stock/stock/marker_review_worker.py",
+        "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.pdf",
+        "/private/tmp/stock-marker-investigation/ORDINARY_CURRENT_LOCAL"
+      ],
+      "seconds_limit": 240.0,
+      "rss_limit_mib": 8192,
+      "network": "loopback only; offline weights; existing local inference services only",
+      "elapsed_seconds": 14.67,
+      "peak_process_group_rss_mib": 515.7,
+      "peak_shared_service_rss_mib": 790.3,
+      "limit": null,
+      "returncode": 0,
+      "memory_scope": "sampled RSS, includes shared service processes; excludes Metal/GPU allocations"
+    },
+    "ORDINARY_HIGH_FIDELITY": {
+      "source": "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.pdf",
+      "source_sha256": "5e2306cfd4f4f732395049b2cdd3cdb2909a4e8c6712de3009c962b13de833ba",
+      "profile": "high-fidelity",
+      "configuration": {
+        "mode": "balanced",
+        "force_ocr": true,
+        "use_llm": false,
+        "paginate_output": true,
+        "disable_tqdm": true,
+        "page_range": [
+          1,
+          2,
+          3
+        ]
+      },
+      "pdf_pages": [
+        2,
+        3,
+        4
+      ],
+      "active_archive": false,
+      "command": [
+        "/Users/lizhiguo/.venvs/marker/bin/python",
+        "-u",
+        "/Users/lizhiguo/Documents/Developer/stock/stock/marker_review_worker.py",
+        "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.pdf",
+        "/private/tmp/stock-marker-investigation/ORDINARY_HIGH_FIDELITY"
+      ],
+      "seconds_limit": 240.0,
+      "rss_limit_mib": 8192,
+      "network": "loopback only; offline weights; existing local inference services only",
+      "elapsed_seconds": 240.21,
+      "peak_process_group_rss_mib": 556.5,
+      "peak_shared_service_rss_mib": 1235.1,
+      "limit": "time limit",
+      "returncode": -9,
+      "memory_scope": "sampled RSS, includes shared service processes; excludes Metal/GPU allocations"
+    },
+    "ORDINARY_HIGH_FIDELITY_600": {
+      "source": "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.pdf",
+      "source_sha256": "5e2306cfd4f4f732395049b2cdd3cdb2909a4e8c6712de3009c962b13de833ba",
+      "profile": "high-fidelity",
+      "configuration": {
+        "mode": "balanced",
+        "force_ocr": true,
+        "use_llm": false,
+        "paginate_output": true,
+        "disable_tqdm": true,
+        "page_range": [
+          1,
+          2,
+          3
+        ]
+      },
+      "pdf_pages": [
+        2,
+        3,
+        4
+      ],
+      "active_archive": false,
+      "page_marker_indexing": "Marker {n} is zero-based; PDF page = n + 1",
+      "command": [
+        "/Users/lizhiguo/.venvs/marker/bin/python",
+        "-u",
+        "/Users/lizhiguo/Documents/Developer/stock/stock/marker_review_worker.py",
+        "/Users/lizhiguo/Documents/Developer/stock/Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.pdf",
+        "/private/tmp/stock-marker-investigation/ORDINARY_HIGH_FIDELITY_600"
+      ],
+      "seconds_limit": 600.0,
+      "rss_limit_mib": 8192,
+      "network": "loopback only; offline weights; existing local inference services only",
+      "elapsed_seconds": 229.57,
+      "peak_process_group_rss_mib": 595.2,
+      "peak_shared_service_rss_mib": 1154.1,
+      "limit": null,
+      "returncode": 0,
+      "memory_scope": "sampled RSS, includes shared service processes; excludes Metal/GPU allocations",
+      "output_files": {
+        "2026-05-07--transcript--Q1-2026/2026-05-07--transcript--Q1-2026.md": "40e3f32dbe109da787e8e48aa4e739600d5f55832b51987f76ad5ce236cc89cf",
+        "2026-05-07--transcript--Q1-2026/2026-05-07--transcript--Q1-2026_meta.json": "5b18a8307cd5b565ebfa4b661dc5b213115aaa1c0c3a2f725dc7fe3ffc43360f",
+        "2026-05-07--transcript--Q1-2026/_page_2_Picture_2.jpeg": "fc777dea9f1ffc7d0e4d9c59b131632720dc4b585c876efa869725433b6d006b",
+        "2026-05-07--transcript--Q1-2026/_page_3_Picture_2.jpeg": "fc777dea9f1ffc7d0e4d9c59b131632720dc4b585c876efa869725433b6d006b",
+        "config.json": "f9c78b95ec001632cc6c211000390db2d9bf2bdc0cb32edad775d67705f59b60",
+        "versions.json": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023"
+      },
+      "versions": {
+        "marker-pdf": "2.0.0",
+        "surya-ocr": "0.22.1"
+      }
+    }
+  },
+  "ordinary_text_differences": [
+    {
+      "tag": "replace",
+      "current": "are available on our website at investors coreweave com a replay of this",
+      "ocr": "are available on our website at www coreweave com https www coreweave com a replay of this"
+    },
+    {
+      "tag": "insert",
+      "current": "on our investor relations website 2 michael intrator co founder chairman president",
+      "ocr": "on our investor relations website 2 _page_2_picture_2 jpeg michael intrator co founder chairman president"
+    },
+    {
+      "tag": "replace",
+      "current": "we concluded q1 stronger than ever ai diffusion is accelerating and our addressable",
+      "ocr": "we concluded q1 stronger than ever al diffusion is accelerating and our addressable"
+    },
+    {
+      "tag": "replace",
+      "current": "our platform for the long term ai workloads are moving from training to",
+      "ocr": "our platform for the long term al workloads are moving from training to"
+    },
+    {
+      "tag": "insert",
+      "current": "labs physicsx and sunday robotics 3 taken together with our focused execution",
+      "ocr": "labs physicsx and sunday robotics 3 _page_3_picture_2 jpeg taken together with our focused execution"
+    },
+    {
+      "tag": "replace",
+      "current": "we remain largely sold out for nearterm capacity across our fleet this validates",
+      "ocr": "we remain largely sold out for near term capacity across our fleet this validates"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+--- a/pdfmd.py
++++ b/pdfmd.py
+@@ -133,3 +133,3 @@
+         if mode in ("force-ocr", "force-ocr-llm", "llm-force-ocr"):
+-            cmd.append(pick_flag(help_text, ["--DocumentProvider_force_ocr", "--PdfProvider_force_ocr", "--force_ocr"], "force-OCR"))
++            cmd.append(pick_flag(help_text, ["--force_ocr", "--PdfProvider_force_ocr"], "force-OCR"))
+     return cmd + extra_flags

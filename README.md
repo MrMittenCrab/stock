@@ -468,3 +468,22 @@ colors. Run the real archive check first to create its verified evidence fixture
 terminal check copies the existing archive database into `.data`, adds that fixture
 only to the copy, and leaves all captures under `.data`. Real Cursor calls are deliberately outside the ordinary test
 suite to avoid repeated calls over full archived reports.
+
+Local PDF fidelity review (staged and inactive):
+
+```sh
+.venv/bin/python -m stock.pdf_review SOURCE.pdf "$(mktemp -d /tmp/stock-pdf-review.XXXXXX)/conversion" --pages 4,5,6,14,15 --seconds 240
+```
+
+This explicit review mode uses balanced layout and forced local Surya OCR, with
+Marker's optional LLM enhancements disabled. It leaves archive conversion defaults
+and existing citations unchanged. Omit `--pages` for the entire PDF (default
+30-minute bound); use `--profile current` for a fast/automatic comparison. It uses
+the existing Marker Python at `~/.venvs/marker/bin/python` (`--python` overrides it)
+and requires the installed weights and existing local Surya inference services;
+it never starts or stops shared services. Output must be a new directory outside
+Research, production data, and the source directory. It retains Markdown, images,
+Marker page metadata, configuration, source/output hashes, versions and resource
+metrics. Marker `{n}` page markers are zero-based: PDF page = n + 1. Diagrams and
+chart relationships still require visual review; this is not verified investment
+evidence. See [the measured comparison](docs/benchmarks/marker-ocr/report.md).

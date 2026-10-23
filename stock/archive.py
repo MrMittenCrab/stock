@@ -392,7 +392,7 @@ def run_converter(command, *, converter='Converter', output=None, timeout=None):
 
 
 def convert_pdf(source, destination):
-    """Reuse pdfmd (Marker), then optional local pymupdf4llm. Never call an LLM."""
+    """Reuse pdfmd (Marker), then local fallbacks; no optional LLM enhancements."""
     errors=[]
     converter=shutil.which('pdfmd')
     if converter:
