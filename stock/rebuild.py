@@ -11,8 +11,22 @@ from .evidence import extract, IntegrityError, quality_flags
 
 def match_key(p):
     loc=p['location']
-    return (loc.get('markdown_sha256',loc.get('sha256')),loc.get('markdown_start',loc.get('start')),
-            loc.get('markdown_end',loc.get('end')),p['text'])
+    refs=loc.get('references')
+    if refs:
+        merged=[]
+        for r in refs:
+            anchor=(r['markdown_sha256'],r['start'],r['end'])
+            if (merged and 'gap_before' in r and not r['gap_before'].strip()
+                and merged[-1][0]==anchor[0] and merged[-1][2]+len(r['gap_before'])==anchor[1]):
+                merged[-1]=(anchor[0],merged[-1][1],anchor[2])
+            else: merged.append(anchor)
+        anchors=tuple(merged)
+    else:
+        anchors=((loc.get('markdown_sha256',loc.get('sha256')),loc.get('markdown_start',loc.get('start')),
+                  loc.get('markdown_end',loc.get('end'))),)
+    # Ignore editorial wording, but keep source identity and attribution stable.
+    return (anchors,p.get('category'),p.get('speaker'))
+
 
 
 def review_passages(passages):
@@ -23,6 +37,8 @@ def review_passages(passages):
         lines.append(f"\n[{i}/{len(passages)}] {p['location']['candidate_id']} · {', '.join(p['topics'])}")
         lines.extend('! '+flag for flag in flags)
         lines.append(p['text'])
+        from .editorial import inspection
+        lines.append(inspection(p))
     return '\n'.join(lines)
 
 
@@ -42,13 +58,14 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             return tuple(store.db.execute('SELECT * FROM source_passages WHERE document_id=? ORDER BY id',(doc['id'],)).fetchall())
         snapshot=published_snapshot()
         proposed,verify=extract(store,doc,cursor_factory(),progress)
-        keys={match_key(p):p for p in proposed}
+        keys={}
+        for p in proposed: keys.setdefault(match_key(p),[]).append(p)
         overrides=store.db.execute('''SELECT o.passage_id,o.topic,o.present FROM source_overrides o
             JOIN source_passages p ON p.id=o.passage_id WHERE p.document_id=?''',(doc['id'],)).fetchall()
         old={p['id']:p for p in previous};transferred=[];unmatched=[]
         for ident,topic,present in overrides:
             key=match_key(old[ident])
-            if key in keys: transferred.append((key,topic,present))
+            if len(keys.get(key,[]))==1: transferred.append((key,topic,present))
             else: unmatched.append((ident,topic,present))
         review=getattr(progress,'review',progress)
         review(f'Previous {len(previous)} · Proposed {len(proposed)} passages · {len(transferred)} manual topic overrides transferable')
@@ -60,6 +77,8 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             return False
         if not approve(): progress('Rebuild rejected; original evidence retained');return False
         verify()
+        from .editorial import validate_publication
+        for p in proposed: validate_publication(p)
         with store.db:
             store.db.execute('BEGIN IMMEDIATE')
             if published_snapshot()!=snapshot: raise IntegrityError('Published evidence changed during rebuild')
@@ -79,7 +98,7 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
                 store.db.executemany('INSERT INTO source_topics VALUES(?,?)',[(ident,t) for t in p['topics']])
             store.db.executemany('INSERT INTO source_overrides VALUES(?,?,?)',[(ids[k],t,v) for k,t,v in transferred])
             now=time.time()
-            store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,3)',(doc['id'],now,doc['source_sha256']))
+            store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,4)',(doc['id'],now,doc['source_sha256']))
             store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
             # Retain staging checkpoints and model selections for audit.
         progress(f'Replaced document {doc["id"]} · {len(proposed)} passages')

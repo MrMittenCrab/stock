@@ -38,8 +38,10 @@ def completed(store, document_id):
     return bool(store.db.execute('SELECT 1 FROM source_sorts WHERE document_id=?', (document_id,)).fetchone())
 
 
-def publish(store, doc, passages, source_hash):
+def publish(store, doc, passages, source_hash, extraction_version=3):
     """No LLM/file I/O in this transaction. Competing sorts never replace a winner."""
+    from .editorial import validate_publication
+    for p in passages: validate_publication(p)
     with store.db:
         store.db.execute('BEGIN IMMEDIATE')
         if completed(store, doc['id']):
@@ -53,7 +55,7 @@ def publish(store, doc, passages, source_hash):
             store.db.executemany('INSERT INTO source_topics VALUES(?,?)',
                 [(ident,t) for t in p['topics']])
         now=time.time()
-        store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,3)',(doc['id'],now,source_hash))
+        store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,?)',(doc['id'],now,source_hash,extraction_version))
         store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
         # Legacy checkpoints remain available for audit and recovery.
     return True
@@ -86,6 +88,8 @@ def passages(store,ticker):
         overrides.setdefault(ident,{})[topic]=present
     for row in rows:
         row['location']=json.loads(row['location'])
+        row['representation']=row['location'].get('representation','verbatim')
+        row['verification_state']=row['location'].get('review',{}).get('state','legacy_exact_source')
         row['date_provenance']=json.loads(row['date_provenance'])
         row['topics']=auto.get(row['id'],set()).copy()
         for topic,present in overrides.get(row['id'],{}).items():

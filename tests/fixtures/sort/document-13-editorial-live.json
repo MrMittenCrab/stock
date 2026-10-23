@@ -1,0 +1,35 @@
+{
+  "markdown_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+  "original_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+  "selections": [
+    {
+      "ids": [
+        "d13:9f4f0f20f24a91c8:4571:4761",
+        "d13:9f4f0f20f24a91c8:4945:4951",
+        "d13:9f4f0f20f24a91c8:4953:4979",
+        "d13:9f4f0f20f24a91c8:4981:5010",
+        "d13:9f4f0f20f24a91c8:5012:5029",
+        "d13:9f4f0f20f24a91c8:5333:5339",
+        "d13:9f4f0f20f24a91c8:5341:5360"
+      ],
+      "representation": "source_grounded_statement",
+      "text": "As of December 31, 2025, CoreWeave reported 43 active data centers, 11 data centers added in 2025, 850MW+ of active power, and 3.1GW+ of contracted power. The infrastructure-footprint graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "topics": [
+        "Operations"
+      ],
+      "category": "Management",
+      "speaker": null,
+      "ambiguities": []
+    }
+  ],
+  "reviews": [
+    {
+      "index": 0,
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Page-5 PDF blocks form two aligned KPI columns that resolve label/value pairing the flattened markdown cannot. Left column (x\u2248586.75): 850MW+ (y\u2248490\u2013530) sits immediately above Active Power (y\u2248531\u2013553); 43 (y\u2248582\u2013622) sits immediately above Active / Data Centers (y\u2248623\u2013667). Right column (x\u2248779.60): 3.1GW+ sits immediately above Contracted Power; 11 sits immediately above Data Centers Added in 2025. Notes state figures as of December 31, 2025 and that the footprint graphic is illustrative and may not precisely reflect all current locations or capacities. The statement maps each figure to its geometrically paired label, keeps MW+/GW+ units and plus signs, treats 11 as 2025 additions rather than a stock count, and restates the graphic caveat without adding valuation or causality."
+    }
+  ]
+}

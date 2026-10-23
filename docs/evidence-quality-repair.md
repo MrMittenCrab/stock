@@ -1,3 +1,7 @@
+> Historical v3-quality-1 diagnosis and repair. The active architectural repair is
+> [Source-grounded editorial evidence](editorial-evidence.md); it supersedes the
+> numeric-fragment exclusions and exact-quotation-only publication rules below.
+
 # Evidence quality correction (v3-quality-1)
 
 ## Demonstrated failure

@@ -98,10 +98,11 @@ def test_cursor_compact_contract_and_invalid_escape(monkeypatch):
  from stock.sort import Cursor
  c=Cursor.__new__(Cursor);c.command='agent'
  text='Investment claim.';cs=candidates(text,doc(),digest(text));prompts=[]
+ chosen={**selection(cs), 'representation':'verbatim','text':None,'ambiguities':[]}
  def run(cmd,**kwargs):
-  prompts.append(cmd[-1]);return Mock(returncode=0,stderr='',stdout=json.dumps({'type':'result','result':json.dumps({'selections':[selection(cs)]})}))
+  prompts.append(cmd[-1]);return Mock(returncode=0,stderr='',stdout=json.dumps({'type':'result','result':json.dumps({'selections':[chosen]})}))
  monkeypatch.setattr('stock.sort_process.run',run)
- assert c.extract(dict(candidates=cs,text=''),'CoreWeave')==[selection(cs)]
+ assert c.extract(dict(candidates=cs,text=''),'CoreWeave')==[chosen]
  assert 'Never return quotations' in prompts[0]
  def broken(*a,**k):return Mock(returncode=0,stderr='',stdout=json.dumps({'type':'result','result':'{"selections":[{"text":"Q4\\{passages"}]}'}))
  monkeypatch.setattr('stock.sort_process.run',broken)
@@ -146,7 +147,8 @@ def test_interruption_preserves_completed_v3_section(staged,monkeypatch):
  assert s.db.execute('select count(*) from source_work_v3').fetchone()[0]==1
  m.extract=original
  ps,_=extract(s,d,m,lambda _:None)
- assert len(ps)==2 and m.calls==2
+ assert len(ps)==1 and m.calls==3
+ # Overlapping context can produce repeated selections; identical results are deduplicated.
 
 def test_continuation_is_coherent_and_raw_table_excluded():
  text='Our customers include AI enterprises. We\n\nbelieve demand is strong.'
@@ -164,7 +166,7 @@ def test_targeted_retry_excludes_accepted_ids(staged):
   return [selection(u['candidates'])]
  m.extract=model
  ps,_=extract(s,d,m,lambda _:None)
- assert len(ps)==2 and len(calls)==2 and len(calls[1])==1
+ assert len(ps)==2 and len(calls)==2 and len(calls[1])==2
  assert calls[1][0]['id']!=calls[0][0]['id']
 
 def test_unmatched_corrections_block_replacement(staged):

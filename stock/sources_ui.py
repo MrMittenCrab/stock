@@ -23,12 +23,19 @@ def passage_lines(passage,width,expanded=False,selected=False):
     column=cell_len(prefix)
     available=max(1,width-column)
     # Rich wrapping uses terminal cells, including wide characters and combining marks.
-    original=Text(passage['text'])
+    kind=passage.get('representation',passage['location'].get('representation','verbatim'))
+    marker={'source_grounded_statement':'≈ ', 'edited_quotation':'~ '}.get(kind,'')
+    original=Text(marker+passage['text'])
     if expanded:
         lines=[line.plain for line in original.wrap(Console(),available,overflow='fold')]
     else:
-        text=' '.join(passage['text'].split())
+        text=marker+' '.join(passage['text'].split())
         lines=[text if cell_len(text)<=available else set_cell_size(text,max(0,available-1))+'…']
+    if expanded:
+        from .editorial import inspection
+        detail=inspection(passage)
+        # Inline inspection stays within the same keyboard-controlled terminal row.
+        lines+=['']+[line.plain for line in Text(detail).wrap(Console(),available,overflow='fold')]
     return [prefix+(lines[0] if lines else '')]+[' '*column+line for line in lines[1:]]
 
 
