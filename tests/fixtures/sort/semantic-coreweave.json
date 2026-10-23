@@ -1,0 +1,1306 @@
+{
+  "provenance": "Hand-recorded judgment fixtures for offline pipeline replay; not authenticated model output or evidence of live model accuracy.",
+  "claims": [
+    {
+      "key": "power-intro",
+      "document": 12,
+      "text": "CoreWeave reached more than 850 megawatts of active power as of December 31, 2025.",
+      "references": [
+        {
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations."
+        }
+      ],
+      "group": "2025-power",
+      "topic": "Operations"
+    },
+    {
+      "key": "power-execution",
+      "document": 12,
+      "text": "CoreWeave ended 2025 with more than 850 megawatts of active power.",
+      "references": [
+        {
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered."
+        }
+      ],
+      "group": "2025-power",
+      "topic": "Operations"
+    },
+    {
+      "key": "power-presentation",
+      "document": 13,
+      "text": "As of December 31, 2025, CoreWeave reported 850MW+ of active power.",
+      "references": [
+        {
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+        },
+        {
+          "start": 5012,
+          "end": 5029,
+          "text": "**850MW+ 3.1GW+**"
+        },
+        {
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power"
+        }
+      ],
+      "group": "2025-power",
+      "topic": "Operations"
+    },
+    {
+      "key": "centers-presentation",
+      "document": 13,
+      "text": "CoreWeave reported 43 active data centers as of December 31, 2025.",
+      "references": [
+        {
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+        },
+        {
+          "start": 5333,
+          "end": 5339,
+          "text": "**43**"
+        },
+        {
+          "start": 5341,
+          "end": 5360,
+          "text": "Active Data Centers"
+        }
+      ],
+      "group": "2025-centers",
+      "topic": "Operations"
+    },
+    {
+      "key": "centers-transcript",
+      "document": 12,
+      "text": "CoreWeave ended 2025 with 43 active data centers.",
+      "references": [
+        {
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered."
+        }
+      ],
+      "group": "2025-centers",
+      "topic": "Operations"
+    },
+    {
+      "key": "centers-added",
+      "document": 13,
+      "text": "CoreWeave added 11 data centers in 2025.",
+      "references": [
+        {
+          "start": 4945,
+          "end": 4951,
+          "text": "**11**"
+        },
+        {
+          "start": 4953,
+          "end": 4979,
+          "text": "Data Centers Added in 2025"
+        }
+      ],
+      "group": "2025-additions",
+      "topic": "Operations"
+    },
+    {
+      "key": "power-2026-actual",
+      "document": 1,
+      "text": "CoreWeave surpassed 1 gigawatt of active power in Q1 2026.",
+      "references": [
+        {
+          "start": 10373,
+          "end": 11064,
+          "text": "Turning to execution. We convert scarce AI infrastructure into revenue-generating AI cloud capacity quickly, reliably and profitably. CoreWeave surpassed 1 gigawatt of active power this quarter. We remain firmly on track to reach or exceed our target of more than 1.7 gigawatts by the end of 2026. We are one of only a handful of cloud platforms in history to reach this scale and we are the only one that is purpose-built for AI. Each new build-out is complex with five phases: power, cooling, networking, servers and the software orchestration layer. We have navigated this complexity across close to 50 data centers, consistently delivering best-in-class dock-to-live times for customers."
+        }
+      ],
+      "group": "2026-power-actual",
+      "topic": "Operations"
+    },
+    {
+      "key": "power-2026-forecast",
+      "document": 1,
+      "text": "CoreWeave remained on track to reach or exceed its target of more than 1.7 gigawatts of active power by the end of 2026.",
+      "references": [
+        {
+          "start": 10373,
+          "end": 11064,
+          "text": "Turning to execution. We convert scarce AI infrastructure into revenue-generating AI cloud capacity quickly, reliably and profitably. CoreWeave surpassed 1 gigawatt of active power this quarter. We remain firmly on track to reach or exceed our target of more than 1.7 gigawatts by the end of 2026. We are one of only a handful of cloud platforms in history to reach this scale and we are the only one that is purpose-built for AI. Each new build-out is complex with five phases: power, cooling, networking, servers and the software orchestration layer. We have navigated this complexity across close to 50 data centers, consistently delivering best-in-class dock-to-live times for customers."
+        }
+      ],
+      "group": "2026-power-forecast",
+      "topic": "Operations"
+    },
+    {
+      "key": "suppliers-summary",
+      "document": 6,
+      "text": "We have a limited number of suppliers for significant components of the equipment we use to build and operate our platform and provide our solutions and services. Any disruption in the availability of these components could delay our ability to expand or increase the capacity of our infrastructure or replace defective equipment.",
+      "references": [
+        {
+          "start": 1330,
+          "end": 1660,
+          "text": "We have a limited number of suppliers for significant components of the equipment we use to build and operate our platform and provide our solutions and services. Any disruption in the availability of these components could delay our ability to expand or increase the capacity of our infrastructure or replace defective equipment."
+        }
+      ],
+      "group": "supplier-risk",
+      "topic": "Operations"
+    },
+    {
+      "key": "suppliers-detail",
+      "document": 6,
+      "text": "Disruption at CoreWeave's limited component suppliers could delay infrastructure expansion or replacement of defective equipment.",
+      "references": [
+        {
+          "start": 10099,
+          "end": 10429,
+          "text": "We have a limited number of suppliers for significant components of the equipment we use to build and operate our platform and provide our solutions and services. Any disruption in the availability of these components could delay our ability to expand or increase the capacity of our infrastructure or replace defective equipment."
+        }
+      ],
+      "group": "supplier-risk",
+      "topic": "Operations"
+    },
+    {
+      "key": "expense",
+      "document": 4,
+      "text": "Sales and marketing expense increased by $10 million, or 421%, in 2023 versus 2022, including approximately $7 million of increased personnel costs.",
+      "references": [
+        {
+          "start": 820,
+          "end": 1108,
+          "text": "Sales and marketing expense for the year ended December 31, 2023 increased by \\$10 million, or 421%, compared to the year ended December 31, 2022. This increase was attributable to an increase of approximately \\$7 million in personnel costs to help our efforts in driving customer demand."
+        }
+      ],
+      "group": "expense",
+      "topic": "Financials"
+    },
+    {
+      "key": "contracted-power",
+      "document": 13,
+      "text": "CoreWeave reported 3.1GW+ of contracted power as of December 31, 2025.",
+      "references": [
+        {
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+        },
+        {
+          "start": 5012,
+          "end": 5029,
+          "text": "**850MW+ 3.1GW+**"
+        },
+        {
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power"
+        }
+      ],
+      "group": "contracted-power",
+      "topic": "Operations"
+    },
+    {
+      "key": "contracted-qualified",
+      "document": 12,
+      "text": "CoreWeave ended 2025 with more than 3.1 gigawatts of contracted capacity, virtually all of which it expected to come online by the end of 2027.",
+      "references": [
+        {
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered."
+        }
+      ],
+      "group": "contracted-qualified",
+      "topic": "Operations"
+    }
+  ],
+  "judgments": [
+    {
+      "keys": [
+        "power-execution",
+        "power-intro"
+      ],
+      "equivalent": true,
+      "relation": "repeated_assertion",
+      "dimensions_agree": true,
+      "information_preserved": true,
+      "reason": "Same CoreWeave management assertion with matching reporting period, metric, scope and qualifications; alternative wording preserves the proposition.",
+      "differences": []
+    },
+    {
+      "keys": [
+        "power-intro",
+        "power-presentation"
+      ],
+      "equivalent": true,
+      "relation": "repeated_assertion",
+      "dimensions_agree": true,
+      "information_preserved": true,
+      "reason": "Same CoreWeave management assertion with matching reporting period, metric, scope and qualifications; alternative wording preserves the proposition.",
+      "differences": []
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "power-intro"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "power-intro"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "power-intro"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-actual",
+        "power-intro"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-forecast",
+        "power-intro"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-intro",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-intro",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "expense",
+        "power-intro"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "power-intro"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-qualified",
+        "power-intro"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-execution",
+        "power-presentation"
+      ],
+      "equivalent": true,
+      "relation": "repeated_assertion",
+      "dimensions_agree": true,
+      "information_preserved": true,
+      "reason": "Same CoreWeave management assertion with matching reporting period, metric, scope and qualifications; alternative wording preserves the proposition.",
+      "differences": []
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "power-execution"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "power-execution"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "power-execution"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-actual",
+        "power-execution"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-forecast",
+        "power-execution"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-execution",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-execution",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "expense",
+        "power-execution"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "power-execution"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-qualified",
+        "power-execution"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "power-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "power-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "power-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-actual",
+        "power-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-forecast",
+        "power-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-presentation",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-presentation",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "expense",
+        "power-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "power-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-qualified",
+        "power-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "centers-transcript"
+      ],
+      "equivalent": true,
+      "relation": "repeated_assertion",
+      "dimensions_agree": true,
+      "information_preserved": true,
+      "reason": "Same CoreWeave management assertion with matching reporting period, metric, scope and qualifications; alternative wording preserves the proposition.",
+      "differences": []
+    },
+    {
+      "keys": [
+        "centers-added",
+        "centers-presentation"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "power-2026-actual"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "power-2026-forecast"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "expense"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "contracted-power"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-presentation",
+        "contracted-qualified"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "centers-transcript"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "power-2026-actual"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "power-2026-forecast"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "expense"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "contracted-power"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-transcript",
+        "contracted-qualified"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "power-2026-actual"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "power-2026-forecast"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "expense"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "contracted-power"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "centers-added",
+        "contracted-qualified"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-actual",
+        "power-2026-forecast"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-actual",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-actual",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "expense",
+        "power-2026-actual"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "power-2026-actual"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-qualified",
+        "power-2026-actual"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-forecast",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "power-2026-forecast",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "expense",
+        "power-2026-forecast"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "power-2026-forecast"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-qualified",
+        "power-2026-forecast"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "suppliers-detail",
+        "suppliers-summary"
+      ],
+      "equivalent": true,
+      "relation": "repeated_assertion",
+      "dimensions_agree": true,
+      "information_preserved": true,
+      "reason": "Same CoreWeave management assertion with matching reporting period, metric, scope and qualifications; alternative wording preserves the proposition.",
+      "differences": []
+    },
+    {
+      "keys": [
+        "expense",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-qualified",
+        "suppliers-summary"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "expense",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-qualified",
+        "suppliers-detail"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "expense"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-qualified",
+        "expense"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    },
+    {
+      "keys": [
+        "contracted-power",
+        "contracted-qualified"
+      ],
+      "equivalent": false,
+      "relation": "different",
+      "dimensions_agree": false,
+      "information_preserved": false,
+      "reason": "Different metric, development, period, actual/forecast status, or material qualification; retained separately.",
+      "differences": [
+        "Materially different proposition."
+      ]
+    }
+  ]
+}

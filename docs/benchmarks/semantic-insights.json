@@ -1,0 +1,18 @@
+{
+  "provenance": "Hand-recorded judgment fixtures for offline pipeline replay; not authenticated model output or evidence of live model accuracy.",
+  "passages": 13,
+  "distinct_insights": 9,
+  "substantive_duplicates_removed": 4,
+  "gold_insights": 9,
+  "retained_member_records": 13,
+  "false_merges": 0,
+  "missed_merges": 0,
+  "plausible_pairs": 45,
+  "replayed_cursor_requests": 4,
+  "comparison_payload_characters": 51604,
+  "resume_requests": 0,
+  "cached_decisions": 45,
+  "authenticated_requests": 0,
+  "production_changed": false,
+  "live_model_accuracy": "Not measured"
+}

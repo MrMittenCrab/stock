@@ -19,6 +19,8 @@ def main():
     sort=commands.add_parser('sort',help='Extract and freeze archived source passages with Cursor')
     sort.add_argument('ticker')
     sort.add_argument('--rebuild',metavar='DOCUMENT',help='Stage and review replacement evidence for one document')
+    sort.add_argument('--insights',action='store_true',help='Stage reversible semantic groups over frozen evidence; REPLACE to activate')
+    sort.add_argument('--review-only',action='store_true',help='Review semantic groups without activation (requires --insights)')
     sort.add_argument('--reset',metavar='DOCUMENT',help='Restore frozen topics by Archive ID or filename; no LLM call')
     sources=commands.add_parser('sources',help='Browse source passages and edit topic memberships')
     sources.add_argument('ticker')
@@ -35,7 +37,22 @@ def main():
     try:
         store=Store()
         if args.command=='sort':
-            if args.reset and args.rebuild: raise ValueError('Use either --reset or --rebuild')
+            if sum(bool(x) for x in (args.reset,args.rebuild,args.insights))>1:raise ValueError('Use one of --reset, --rebuild or --insights')
+            if args.review_only and not args.insights:raise ValueError('--review-only requires --insights')
+            if args.insights:
+                from .insights import stage,review_text,activate
+                from .sort import Cursor
+                from .sort_process import Status,DeferredCursor
+                with Status() as status:
+                    proposal=stage(store,args.ticker,DeferredCursor(Cursor),status)
+                    status.review_all(review_text(proposal))
+                    status.review('Staged revision '+proposal['id'])
+                    if args.review_only:return 0
+                    if input('Activate insight groups? Type REPLACE: ')!='REPLACE':
+                        status.review('Grouping rejected; published evidence and active groups retained');return 1
+                    activate(store,proposal['id'])
+                    status.review('Insight groups activated; every original passage and topic edit retained')
+                    return 0
             if args.rebuild:
                 from .rebuild import rebuild
                 from .sort import Cursor

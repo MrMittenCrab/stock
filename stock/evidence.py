@@ -18,6 +18,12 @@ Return ONLY {"selections":[{"ids":["source ID"],"representation":"source_grounde
 "text":"readable factual statement","topics":["Market"],"category":"Management",
 "speaker":null,"ambiguities":[]}]}.
 Never return quotations copied into JSON. Stock owns source wording and citations.
+Distill one material investment proposition per statement, keeping its inseparable
+qualifications. Avoid packaging unrelated facts into overlapping multi-claim passages.
+Choose the most informative source-grounded expression of each distinct proposition;
+repeated wording, summaries and section restatements are supporting evidence, not
+additional insights. Different segment, period, forecast status or qualifications
+remain distinct. A topic may contain no useful claims.
 representation: verbatim (text null, contiguous exact source wording), edited_quotation
 (limited omissions [...] and bracketed clarifications or formatting cleanup), or
 source_grounded_statement (editorial reconstruction, never disguised as direct quotation).
@@ -315,10 +321,23 @@ def extract(store,doc,cursor,progress):
 
     def verify():
         if filehash(md)!=digest or filehash(original)!=doc['source_sha256']: raise IntegrityError('Source changed during sorting')
+    # Existing checkpoints (including partial selections) remain frozen under the
+    # completed efficiency contract. New documents get source-level distillation.
+    existing=store.db.execute('SELECT 1 FROM source_work_v3 WHERE document_id=? AND markdown_hash=? LIMIT 1',
+        (doc['id'],checkpoint_key)).fetchone()
+    planned_ids=None
+    if existing:
+        plan_rows=store.db.execute('SELECT payload FROM source_work_v3 WHERE document_id=? AND markdown_hash=?',(doc['id'],checkpoint_key)).fetchall()
+        plans=[json.loads(r[0]).get('document_plan') for r in plan_rows]
+        planned_ids=next((set(p) for p in plans if p is not None),None)
+    index=0  # metrics for document-wide operations precede section processing
+    if not existing and not old_rows and getattr(cursor,'supports_distillation',False) is True:
+        from .distillation import plan
+        planned_ids=plan(store,doc,atoms,cursor,progress)
     for index,batch in enumerate(work):
         progress(f'{doc["id"]} · {doc["title"]} · section {index+1}/{len(work)} · preparation')
         # Supply adjacent batch context as exact IDs, so qualifications across boundaries remain selectable.
-        primary_ids=[c['id'] for c in batch]
+        primary_ids=[c['id'] for c in batch if planned_ids is None or c['id'] in planned_ids]
         first=atoms.index(batch[0]);last=atoms.index(batch[-1])
         batch=atoms[max(0,first-4):min(len(atoms),last+5)]
         metadata={k:doc.get(k) for k in ('id','title','type','publisher','ticker')}
@@ -369,10 +388,10 @@ def extract(store,doc,cursor,progress):
         if state:
             raw=state['raw']
         else:
-            raw=request(batch)
+            raw=request(batch) if primary_ids else []
             accepted,rejected=resolve(raw,batch,text,doc,digest)
             # Persist the accepted response before any targeted clarification.
-            state=dict(raw=raw,accepted=accepted,rejected=rejected,complete=False,version=VERSION,contract=CONTRACT)
+            state=dict(raw=raw,accepted=accepted,rejected=rejected,complete=False,version=VERSION,contract=CONTRACT,document_plan=sorted(planned_ids) if planned_ids is not None else None)
             save(state)
         rejected=state['rejected']
         allowed={c['id']:c for c in batch}

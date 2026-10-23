@@ -392,6 +392,13 @@ Unverified individual names stay null. Original PDFs and Markdown are unchanged;
 new quotations carry exact Markdown offsets, its SHA-256, and original references.
 Sources preserves frozen legacy citations, native terminal colors and topic editing.
 
+For staged cross-document semantic grouping of existing evidence, use
+`.venv/bin/stock sort CRWV.US --insights --review-only`. This retains every passage
+and manual edit, stages a reversible proposal, and does not activate it. Omit
+`--review-only` to review and optionally type `REPLACE`. Fresh sorts distill source
+material before reconstruction and group only their own newly verified evidence.
+See [semantic rules, CoreWeave replay results and safe review commands](docs/semantic-insights.md).
+
 See [the workflow profile, benchmark and resume behavior](docs/sort-efficiency.md)
 for compact source transport, cached PDF preparation, independent review reuse and
 bounded missing-citation repair.
@@ -409,9 +416,9 @@ Passages appear newest verified public date first, followed by Unknown dates.
 Sources controls:
 
 - ↑/↓ navigates; → opens a topic; ← returns to the topic list; Esc quits Stock.
-- Space expands/collapses the original passage in place. Date/speaker columns stay
+- Space expands/collapses the insight and its visible supporting statements/citations in place. Date/speaker columns stay
   fixed, and continuation text wraps at the passage column on resize.
-- T opens/closes the inline eight-topic checklist underneath the selected passage.
+- N/P selects a supporting member. T opens/closes its inline eight-topic checklist.
   ↑/↓ navigates topics; Space toggles membership and saves immediately to SQLite.
   A passage removed from the active filter stays visible while its checklist is
   open. Closing it selects the next available row. Speaker/date editing is excluded.
@@ -422,8 +429,11 @@ Sources controls:
   verification basis, and date provenance inline. Page navigation in the external
   viewer is viewer-dependent.
 
-Counts use effective memberships after manual changes and may overlap.
-**Unclassified** filters passages with no effective topic; it is not a ninth topic.
+U ungroups an insight in an audited revision; all evidence and topics remain.
+Counts distinguish insights from supporting passages, with a distinct total. Topic
+counts use effective member memberships and may overlap across topics. File/topic
+filters restrict displayed support and canonical wording to eligible members.
+**Unclassified** includes support with no effective topic; it is not a ninth topic.
 Internal passage IDs are never displayed. Price, Archive, Sources, their scrolling
 containers, and annotation editing use ANSI terminal-default foreground/background.
 The editor caret and selection use reverse video, preserving light, dark, and

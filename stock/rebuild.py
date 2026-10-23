@@ -58,7 +58,12 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             return tuple(store.db.execute('SELECT * FROM source_passages WHERE document_id=? ORDER BY id',(doc['id'],)).fetchall())
         snapshot=published_snapshot()
         from .sort_process import DeferredCursor
-        proposed,verify=extract(store,doc,DeferredCursor(cursor_factory),progress)
+        worker=DeferredCursor(cursor_factory)
+        proposed,verify=extract(store,doc,worker,progress)
+        insight_proposal=None
+        if worker.supports_distillation:
+            from .insights import stage
+            insight_proposal=stage(store,ticker,worker,progress,new_document=(doc,proposed))
         keys={}
         for p in proposed: keys.setdefault(match_key(p),[]).append(p)
         overrides=store.db.execute('''SELECT o.passage_id,o.topic,o.present FROM source_overrides o
@@ -71,7 +76,12 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
         review=getattr(progress,'review',progress)
         review(f'Previous {len(previous)} · Proposed {len(proposed)} passages · {len(transferred)} manual topic overrides transferable')
         review(f"Quality concerns: previous {sum(bool(quality_flags(p['text'])) for p in previous)}; proposed {sum(bool(quality_flags(p['text'])) for p in proposed)} (advisory)")
-        getattr(progress,'review_all',review)(review_passages(proposed))
+        if insight_proposal:
+            from .insights import review_text
+            review(f"Before: {len(previous)} published passages · After: {len(proposed)} support passages")
+            getattr(progress,'review_all',review)(review_text(insight_proposal))
+        else:
+            getattr(progress,'review_all',review)(review_passages(proposed))
         for ident,topic,present in unmatched: review(f'Unmatched manual correction: {ident} · {topic}={bool(present)}')
         if unmatched:
             progress('Replacement blocked: unmatched manual corrections require explicit reconciliation. Original evidence retained.')
@@ -82,6 +92,9 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
         for p in proposed: validate_publication(p)
         with store.db:
             store.db.execute('BEGIN IMMEDIATE')
+            if insight_proposal:
+                from .insights import head
+                if head(store,ticker)!=insight_proposal['parent']:raise IntegrityError('Insight groups changed during rebuild')
             if published_snapshot()!=snapshot: raise IntegrityError('Published evidence changed during rebuild')
             actual_overrides=store.db.execute('SELECT o.passage_id,o.topic,o.present FROM source_overrides o JOIN source_passages p ON p.id=o.passage_id WHERE p.document_id=?',(doc['id'],)).fetchall()
             if sorted(actual_overrides)!=sorted(overrides): raise IntegrityError('Manual corrections changed during rebuild')
@@ -101,6 +114,8 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
             now=time.time()
             store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,4)',(doc['id'],now,doc['source_sha256']))
             store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
+            if insight_proposal:
+                store.db.execute('INSERT INTO source_insight_heads VALUES(?,?) ON CONFLICT(ticker) DO UPDATE SET revision_id=excluded.revision_id',(ticker,insight_proposal['id']))
             # Retain staging checkpoints and model selections for audit.
         progress(f'Replaced document {doc["id"]} · {len(proposed)} passages')
         return True

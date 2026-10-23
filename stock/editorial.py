@@ -272,6 +272,8 @@ def inspection(p):
     review=loc.get('review',{})
     if review.get('reason'):lines.append(review['reason'])
     lines.extend('! '+x for x in review.get('warnings',[])+loc.get('ambiguities',[]))
+    if not loc.get('references') and 'start' in loc and 'end' in loc:
+        lines.append(f"Source {loc.get('original','archived document')} · characters {loc['start']+1}–{loc['end']} · {loc.get('markdown_sha256',loc.get('sha256','legacy hash unavailable'))}")
     for r in loc.get('references',[]):
         lines.append(f"Source {r['source_id']} · {r['original']} · characters {r['start']+1}–{r['end']}"+(f" · page {r['page']}" if r.get('page') else ''))
         lines.append(r['text'])

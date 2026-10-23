@@ -14,6 +14,10 @@ class DeferredCursor:
     def __init__(self,factory):
         self.factory=factory;self.cursor=None;self.record_metrics=None
 
+    @property
+    def supports_distillation(self):
+        return getattr(self.factory,'supports_distillation',False) is True
+
     def extract(self,unit,context):
         if self.cursor is None:self.cursor=self.factory()
         self.cursor.record_metrics=self.record_metrics

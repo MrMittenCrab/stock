@@ -12,6 +12,9 @@ CATEGORIES = ('Management', 'Investor', 'Media')
 
 def schema(store):
     archive_schema(store)
+    # Avoid executescript's implicit COMMIT inside snapshot-checked transactions.
+    if store.db.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name IN ('source_sort_sections','source_passages','source_topics','source_overrides','source_sorts')").fetchone()[0]==5:
+        return
     store.db.executescript('''
     CREATE TABLE IF NOT EXISTS source_sort_sections (
       document_id INTEGER NOT NULL REFERENCES archive_documents(id),
@@ -38,7 +41,12 @@ def completed(store, document_id):
     return bool(store.db.execute('SELECT 1 FROM source_sorts WHERE document_id=?', (document_id,)).fetchone())
 
 
-def publish(store, doc, passages, source_hash, extraction_version=3):
+def passage_id(doc,p):
+    anchor=json.dumps(p['location'],sort_keys=True)
+    return hashlib.sha256(f"{doc['id']}\0{anchor}\0{p['text']}".encode()).hexdigest()
+
+
+def publish(store, doc, passages, source_hash, extraction_version=3,insight_proposal=None):
     """No LLM/file I/O in this transaction. Competing sorts never replace a winner."""
     from .editorial import validate_publication
     for p in passages: validate_publication(p)
@@ -46,6 +54,15 @@ def publish(store, doc, passages, source_hash, extraction_version=3):
         store.db.execute('BEGIN IMMEDIATE')
         if completed(store, doc['id']):
             return False
+        if insight_proposal:
+            from . import insights
+            if (insight_proposal.get('new_document_id')!=doc['id'] or
+                insights.head(store,doc['ticker'])!=insight_proposal['parent'] or
+                insights.snapshot(store,doc['ticker'])!=insight_proposal['snapshot']):
+                raise ValueError('Evidence changed during document grouping')
+            proposed_ids={m for g in insight_proposal['groups'] for m in g['members']}
+            if not {passage_id(doc,p) for p in passages}<=proposed_ids:
+                raise ValueError('Document insight membership changed')
         for p in passages:
             anchor=json.dumps(p['location'],sort_keys=True)
             ident=hashlib.sha256(f"{doc['id']}\0{anchor}\0{p['text']}".encode()).hexdigest()
@@ -57,6 +74,9 @@ def publish(store, doc, passages, source_hash, extraction_version=3):
         now=time.time()
         store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,?)',(doc['id'],now,source_hash,extraction_version))
         store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
+        if insight_proposal:
+            store.db.execute('INSERT INTO source_insight_heads VALUES(?,?) ON CONFLICT(ticker) DO UPDATE SET revision_id=excluded.revision_id',
+                (doc['ticker'],insight_proposal['id']))
         # Legacy checkpoints remain available for audit and recovery.
     return True
 

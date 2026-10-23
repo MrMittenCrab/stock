@@ -1,0 +1,255 @@
+"""Semantic judgments are replayed; no authenticated service or production writes."""
+import json
+from pathlib import Path
+import pytest
+from stock import sources
+from stock.core import Store
+from stock.archive import import_document
+from stock import insights
+
+FIX=Path(__file__).parent/'fixtures/sort'
+
+@pytest.fixture
+def library(tmp_path,monkeypatch):
+ monkeypatch.setattr('stock.archive.ROOT',tmp_path)
+ s=Store(tmp_path/'db')
+ docs=[]
+ for i in range(2):
+  f=tmp_path/f'doc{i}.md';f.write_text(f'# CoreWeave Investor Presentation {i}\n\nDemand exceeds available capacity.')
+  docs.append(import_document(s,'CRWV.US',f))
+ sources.schema(s)
+ def add(text,doc=0,topics=('Market',),**kw):
+  d=docs[doc];p=dict(text=text,topics=list(topics),category='Management',speaker=None,
+   location=dict(start=len(text),end=2*len(text),section='Demand',verification='Exact archived Markdown text'),
+   publication_date='2025-12-31',date_provenance={})
+  p.update(kw)
+  # Independent records with stable citation identity, including legacy records.
+  import hashlib
+  ident=hashlib.sha256(json.dumps([doc,text,kw],sort_keys=True).encode()).hexdigest()
+  with s.db:
+   s.db.execute('INSERT INTO source_passages VALUES(?,?,?,?,?,?,?,?)',(ident,d['id'],text,p['category'],p['speaker'],json.dumps(p['location']),p['publication_date'],json.dumps(p['date_provenance'])))
+   s.db.executemany('INSERT INTO source_topics VALUES(?,?)',[(ident,t) for t in topics])
+  return ident
+ yield s,docs,add
+ s.db.close()
+
+
+def decision(pair,equivalent=True,relation='repeated_assertion',**kw):
+ return dict(pair=pair['id'],equivalent=equivalent,relation=relation,
+  dimensions_agree=equivalent,information_preserved=equivalent,
+  reason='Same issuer capacity constraint at the same as-of; no added scope.' if equivalent else 'Material difference retained.',
+  differences=[] if equivalent else ['Different period, scope, qualification or proposition.'],**kw)
+
+class Replay:
+ def __init__(self,equivalent=True):self.calls=[];self.equivalent=equivalent
+ def extract(self,u,c):
+  self.calls.append(u)
+  return [decision(p,self.equivalent) for p in u['semantic_pairs']]
+
+
+def test_paraphrase_cross_document_reversible_and_cached(library):
+ s,docs,add=library
+ a=add('Demand exceeds available capacity.')
+ b=add('Customer demand is outpacing our available supply.',1)
+ before=s.db.execute('SELECT * FROM source_passages').fetchall()
+ m=Replay();proposal=insights.stage(s,'CRWV.US',m,lambda _:None)
+ assert proposal['passage_count']==2 and len(proposal['groups'])==1
+ assert len(m.calls)==1 and len(insights.entries(s,'CRWV.US'))==2
+ assert insights.stage(s,'CRWV.US',m,lambda _:None)['groups']==proposal['groups']
+ assert len(m.calls)==1
+ insights.activate(s,proposal['id'])
+ rows=insights.entries(s,'CRWV.US');assert len(rows)==1
+ assert {p['id'] for p in rows[0]['members']}=={a,b}
+ assert rows[0]['text'] in {p['text'] for p in rows[0]['members']}
+ assert 'repeated_assertion' in insights.review_text(proposal)
+ insights.ungroup(s,'CRWV.US',rows[0]['id'])
+ assert len(insights.entries(s,'CRWV.US'))==2
+ assert s.db.execute('SELECT * FROM source_passages').fetchall()==before
+ assert s.db.execute('SELECT count(*) FROM source_insight_revisions').fetchone()[0]>=3
+
+@pytest.mark.parametrize('text',[
+ 'Inference demand is exceeding available capacity.',
+ 'Demand exceeds capacity in Europe.',
+ 'Demand is expected to exceed available capacity in 2026.',
+ 'Demand no longer exceeds available capacity.',
+ 'Demand exceeds available capacity, except for reserved instances.',
+ 'Demand exceeds available capacity as of March 2026.',
+ 'CoreWeave added 11 data centers in 2025.',
+])
+def test_material_differences_not_merged(library,text):
+ s,_,add=library;add('Demand exceeds available capacity.');add(text,1)
+ proposal=insights.stage(s,'CRWV.US',Replay(False),lambda _:None)
+ assert len(proposal['groups'])==2
+ insights.activate(s,proposal['id'])
+ assert len(insights.entries(s,'CRWV.US'))==2
+
+
+def test_filters_topics_and_member_edits_never_propagate(library):
+ s,docs,add=library
+ a=add('Demand exceeds available capacity.',topics=('Market',))
+ b=add('Customer demand exceeds available capacity.',1,topics=('Operations',))
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None);insights.activate(s,p['id'])
+ sources.set_topic(s,a,'Market',False)
+ assert 'Market' not in insights.entries(s,'CRWV.US')[0]['topics']
+ rows=insights.entries(s,'CRWV.US',document_id=docs[0]['id'])
+ assert len(rows)==1 and rows[0]['topics']==set() and len(rows[0]['members'])==1
+ assert not insights.entries(s,'CRWV.US',document_id=docs[0]['id'],topic='Operations')
+ rows=insights.entries(s,'CRWV.US',topic='Operations')
+ assert rows[0]['text']=='Customer demand exceeds available capacity.' and rows[0]['members'][0]['id']==b
+ assert s.db.execute('SELECT * FROM source_overrides').fetchall()==[(a,'Market',0)]
+
+
+def test_stale_activation_and_transaction_failure_leave_head_unchanged(library):
+ s,_,add=library;a=add('Demand exceeds capacity.');add('Customer demand exceeds capacity.',1)
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None)
+ sources.set_topic(s,a,'Capital',True)
+ with pytest.raises(ValueError,match='changed'):insights.activate(s,p['id'])
+ assert len(insights.entries(s,'CRWV.US'))==2
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None)
+ s.db.execute("CREATE TRIGGER fail_head BEFORE INSERT ON source_insight_heads BEGIN SELECT RAISE(ABORT,'forced failure'); END")
+ import sqlite3
+ with pytest.raises(sqlite3.IntegrityError):insights.activate(s,p['id'])
+ assert len(insights.entries(s,'CRWV.US'))==2
+
+
+def test_no_transitive_merge(library):
+ s,_,add=library
+ for text in ['Demand exceeds capacity.','Customer demand exceeds capacity.','Demand outpaces available capacity.']:add(text)
+ class Nontransitive(Replay):
+  def extract(self,u,c):
+   return [decision(p,not ({p['left']['text'],p['right']['text']}=={'Demand exceeds capacity.','Demand outpaces available capacity.'})) for p in u['semantic_pairs']]
+ p=insights.stage(s,'CRWV.US',Nontransitive(),lambda _:None)
+ assert sorted(map(lambda g:len(g['members']),p['groups']))==[1,2]
+
+
+def test_missing_or_uncertain_judgments_cannot_merge(library):
+ s,_,add=library;add('Demand exceeds capacity.');add('Customer demand exceeds capacity.',1)
+ class Bad:
+  def extract(self,u,c):return []
+ with pytest.raises(ValueError):insights.stage(s,'CRWV.US',Bad(),lambda _:None)
+ assert len(insights.entries(s,'CRWV.US'))==2
+
+
+def test_bounded_candidate_work(library):
+ s,_,add=library
+ for i in range(120):add(f'CoreWeave demand exceeds capacity for customer {i}.')
+ m=Replay(False);p=insights.stage(s,'CRWV.US',m,lambda _:None)
+ assert p['comparison_count']<=120*insights.NEIGHBORS
+ assert len(p['groups'])==120
+ assert len(m.calls)<p['comparison_count']
+
+async def test_keyboard_group_members_filter_topics_and_ungroup(library,monkeypatch):
+ from stock.sources_ui import SourcesApp
+ s,docs,add=library
+ a=add('Demand exceeds available capacity.')
+ b=add('Customer demand exceeds available capacity.',1)
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None);insights.activate(s,p['id'])
+ opened=[];monkeypatch.setattr('stock.sources_ui.open_file',lambda path:opened.append(path))
+ app=SourcesApp('CRWV.US',s)
+ async with app.run_test(size=(100,30)) as pilot:
+  await pilot.press('right','space','n','o')
+  assert len(app.visible())==1 and opened
+  member=app.member(app.visible()[0]);assert member['document_id']==docs[1]['id']
+  await pilot.press('t','space','t')
+  assert s.db.execute('SELECT passage_id FROM source_overrides').fetchall()==[(b,)]
+  # Topic filter now exposes only a; editing b did not remove a's membership.
+  assert [m['id'] for m in app.visible()[0]['members']]==[a]
+  await pilot.press('u')
+  assert len(insights.entries(s,'CRWV.US'))==2
+  await pilot.press('escape')
+
+
+def test_new_document_groups_publish_atomically_without_regrouping_existing(library):
+ s,docs,add=library;add('Demand exceeds available capacity.')
+ new=[dict(text=t,topics=['Market'],category='Management',speaker=None,
+  location=dict(start=i,end=i+1,section='Demand',verification='Exact archived Markdown text'),
+  publication_date='2025-12-31',date_provenance={}) for i,t in enumerate([
+   'Demand exceeds available capacity.','Customer demand exceeds available capacity.'])]
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None,new_document=(docs[1],new))
+ assert sources.publish(s,docs[1],new,docs[1]['source_sha256'],insight_proposal=p)
+ assert len(insights.entries(s,'CRWV.US'))==2
+ assert len(sources.passages(s,'CRWV.US'))==3
+ assert not sources.publish(s,docs[1],new,docs[1]['source_sha256'],insight_proposal=p)
+
+
+def test_independent_corroboration_is_audited_not_an_extra_insight(library):
+ s,_,add=library
+ add('Demand exceeds available capacity.')
+ add('Customer demand exceeds available capacity.',1,category='Media')
+ class Independent(Replay):
+  def extract(self,u,c):return [decision(p,relation='independent_corroboration') for p in u['semantic_pairs']]
+ p=insights.stage(s,'CRWV.US',Independent(),lambda _:None)
+ assert len(p['groups'])==1 and p['groups'][0]['basis'][0]['relation']=='independent_corroboration'
+
+
+def test_group_publish_failure_rolls_back_evidence_and_group_head(library):
+ s,docs,_=library
+ new=[dict(text=t,topics=['Market'],category='Management',speaker=None,location=dict(start=i,end=i+1),publication_date=None,date_provenance={}) for i,t in enumerate(['Demand exceeds capacity.','Customer demand exceeds capacity.'])]
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None,new_document=(docs[0],new))
+ s.db.execute("CREATE TRIGGER fail_publish BEFORE INSERT ON source_insight_heads BEGIN SELECT RAISE(ABORT,'forced failure'); END")
+ import sqlite3
+ with pytest.raises(sqlite3.IntegrityError):sources.publish(s,docs[0],new,docs[0]['source_sha256'],insight_proposal=p)
+ assert not sources.passages(s,'CRWV.US') and not sources.completed(s,docs[0]['id'])
+ assert insights.head(s,'CRWV.US') is None
+
+
+def test_identical_claim_and_exact_support_uses_no_model(library):
+ s,_,add=library
+ ref=dict(text='Demand exceeds available capacity.',start=0,end=34,markdown_sha256='unchanged',original_sha256='unchanged')
+ for i in range(2):
+  add(ref['text'],location=dict(start=i,end=i+1,references=[ref],section='Demand'))
+ m=Replay();p=insights.stage(s,'CRWV.US',m,lambda _:None)
+ assert len(p['groups'])==1 and not m.calls
+ assert 'Deterministic' in p['groups'][0]['basis'][0]['reason']
+
+
+def test_oversized_evidence_remains_separate_without_unbounded_request(library):
+ s,_,add=library
+ add('Demand exceeds capacity. '+('Material source qualification. '*1000))
+ add('Customer demand exceeds capacity.',1)
+ m=Replay();p=insights.stage(s,'CRWV.US',m,lambda _:None)
+ assert len(p['groups'])==2 and not m.calls
+ assert 'budget' in p['differences'][0]['reason']
+
+
+def test_coreweave_recorded_excerpts_pipeline(tmp_path):
+ import runpy
+ module=runpy.run_path(str(Path(__file__).parents[1]/'scripts/verify_semantic_insights.py'))
+ report=module['replay'](tmp_path)
+ assert (report['passages'],report['distinct_insights'],report['retained_member_records'])==(13,9,13)
+ assert report['false_merges']==report['missed_merges']==report['resume_requests']==0
+ assert report['replayed_cursor_requests']==4
+
+async def test_topic_editor_remains_bound_to_explicit_member(library):
+ from stock.sources_ui import SourcesApp
+ s,_,add=library
+ a=add('Demand exceeds available capacity.')
+ b=add('Customer demand exceeds available capacity.',1)
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None);insights.activate(s,p['id'])
+ app=SourcesApp('CRWV.US',s)
+ async with app.run_test(size=(100,30)) as pilot:
+  await pilot.press('right','n','t','space')
+  assert app.editing==b
+  assert '[ ] Market' in str(app.row_widgets[1].render())
+  await pilot.press('space')
+  assert app.editing==b and '[x] Market' in str(app.row_widgets[1].render())
+  assert next(x for x in sources.passages(s,'CRWV.US') if x['id']==a)['topics']=={'Market'}
+  await pilot.press('escape')
+
+
+def test_rebuild_semantic_group_activation_rolls_back_on_failure(library,monkeypatch):
+ from stock.rebuild import rebuild
+ s,docs,add=library
+ add('Demand exceeds available capacity.')
+ add('Customer demand exceeds available capacity.',1)
+ initial=insights.stage(s,'CRWV.US',Replay(),lambda _:None);insights.activate(s,initial['id'])
+ before=s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
+ new=[dict(text=t,topics=['Market'],category='Management',speaker=None,
+  location=dict(start=i,end=i+1,candidate_id=f'new{i}'),publication_date=None,date_provenance={}) for i,t in enumerate(['Demand exceeds capacity.','Customer demand exceeds capacity.'])]
+ monkeypatch.setattr('stock.rebuild.extract',lambda *args:(new,lambda:None))
+ class Real(Replay):supports_distillation=True
+ s.db.execute("CREATE TRIGGER fail_rebuild BEFORE UPDATE ON source_insight_heads BEGIN SELECT RAISE(ABORT,'forced failure'); END")
+ import sqlite3
+ with pytest.raises(sqlite3.IntegrityError):rebuild(s,'CRWV.US',str(docs[1]['id']),Real,lambda _:None,lambda:True)
+ assert before==s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
+ assert insights.head(s,'CRWV.US')==initial['id']
