@@ -53,9 +53,9 @@ def publish(store, doc, passages, source_hash):
             store.db.executemany('INSERT INTO source_topics VALUES(?,?)',
                 [(ident,t) for t in p['topics']])
         now=time.time()
-        store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,2)',(doc['id'],now,source_hash))
+        store.db.execute('INSERT INTO source_sorts VALUES(?,?,?,3)',(doc['id'],now,source_hash))
         store.db.execute('UPDATE archive_documents SET sorted_at=? WHERE id=?',(now,doc['id']))
-        store.db.execute('DELETE FROM source_sort_sections WHERE document_id=?',(doc['id'],))
+        # Legacy checkpoints remain available for audit and recovery.
     return True
 
 

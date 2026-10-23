@@ -1,0 +1,173 @@
+[
+  {
+    "id": "0984b40324166fa7ee1264cc634825943b6bf1f7ff5872339e006a25a6f7afd9",
+    "document_id": 9,
+    "text": "Adjusted operating margin was 16%",
+    "category": "Management",
+    "speaker": null,
+    "location": {
+      "end": 146,
+      "kind": "PDF verified via converted Markdown",
+      "markdown_end": 5731,
+      "markdown_sha256": "9bdc4b2d30522a1e1f44091347e0dcf15f1e89a6dacce8875536904ba26a6129",
+      "markdown_start": 5698,
+      "page": 5,
+      "section": "**Adjusted Operating Income (Loss)**",
+      "sha256": "e1dc615b937ee655e62b812096ced3c64e25c24c1450ad8660b3558a825feee9",
+      "start": 113,
+      "verification": "Original PDF text; Markdown formatting, typography and whitespace may differ"
+    },
+    "publication_date": "2025-08-12",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2025-08-12\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/news/news-details/2025/CoreWeave-Reports-Strong-Second-Quarter-2025-Results/\"}"
+  },
+  {
+    "id": "cef0bb8a90b8ed5217eb1a3a9a9b261065466e94dcb5e6e532dba38cad87e888",
+    "document_id": 9,
+    "text": "Adjusted net loss margin was (11)%",
+    "category": "Management",
+    "speaker": null,
+    "location": {
+      "end": 157,
+      "kind": "PDF verified via converted Markdown",
+      "markdown_end": 6331,
+      "markdown_sha256": "9bdc4b2d30522a1e1f44091347e0dcf15f1e89a6dacce8875536904ba26a6129",
+      "markdown_start": 6297,
+      "page": 6,
+      "section": "**Adjusted Net Income (Loss)**",
+      "sha256": "e1dc615b937ee655e62b812096ced3c64e25c24c1450ad8660b3558a825feee9",
+      "start": 123,
+      "verification": "Original PDF text; Markdown formatting, typography and whitespace may differ"
+    },
+    "publication_date": "2025-08-12",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2025-08-12\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/news/news-details/2025/CoreWeave-Reports-Strong-Second-Quarter-2025-Results/\"}"
+  },
+  {
+    "id": "c971ccb8e2d759a08d490cf2e4db5dbce9c5be8228a4db9d330533da5a532243",
+    "document_id": 9,
+    "text": "Adjusted EBITDA margin was 62%",
+    "category": "Management",
+    "speaker": null,
+    "location": {
+      "end": 108,
+      "kind": "PDF verified via converted Markdown",
+      "markdown_end": 6797,
+      "markdown_sha256": "9bdc4b2d30522a1e1f44091347e0dcf15f1e89a6dacce8875536904ba26a6129",
+      "markdown_start": 6767,
+      "page": 7,
+      "section": "**Adjusted EBITDA**",
+      "sha256": "e1dc615b937ee655e62b812096ced3c64e25c24c1450ad8660b3558a825feee9",
+      "start": 78,
+      "verification": "Original PDF text; Markdown formatting, typography and whitespace may differ"
+    },
+    "publication_date": "2025-08-12",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2025-08-12\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/news/news-details/2025/CoreWeave-Reports-Strong-Second-Quarter-2025-Results/\"}"
+  },
+  {
+    "id": "06c92326b654d9133dde08438942c27c1619a46ad17c0f15ded47874a301adb3",
+    "document_id": 9,
+    "text": "YTD revenue backlog increased 2x",
+    "category": "Management",
+    "speaker": null,
+    "location": {
+      "end": 281,
+      "kind": "PDF verified via converted Markdown",
+      "markdown_end": 7414,
+      "markdown_sha256": "9bdc4b2d30522a1e1f44091347e0dcf15f1e89a6dacce8875536904ba26a6129",
+      "markdown_start": 7382,
+      "page": 8,
+      "section": "**Revenue Backlog<sup>1</sup>**",
+      "sha256": "e1dc615b937ee655e62b812096ced3c64e25c24c1450ad8660b3558a825feee9",
+      "start": 249,
+      "verification": "Original PDF text; Markdown formatting, typography and whitespace may differ"
+    },
+    "publication_date": "2025-08-12",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2025-08-12\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/news/news-details/2025/CoreWeave-Reports-Strong-Second-Quarter-2025-Results/\"}"
+  },
+  {
+    "id": "bc168ee2fb9f952d169c24587e8cc961cda0da959a2da2640a467d93ae25e0c6",
+    "document_id": 9,
+    "text": "Our Data Centers Are Purpose-Built for AI",
+    "category": "Management",
+    "speaker": null,
+    "location": {
+      "end": 87,
+      "kind": "PDF verified via converted Markdown",
+      "markdown_end": 8922,
+      "markdown_sha256": "9bdc4b2d30522a1e1f44091347e0dcf15f1e89a6dacce8875536904ba26a6129",
+      "markdown_start": 8881,
+      "page": 10,
+      "section": "**Our Geographically Distributed Footprint <sup>1</sup>**",
+      "sha256": "e1dc615b937ee655e62b812096ced3c64e25c24c1450ad8660b3558a825feee9",
+      "start": 46,
+      "verification": "Original PDF text; Markdown formatting, typography and whitespace may differ"
+    },
+    "publication_date": "2025-08-12",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2025-08-12\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/news/news-details/2025/CoreWeave-Reports-Strong-Second-Quarter-2025-Results/\"}"
+  },
+  {
+    "id": "6af5c22a98ebfc6879800c7fc7622878d94acbbd3f22094f2fa4d5009d51e419",
+    "document_id": 11,
+    "text": "Adjusted net loss margin was (3)%",
+    "category": "Management",
+    "speaker": "CoreWeave, Inc.",
+    "location": {
+      "end": 154,
+      "kind": "PDF verified via converted Markdown",
+      "markdown_end": 6024,
+      "markdown_sha256": "cac4dc4edd6ff97d12ef17705d5f61a00b8a855cebae20b08701956db8c9e7ae",
+      "markdown_start": 5991,
+      "page": 6,
+      "section": "**Adjusted Net Income (Loss)**",
+      "sha256": "d5cd0cf132937d1dacc598efeffa66170fd1283c976c17caababad21970dfac9",
+      "speaker_evidence": "Publisher: CoreWeave, Inc.",
+      "start": 121,
+      "verification": "Original PDF text; Markdown formatting, typography and whitespace may differ"
+    },
+    "publication_date": "2025-11-10",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2025-11-10\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/news/news-details/2025/CoreWeave-Reports-Strong-Third-Quarter-2025-Results/\"}"
+  },
+  {
+    "id": "dd40f8e310d322cf4fc68b754bf7b85f92249c107d8cb66ec0d05eacf8e8b714",
+    "document_id": 11,
+    "text": "Adjusted EBITDA margin was 61%",
+    "category": "Management",
+    "speaker": "CoreWeave, Inc.",
+    "location": {
+      "end": 104,
+      "kind": "PDF verified via converted Markdown",
+      "markdown_end": 6473,
+      "markdown_sha256": "cac4dc4edd6ff97d12ef17705d5f61a00b8a855cebae20b08701956db8c9e7ae",
+      "markdown_start": 6443,
+      "page": 7,
+      "section": "**Adjusted EBITDA**",
+      "sha256": "d5cd0cf132937d1dacc598efeffa66170fd1283c976c17caababad21970dfac9",
+      "speaker_evidence": "Publisher: CoreWeave, Inc.",
+      "start": 74,
+      "verification": "Original PDF text; Markdown formatting, typography and whitespace may differ"
+    },
+    "publication_date": "2025-11-10",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2025-11-10\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/news/news-details/2025/CoreWeave-Reports-Strong-Third-Quarter-2025-Results/\"}"
+  },
+  {
+    "id": "75ecdc439e6456a0825fb0afb6e2781faa5125a6c8a609e89bdb702752f98ce6",
+    "document_id": 11,
+    "text": "Revenue backlog almost doubled QoQ",
+    "category": "Management",
+    "speaker": "CoreWeave, Inc.",
+    "location": {
+      "end": 218,
+      "kind": "PDF verified via converted Markdown",
+      "markdown_end": 7067,
+      "markdown_sha256": "cac4dc4edd6ff97d12ef17705d5f61a00b8a855cebae20b08701956db8c9e7ae",
+      "markdown_start": 7033,
+      "page": 8,
+      "section": "**Revenue Backlog<sup>1</sup>**",
+      "sha256": "d5cd0cf132937d1dacc598efeffa66170fd1283c976c17caababad21970dfac9",
+      "speaker_evidence": "Publisher: CoreWeave, Inc.",
+      "start": 184,
+      "verification": "Original PDF text; Markdown formatting, typography and whitespace may differ"
+    },
+    "publication_date": "2025-11-10",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2025-11-10\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/news/news-details/2025/CoreWeave-Reports-Strong-Third-Quarter-2025-Results/\"}"
+  }
+]

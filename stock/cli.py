@@ -18,6 +18,7 @@ def main():
     archive.add_argument('--metadata',metavar='JSON',help='Enrich existing archived documents from versioned metadata JSON')
     sort=commands.add_parser('sort',help='Extract and freeze archived source passages with Cursor')
     sort.add_argument('ticker')
+    sort.add_argument('--rebuild',metavar='DOCUMENT',help='Stage and review replacement evidence for one document')
     sort.add_argument('--reset',metavar='DOCUMENT',help='Restore frozen topics by Archive ID or filename; no LLM call')
     sources=commands.add_parser('sources',help='Browse source passages and edit topic memberships')
     sources.add_argument('ticker')
@@ -34,13 +35,22 @@ def main():
     try:
         store=Store()
         if args.command=='sort':
+            if args.reset and args.rebuild: raise ValueError('Use either --reset or --rebuild')
+            if args.rebuild:
+                from .rebuild import rebuild
+                from .sort import Cursor
+                from .sort_process import Status
+                with Status() as status:
+                    return 0 if rebuild(store,args.ticker,args.rebuild,Cursor,status,lambda: input('Replace published evidence? Type REPLACE: ')== 'REPLACE') else 1
             if args.reset:
                 from .sources import reset
                 doc=reset(store,args.ticker,args.reset)
                 print(f"{doc['id']} · {doc['title']} · Restored frozen topics")
                 return 0
             from .sort import sort_stock
-            return 0 if sort_stock(store,args.ticker,lambda line: print(line,flush=True)) else 1
+            from .sort_process import Status
+            with Status() as status:
+                return 0 if sort_stock(store,args.ticker,status) else 1
         if args.command=='sources':
             if not sys.stdin.isatty() or not sys.stdout.isatty():
                 raise ValueError('stock sources requires an interactive terminal')

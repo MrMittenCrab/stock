@@ -279,57 +279,54 @@ stock sources CRWV.US
 stock sort CRWV.US --reset DOCUMENT
 ```
 
-Sort extracts original commentary from archived Markdown. For PDF-only documents,
-it first invokes Archive’s converter with the existing elapsed-time/liveness display
-and no conversion deadline. A per-PDF lock prevents duplicate conversion. Successful
-conversions are reused; failed or busy conversions leave the document unsorted. It uses the
-installed, authenticated **Cursor Agent CLI** automatically. `agent --help` and
-`agent status` must support read-only `--mode ask` and `--output-format json`.
-Stock checks those capabilities/authentication before extraction. Cursor returns a
-JSON result envelope; Stock validates its inner passage schema itself because the
-CLI does not offer a JSON-schema enforcement option. No other agent framework is
-used. Missing authentication, invalid output, source changes, timeouts, and
-unverifiable quotations produce a clear failure without marking the document sorted.
+Sort builds a selective source-grounded evidence library from existing archived
+Markdown. Convert or restore missing Markdown through Archive first. Stock assigns
+stable document/hash/offset candidate IDs to coherent paragraphs and sentence groups.
+Cursor judges relevance, fixed topics and supported speaker categories, returning
+compact IDs rather than reproduced quotations. Stock reconstructs selected text
+from verified source characters; repeated wording at different locations is distinct.
+Raw Markdown tables and non-substantive operator turns are excluded.
 
-Cursor runs in an empty disposable workspace under `.data`, in read-only ask mode,
-with workspace permissions denying shell commands, file reads/writes, web fetches,
-and MCP calls ([Cursor permissions](https://cursor.com/docs/cli/reference/permissions)).
-Document content is explicitly untrusted input. Cursor
-receives bounded text sections and attribution context, and has no responsibility
-for file changes or database publication. Source text is sent to Cursor's service;
-its existing account authentication is reused. Initial account login, if needed,
-is `agent login`; ordinary Sort needs no manual Cursor interaction.
+The installed, authenticated Cursor Agent CLI runs in an empty disposable workspace
+under `.data`, in read-only ask mode with shell, file, web and MCP permissions denied.
+Source text is sent to Cursor's service using existing authentication (`agent login`).
+Stock validates JSON, IDs, topics, roles and source hashes. Protocol errors receive
+bounded retries; authentication/quota rejection stops further calls. The terminal
+shows document/section, stage, elapsed time and child liveness on one line. Ctrl+C
+terminates active Cursor processes and preserves completed checkpoints.
 
-Each successful document is published in a single SQLite transaction. Its passage
-records, source anchors, dates/provenance, and original topics are then frozen.
-Repeated Sort prints **Already sorted** and never calls Cursor for that document.
-Manual additions/removals are stored separately and survive ordinary Sort. Reset
-accepts an Archive document ID or an unambiguous archived filename; it removes only
-that document's manual overrides and restores its exact frozen topic memberships.
-It never calls Cursor or changes passages or sources. There is no redo/resort flag.
-A failed/interrupted document leaves previously saved documents intact; a later Sort
-resumes that unsorted document from Markdown-hash-bound section checkpoints.
-Candidates are validated independently and receive one targeted retry on failure.
-Accepted passages survive interruption and are not extracted again. Rejected
-candidates keep the document incomplete; compact document summaries report errors.
+Successful documents publish atomically and freeze their original topics/citations.
+Ordinary Sort prints **Already sorted** and preserves completed evidence and manual
+topic overrides. Version 3 checkpoints are isolated from legacy checkpoints, which
+remain available for audit. Rejected candidates are recorded independently; valid
+selections survive. Source integrity failure prevents publication.
+
+```sh
+stock sort CRWV.US --rebuild 13
+stock sort CRWV.US --rebuild 2026-02-26--presentation--Q4-2025.md
+```
+
+`--rebuild DOCUMENT` accepts an Archive ID or unambiguous archived filename for a
+completed or incomplete document. It stages extraction while existing evidence
+remains visible, then prints counts, quality indicators, representative quotations
+and manual-override transfer results. Type `REPLACE` to approve atomic replacement
+of only that document. Rejection, interruption or failure preserves published data.
+Unmatched manual corrections block replacement until manually reconciled; Stock
+does not guess matches or silently discard corrections. Concurrent rebuilds of the
+same document are locked out. `--reset DOCUMENT` continues to restore frozen topic
+assignments by removing overrides, without extraction or classification.
 
 The eight fixed topics are **Market, Product, Operations, Financials, Capital,
-Organization, Macro, Valuation**. A passage can have several topics or none;
-Financials covers commentary rather than full tables or BAV calculations.
-Management, Investor, and Media identify the individual speaker's category, even
-when someone else quotes them. Identifiable speakers require a matching attribution
-excerpt. Extraction and category selection still require judgment from the LLM;
-Stock rejects invented text/names and unsupported topic values, but cannot prove
-semantic interpretation mechanically.
+Organization, Macro, Valuation**. Memberships may be multiple or empty. Categories
+remain **Management, Investor, Media**. Stock constructs transcript turns from
+name/role rosters, including plain name lines, before Cursor classifies evidence.
+Unverified individual names stay null. Original PDFs and Markdown are unchanged;
+new quotations carry exact Markdown offsets, its SHA-256, and original references.
+Sources preserves frozen legacy citations, native terminal colors and topic editing.
 
-Archived Markdown is the authoritative quotation source. Stock stores the exact
-Markdown span, character offsets and SHA-256; it can recover whitespace, escaped
-characters, emphasis and typographic quote differences without changing wording
-or numbers. It requires no PDF punctuation, hyphenation or page-boundary match.
-Verification is labeled **Exact archived Markdown text**. Original PDFs remain
-linked for reference; unknown page references stay unknown. Unidentified speakers
-use null, including company-authored narrative without a named individual.
-Imported documents, LLM output, and verification artifacts remain excluded from Git.
+See [the diagnosis and sample evaluation](docs/sort-diagnosis.md) for demonstrated
+failures, regressions, quality findings and remaining limits. Archived user documents
+remain excluded from Git; small regression excerpts are included under `tests/fixtures`.
 
 Publication dates come only from archived provenance explicitly establishing public
 availability with an evidence URL. Cover dates, call dates, bare user-supplied dates,

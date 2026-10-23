@@ -1,0 +1,46 @@
+[
+  {
+    "id": "0fc14cfb6681a2c2570fa9037e0b3944efddd832d462191274bb2a5e3d211275",
+    "document_id": 5,
+    "text": "Introduced                        | Dedicated Inference",
+    "category": "Management",
+    "speaker": null,
+    "location": {
+      "end": 7255,
+      "kind": "archived Markdown",
+      "markdown_end": 7255,
+      "markdown_sha256": "862d4fd6a663262bc4ca6e38860a2e1ecb22e56c127e4936e5ef9609821ba52c",
+      "markdown_start": 7200,
+      "original_sha256": "863706795708152ab65722e7b7b461c12dc9b72974a78abe21a35c2acbbaf8db",
+      "page": null,
+      "section": "**Large and Growing Footprint of AI Data Centers**",
+      "sha256": "862d4fd6a663262bc4ca6e38860a2e1ecb22e56c127e4936e5ef9609821ba52c",
+      "start": 7200,
+      "verification": "Exact archived Markdown text"
+    },
+    "publication_date": "2026-05-07",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2026-05-07\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/events-and-presentations/event-details/2026/CoreWeave-First-Quarter-2026-Earnings-Conference-Call/default.aspx\"}"
+  },
+  {
+    "id": "50318817ccac5b968d7a0a27c47544bb6ee792b7e509bf5a2e0d05e5f385a4dd",
+    "document_id": 5,
+    "text": "Introduced                        | CoreWeave ARENA\u2122",
+    "category": "Management",
+    "speaker": null,
+    "location": {
+      "end": 7558,
+      "kind": "archived Markdown",
+      "markdown_end": 7558,
+      "markdown_sha256": "862d4fd6a663262bc4ca6e38860a2e1ecb22e56c127e4936e5ef9609821ba52c",
+      "markdown_start": 7506,
+      "original_sha256": "863706795708152ab65722e7b7b461c12dc9b72974a78abe21a35c2acbbaf8db",
+      "page": null,
+      "section": "**Large and Growing Footprint of AI Data Centers**",
+      "sha256": "862d4fd6a663262bc4ca6e38860a2e1ecb22e56c127e4936e5ef9609821ba52c",
+      "start": 7506,
+      "verification": "Exact archived Markdown text"
+    },
+    "publication_date": "2026-05-07",
+    "date_provenance": "{\"source\": \"metadata JSON\", \"value\": \"2026-05-07\", \"basis\": \"Earliest verified public release: issuer results announcement/event lists an accompanying earnings presentation for this date; original issuer PDF cover agrees. Earlier web availability not established.\", \"evidence_url\": \"https://investors.coreweave.com/events-and-presentations/event-details/2026/CoreWeave-First-Quarter-2026-Earnings-Conference-Call/default.aspx\"}"
+  }
+]
