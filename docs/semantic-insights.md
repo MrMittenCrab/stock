@@ -52,14 +52,19 @@ are separate grouping judgment fields. No reduction in count bypasses those gate
 
 ## Semantic grouping and safeguards
 
-Retrieve up to eight plausible neighbors per statement using informative shared
-terms. Union these bounded neighbor pairs, then batch judgments under a compact
-14k-character comparison-data budget. Shared documents, statements and exact source
-fragments are dictionary encoded once per request. A single oversized pair is left
-separate with a visible uncertainty reason, rather than truncating its evidence or
-sending an unbounded request. Exact wording with identical document, attribution,
-date and exact support anchors can merge deterministically. Exact wording across
-different sources still requires contextual comparison.
+Replacement grouping compares every incoming/incoming and incoming/unchanged pair,
+without a neighbor cutoff. It preserves unaffected groups and reuses exact valid
+judgments. Historical-only unresolved retrieval candidates are reported separately,
+without a global completeness claim. Ordinary archive grouping still uses the legacy
+neighbor heuristic; this does not restrict the exhaustive replacement scope.
+
+Comparison batches use a 64k-character packing target with shared dictionaries.
+Historical document/statement ordering shares incoming support across pairs.
+The target splits requests; it never truncates evidence or excludes a pair. An
+oversized single pair is still submitted. Legacy cached negative entries created
+without review are ignored; valid existing semantic judgments keep their contract
+and source fingerprints. Exact statement, attribution, date and support identity
+can establish deterministic equivalence. Other pairs require model judgments.
 
 Model judgments compare entity, property/event/metric, reporting/as-of period,
 actual/forecast/intention/uncertainty, business/geographic scope, units/definitions,
@@ -125,7 +130,7 @@ member. This is a small fixed oracle replay, not a statistical estimate of factu
 fidelity or model precision/recall. It cannot prove that unselected source material
 contains no valuable information. Real proposals require substantive review.
 
-The actual retrieval produced 45 plausible pairs, judged in **4 replayed Cursor
+The original implementation's retrieval produced 45 plausible pairs, judged in **4 replayed Cursor
 requests**, with 51,604 comparison-payload characters excluding prompt boilerplate.
 Repeat staging made **0** new requests and reused all **45** decisions. An initial
 implementation repeated full source data per pair (10 requests, 128,946 payload
@@ -154,13 +159,16 @@ with frozen evidence. Exact source references and every published row remain int
 To activate a complete semantic view, use normal Sort. Grouping-only updates do not
 need REPLACE. Stale evidence, topics or a changed active head block activation.
 
-Evidence replacement still requires explicit `REPLACE` after full review:
+Explicit rebuild authorizes replacement after independent verification and complete
+incremental semantic grouping, without keyboard confirmation:
 
 ```sh
 stock sort TICKER --rebuild DOCUMENT
 ```
 
-Do not automatically rebuild document 13. Existing checkpoints remain resumable.
+Add `--review-only` to preview this specific replacement without publication.
+Existing checkpoints remain resumable. Implementation used disposable copies only.
+See [the current measurements and unattended command](incremental-rebuild.md).
 See [unified budgets, measurements and limitations](unified-sort.md).
 
 Review shows passage/insight counts, equivalent members with exact sources,

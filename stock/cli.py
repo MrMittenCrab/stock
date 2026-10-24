@@ -9,7 +9,7 @@ def sort_resume_command(args):
     import shlex
     command=['stock','sort',args.ticker]
     if args.rebuild:command+=['--rebuild',args.rebuild]
-    elif args.review_only:command+=['--review-only']
+    if args.review_only:command+=['--review-only']
     for name in ('document_seconds','command_seconds','cursor_requests','request_seconds'):
         command+=['--'+name.replace('_','-'),str(getattr(args,name))]
     return shlex.join(command)
@@ -29,7 +29,7 @@ def main():
     archive.add_argument('--metadata',metavar='JSON',help='Enrich existing archived documents from versioned metadata JSON')
     sort=commands.add_parser('sort',help='Build distinct, verified investment insights from archived sources')
     sort.add_argument('ticker')
-    sort.add_argument('--rebuild',metavar='DOCUMENT',help='Stage and review replacement evidence for one document')
+    sort.add_argument('--rebuild',metavar='DOCUMENT',help='Verify, deduplicate and automatically replace one document')
     sort.add_argument('--insights',action='store_true',help=argparse.SUPPRESS)
     sort.add_argument('--review-only',action='store_true',help='Preview insights without publishing evidence or activating groups')
     sort.add_argument('--reset',metavar='DOCUMENT',help='Restore frozen topics by Archive ID or filename; no LLM call')
@@ -53,7 +53,6 @@ def main():
         store=Store()
         if args.command=='sort':
             if args.reset and (args.rebuild or args.review_only):raise ValueError('Use --reset separately')
-            if args.rebuild and args.review_only:raise ValueError('Use --review-only separately from --rebuild')
             if args.reset:
                 from .sources import reset
                 doc=reset(store,args.ticker,args.reset)
@@ -68,7 +67,7 @@ def main():
                     try:
                         if args.rebuild:
                             from .rebuild import rebuild
-                            ok=rebuild(store,args.ticker,args.rebuild,Cursor,status,status.approval)
+                            ok=rebuild(store,args.ticker,args.rebuild,Cursor,status,review_only=args.review_only)
                         else:ok=sort_stock(store,args.ticker,status,review_only=args.review_only)
                     except BudgetExceeded as exc:
                         elapsed=int(time.monotonic()-status.started)

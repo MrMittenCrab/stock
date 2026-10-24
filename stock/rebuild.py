@@ -1,4 +1,4 @@
-"""Isolated rebuild preparation and explicitly approved atomic replacement."""
+"""Isolated rebuild preparation and verified unattended atomic replacement."""
 import fcntl
 import hashlib
 import json
@@ -42,7 +42,7 @@ def review_passages(passages):
     return '\n'.join(lines)
 
 
-def rebuild(store,ticker,reference,cursor_factory,progress,approve):
+def rebuild(store,ticker,reference,cursor_factory,progress,approve=None,review_only=False):
     sources.schema(store)
     store.db.execute('''CREATE TABLE IF NOT EXISTS source_publication_history(
       id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, retired_at REAL NOT NULL,
@@ -72,37 +72,39 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve):
         from .sort_process import DeferredCursor
         worker=DeferredCursor(cursor_factory)
         proposed,verify=extract(store,doc,worker,progress)
-        from .insights import stage
-        insight_proposal=stage(store,ticker,worker,progress,new_document=(doc,proposed))
+        verify()
         from . import insights
+        insights.schema(store)
         active=insights.head(store,ticker)
         splits=insights.suppressed_pairs(store,insights.load(store,active)) if active else set()
-        replacing={p['id'] for p in previous}
-        incoming={sources.passage_id(doc,p) for p in proposed}
-        if any((a in replacing and a not in incoming) or (b in replacing and b not in incoming) for a,b in splits):
-            progress('Replacement blocked · Manual ungrouping requires reconciliation')
-            return False
-        keys={}
-        for p in proposed: keys.setdefault(match_key(p),[]).append(p)
+        keys={};old_keys={}
+        for p in proposed:keys.setdefault(match_key(p),[]).append(p)
+        for p in previous:old_keys.setdefault(match_key(p),[]).append(p)
         overrides=store.db.execute('''SELECT o.passage_id,o.topic,o.present FROM source_overrides o
             JOIN source_passages p ON p.id=o.passage_id WHERE p.document_id=?''',(doc['id'],)).fetchall()
-        old={p['id']:p for p in previous};transferred=[];unmatched=[]
-        for ident,topic,present in overrides:
+        old={p['id']:p for p in previous};transferred=[];unmatched=[];identity_map={}
+        # Identity transfer is not a semantic judgment. Both sides must have a
+        # unique exact source/attribution identity, including for manual splits.
+        required={ident for ident,_,_ in overrides}
+        required.update(m for pair in splits for m in pair if m in old)
+        for ident in required:
             key=match_key(old[ident])
-            if len(keys.get(key,[]))==1: transferred.append((key,topic,present))
-            else: unmatched.append((ident,topic,present))
+            if len(keys.get(key,[]))!=1 or len(old_keys.get(key,[]))!=1:
+                unmatched.append(ident)
+            else:identity_map[ident]=sources.passage_id(doc,keys[key][0])
+        if unmatched:
+            raise IntegrityError('Replacement blocked: unmatched or ambiguous manual corrections/splits: '+', '.join(sorted(unmatched)))
+        for ident,topic,present in overrides:transferred.append((match_key(old[ident]),topic,present))
+        insight_proposal=insights.stage(store,ticker,worker,progress,new_document=(doc,proposed),identity_map=identity_map)
         review=getattr(progress,'review',progress)
         review(f"{doc['id']} · Replace · {len(previous)} → {len(proposed)} sources · {len(transferred)} corrections")
         from .insights import review_text
         details=review_text(insight_proposal)
-        if unmatched:details+='\nUnmatched corrections: '+json.dumps(unmatched)
         getattr(progress,'proposed_details',getattr(progress,'review_all',review))(details)
-        if unmatched:
-            progress('Replacement blocked: unmatched manual corrections require explicit reconciliation. Original evidence retained.')
-            return False
-        from .sort_budget import operator_wait
-        with operator_wait():approved=approve()
-        if not approved: progress('Rebuild rejected; original evidence retained');return False
+        if review_only:
+            progress('Rebuild review only; original evidence retained')
+            return True
+        # --rebuild is the replacement authorization. No terminal interaction.
         verify()
         check()
         from .editorial import validate_publication

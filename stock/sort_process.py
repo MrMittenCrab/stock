@@ -70,22 +70,13 @@ class Status:
             wrapped='\n'.join(textwrap.fill(line,width=width,replace_whitespace=False) for line in message.split('\n'))
             from .sort_budget import operator_wait
             with operator_wait():
-                pydoc.ttypager('Space: next · Enter: line · b: back · q: return to approval\n'+wrapped)
+                pydoc.ttypager('Space: next · Enter: line · b: back · q: return\n'+wrapped)
         else:
             print(message,flush=True)
 
     def proposed_details(self,message):
         self.details=message
         self.log_event(dict(proposed=message))
-
-    def approval(self):
-        self.reviewing=True
-        from .sort_budget import operator_wait
-        with operator_wait():
-            while True:
-                answer=input('REPLACE · D Details · Enter Cancel: ')
-                if answer.lower()=='d':self.review_all(getattr(self,'details',''));continue
-                return answer=='REPLACE'
 
     def line(self,width=None):
         elapsed=int(time.monotonic()-self.started)

@@ -204,13 +204,13 @@ def test_identical_claim_and_exact_support_uses_no_model(library):
  assert 'Deterministic' in p['groups'][0]['basis'][0]['reason']
 
 
-def test_oversized_evidence_remains_separate_without_unbounded_request(library):
+def test_oversized_evidence_is_reviewed_without_truncation(library):
  s,_,add=library
  add('Demand exceeds capacity. '+('Material source qualification. '*1000))
  add('Customer demand exceeds capacity.',1)
- m=Replay();p=insights.stage(s,'CRWV.US',m,lambda _:None)
- assert len(p['groups'])==2 and not m.calls
- assert 'budget' in p['differences'][0]['reason']
+ m=Replay(False);p=insights.stage(s,'CRWV.US',m,lambda _:None)
+ assert len(p['groups'])==2 and len(m.calls)==1
+ assert len(m.calls[0]['semantic_pairs'][0]['left']['text'])>28000 or len(m.calls[0]['semantic_pairs'][0]['right']['text'])>28000
 
 
 def test_coreweave_recorded_excerpts_pipeline(tmp_path):
@@ -219,7 +219,7 @@ def test_coreweave_recorded_excerpts_pipeline(tmp_path):
  report=module['replay'](tmp_path)
  assert (report['passages'],report['distinct_insights'],report['retained_member_records'])==(13,9,13)
  assert report['false_merges']==report['missed_merges']==report['resume_requests']==0
- assert report['replayed_cursor_requests']==4
+ assert report['replayed_cursor_requests']==1
 
 async def test_topic_editor_remains_bound_to_explicit_member(library):
  from stock.sources_ui import SourcesApp
@@ -296,7 +296,8 @@ def test_review_only_groups_without_activation(library,monkeypatch):
  assert len(model.calls)==1 and insights.head(s,'CRWV.US')
 
 
-def test_grouping_budget_preserves_cached_decisions_without_partial_activation(library):
+def test_grouping_budget_preserves_cached_decisions_without_partial_activation(library,monkeypatch):
+ monkeypatch.setattr(insights,'REQUEST_BUDGET',2500)
  from stock.sort_budget import Budget,BudgetExceeded
  from stock.sort_process import DeferredCursor
  s,_,add=library
@@ -323,12 +324,14 @@ def test_rebuild_checks_other_document_snapshot_before_commit(library,monkeypatc
  add('Customer demand exceeds available capacity.',1)
  new=[dict(text='Demand exceeds available capacity.',topics=['Market'],category='Management',speaker=None,
   location=dict(start=0,end=34,candidate_id='new'),publication_date=None,date_provenance={})]
- monkeypatch.setattr('stock.rebuild.extract',lambda *args:(new,lambda:None))
- class Real(Replay):supports_distillation=True
  before=s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
- def approve():
-  sources.set_topic(s,a,'Capital',True)
-  return True
+ checks=[]
+ def verify():
+  checks.append(True)
+  if len(checks)==2:sources.set_topic(s,a,'Capital',True)
+ monkeypatch.setattr('stock.rebuild.extract',lambda *args:(new,verify))
+ class Real(Replay):supports_distillation=True
+ def approve():raise AssertionError('No keyboard approval')
  with pytest.raises(IntegrityError,match='changed'):rebuild(s,'CRWV.US',str(docs[1]['id']),Real,lambda _:None,approve)
  assert before==s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
  assert not insights.head(s,'CRWV.US')
@@ -374,3 +377,145 @@ def test_historical_manual_split_survives_another_split_and_staging(library):
  assert len(insights.entries(s,'CRWV.US'))==4
  p=insights.stage(s,'CRWV.US',TwoGroups(),lambda _:None);insights.activate(s,p['id'])
  assert len(p['suppressed_pairs'])==2 and len(insights.entries(s,'CRWV.US'))==4
+
+
+def test_incremental_replacement_exhaustive_pairs_without_historical_backlog(library):
+ s,docs,add=library
+ historical=[add(f'Historical evidence {i}.') for i in range(12)]
+ add('Outgoing evidence.',1)
+ new=[dict(text=t,topics=['Market'],category='Management',speaker=None,
+  location=dict(start=i,end=i+1),publication_date=None,date_provenance={})
+  for i,t in enumerate(['Unrelated wording alpha.','Other wording beta.'])]
+ m=Replay(False)
+ p=insights.stage(s,'CRWV.US',m,lambda _:None,new_document=(docs[1],new))
+ pairs=[pair for call in m.calls for pair in call['semantic_pairs']]
+ incoming={sources.passage_id(docs[1],x) for x in new}
+ assert len(pairs)==25  # 2*12 + one incoming/incoming; even with no shared tokens.
+ assert all(pair['left']['id'] in incoming or pair['right']['id'] in incoming for pair in pairs)
+ assert p['grouping_scope']=='replacement'
+ assert p['historical_backlog_pairs']>0
+ assert p['comparison_count']==25
+
+
+def test_incremental_preserves_existing_group_and_complete_link(library):
+ s,docs,add=library
+ a=add('Demand exceeds capacity.');b=add('Customer demand exceeds capacity.')
+ initial=insights.stage(s,'CRWV.US',Replay(),lambda _:None);insights.activate(s,initial['id'])
+ new=[dict(text='Demand outpaces supply.',topics=['Market'],category='Management',speaker=None,
+  location=dict(start=0,end=1),publication_date=None,date_provenance={})]
+ class Partial(Replay):
+  def extract(self,u,c):
+   self.calls.append(u)
+   return [decision(p,b not in (p['left']['id'],p['right']['id'])) for p in u['semantic_pairs']]
+ m=Partial();p=insights.stage(s,'CRWV.US',m,lambda _:None,new_document=(docs[1],new))
+ assert any(g['members']==initial['groups'][0]['members'] for g in p['groups'])
+ assert sorted(len(g['members']) for g in p['groups'])==[1,2]
+ assert len([x for call in m.calls for x in call['semantic_pairs']])==2
+
+
+def test_rebuild_unattended_never_invokes_approval(library,monkeypatch):
+ from stock.rebuild import rebuild
+ s,docs,add=library;add('Old evidence.',1)
+ new=[dict(text='Replacement evidence.',topics=['Market'],category='Management',speaker=None,
+  location=dict(start=0,end=1,candidate_id='new'),publication_date=None,date_provenance={})]
+ verified=[]
+ monkeypatch.setattr('stock.rebuild.extract',lambda *args:(new,lambda:verified.append(True)))
+ class Real(Replay):supports_distillation=True
+ def forbidden():raise AssertionError('Must not request keyboard confirmation')
+ assert rebuild(s,'CRWV.US',str(docs[1]['id']),Real,lambda _:None,forbidden)
+ assert verified and insights.current(s,'CRWV.US')
+ assert [p['text'] for p in sources.passages(s,'CRWV.US')]==['Replacement evidence.']
+
+
+def test_legacy_unreviewed_negative_cache_is_not_a_judgment(library):
+ s,docs,add=library
+ a=add('Demand exceeds capacity.');b=add('Customer demand exceeds capacity.',1)
+ p=insights.stage(s,'CRWV.US',Replay(False),lambda _:None)
+ key=s.db.execute('SELECT fingerprint FROM source_semantic_cache').fetchone()[0]
+ r=json.loads(s.db.execute('SELECT payload FROM source_semantic_cache').fetchone()[0])
+ r['reason']='Full evidence exceeds comparison budget; uncertainty preserved as separate insights.'
+ with s.db:s.db.execute('UPDATE source_semantic_cache SET payload=? WHERE fingerprint=?',(insights.packed(r),key))
+ m=Replay();p=insights.stage(s,'CRWV.US',m,lambda _:None)
+ assert len(m.calls)==1 and len(p['groups'])==1
+
+
+def test_rebuild_transfers_manual_split_and_topic_by_unique_source_identity(library,monkeypatch):
+ from stock.rebuild import rebuild
+ s,docs,add=library
+ a=add('Demand exceeds capacity.',location=dict(start=0,end=1),doc=1)
+ b=add('Customer demand exceeds capacity.')
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None);insights.activate(s,p['id'])
+ insights.ungroup(s,'CRWV.US',p['groups'][0]['id'])
+ sources.set_topic(s,a,'Capital',True)
+ new=[dict(text='Capacity falls short of demand.',topics=['Market'],category='Management',speaker=None,
+  location=dict(start=0,end=1,candidate_id='replacement'),publication_date='2025-12-31',date_provenance={})]
+ monkeypatch.setattr('stock.rebuild.extract',lambda *args:(new,lambda:None))
+ class Real(Replay):supports_distillation=True
+ assert rebuild(s,'CRWV.US',str(docs[1]['id']),Real,lambda _:None)
+ active=insights.load(s,insights.head(s,'CRWV.US'))
+ incoming=sources.passage_id(docs[1],new[0])
+ assert sorted((incoming,b)) in [list(pair) for pair in active['suppressed_pairs']]
+ assert a not in active['fingerprints'] and incoming in active['fingerprints']
+ assert len(insights.entries(s,'CRWV.US'))==2
+ assert 'Capital' in next(p for p in sources.passages(s,'CRWV.US') if p['id']==incoming)['topics']
+ assert s.db.execute('SELECT count(*) FROM source_publication_history').fetchone()[0]==1
+
+
+def test_rebuild_unmatched_manual_split_blocks_before_grouping(library,monkeypatch):
+ from stock.rebuild import rebuild
+ from stock.evidence import IntegrityError
+ s,docs,add=library
+ add('Demand exceeds capacity.',doc=1);add('Customer demand exceeds capacity.')
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None);insights.activate(s,p['id'])
+ insights.ungroup(s,'CRWV.US',p['groups'][0]['id'])
+ before=s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall();old_head=insights.head(s,'CRWV.US')
+ new=[dict(text='Changed source.',topics=['Market'],category='Management',speaker=None,
+  location=dict(start=999,end=1000),publication_date=None,date_provenance={})]
+ monkeypatch.setattr('stock.rebuild.extract',lambda *args:(new,lambda:None))
+ with pytest.raises(IntegrityError,match='manual corrections/splits'):
+  rebuild(s,'CRWV.US',str(docs[1]['id']),lambda:None,lambda _:None)
+ assert insights.head(s,'CRWV.US')==old_head
+ assert s.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()==before
+
+
+def test_incremental_budget_resume_then_atomic_publish(library,monkeypatch):
+ from stock.sort_budget import Budget,BudgetExceeded
+ from stock.sort_process import DeferredCursor
+ s,docs,add=library
+ for i in range(7):add(f'Demand for customer {i} exceeds capacity.')
+ new=[dict(text='Customer demand exceeds capacity.',topics=['Market'],category='Management',speaker=None,
+  location=dict(start=0,end=1),publication_date=None,date_provenance={})]
+ monkeypatch.setattr(insights,'REQUEST_BUDGET',2500)
+ m=Replay(False)
+ with Budget(requests=1) as budget:
+  budget.use_document(docs[1]['id'])
+  with pytest.raises(BudgetExceeded):
+   insights.stage(s,'CRWV.US',DeferredCursor(lambda:m),lambda _:None,new_document=(docs[1],new))
+ assert not insights.head(s,'CRWV.US') and len(sources.passages(s,'CRWV.US'))==7
+ done=s.db.execute('SELECT count(*) FROM source_semantic_cache').fetchone()[0]
+ p=insights.stage(s,'CRWV.US',m,lambda _:None,new_document=(docs[1],new))
+ assert p['cached_decisions']==done and p['comparison_count']==7
+ assert sources.publish(s,docs[1],new,docs[1]['source_sha256'],insight_proposal=p)
+ assert len(insights.entries(s,'CRWV.US',document_id=docs[1]['id']))==1
+
+
+def test_archive_sort_can_reconsider_previously_separate_groups(library):
+ s,_,add=library
+ add('Demand exceeds capacity.');add('Customer demand exceeds capacity.',1)
+ p=insights.stage(s,'CRWV.US',Replay(False),lambda _:None);insights.activate(s,p['id'])
+ with s.db:s.db.execute('DELETE FROM source_semantic_cache')
+ p=insights.stage(s,'CRWV.US',Replay(),lambda _:None)
+ assert len(p['groups'])==1
+
+
+def test_incremental_reuses_historical_cache_even_without_active_revision(library):
+ s,docs,add=library
+ a=add('Demand exceeds capacity.');b=add('Customer demand exceeds capacity.')
+ staged=insights.stage(s,'CRWV.US',Replay(),lambda _:None)
+ assert not insights.head(s,'CRWV.US')  # Completed decisions, interrupted activation.
+ new=[dict(text='Another market observation.',topics=['Market'],category='Management',speaker=None,
+  location=dict(start=0,end=1),publication_date=None,date_provenance={})]
+ m=Replay(False);p=insights.stage(s,'CRWV.US',m,lambda _:None,new_document=(docs[1],new))
+ assert any(set(g['members'])=={a,b} for g in p['groups'])
+ assert all({q['left']['id'],q['right']['id']}!={a,b} for call in m.calls for q in call['semantic_pairs'])
+ assert p['historical_cached_decisions']==1

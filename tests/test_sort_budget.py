@@ -136,17 +136,18 @@ def test_review_only_combines_pending_documents_without_publication(tmp_path,mon
  with pytest.raises(ValueError,match='Preview'):insights.activate(s,row[0])
 
 
-@pytest.mark.parametrize('answer,approved',[('REPLACE',True),('replace',False),('y',False)])
-def test_cli_rebuild_requires_exact_replace(tmp_path,monkeypatch,answer,approved):
+@pytest.mark.parametrize('review_only',[False,True])
+def test_cli_explicit_rebuild_is_unattended(tmp_path,monkeypatch,review_only):
  from stock.cli import main
  from stock.core import Store
  seen=[]
  monkeypatch.setattr('stock.cli.Store',lambda:Store(tmp_path/'db'))
  monkeypatch.setattr('stock.core.ROOT',tmp_path)
- monkeypatch.setattr(sys,'argv',['stock','sort','CRWV.US','--rebuild','13'])
- monkeypatch.setattr('builtins.input',lambda prompt:answer)
- def rebuild(store,ticker,reference,factory,progress,approve):
-  seen.append(approve());return seen[-1]
+ monkeypatch.setattr(sys,'argv',['stock','sort','CRWV.US','--rebuild','13']+(['--review-only'] if review_only else []))
+ def forbidden(*args):raise AssertionError('No interactive input')
+ monkeypatch.setattr('builtins.input',forbidden)
+ def rebuild(store,ticker,reference,factory,progress,**kw):
+  seen.append(kw['review_only']);return True
  monkeypatch.setattr('stock.rebuild.rebuild',rebuild)
- assert main()==(0 if approved else 1)
- assert seen==[approved]
+ assert main()==0
+ assert seen==[review_only]

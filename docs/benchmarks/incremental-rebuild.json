@@ -1,0 +1,39 @@
+{
+  "disposable_database": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-incremental-loctm55j/stock.sqlite3",
+  "offline_only": true,
+  "before": {
+    "unchanged_unchanged": 9993,
+    "unchanged_unchanged_cached": 165,
+    "new_existing": 119,
+    "new_new": 5,
+    "new_existing_cached": 1,
+    "remaining_model_batches": 5306,
+    "remaining_batches_touching_replacement": 97
+  },
+  "cache_entries": 166,
+  "valid_cache_entries": 44,
+  "active_heads_before": null,
+  "verified_propositions": 13,
+  "source_references": 59,
+  "unique_source_anchors": 56,
+  "extraction_review_model_requests": 0,
+  "extraction_review_seconds": 0.13215145817957819,
+  "checkpoint_artifacts_unchanged": 19,
+  "after": {
+    "candidate_pairs": 23322,
+    "new_new": 78,
+    "new_existing": 23244,
+    "unchanged_unchanged_model_pairs": 0,
+    "cache_hits": 0,
+    "historical_cache_hits": 44,
+    "model_batches": 329,
+    "serialized_characters": 20826967,
+    "offline_seconds": 48.85435037501156,
+    "resume_seconds": 3.247713749995455,
+    "resume_requests": 0,
+    "historical_retrieval_backlog": 9949
+  },
+  "automatic_publication_on_copy": true,
+  "production_publication": false,
+  "limitation": "Synthetic replay measures workload and completeness of pair coverage, not semantic accuracy or live latency."
+}

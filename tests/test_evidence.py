@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from unittest.mock import Mock
 import pytest
-from stock.evidence import candidates,batches,resolve,extract,ProtocolError,AuthenticationError
+from stock.evidence import candidates,batches,resolve,extract,ProtocolError,AuthenticationError,IntegrityError
 from stock.core import Store
 from stock.archive import import_document
 from stock import sources
@@ -83,11 +83,11 @@ def test_protocol_retry_resume_and_legacy_isolation(staged):
  assert extract(s,d,m,lambda _:None)[0]==ps and m.calls==3
  assert s.db.execute('select count(*) from source_sort_sections').fetchone()[0]==1
 
-def test_frozen_rebuild_rejection_approval_overrides(staged):
+def test_frozen_rebuild_review_then_automatic_replacement_preserves_overrides(staged):
  s,d,m=staged;ps,_=extract(s,d,m,lambda _:None);sources.publish(s,d,ps,d['source_sha256'])
  old=sources.passages(s,'CRWV.US');sources.set_topic(s,old[0]['id'],'Capital',True)
  before=s.db.execute('select * from source_passages').fetchall()
- assert not rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,lambda:False)
+ assert rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,review_only=True)
  assert s.db.execute('select * from source_passages').fetchall()==before
  assert rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,lambda:True)
  assert 'Capital' in sources.passages(s,'CRWV.US')[0]['topics']
@@ -171,7 +171,8 @@ def test_unmatched_corrections_block_replacement(staged):
  s.db.execute('delete from knowledge_artifacts');s.db.commit()
  m.selected=1
  approval=Mock(return_value=True)
- assert not rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,approval)
+ with pytest.raises(IntegrityError,match='manual corrections'):
+  rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,approval)
  approval.assert_not_called()
  assert sources.passages(s,'CRWV.US')[0]['id']==ident
  assert 'Capital' in sources.passages(s,'CRWV.US')[0]['topics']
@@ -328,7 +329,7 @@ def test_old_contract_never_resumes_even_same_hash(staged,complete):
  assert extract(s,d,m,lambda _:None)[0]
  assert json.loads(s.db.execute('select payload from source_work_v3 where markdown_hash=?',(digest(Path(d['original']).read_text()),)).fetchone()[0])==payload
 
-def test_rejected_rebuild_on_database_copy_preserves_all_frozen_tables(staged,tmp_path):
+def test_review_rebuild_on_database_copy_preserves_all_frozen_tables(staged,tmp_path):
  import sqlite3
  s,d,m=staged;ps,_=extract(s,d,m,lambda _:None);sources.publish(s,d,ps,d['source_sha256'])
  sources.set_topic(s,sources.passages(s,'CRWV.US')[0]['id'],'Capital',True)
@@ -336,7 +337,7 @@ def test_rejected_rebuild_on_database_copy_preserves_all_frozen_tables(staged,tm
  tables=('source_passages','source_topics','source_overrides','source_sorts','archive_documents')
  def snapshot(store):return {t:store.db.execute(f'SELECT * FROM {t} ORDER BY 1').fetchall() for t in tables}
  before=snapshot(s)
- assert not rebuild(copied,'CRWV.US',str(d['id']),lambda:m,lambda _:None,lambda:False)
+ assert rebuild(copied,'CRWV.US',str(d['id']),lambda:m,lambda _:None,review_only=True)
  assert snapshot(copied)==before==snapshot(s)
 
 def test_exclusion_report_handles_invalid_selection_shape(staged):

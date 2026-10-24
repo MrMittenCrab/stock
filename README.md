@@ -382,8 +382,10 @@ stock sort CRWV.US --rebuild 2026-02-26--presentation--Q4-2025.md
 `--rebuild DOCUMENT` accepts an Archive ID or unambiguous archived filename for a
 completed or incomplete document. It stages extraction while existing evidence
 remains visible, then prints counts, quality indicators, representative quotations
-and manual-override transfer results. Type `REPLACE` to approve atomic replacement
-of only that document. Rejection, interruption or failure preserves published data.
+and manual-override transfer results. `--rebuild DOCUMENT` authorizes atomic replacement
+of only that document after extraction, independent verification and complete incremental
+semantic grouping succeed. No keyboard confirmation is required. Interruption or failure
+preserves published data. Add `--review-only` to preview a rebuild without publication.
 Unmatched manual corrections block replacement until manually reconciled; Stock
 does not guess matches or silently discard corrections. Concurrent rebuilds of the
 same document are locked out. `--reset DOCUMENT` continues to restore frozen topic
@@ -400,8 +402,12 @@ Sources preserves frozen legacy citations, native terminal colors and topic edit
 `stock sort CRWV.US --review-only` previews proposed insights across pending documents
 and frozen evidence without publishing evidence or activating groups. It may call Cursor
 for uncached judgments. Normal Sort activates fully validated grouping revisions
-automatically; only `--rebuild DOCUMENT` requires `REPLACE`. `--insights` remains a hidden
+automatically; `--rebuild DOCUMENT` also publishes automatically after all checks. `--insights` remains a hidden
 compatibility alias. Manual topic corrections and explicit ungrouping remain intact.
+Rebuild compares all replacement/replacement and replacement/existing pairs, reuses
+valid decisions, and preserves unaffected groups. Unresolved historical-only work is
+reported separately; an incremental revision does not claim global completeness.
+See [the measured rebuild correction](docs/incremental-rebuild.md).
 
 Defaults are **12 minutes per document**, **20 minutes per command**, **12 Cursor
 requests per document**, and **120 seconds per request**. Override with
