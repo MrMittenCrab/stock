@@ -39,6 +39,7 @@ def main():
     sort.add_argument('--request-seconds',type=float,default=120,help='Request timeout (default: 120)')
     semantic=commands.add_parser('map',help='Build the persistent local semantic vector index')
     semantic.add_argument('ticker')
+    semantic.add_argument('--refine',action='store_true',help='Expand local relationship frontier and atomically activate graph; no extraction')
     sources=commands.add_parser('sources',help='Browse source passages and edit topic memberships')
     sources.add_argument('ticker')
     args=parser.parse_args()
@@ -84,6 +85,12 @@ def main():
                     status.review(f"{args.ticker} · {'Preview' if args.review_only else 'Done' if ok else 'Paused'} · {insight_count} insights · {source_count} sources · {elapsed//60:02}:{elapsed%60:02}")
                     return 0 if ok else 1
         if args.command=='map':
+            if args.refine:
+                from .insights import stage,activate,review_text
+                proposal=stage(store,args.ticker,progress=print,refine=True)
+                activate(store,proposal['id'])
+                print(review_text(proposal))
+                return 0
             from .sources import passages
             from .semantic_map import vectors
             records=passages(store,args.ticker)

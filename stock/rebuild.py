@@ -87,6 +87,8 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve=None,review_o
         # unique exact source/attribution identity, including for manual splits.
         required={ident for ident,_,_ in overrides}
         required.update(m for pair in splits for m in pair if m in old)
+        if active:
+            required.update(m for e in insights.load(store,active).get('relationships',[]) if e.get('provenance')=='manual' for m in (e['left'],e['right']) if m in old)
         for ident in required:
             key=match_key(old[ident])
             if len(keys.get(key,[]))!=1 or len(old_keys.get(key,[]))!=1:
@@ -109,6 +111,8 @@ def rebuild(store,ticker,reference,cursor_factory,progress,approve=None,review_o
         check()
         from .editorial import validate_publication
         for p in proposed: validate_publication(p)
+        from .proposition_graph import validate as validate_graph
+        validate_graph(insight_proposal)
         with store.db:
             store.db.execute('BEGIN IMMEDIATE')
             if insight_proposal:

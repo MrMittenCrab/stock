@@ -65,7 +65,7 @@ def test_does_not_merge_semantically_close_statements_without_verification(tmp_p
           passage('o','Active power exceeded 850MW.')]
     pairs,stats=semantic_map.candidate_pairs(store,rows,{'n'},encoder=FakeEncoder())
     assert ('n','o') in pairs
-    assert stats['status']=='high_similarity_candidates_not_verified_equivalence'
+    assert stats['status']=='adaptive_candidates_not_verified_equivalence'
     # There is no grouping or equivalence output in the candidate map at all.
     assert all(len(pair)==2 for pair in pairs)
     store.db.close()
@@ -101,3 +101,42 @@ def test_no_forced_neighbors_or_distant_new_pairs(tmp_path):
     assert stats['new_new_scanned']==1
     assert stats['scanned']==4
     store.db.close()
+
+
+def test_frontier_refinement_reuses_scores_and_vectors(tmp_path):
+    store=Store(tmp_path/'stock.db')
+    class Graded:
+        def embed(self,texts,batch_size=None):
+            for text in texts:
+                angle=float(text)
+                v=np.zeros(384,dtype=np.float32);v[0]=np.cos(angle);v[1]=np.sin(angle)
+                yield v
+    rows=[passage(str(i),str(i*.25)) for i in range(8)]
+    first,stats=semantic_map.candidate_pairs(store,rows,{'0'},encoder=Graded())
+    later,more=semantic_map.candidate_pairs(store,rows,{'0'},encoder=Graded(),frontier=2)
+    assert first < later
+    assert more['embedded']==0 and more['score_cache_hit']
+    assert stats['deferred']>more['deferred']
+    assert more['cursor_deduplication_requests']==0
+
+
+def test_single_proposition_needs_no_model(tmp_path,monkeypatch):
+    store=Store(tmp_path/'stock.db')
+    monkeypatch.setattr(semantic_map,'_model',lambda:pytest.fail('No pair requires no model'))
+    pairs,stats=semantic_map.candidate_pairs(store,[passage('a','Only claim')],{'a'})
+    assert not pairs and stats['similarity_calculations']==stats['embedded']==0
+
+
+def test_lone_close_neighbor_uses_empirical_null_reference(tmp_path):
+    store=Store(tmp_path/'stock.db')
+    class Close:
+        def embed(self,texts,batch_size=None):
+            for text in texts:
+                v=np.zeros(384,dtype=np.float32)
+                if text=='a':v[0]=1
+                elif text=='b':v[0]=.99;v[1]=np.sqrt(1-.99**2)
+                else:v[2]=1
+                yield v
+    pairs,stats=semantic_map.candidate_pairs(store,[passage('a','a'),passage('b','b')],{'a'},encoder=Close())
+    assert pairs=={('a','b')}
+    assert stats['null_reference_comparisons']>0

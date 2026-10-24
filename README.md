@@ -404,16 +404,23 @@ and frozen evidence without publishing evidence or activating groups. It may cal
 for uncached judgments. Normal Sort activates fully validated grouping revisions
 automatically; `--rebuild DOCUMENT` also publishes automatically after all checks. `--insights` remains a hidden
 compatibility alias. Manual topic corrections and explicit ungrouping remain intact.
-For larger archives, rebuild first computes local embedding similarities,
-then asks Cursor to verify only pairs passing a provisional high-similarity gate.
-It reuses valid judgments and preserves unaffected groups. Small-library
-compatibility still uses exhaustive comparison pending calibration. Large libraries require installing
-`.venv/bin/python -m pip install -e '.[semantic]'` before rebuilding; no
-unreviewed similarity score authorizes a merge. The index is a high-recall
-candidate heuristic, not a complete equivalence proof. See
-[the semantic-map architecture and validation limits](docs/semantic-map.md). Unresolved historical-only work is
-reported separately; an incremental revision does not claim global completeness.
-See [the measured rebuild correction](docs/incremental-rebuild.md).
+Semantic organization now uses pinned local BGE embeddings and bidirectional MiniLM
+NLI, with a persistent directed proposition graph. Exact vector search discovers
+candidates; financial safeguards and complete-link support control equivalence.
+One-way entailment preserves both propositions and links them directionally. Routine
+semantic deduplication makes **zero Cursor requests**; extraction and independent
+source verification can still call Cursor. Screened-out pairs remain unreviewed.
+
+Install `.venv/bin/python -m pip install -e '.[semantic]'` and build vectors with
+`stock map CRWV.US`. Explicit `stock map CRWV.US --refine` expands the empirical
+verification frontier using cached embeddings, pair scores and NLI outputs, without
+re-extraction. Sources displays relations inline; R follows a relationship, while
+N/P, T, O and U retain their member/citation/edit/split behavior.
+
+**Production rollout remains blocked by financial recall and calibration.** No
+production document-13 rebuild was performed. Read the [graph architecture](docs/semantic-map.md)
+and [measured validation and limitations](docs/proposition-graph-validation.md).
+Historical Cursor-based measurements below and in older documents are baselines.
 
 Defaults are **12 minutes per document**, **20 minutes per command**, **12 Cursor
 requests per document**, and **120 seconds per request**. Override with

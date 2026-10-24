@@ -6,14 +6,27 @@ of equivalence. No density algorithm or transitive vector grouping can merge cla
 """
 import hashlib
 import math
+import time
 
 MODEL = 'BAAI/bge-small-en-v1.5'
 # Change this explicitly when model weights, preprocessing or embedding code changes.
-CONTRACT = 'fastembed-bge-small-en-v1.5-384-v1'
+REVISION = 'aa8f8b060edb00e03bfdd08813a2949946c8ba55'
+CONTRACT = 'fastembed-0.9-bge-small@'+REVISION+'-raw-text-512-cls-normalized-384-v3'
 SIGMA = 0.65
-COSINE_FLOOR = 0.85  # provisional high-similarity gate; calibrate on the actual corpus
 BATCH = 32
+# A small, versioned unrelated reference set supplies an empirical noise baseline
+# when an inventory has too few observations or a flat neighborhood. These are
+# retrieval probes, not labeled investment relationships or calibration evidence.
+NULL_REFERENCES = (
+    'A recipe combines flour and water before baking bread.',
+    'Migrating birds navigate using seasonal environmental cues.',
+    'A municipal bond pays interest to its holders.',
+    'Ocean currents transport heat across the planet.',
+    'A retailer measures inventory turnover each quarter.',
+    'A compiler translates source code into machine instructions.',
+)
 _MODEL = None
+_MODEL_INITIALIZATION_SECONDS = 0.0
 
 
 def schema(store):
@@ -24,8 +37,9 @@ def schema(store):
 
 
 def _model():
-    global _MODEL
+    global _MODEL, _MODEL_INITIALIZATION_SECONDS
     if _MODEL is None:
+        started=time.monotonic()
         try:
             from fastembed import TextEmbedding
         except ImportError as exc:
@@ -37,7 +51,12 @@ def _model():
         from .core import ROOT
         cache = ROOT / '.data' / 'embedding-models'
         cache.mkdir(parents=True, exist_ok=True)
-        _MODEL = TextEmbedding(model_name=MODEL, cache_dir=str(cache))
+        from huggingface_hub import snapshot_download
+        path=snapshot_download('Qdrant/bge-small-en-v1.5-onnx-Q',revision=REVISION,
+            cache_dir=str(cache),allow_patterns=['*.json','*.txt','model_optimized.onnx'])
+        _MODEL = TextEmbedding(model_name=MODEL, cache_dir=str(cache),
+            specific_model_path=path,threads=4,providers=['CPUExecutionProvider'])
+        _MODEL_INITIALIZATION_SECONDS=time.monotonic()-started
     return _MODEL
 
 
@@ -99,36 +118,94 @@ def vectors(store, rows, progress=lambda _:None, encoder=None):
     return {p['id']:cached[hashlib.sha256(p['text'].encode('utf-8')).hexdigest()] for p in rows},len(missing)
 
 
-def candidate_pairs(store, rows, incoming, progress=lambda _:None, encoder=None):
-    """Score all relevant pairs locally; send only highly similar pairs for review.
+def candidate_pairs(store, rows, incoming, progress=lambda _:None, encoder=None, frontier=0):
+    """Empirical upper-tail discovery; explicit refinement expands quantile bands.
 
-    There is no mandatory top-k floor. Screening exclusions are not verified
-    non-equivalence judgments; embedding false negatives remain possible.
+    Every relevant pair is scored exactly once per inventory/text/model contract.
+    Deferred scores persist independently of publication. No screened pair becomes
+    a negative judgment. Initial robust upper-tail / neighborhood elbow is a
+    workload heuristic, not a calibrated recall guarantee or equivalence gate.
     """
+    import json
     import numpy as np
-    from .sort_budget import check
-    lookup = {p['id']:p for p in rows}
-    new = sorted(incoming)
-    old = sorted(set(lookup)-set(new))
-    data,count = vectors(store,rows,progress,encoder)
-    pairs=set()
     from itertools import combinations
-    new_scanned=0
-    for a,b in combinations(new,2):
-        check()
-        new_scanned += 1
-        if float(np.dot(data[a],data[b])) >= COSINE_FLOOR:
-            pairs.add(tuple(sorted((a,b))))
-    if old:
-        matrix=np.stack([data[k] for k in old]).astype(np.float32)
-        for key in new:
-            check()
-            similarity=matrix @ data[key]
-            # Gaussian ranking is monotone in cosine for unit vectors. Calculating
-            # a Gaussian for every pair is unnecessary when gating by cosine.
-            for i in np.flatnonzero(similarity>=COSINE_FLOOR):
-                pairs.add(tuple(sorted((key,old[int(i)]))))
-    return pairs,dict(model=CONTRACT,embedded=count,scanned=len(new)*len(old),
-                      new_new_scanned=new_scanned,proposed=len(pairs),
-                      sigma=SIGMA,cosine_floor=COSINE_FLOOR,minimum_neighbors=0,
-                      status='high_similarity_candidates_not_verified_equivalence')
+    from .sort_budget import check
+    lookup={p['id']:p for p in rows}
+    new=sorted(set(incoming));old=sorted(set(lookup)-set(new))
+    if not set(new)<=set(lookup):raise ValueError('Unknown incoming proposition')
+    if len(rows)<2 or not new:
+        return set(),dict(model=CONTRACT,embedded=0,cached_embeddings=0,
+            existing_propositions=len(old),new_propositions=len(new),total_propositions=len(rows),
+            scanned=0,new_new_scanned=0,similarity_calculations=0,score_cache_hit=True,
+            proposed=0,deferred=0,candidate_run=None,frontier=frontier,cutoffs={},
+            minimum_neighbors=0,cursor_deduplication_requests=0,
+            status='no_relevant_pairs',embedding_initialization_seconds=0.0,embedding_seconds=0.0)
+    started=time.monotonic()
+    initialized=_MODEL is not None
+    data,count=vectors(store,rows,progress,encoder)
+    embedding_seconds=time.monotonic()-started
+    initialization_seconds=0.0 if initialized or encoder is not None or not count else _MODEL_INITIALIZATION_SECONDS
+    store.db.executescript("""
+        CREATE TABLE IF NOT EXISTS source_candidate_runs(
+            id TEXT PRIMARY KEY, payload TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS source_candidate_scores(
+            run TEXT NOT NULL, left_id TEXT NOT NULL, right_id TEXT NOT NULL,
+            similarity REAL NOT NULL, PRIMARY KEY(run,left_id,right_id));
+    """)
+    key=hashlib.sha256(json.dumps([CONTRACT,sorted((k,p['text']) for k,p in lookup.items()),new]).encode()).hexdigest()
+    cached=store.db.execute('SELECT payload FROM source_candidate_runs WHERE id=?',(key,)).fetchone()
+    score_hit=bool(cached)
+    if not cached:
+        scored=[]
+        for a,b in combinations(new,2):
+            check();scored.append((key,a,b,float(np.dot(data[a],data[b]))))
+        if old:
+            matrix=np.stack([data[k] for k in old]).astype(np.float32)
+            for a in new:
+                check()
+                similarity=matrix @ data[a]
+                scored.extend((key,*sorted((a,b)),float(v)) for b,v in zip(old,similarity))
+        with store.db:
+            store.db.executemany('INSERT OR REPLACE INTO source_candidate_scores VALUES(?,?,?,?)',scored)
+            store.db.execute('INSERT INTO source_candidate_runs VALUES(?,?)',(key,json.dumps({'count':len(scored)})))
+    scored=store.db.execute('SELECT left_id,right_id,similarity FROM source_candidate_scores WHERE run=? ORDER BY similarity DESC,left_id,right_id',(key,)).fetchall()
+    neighborhoods={k:[] for k in new}
+    for a,b,v in scored:
+        for k in (a,b):
+            if k in neighborhoods:neighborhoods[k].append(v)
+    cutoffs={};null_data=None;null_embedded=0;null_comparisons=0
+    for k,values in neighborhoods.items():
+        if not values:continue
+        arr=np.sort(np.asarray(values))
+        median=float(np.median(arr));mad=float(np.median(np.abs(arr-median)))
+        upper=arr[arr>=median]
+        gaps=np.diff(upper)
+        if len(gaps) and float(gaps.max())>1e-6:
+            elbow=float(upper[int(np.argmax(gaps))+1])
+        else:
+            if null_data is None:
+                probes=[dict(id='null:'+str(i),text=t) for i,t in enumerate(NULL_REFERENCES)]
+                null_vectors,null_embedded=vectors(store,probes,progress,encoder)
+                null_data=np.stack(list(null_vectors.values()))
+            baseline=null_data @ data[k];null_comparisons+=len(baseline)
+            elbow=float(baseline.max())
+        initial=max(median+mad,elbow)
+        # Expansion is driven by the empirical inventory distribution, not top-k.
+        # Final explicit rounds can examine every deferred pair, even low similarity.
+        if frontier:
+            base=min(float(np.mean(arr<initial)),(len(arr)-.5)/len(arr))
+            q=base**(2**min(frontier,20))
+            cutoff=min(initial,float(np.quantile(arr,q)))
+        else:cutoff=initial
+        cutoffs[k]=cutoff
+    pairs={(a,b) for a,b,v in scored if any(v>=cutoffs[k]-1e-7 for k in (a,b) if k in cutoffs)}
+    return pairs,dict(model=CONTRACT,embedded=count,cached_embeddings=len({p['text'] for p in rows})-count,
+        existing_propositions=len(old),new_propositions=len(new),total_propositions=len(rows),
+        scanned=len(new)*len(old),new_new_scanned=len(new)*(len(new)-1)//2,
+        similarity_calculations=0 if score_hit else len(scored),score_cache_hit=score_hit,
+        proposed=len(pairs),deferred=len(scored)-len(pairs),candidate_run=key,
+        frontier=frontier,cutoffs=cutoffs,minimum_neighbors=0,
+        null_reference_comparisons=null_comparisons,null_reference_embeddings=null_embedded,
+        discovery_policy='empirical-tail-elbow-null-v2',
+        embedding_seconds=embedding_seconds,embedding_initialization_seconds=initialization_seconds,
+        cursor_deduplication_requests=0,status='adaptive_candidates_not_verified_equivalence')

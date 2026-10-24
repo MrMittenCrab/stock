@@ -16,3 +16,19 @@ def fake_pdf_quality(monkeypatch):
         markdown.with_suffix('.evidence.json').write_text(json.dumps(data))
         return data
     monkeypatch.setattr('stock.archive_quality.prepare',prepare)
+
+
+@pytest.fixture(autouse=True)
+def offline_semantics(monkeypatch):
+    """Deterministic semantic dependencies for workflow tests, not accuracy evidence."""
+    import numpy as np
+    from stock import relationships,semantic_map
+    class Encoder:
+        def embed(self,texts,batch_size=None):
+            for _ in texts:
+                v=np.zeros(384,dtype=np.float32);v[0]=1;yield v
+    def infer(pairs):
+        return [dict(entailment=.995,contradiction=.002,neutral=.003) for _ in pairs]
+    monkeypatch.setattr(semantic_map,'_model',lambda:Encoder())
+    monkeypatch.setattr(relationships,'backend',lambda:infer)
+    return infer

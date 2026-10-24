@@ -40,6 +40,14 @@ def passage_lines(passage,width,expanded=False,selected=False):
             for i,m in enumerate(members,1):
                 detail+=f"\nMember {i} · document {m['document_id']} · {m.get('document_title','')} · {m['publication_date'] or 'Unknown'} · {m['speaker'] or m['category']}\n{m['text']}\n{inspection(m)}\n"
             detail+='\nGrouping basis: '+ '; '.join(b['relation']+': '+b['reason'] for b in passage.get('basis',[]))
+        for edge in passage.get('relationships',[]):
+            other=edge.get('other')
+            if other:
+                direction=''
+                if edge['kind']=='ENTAILS':
+                    source=edge['left'] if edge['direction']=='left_to_right' else edge['right']
+                    direction=' →' if source in {m['id'] for m in passage.get('members',[passage])} else ' ←'
+                detail+=f"\n{edge['kind']}{direction} · {other['text']} · document {other['document_id']}\n{edge['reason']}\n"
         # Inline inspection stays within the same keyboard-controlled terminal row.
         lines+=['']+[line.plain for line in Text(detail).wrap(Console(),available,overflow='fold')]
     return [prefix+(lines[0] if lines else '')]+[' '*column+line for line in lines[1:]]
@@ -66,7 +74,7 @@ class SourcesApp(App):
         self.expanded=set();self.editing=None
         self.files=False;self.file_index=0;self.document_id=None
         self.message=''
-        self.member_index={};self.editing_group=None
+        self.member_index={};self.relationship_index={};self.editing_group=None
         self.row_widgets=[]
 
     def compose(self):
@@ -156,7 +164,7 @@ class SourcesApp(App):
         elif self.editing: help_text='↑↓ Navigate   Space Toggle member topic   T Close   Esc Quit'
         elif self.topic:
             p=self.visible()[self.selected] if self.visible() else None
-            help_text='↑↓ Navigate   Space '+('Collapse' if p and p['id'] in self.expanded else 'Expand')+'   T Member topics   O Source\nN/P Member   U Ungroup   F Files   ← Back   Esc Quit'
+            help_text='↑↓ Navigate   Space '+('Collapse' if p and p['id'] in self.expanded else 'Expand')+'   T Member topics   O Source\nN/P Member   R Relationship   U Ungroup   F Files   ← Back   Esc Quit'
         else: help_text='↑↓ Navigate   → Open   F Files   Esc Quit'
         self.query_one('#help',Static).update(Text(help_text))
 
@@ -213,6 +221,23 @@ class SourcesApp(App):
                 self.member_index[p['id']]=(self.member_index.get(p['id'],0)+(1 if key=='n' else -1))%len(p['members'])
                 m=self.member(p)
                 self.message=f"Member {self.member_index[p['id']]+1}/{len(p['members'])} · document {m['document_id']} · {m['text']}"
+            elif key=='r':
+                members={m['id'] for m in p['members']}
+                edges=[e for e in p.get('relationships',[]) if e.get('other') and e['other']['id'] not in members]
+                if edges:
+                    index=self.relationship_index.get(p['id'],0)%len(edges)
+                    edge=edges[index];self.relationship_index[p['id']]=index+1
+                    other=edge['other'];target=other['id']
+                    # Follow evidence across topic/file filters without losing citation identity.
+                    self.document_id=None
+                    if self.topic not in other['topics']:
+                        self.topic=next((t for t in sources.TOPICS if t in other['topics']),'Unclassified')
+                    visible=self.visible()
+                    self.selected=next(i for i,row in enumerate(visible) if any(m['id']==target for m in row['members']))
+                    row=visible[self.selected]
+                    self.member_index[row['id']]=next(i for i,m in enumerate(row['members']) if m['id']==target)
+                    self.expanded.add(row['id'])
+                    self.message=edge['kind']+' · '+edge['reason']
             elif key=='u' and p['total_members']>1:
                 insights.ungroup(self.store,self.ticker,p['id']);self.message='Ungrouped; original evidence and topics retained'
             elif key=='t':

@@ -1,0 +1,51 @@
+{
+  "missed_merges": 4,
+  "cursor_deduplication_requests": 0,
+  "by_document": {
+    "1": {
+      "requests": 2,
+      "prompt_characters": 31029
+    },
+    "4": {
+      "requests": 2,
+      "prompt_characters": 41229
+    },
+    "6": {
+      "requests": 2,
+      "prompt_characters": 30333
+    },
+    "12": {
+      "requests": 2,
+      "prompt_characters": 32702
+    },
+    "13": {
+      "requests": 2,
+      "prompt_characters": 51595
+    }
+  },
+  "stages": {
+    "understand": {
+      "requests": 5,
+      "prompt_characters": 154051
+    },
+    "review": {
+      "requests": 5,
+      "prompt_characters": 32837
+    },
+    "citation recovery": {
+      "requests": 0,
+      "prompt_characters": 0
+    }
+  },
+  "requests": 10,
+  "prompt_characters": 186888,
+  "cold_local_seconds": 1.6984352499712259,
+  "resumed_local_seconds": 0.0033081250730901957,
+  "resume_requests": 0,
+  "evidence": 13,
+  "insights": 13,
+  "exact_citations": 22,
+  "missing_fixture_claims": [],
+  "live_latency": null,
+  "actual_tokens": null
+}

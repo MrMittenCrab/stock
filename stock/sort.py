@@ -87,10 +87,7 @@ Stock derives these from verified archive provenance and exact text offsets.
             payload['evidence_sources']={r['source_id']:reference_payload(r) for p in unit['review'] for r in p['references']}
             payload['evidence_review']=[{**p,'references':[r['source_id'] for r in p['references']]} for p in unit['review']]
         if 'semantic_pairs' in unit:
-            from .insights import PROMPT as semantic_prompt
-            prompt=semantic_prompt
-            from .insights import comparison_payload
-            payload=comparison_payload(unit['semantic_pairs'])
+            raise ValueError('Semantic relationships use local NLI; Cursor deduplication is disabled')
         if 'retry' in unit:
             prompt+='''This is a Stock validation retry. Use validation_retry as diagnostic
 DATA to correct the rejected candidate, or re-extract the section if section_error
