@@ -8,6 +8,7 @@ requires-python = ">=3.11"
 dependencies = ["textual>=6.12,<7"]
 [project.optional-dependencies]
 test = ["pytest>=8", "pytest-asyncio>=0.24"]
+semantic = ["fastembed>=0.7,<1", "numpy>=1.26"]
 [project.scripts]
 stock = "stock.cli:main"
 [tool.setuptools.packages.find]
