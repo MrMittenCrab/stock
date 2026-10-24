@@ -404,9 +404,10 @@ and frozen evidence without publishing evidence or activating groups. It may cal
 for uncached judgments. Normal Sort activates fully validated grouping revisions
 automatically; `--rebuild DOCUMENT` also publishes automatically after all checks. `--insights` remains a hidden
 compatibility alias. Manual topic corrections and explicit ungrouping remain intact.
-Rebuild compares all replacement/replacement pairs and retrieves cross-document
-candidates from a persistent global Gaussian-kernel semantic map, reuses valid
-judgments, and preserves unaffected groups. Large libraries require installing
+For larger archives, rebuild first computes local embedding similarities,
+then asks Cursor to verify only pairs passing a provisional high-similarity gate.
+It reuses valid judgments and preserves unaffected groups. Small-library
+compatibility still uses exhaustive comparison pending calibration. Large libraries require installing
 `.venv/bin/python -m pip install -e '.[semantic]'` before rebuilding; no
 unreviewed similarity score authorizes a merge. The index is a high-recall
 candidate heuristic, not a complete equivalence proof. See
