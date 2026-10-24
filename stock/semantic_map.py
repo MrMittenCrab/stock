@@ -11,8 +11,7 @@ MODEL = 'BAAI/bge-small-en-v1.5'
 # Change this explicitly when model weights, preprocessing or embedding code changes.
 CONTRACT = 'fastembed-bge-small-en-v1.5-384-v1'
 SIGMA = 0.65
-COSINE_FLOOR = 0.72
-NEAREST = 24
+COSINE_FLOOR = 0.85  # provisional high-similarity gate; calibrate on the actual corpus
 BATCH = 32
 _MODEL = None
 
@@ -101,11 +100,10 @@ def vectors(store, rows, progress=lambda _:None, encoder=None):
 
 
 def candidate_pairs(store, rows, incoming, progress=lambda _:None, encoder=None):
-    """Exact local cosine scan plus Gaussian-rank neighborhood discovery.
+    """Score all relevant pairs locally; send only highly similar pairs for review.
 
-    Every historical passage receives a similarity score for each incoming passage.
-    The retrieved set is an overinclusive screening candidate set, NOT a complete
-    equivalence proof. Low-scoring pairs remain unresolved, never certified distinct.
+    There is no mandatory top-k floor. Screening exclusions are not verified
+    non-equivalence judgments; embedding false negatives remain possible.
     """
     import numpy as np
     from .sort_budget import check
@@ -114,24 +112,23 @@ def candidate_pairs(store, rows, incoming, progress=lambda _:None, encoder=None)
     old = sorted(set(lookup)-set(new))
     data,count = vectors(store,rows,progress,encoder)
     pairs=set()
-    # Incoming/incoming require exhaustive direct verification.
     from itertools import combinations
-    pairs.update(tuple(sorted(pair)) for pair in combinations(new,2))
+    new_scanned=0
+    for a,b in combinations(new,2):
+        check()
+        new_scanned += 1
+        if float(np.dot(data[a],data[b])) >= COSINE_FLOOR:
+            pairs.add(tuple(sorted((a,b))))
     if old:
         matrix=np.stack([data[k] for k in old]).astype(np.float32)
         for key in new:
             check()
             similarity=matrix @ data[key]
-            # Gaussian kernel is strictly increasing with cosine for unit vectors.
-            # The explicit floor retains all dense neighbors, with a soft minimum
-            # neighbor count for unexpectedly low-score paraphrases.
-            gaussian=np.exp((similarity-1.0)/(SIGMA*SIGMA))
-            top=min(NEAREST,len(old))
-            ranked=np.argsort(-gaussian,kind='stable')
-            chosen=set(int(i) for i in ranked[:top])
-            chosen.update(int(i) for i in np.flatnonzero(similarity>=COSINE_FLOOR))
-            pairs.update(tuple(sorted((key,old[i]))) for i in chosen)
+            # Gaussian ranking is monotone in cosine for unit vectors. Calculating
+            # a Gaussian for every pair is unnecessary when gating by cosine.
+            for i in np.flatnonzero(similarity>=COSINE_FLOOR):
+                pairs.add(tuple(sorted((key,old[int(i)]))))
     return pairs,dict(model=CONTRACT,embedded=count,scanned=len(new)*len(old),
-                      new_new=len(new)*(len(new)-1)//2,proposed=len(pairs),
-                      sigma=SIGMA,cosine_floor=COSINE_FLOOR,minimum_neighbors=NEAREST,
-                      status='retrieval_only_not_verified_equivalence')
+                      new_new_scanned=new_scanned,proposed=len(pairs),
+                      sigma=SIGMA,cosine_floor=COSINE_FLOOR,minimum_neighbors=0,
+                      status='high_similarity_candidates_not_verified_equivalence')
