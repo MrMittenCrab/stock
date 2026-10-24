@@ -242,9 +242,11 @@ def stage(store,ticker,cursor,progress=print,new_document=None,new_documents=Non
         else:
             from .semantic_map import candidate_pairs
             candidates,semantic_map_stats=candidate_pairs(store,rows,set(incoming),progress)
-            # Different retrieval signals protect against embedding blind spots.
-            candidates.update(pair for pair in retrieved if any(i in incoming for i in pair))
-            semantic_map_stats['proposed_with_lexical']=len(candidates)
+            # Lexical resemblance without high semantic proximity is NOT a
+            # reason to send a pair to Cursor. The vector scan has scored
+            # every incoming/historical pair locally; only qualified pairs
+            # enter model verification. Exclusions are not negative judgments.
+            semantic_map_stats['model_candidate_pairs']=len(candidates)
     else:
         candidates=set(retrieved)
     suppressed=suppressed_pairs(store,previous)
