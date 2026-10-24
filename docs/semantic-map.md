@@ -14,12 +14,19 @@ For normalized vectors, cosine similarity and the Gaussian kernel
     K(a,b) = exp((cosine(a,b)-1) / sigma^2)
 
 have the same ordering. The kernel is used for closeness, *not* equivalence
-probability. The production candidate policy currently includes every incoming-
-incoming pair, the 24 closest historical neighbors of each incoming proposition,
-all historical passages with cosine similarity >= 0.72, and the existing
-lexical-retrieval candidates. Every historical proposition is numerically scored.
-This is not an exhaustive pairwise model judgment and does not guarantee recall
-for remote paraphrases. Do **not** interpret screened-out edges as negatives.
+probability. For large-library rebuilds, the candidate policy sends only
+incoming/incoming or incoming/historical pairs meeting the provisional cosine
+similarity gate (currently 0.85). Every historical proposition is still compared
+with every incoming vector by inexpensive local matrix arithmetic, but only
+high-scoring pairs receive an expensive Cursor judgment. There is **no forced
+nearest-neighbor floor** and no bypass based solely on shared keywords.
+Statements outside the gate remain separate and **unreviewed**, not classified
+non-equivalent. A real paraphrase can fall below the gate; this design deliberately
+trades potential missed merges for lower verification cost. The gate is not
+empirically calibrated and the candidate-map phase cannot guarantee semantic
+recall. A small-library compatibility path (64 or fewer statements) still uses
+exhaustive comparison and should be aligned with this gate before production
+acceptance.
 
 Only the separate Cursor judgment can declare two claims equivalent. It checks
 reporting periods, modality, numerical definitions, source perspective, scope and
@@ -69,13 +76,14 @@ it never silently falls back to 23,000 costly Cursor comparisons.
 ## Validation requirements and limits
 
 Offline tests use deterministic fake vectors and exercise full-library scans,
-candidate discovery, content-hash cache reuse, invalid-vector refusal and
-large-library rebuild integration. No model download, real CoreWeave embedding
+candidate discovery, exclusion of far-apart forced neighbors, content-hash cache
+reuse, invalid-vector refusal and large-library rebuild integration. No model download, real CoreWeave embedding
 inference, or live Cursor deduplication has yet been performed by this branch.
-The numeric 0.72 threshold and 24-neighbor floor are *initial heuristics*, **not
-empirically validated recall settings**. They require calibration using the actual
-CoreWeave corpus, held-out known duplicates, difficult negative examples and
-low-overlap paraphrases before this design should replace the production algorithm.
+The 0.85 cosine threshold is a *provisional conservative gate*, **not an
+empirically validated recall or precision setting**. Calibrate it against actual
+CoreWeave embeddings and held-out equivalents, difficult negatives and
+low-overlap paraphrases. Unlike a minimum top-k neighbor policy, a near-empty
+candidate set is permitted. Count and report retrieved pairs before calling Cursor.
 
 A full numeric similarity scan for 13 new statements against 1,788 historical
 statements is only 23,244 local dot products; that is inexpensive. The number
