@@ -53,8 +53,15 @@ cd "$HOME/Documents/Developer/stock"
 .venv/bin/python -m pip install -e '.[semantic]'
 ```
 
-Then an authorized `stock sort TICKER --rebuild DOCUMENT` uses the semantic
-map for an archive of more than 64 propositions. Smaller archives use exhaustive
+Build the initial company-wide index once (no Cursor calls and no publication):
+
+```sh
+.venv/bin/stock map CRWV.US
+```
+
+Then an authorized `stock sort TICKER --rebuild DOCUMENT` reuses its cached
+historical vectors and embeds only new statement text. For an archive of more
+than 64 propositions it uses the local map for candidate discovery. Smaller archives use exhaustive
 comparison to avoid model initialization for trivial workloads. The absence of
 the embedding dependency causes large rebuilds to **stop without publication**;
 it never silently falls back to 23,000 costly Cursor comparisons.
