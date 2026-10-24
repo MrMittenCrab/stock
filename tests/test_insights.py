@@ -519,3 +519,26 @@ def test_incremental_reuses_historical_cache_even_without_active_revision(librar
  assert any(set(g['members'])=={a,b} for g in p['groups'])
  assert all({q['left']['id'],q['right']['id']}!={a,b} for call in m.calls for q in call['semantic_pairs'])
  assert p['historical_cached_decisions']==1
+
+
+def test_large_incremental_rebuild_uses_semantic_map_not_cartesian_product(library,monkeypatch):
+ s,docs,add=library
+ originals=[add(f'Operational update for separate customer {i}.') for i in range(80)]
+ new=[dict(text='CoreWeave reported demand for GPUs.',
+  topics=['Market'],category='Management',speaker=None,
+  location=dict(start=0,end=35),publication_date=None,date_provenance={})]
+ from stock import semantic_map
+ called=[]
+ def fake_candidates(store,rows,incoming,progress):
+  called.append((len(rows),len(incoming)))
+  new_id=next(iter(incoming))
+  return {tuple(sorted((new_id,originals[0])))},dict(
+   status='retrieval_only_not_verified_equivalence',scanned=80,proposed=1)
+ monkeypatch.setattr(semantic_map,'candidate_pairs',fake_candidates)
+ model=Replay(False)
+ p=insights.stage(s,'CRWV.US',model,lambda _:None,new_document=(docs[1],new))
+ assert called==[(81,1)]
+ assert p['semantic_map']['scanned']==80
+ assert p['comparison_count']<80  # lexical safety candidates may expand shortlist
+ assert len(p['groups'])==81
+ assert len(model.calls)>0
