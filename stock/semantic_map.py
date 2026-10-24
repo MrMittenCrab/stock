@@ -6,7 +6,6 @@ of equivalence. No density algorithm or transitive vector grouping can merge cla
 """
 import hashlib
 import math
-from pathlib import Path
 
 MODEL = 'BAAI/bge-small-en-v1.5'
 # Change this explicitly when model weights, preprocessing or embedding code changes.
@@ -31,7 +30,7 @@ def _model():
         try:
             from fastembed import TextEmbedding
         except ImportError as exc:
-            raise RuntimeError(
+            raise ValueError(
                 "Semantic map requires the local embedding backend: "
                 "run .venv/bin/python -m pip install -e '.[semantic]' "
                 "before rebuilding this large archive."
