@@ -37,12 +37,14 @@ def main():
     sort.add_argument('--command-seconds',type=float,default=1200,help='Command wall-clock budget (default: 1200)')
     sort.add_argument('--cursor-requests',type=int,default=12,help='Cursor requests per document (default: 12)')
     sort.add_argument('--request-seconds',type=float,default=120,help='Request timeout (default: 120)')
+    semantic=commands.add_parser('map',help='Build the persistent local semantic vector index')
+    semantic.add_argument('ticker')
     sources=commands.add_parser('sources',help='Browse source passages and edit topic memberships')
     sources.add_argument('ticker')
     args=parser.parse_args()
     if args.command=='archive' and args.metadata and args.file:
         parser.error('Use either a document or --metadata')
-    if args.command in ('price','archive','sort','sources'):
+    if args.command in ('price','archive','sort','sources','map'):
         try: args.ticker=symbol(args.ticker)
         except ValueError as e: parser.error(str(e))
     elif not args.name.strip():
@@ -81,6 +83,17 @@ def main():
                     elapsed=int(time.monotonic()-status.started)
                     status.review(f"{args.ticker} · {'Preview' if args.review_only else 'Done' if ok else 'Paused'} · {insight_count} insights · {source_count} sources · {elapsed//60:02}:{elapsed%60:02}")
                     return 0 if ok else 1
+        if args.command=='map':
+            from .sources import passages
+            from .semantic_map import vectors
+            records=passages(store,args.ticker)
+            if not records:
+                print(f'{args.ticker} · No published passages to index')
+                return 0
+            print(f'{args.ticker} · Indexing {len(records)} passages',flush=True)
+            _,count=vectors(store,records)
+            print(f'{args.ticker} · Indexed {len(records)} passages · {count} new vectors')
+            return 0
         if args.command=='sources':
             if not sys.stdin.isatty() or not sys.stdout.isatty():
                 raise ValueError('stock sources requires an interactive terminal')
