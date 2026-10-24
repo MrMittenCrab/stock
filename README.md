@@ -404,8 +404,13 @@ and frozen evidence without publishing evidence or activating groups. It may cal
 for uncached judgments. Normal Sort activates fully validated grouping revisions
 automatically; `--rebuild DOCUMENT` also publishes automatically after all checks. `--insights` remains a hidden
 compatibility alias. Manual topic corrections and explicit ungrouping remain intact.
-Rebuild compares all replacement/replacement and replacement/existing pairs, reuses
-valid decisions, and preserves unaffected groups. Unresolved historical-only work is
+Rebuild compares all replacement/replacement pairs and retrieves cross-document
+candidates from a persistent global Gaussian-kernel semantic map, reuses valid
+judgments, and preserves unaffected groups. Large libraries require installing
+`.venv/bin/python -m pip install -e '.[semantic]'` before rebuilding; no
+unreviewed similarity score authorizes a merge. The index is a high-recall
+candidate heuristic, not a complete equivalence proof. See
+[the semantic-map architecture and validation limits](docs/semantic-map.md). Unresolved historical-only work is
 reported separately; an incremental revision does not claim global completeness.
 See [the measured rebuild correction](docs/incremental-rebuild.md).
 
