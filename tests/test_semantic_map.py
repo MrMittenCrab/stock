@@ -65,7 +65,7 @@ def test_does_not_merge_semantically_close_statements_without_verification(tmp_p
           passage('o','Active power exceeded 850MW.')]
     pairs,stats=semantic_map.candidate_pairs(store,rows,{'n'},encoder=FakeEncoder())
     assert ('n','o') in pairs
-    assert stats['status']=='retrieval_only_not_verified_equivalence'
+    assert stats['status']=='high_similarity_candidates_not_verified_equivalence'
     # There is no grouping or equivalence output in the candidate map at all.
     assert all(len(pair)==2 for pair in pairs)
     store.db.close()
@@ -80,4 +80,24 @@ def test_invalid_vectors_cannot_be_cached(tmp_path):
     with pytest.raises(ValueError,match='nonfinite'):
         semantic_map.vectors(store,[passage('a','Claim')],encoder=Invalid())
     assert store.db.execute('SELECT COUNT(*) FROM source_semantic_vectors').fetchone()[0]==0
+    store.db.close()
+
+
+def test_no_forced_neighbors_or_distant_new_pairs(tmp_path):
+    store=Store(tmp_path/'stock.db')
+    encoder=FakeEncoder()
+    rows=[
+        passage('new-a','CoreWeave reported 850MW active power.'),
+        passage('new-b','Revenue increased.'),
+        passage('historical-far','Revenue decreased.'),
+        passage('historical-near','Active power exceeded 850MW.'),
+    ]
+    pairs,stats=semantic_map.candidate_pairs(
+        store,rows,{'new-a','new-b'},encoder=encoder)
+    assert ('historical-near','new-a') in pairs
+    assert ('historical-far','new-a') not in pairs
+    assert ('new-a','new-b') not in pairs
+    assert stats['minimum_neighbors']==0
+    assert stats['new_new_scanned']==1
+    assert stats['scanned']==4
     store.db.close()
