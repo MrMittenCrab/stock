@@ -1,5 +1,6 @@
 """Offline persistent vector-map tests; no model downloads or Cursor calls."""
-import numpy as np
+import pytest
+np = pytest.importorskip('numpy')
 from stock.core import Store
 from stock import semantic_map
 
