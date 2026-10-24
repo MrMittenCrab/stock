@@ -230,11 +230,21 @@ def stage(store,ticker,cursor,progress=print,new_document=None,new_documents=Non
     # a paraphrase. Historical-only backlog is separate from this publication.
     changed={p['id'] for p in rows if p['document_id'] in replaced_documents
              or prior_fingerprints.get(p['id'])!=fingerprints[p['id']]}
+    semantic_map_stats=None
     if replacements:
         incoming=sorted(p['id'] for p in rows if p['document_id'] in replaced_documents)
         historical=sorted(set(lookup)-set(incoming))
-        candidates={tuple(sorted(pair)) for pair in combinations(incoming,2)}
-        candidates.update(tuple(sorted((a,b))) for a in incoming for b in historical)
+        if len(rows)<=64:
+            # Exact small-library comparison is cheaper than initializing a model.
+            candidates={tuple(sorted(pair)) for pair in combinations(incoming,2)}
+            candidates.update(tuple(sorted((a,b))) for a in incoming for b in historical)
+            semantic_map_stats=dict(status='small_library_exhaustive',scanned=len(incoming)*len(historical),proposed=len(candidates))
+        else:
+            from .semantic_map import candidate_pairs
+            candidates,semantic_map_stats=candidate_pairs(store,rows,set(incoming),progress)
+            # Different retrieval signals protect against embedding blind spots.
+            candidates.update(pair for pair in retrieved if any(i in incoming for i in pair))
+            semantic_map_stats['proposed_with_lexical']=len(candidates)
     else:
         candidates=set(retrieved)
     suppressed=suppressed_pairs(store,previous)
@@ -349,7 +359,7 @@ def stage(store,ticker,cursor,progress=print,new_document=None,new_documents=Non
         g['id']='i:'+digest(sorted(g['members']))[:24]
         g['basis']=basis_for[group_index]
     historical_backlog=historical_backlog_count(store,retrieved,fingerprints,set(incoming) if replacements else set(),judgments,suppressed)
-    proposal=dict(historical_cached_decisions=len(historical_cached),grouping_scope='replacement' if replacements else 'archive_candidates',historical_backlog_pairs=historical_backlog,
+    proposal=dict(semantic_map=semantic_map_stats,historical_cached_decisions=len(historical_cached),grouping_scope='replacement' if replacements else 'archive_candidates',historical_backlog_pairs=historical_backlog,
         contract=CONTRACT,ticker=ticker,parent=parent,snapshot=initial,
         groups=groups,preview_only=bool(new_documents),fingerprints=fingerprints,suppressed_pairs=sorted(suppressed),new_document_id=new_document[0]['id'] if new_document else None,passage_count=len(rows),comparison_count=len(candidates),
         model_requests=len(batches),cached_decisions=cache_hits,deterministic_decisions=deterministic,
