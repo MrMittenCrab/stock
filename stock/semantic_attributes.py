@@ -13,6 +13,9 @@ def period_text(text):
     """Canonicalize explicit dates; keep flow years distinct from stock dates."""
     from .quantities import temporal_text
     text=temporal_text(text).lower()
+    text=re.sub(r'\b(first|second) half (?:of )?(?:fiscal |calendar )?(20\d{2})\b',
+                lambda m:m[2]+'-h'+('1' if m[1]=='first' else '2'),text)
+    text=re.sub(r'\bh([12])\s*(?:fy\s*)?(20\d{2})\b',r'\2-h\1',text)
     text=re.sub(r'\b(?:ended|ending) (20\d{2})(?= with\b)',r'as of december 31, \1',text)
     text=re.sub(r'\b(?:by |at )?the end of (20\d{2})\b',r'as of december 31, \1',text)
     for i,month in enumerate(MONTHS,1):
@@ -24,7 +27,7 @@ def period_text(text):
 
 # A currency/quantity resembling a year is not temporal context. Use the same
 # spans for extraction and quantity removal so the two views cannot disagree.
-PERIOD = re.compile(r'(?<![$€£\w])(?:19|20)\d{2}(?:-\d{2}-\d{2}|-q[1-4])?\b'
+PERIOD = re.compile(r'(?<![$€£\w])(?:19|20)\d{2}(?:-\d{2}-\d{2}|-q[1-4]|-h[12])?\b'
     r'(?!\s*(?:million|billion|thousand|bn|mw|gw|kw|usd|dollars|%|data centers)\b)', re.I)
 
 
@@ -119,3 +122,70 @@ def kpi_fact(p):
     value=Decimal(d['value'])*(1000000000 if (d['unit'] or '').startswith('g') else 1000000 if unit=='power' else 1)
     return dict(issuer=d['issuer'],period=d['date'],metric='data centers' if unit=='count' else 'power',
         state=d['state'],value=str(value.normalize()),unit=unit,bound='greater_than' if d['bound'] or d['plus'] else 'exact')
+
+
+def financial_fact(p):
+    """Consume one exact, asserted issuer money-flow sentence, or abstain.
+
+    No fuzzy arithmetic, currency conversion, inferred fiscal basis, inherited
+    table scale, GAAP assumption, or removal of residual clauses. A match is a
+    proposition parse, not merely a bag of matching numerical attributes.
+    Unqualified reported metrics only match the same unqualified definition.
+    """
+    text=p['text'].strip().lower()
+    issuer=r'(?P<issuer>[a-z][a-z0-9]*)'
+    metric=r'(?P<metric>revenue|total net sales|net sales|net income|operating income)'
+    number=r'(?P<number>\d+(?:,\d{3})*(?:\.\d+)?)'
+    value=r'(?P<currency>[$€£])'+number+r'\s*(?P<scale>million|billion|thousand)'
+    pattern=issuer+' '+metric+r' (?:was|were|totaled) '+value+r' in fiscal (?P<year>20\d{2})[.]?'
+    match=re.fullmatch(pattern,text)
+    if not match:return None
+    d=match.groupdict()
+    if d['issuer'] in ('we','it','company','the','our','total','consolidated','adjusted',
+        'annual','global','reported','actual','fiscal','calendar','net','gross'):return None
+    # A capitalized word is not issuer identity ("Quarterly revenue", for
+    # example). Unlisted issuers need explicit audited statement/source context.
+    known={'coreweave','microsoft','openai','nvidia','amazon','google','meta','oracle','apple'}
+    structured=p.get('attributes') or p.get('location',{}).get('attributes') or {}
+    recovered=p.get('semantic_context',{}).get('attributes',{})
+    declared=structured.get('issuer') or recovered.get('issuer')
+    if d['issuer'] not in known and str(declared or '').strip().lower()!=d['issuer']:return None
+    from decimal import Decimal, localcontext
+    digits=d['number'].replace(',','')
+    if len(digits.replace('.',''))>40:return None
+    with localcontext() as context:
+        context.prec=64
+        value=Decimal(digits)*Decimal(10)**{'thousand':3,'million':6,'billion':9}[d['scale']]
+        exact_value=format(value.normalize(),'f')
+        decimals=len(digits.split('.')[1]) if '.' in digits else 0
+        resolution=Decimal(10)**({'thousand':3,'million':6,'billion':9}[d['scale']]-decimals)
+    return dict(issuer=d['issuer'],metric=d['metric'],definition='unqualified_reported',
+        period=d['year'],year_basis='fiscal',modality='asserted',scope='issuer',
+        currency=d['currency'],value=exact_value,display_resolution=format(resolution,'f'))
+
+
+def contradiction_signature(p):
+    """Known matching conditions for retrieval only; no relationship judgment.
+
+    Unknown dimensions abstain. Values and polarity are deliberately absent.
+    Extra detected restrictions remain in the key. Cached vectors/scores remain
+    text-only; this signature is recomputed when source context changes.
+    """
+    from .relationships import attributes
+    a=attributes(p)
+    if p.get('semantic_context',{}).get('inconsistencies'):return None
+    dimensions=[]
+    for key,declared in (('entity','issuer'),('metric','metric'),('period','period'),('scope','scope')):
+        explicit=a[key]
+        structured=a.get('structured:'+declared)
+        if structured and explicit and structured not in explicit:return None
+        values=tuple(explicit) if explicit else ((structured,) if structured else ())
+        if len(values)!=1:return None
+        dimensions.append(values)
+    for key in ('definition','year_basis','capacity_state','qualification','modality','modality_terms','named_entities','source_restrictions','speaker','category'):
+        value=a.get(key)
+        dimensions.append(tuple(value) if isinstance(value,list) else value)
+    # Preserve other supplied dimensions rather than silently ignoring them.
+    dimensions.append(tuple(sorted((k,v) for k,v in a.items() if k.startswith('structured:') and
+        k not in ('structured:issuer','structured:metric','structured:period','structured:scope'))))
+    return tuple(dimensions)

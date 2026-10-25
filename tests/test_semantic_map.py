@@ -140,3 +140,36 @@ def test_lone_close_neighbor_uses_empirical_null_reference(tmp_path):
     pairs,stats=semantic_map.candidate_pairs(store,[passage('a','a'),passage('b','b')],{'a'},encoder=Close())
     assert pairs=={('a','b')}
     assert stats['null_reference_comparisons']>0
+
+
+def test_structured_contradiction_channel_recovers_distant_pair_and_excludes_context(tmp_path):
+    store=Store(tmp_path/'db')
+    rows=[passage('new','Microsoft revenue increased globally in fiscal 2024.'),
+          passage('opposite','Microsoft revenue decreased globally in fiscal 2024.'),
+          passage('wrong-year','Microsoft revenue decreased globally in fiscal 2023.'),
+          passage('wrong-issuer','Amazon revenue decreased globally in fiscal 2024.'),
+          passage('wrong-scope','Microsoft revenue decreased in Europe in fiscal 2024.'),
+          passage('wrong-definition','Microsoft adjusted revenue decreased globally in fiscal 2024.'),
+          passage('nearest','The weather is fine.')]
+    class Distant:
+        def embed(self,texts,batch_size=None):
+            for text in texts:
+                v=np.zeros(384,dtype=np.float32)
+                if text in (rows[0]['text'],rows[-1]['text']):v[0]=1
+                else:v[1]=1
+                yield v
+    pairs,stats=semantic_map.candidate_pairs(store,rows,{'new'},encoder=Distant())
+    assert ('new','opposite') in pairs
+    assert stats['structured_candidates']==1
+    assert not any('wrong-' in x for pair in pairs for x in pair)
+    _,again=semantic_map.candidate_pairs(store,rows,{'new'},encoder=Distant())
+    assert again['embedded']==again['similarity_calculations']==0
+
+
+def test_structured_channel_has_endpoint_budget_not_just_selector_budget():
+    # Every leaf chooses the hub first, although it has already spent its budget.
+    rows=[passage(str(i),'Microsoft revenue was $10 million in fiscal 2024.') for i in range(70)]
+    # Test the channel directly; semantic neighbors have a separate policy.
+    selected=semantic_map.structured_candidates(rows,{r['id'] for r in rows},
+        [(a['id'],b['id'],1.) for i,a in enumerate(rows) for b in rows[i+1:]])
+    assert max(sum(k in pair for pair in selected) for k in (r['id'] for r in rows))<=32

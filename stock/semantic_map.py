@@ -14,6 +14,7 @@ REVISION = 'aa8f8b060edb00e03bfdd08813a2949946c8ba55'
 CONTRACT = 'fastembed-0.9-bge-small@'+REVISION+'-raw-text-512-cls-normalized-384-v3'
 SIGMA = 0.65
 BATCH = 32
+STRUCTURED_CANDIDATE_LIMIT = 32
 # A small, versioned unrelated reference set supplies an empirical noise baseline
 # when an inventory has too few observations or a flat neighborhood. These are
 # retrieval probes, not labeled investment relationships or calibration evidence.
@@ -199,6 +200,11 @@ def candidate_pairs(store, rows, incoming, progress=lambda _:None, encoder=None,
         else:cutoff=initial
         cutoffs[k]=cutoff
     pairs={(a,b) for a,b,v in scored if any(v>=cutoffs[k]-1e-7 for k in (a,b) if k in cutoffs)}
+    # A separate bounded index surfaces possible contradictions even below the
+    # embedding tail. It authorizes local verification only, never grouping.
+    structured=structured_candidates(rows,set(new),scored)
+    structured_added=len(structured-pairs)
+    pairs |= structured
     return pairs,dict(model=CONTRACT,embedded=count,cached_embeddings=len({p['text'] for p in rows})-count,
         existing_propositions=len(old),new_propositions=len(new),total_propositions=len(rows),
         scanned=len(new)*len(old),new_new_scanned=len(new)*(len(new)-1)//2,
@@ -206,6 +212,31 @@ def candidate_pairs(store, rows, incoming, progress=lambda _:None, encoder=None,
         proposed=len(pairs),deferred=len(scored)-len(pairs),candidate_run=key,
         frontier=frontier,cutoffs=cutoffs,minimum_neighbors=0,
         null_reference_comparisons=null_comparisons,null_reference_embeddings=null_embedded,
-        discovery_policy='empirical-tail-elbow-null-v2',
+        discovery_policy='empirical-tail-plus-structured-v3',
+        structured_candidates=len(structured),structured_added=structured_added,
+        structured_candidate_limit=STRUCTURED_CANDIDATE_LIMIT,
         embedding_seconds=embedding_seconds,embedding_initialization_seconds=initialization_seconds,
         cursor_deduplication_requests=0,status='adaptive_candidates_not_verified_equivalence')
+
+
+def structured_candidates(rows,incoming,scored):
+    """Bounded matching-condition channel; scored order is deterministic.
+
+    Enforce an endpoint budget for every incoming item, including edges chosen
+    by a different incoming item. Embedding candidates have a separate budget.
+    """
+    from .semantic_attributes import contradiction_signature
+    signatures={p['id']:contradiction_signature(p) for p in rows}
+    index={}
+    for ident,signature in signatures.items():
+        if signature is not None:index.setdefault(signature,set()).add(ident)
+    counts={ident:0 for ident in incoming}
+    selected=set()
+    for a,b,_ in scored:
+        signature=signatures[a]
+        if signature is None or b not in index[signature]:continue
+        endpoints=[ident for ident in (a,b) if ident in incoming]
+        if not endpoints or any(counts[k]>=STRUCTURED_CANDIDATE_LIMIT for k in endpoints):continue
+        selected.add((a,b))
+        for k in endpoints:counts[k]+=1
+    return selected

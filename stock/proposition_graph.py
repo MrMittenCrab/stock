@@ -97,7 +97,8 @@ def stage(store,ticker,progress=print,new_document=None,new_documents=None,ident
     step=2 if material>=20 and material/max(1,sum(prior_outcomes.values()))>.5 else 1
     frontier=prior_frontier+step if refine else prior_frontier if previous.get('fingerprints')==fps else 0
     from .semantic_map import candidate_pairs
-    selected,stats=candidate_pairs(store,rows,incoming,progress,frontier=frontier)
+    retrieval_rows=[nli.with_context(p,docs[p['document_id']]) for p in rows]
+    selected,stats=candidate_pairs(store,retrieval_rows,incoming,progress,frontier=frontier)
     # Prior reviewed relationships survive retrieval changes, while unreviewed
     # candidates remain auditable in source_candidate_scores.
     selected=set(selected)|set(edges)|{pair for pair in suppressed if set(pair)<=lookup.keys()}

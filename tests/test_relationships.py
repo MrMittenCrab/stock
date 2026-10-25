@@ -335,3 +335,94 @@ def test_source_note_conflicts_with_recovered_reporting_period():
     a=rel.with_context(row,doc)
     b=rel.with_context(dict(row,location={}),doc)
     assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+
+
+@pytest.mark.parametrize('metric,value,billions',[
+ ('revenue','245122','245.122'),('total net sales','391035','391.035'),
+ ('net income','93736','93.736'),
+])
+def test_full_money_fact_recovers_exact_units_despite_wrong_nli(metric,value,billions):
+    a=p(f'Exampleco {metric} was ${value} million in fiscal 2024.',attributes={'issuer':'Exampleco'})
+    b=p(f'Exampleco {metric} totaled ${billions} billion in fiscal 2024.',attributes={'issuer':'Exampleco'})
+    r=rel.decide(a,b,scores(.001,.998,.001),scores(.001,.998,.001))
+    assert r['kind']=='EQUIVALENT' and r['decision_basis']=='complete_financial_parse'
+    assert r['normalized_fact']['scope']=='issuer'
+
+
+@pytest.mark.parametrize('change',[
+ lambda s:s.replace('2024','2023'),lambda s:s.replace('fiscal','calendar'),
+ lambda s:s.replace('Microsoft','Otherco'),lambda s:s.replace('revenue','net income'),
+ lambda s:s.replace('revenue','adjusted revenue'),lambda s:s.replace('$','€'),
+ lambda s:s.replace('123.456','123.5'),lambda s:s.replace('totaled','is forecast to total'),
+ lambda s:s.replace('totaled','did not total'),lambda s:s.replace('revenue','revenue in Europe'),
+ lambda s:s[:-1]+' excluding leases.',lambda s:s[:-1]+' and cash increased.',
+ lambda s:s.replace('fiscal 2024','2024'),lambda s:s.replace('123.456','approximately 123.456'),
+])
+@pytest.mark.parametrize('entailment',[.2,.99])
+def test_financial_proof_requires_complete_matching_proposition(change,entailment):
+    a=p('Microsoft revenue was $123456 million in fiscal 2024.')
+    b=p(change('Microsoft revenue totaled $123.456 billion in fiscal 2024.'))
+    r=rel.decide(a,b,scores(entailment,.005,1-entailment-.005),scores(entailment,.005,1-entailment-.005))
+    assert r['kind']!='EQUIVALENT'
+
+
+def test_money_parser_restrictions_and_attribution_veto():
+    a=p('Microsoft revenue was $123456 million in fiscal 2024.')
+    b=p('Microsoft revenue totaled $123.456 billion in fiscal 2024.')
+    b['semantic_context']={'source_notes':['Notes: Figures as of December 31, 2024. Excludes Europe.']}
+    assert rel.decide(a,b,scores(),scores())['kind']!='EQUIVALENT'
+    b.pop('semantic_context');b['speaker']='different speaker'
+    assert rel.decide(a,b,scores(),scores())['kind']!='EQUIVALENT'
+
+
+@pytest.mark.parametrize('prefix',['Total','Consolidated','Adjusted','Annual','Global','Reported'])
+def test_money_grammar_does_not_invent_issuer_from_qualifier(prefix):
+    a=p(f'{prefix} revenue was $1000 million in fiscal 2024.')
+    b=p(f'{prefix} revenue totaled $1 billion in fiscal 2024.')
+    assert rel.decide(a,b,scores(.001,.998,.001),scores(.001,.998,.001))['kind']!='EQUIVALENT'
+
+
+def test_half_year_mismatch_vetoes_even_wrong_high_entailment():
+    a=p('Microsoft revenue was $10 million in the first half of fiscal 2024.')
+    b=p('Microsoft revenue was $10 million in the second half of fiscal 2024.')
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+
+
+def test_numeric_contradiction_only_under_complete_same_conditions():
+    a=p('Microsoft revenue was $10 million in fiscal 2024.')
+    b=p('Microsoft revenue was $20 million in fiscal 2024.')
+    r=rel.decide(a,b,scores(.001,.998,.001),scores(.001,.998,.001))
+    assert r['kind']=='CONTRADICTS'
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+    b['text']=b['text'].replace('fiscal','calendar')
+    assert rel.decide(a,b,scores(.001,.998,.001),scores(.001,.998,.001))['kind']=='UNRESOLVED'
+
+
+def test_financial_arithmetic_never_rounds_long_values_to_equivalence():
+    a=p('Microsoft revenue was $123456789012345678901234567891 million in fiscal 2024.')
+    b=p('Microsoft revenue was $123456789012345678901234567892 million in fiscal 2024.')
+    assert rel.decide(a,b,scores(.001,.998,.001),scores(.001,.998,.001))['kind']!='EQUIVALENT'
+
+
+def test_complete_financial_values_veto_wrong_high_nli_without_decimal_rounding():
+    a=p('Microsoft revenue was $123456789012345678901234567891 million in fiscal 2024.')
+    b=p('Microsoft revenue was $123456789012345678901234567892 million in fiscal 2024.')
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+
+
+def test_unknown_noun_cannot_be_promoted_to_financial_issuer():
+    a=p('Quarterly revenue was $1000 million in fiscal 2024.')
+    b=p('Quarterly revenue totaled $1 billion in fiscal 2024.')
+    assert rel.decide(a,b,scores(.001,.998,.001),scores(.001,.998,.001))['kind']!='EQUIVALENT'
+
+
+def test_different_display_precision_is_not_a_financial_contradiction_proof():
+    a=p('Microsoft revenue was $19750 million in fiscal 2024.')
+    b=p('Microsoft revenue was $19.8 billion in fiscal 2024.')
+    assert rel.decide(a,b,scores(.001,.998,.001),scores(.001,.998,.001))['kind']=='UNRESOLVED'
+
+
+def test_equal_numerical_expression_can_have_different_display_precision():
+    a=p('Microsoft revenue was $1000 million in fiscal 2024.')
+    b=p('Microsoft revenue was $1 billion in fiscal 2024.')
+    assert rel.decide(a,b,scores(.001,.998,.001),scores(.001,.998,.001))['kind']=='EQUIVALENT'

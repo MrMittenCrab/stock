@@ -208,3 +208,13 @@ def test_legacy_cache_survives_context_fingerprint_upgrade(library,local,monkeyp
     revised=insights.stage(s,'CRWV.US',None,lambda _:None)
     assert revised['semantic_map']['nli_inference_count']==0
     assert revised['fingerprints']!=p['fingerprints']
+
+
+def test_retrieval_receives_same_audited_context_as_inference(library,local,monkeypatch):
+    s,_,add=library;add('CoreWeave serves customers.');add('CoreWeave serves clients.',1)
+    original=semantic_map.candidate_pairs
+    def candidates(store,rows,*args,**kwargs):
+        assert all('semantic_context' in row for row in rows)
+        return original(store,rows,*args,**kwargs)
+    monkeypatch.setattr(semantic_map,'candidate_pairs',candidates)
+    insights.stage(s,'CRWV.US',None,lambda _:None)

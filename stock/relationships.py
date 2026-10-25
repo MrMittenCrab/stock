@@ -14,7 +14,7 @@ MODEL = 'cross-encoder/nli-MiniLM2-L6-H768'
 REVISION = 'b95119ce93d3e065de6214e38cd4a97b0f2f2c6d'
 ARTIFACT = 'onnx/model.onnx'
 CONTRACT = f'{MODEL}@{REVISION}:{ARTIFACT}:pair-no-truncation-512-softmax-v1'
-POLICY = 'financial-compatibility-5-uncalibrated'
+POLICY = 'financial-complete-facts-6-uncalibrated'
 KINDS = {'EQUIVALENT','ENTAILS','RELATED','CONTRADICTS','UNRESOLVED'}
 _BACKEND = None
 
@@ -96,7 +96,7 @@ def backend():
 # General attribute extraction is a veto layer, not proof of equivalence.
 # A separate full-sentence KPI grammar can establish narrow deterministic facts.
 # Missing attributes are tracked separately from observed conflicts.
-from .semantic_attributes import with_context, kpi_fact
+from .semantic_attributes import with_context, kpi_fact, financial_fact
 PATTERNS={
     'period':r'\b(?:19|20)\d{2}\b|\bq[1-4]\b|\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\b',
     'entity':r'\b(?:coreweave|microsoft|openai|nvidia|amazon|google|meta|oracle)\b',
@@ -158,6 +158,11 @@ def attributes(p):
         found.update(period=[fact['period']],entity=[fact['issuer']],named_entities=[fact['issuer']],
             metric=[fact['metric']],scope=['issuer'],numbers=[(fact['value'],fact['unit'],'')],
             qualification=[fact['bound']],capacity_state=[fact['state']])
+    money=financial_fact(p)
+    if money:
+        found.update(entity=[money['issuer']],named_entities=[money['issuer']],
+            metric=[money['metric']],scope=[money['scope']],
+            definition=[money['definition']],year_basis=[money['year_basis']])
     return found
 
 
@@ -242,11 +247,39 @@ def decide(a,b,forward,reverse):
     fact_compatible=(not comparison['conflicts'] and
         (not comparison['missing'] or (comparison['missing']==['speaker'] and
          a.get('category')==b.get('category')=='Management')))
+    money_facts=financial_fact(a),financial_fact(b)
+    money_propositions=[{k:v for k,v in fact.items() if k!='display_resolution'} if fact else None for fact in money_facts]
+    # Complete syntax supplies the dimensions; context/attribution must also
+    # agree. Generic extraction equality is never the numerical proof.
+    if money_propositions[0] and money_propositions[0]==money_propositions[1] and not conflicts:
+        result.update(kind='EQUIVALENT',decision_basis='complete_financial_parse',
+            reason='Complete money-flow propositions match every dimension and exact scaled value.',
+            normalized_fact=money_propositions[0],
+            display_resolutions=[fact['display_resolution'] for fact in money_facts])
+        return result
     if facts[0] and facts[0]==facts[1] and fact_compatible:
         result.update(kind='EQUIVALENT',decision_basis='complete_kpi_parse',
             reason='Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.',
             normalized_fact=facts[0])
         return result
+    if money_facts[0] and money_facts[1]:
+        left_conditions={k:v for k,v in money_propositions[0].items() if k!='value'}
+        right_conditions={k:v for k,v in money_propositions[1].items() if k!='value'}
+        from decimal import Decimal, localcontext
+        with localcontext() as context:
+            context.prec=64
+            distance=abs(Decimal(money_facts[0]['value'])-Decimal(money_facts[1]['value']))
+            rounding_width=sum(Decimal(f['display_resolution'])/2 for f in money_facts)
+            disjoint=distance>rounding_width
+        if (left_conditions==right_conditions and disjoint
+            and not comparison['missing'] and set(comparison['conflicts'])<={'numbers'}
+            and min(forward['contradiction'],reverse['contradiction'])>=.985):
+            result.update(kind='CONTRADICTS',decision_basis='nli_with_complete_financial_conditions',
+                reason='High bidirectional contradiction under matching complete financial conditions and disjoint possible rounding intervals.')
+            return result
+        if money_propositions[0]!=money_propositions[1]:
+            result['reason']='Complete financial propositions differ; retain both.'
+            return result
     if conflicts:
         result['reason']='Conflicts: '+', '.join(comparison['conflicts'])+'; missing context: '+', '.join(comparison['missing'])
         return result

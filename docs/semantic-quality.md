@@ -81,3 +81,6 @@ Disposable end-to-end replay compares original commit and revised implementation
 Final verification: **440 tests passed** (`.venv/bin/python -m pytest -q --basetemp=.data/quality-full-verified-tmp`), 69 focused graph/policy tests passed, and the disposable original/revised Sort replay completed. Production SQLite checksum was unchanged during final verification. One earlier concurrent pytest invocation shared its configured temporary directory and produced a FileNotFoundError in `test_structured_source_context_changes_invalidate_graph` (431 passed, 1 setup error); subsequent verification uses separate directories. This was a test-run collision, not a silently ignored failure.
 
 Remaining work before production rebuilding: resolve supplier-risk context with audited issuer identity and stronger paraphrase inference; compare models or bounded numeric reasoning on untouched financial disclosures; evaluate initial-frontier contradiction recall in realistic inventory; independently review the map-disclaimer interpretation and plus-sign bound convention. No production rebuild or PR merge is part of this delivery.
+
+
+Continuation from 0893253: [semantic correctness, disputed labels and model comparison](semantic-correctness.md). Original results above remain historical; the continuation retains existing labels and reports adjudications separately.

@@ -95,11 +95,21 @@ def _worker(implementation,directory):
   p=insights.stage(store,'CRWV.US',model,lambda _:None);insights.activate(store,p['id'])
  cold=time.perf_counter()-started;first=len(metrics)
  before=store.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
+ def cache_counts():
+  tables={row[0] for row in store.db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+  return {table:store.db.execute('SELECT count(*) FROM '+table).fetchone()[0] for table in ('source_nli_cache','source_semantic_vectors','source_candidate_scores') if table in tables}
+ cached_before_resume=cache_counts()
  started=time.perf_counter()
  for doc in docs:sort_document(store,doc,model,lambda _:None)
  if not hasattr(insights,'current') or not insights.current(store,'CRWV.US'):
   p=insights.stage(store,'CRWV.US',model,lambda _:None)
  resumed=time.perf_counter()-started
+ assert cache_counts()==cached_before_resume,'Completed resume changed semantic caches'
+ from stock import relationships as local_nli
+ local_cost=dict(raw_cached_pairs=cached_before_resume.get('source_nli_cache'),
+     nli_execution_seconds=getattr(local_nli._BACKEND,'inference_seconds',None),
+     nli_initialization_seconds=getattr(local_nli._BACKEND,'initialization_seconds',None),
+     cache_counts=cached_before_resume,resume_added_cache_rows=0)
  ps=sources.passages(store,'CRWV.US')
  for p in ps:validate_publication(p)
  assert before==store.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
@@ -122,7 +132,7 @@ def _worker(implementation,directory):
  positives=[(a,b) for a,b in combinations(ps,2) if gold[a['text']]==gold[b['text']]]
  pair_trace=[dict(texts=[a['text'],b['text']],retrieved=tuple(sorted((a['id'],b['id']))) in edges,
      relationship=edges.get(tuple(sorted((a['id'],b['id']))),{})) for a,b in positives]
- return dict(labeled_equivalent_pairs=pair_trace,graph_metrics=revision.get('semantic_map'),missed_merges=missed_merges,cursor_deduplication_requests=sum(m['stage'] in ('within-document grouping','cross-document grouping') for m in metrics[:first]),by_document=by_document,stages=counts,requests=first,prompt_characters=sum(m['prompt_chars'] for m in metrics[:first]),cold_local_seconds=cold,resumed_local_seconds=resumed,resume_requests=len(metrics)-first,evidence=len(ps),insights=len(insights.entries(store,'CRWV.US')),exact_citations=sum(len(p['location']['references']) for p in ps),anchors=anchors,missing_fixture_claims=sorted(set(keys)-{p['text'] for p in ps}),live_latency=None,actual_tokens=None)
+ return dict(local_inference_cost=local_cost,labeled_equivalent_pairs=pair_trace,graph_metrics=revision.get('semantic_map'),missed_merges=missed_merges,cursor_deduplication_requests=sum(m['stage'] in ('within-document grouping','cross-document grouping') for m in metrics[:first]),by_document=by_document,stages=counts,requests=first,prompt_characters=sum(m['prompt_chars'] for m in metrics[:first]),cold_local_seconds=cold,resumed_local_seconds=resumed,resume_requests=len(metrics)-first,evidence=len(ps),insights=len(insights.entries(store,'CRWV.US')),exact_citations=sum(len(p['location']['references']) for p in ps),anchors=anchors,missing_fixture_claims=sorted(set(keys)-{p['text'] for p in ps}),live_latency=None,actual_tokens=None)
 
 def worker(implementation,directory):
  # Tests may invoke the replay in-process; recorded layout must not escape it.
@@ -143,6 +153,9 @@ if __name__=='__main__':
   archive_file=temp/'baseline.tar'
   with archive_file.open('wb') as out:subprocess.run(['git','archive',args.baseline],cwd=ROOT,stdout=out,check=True)
   with tarfile.open(archive_file) as tar:tar.extractall(prior,filter='data')
+  # Reuse pretrained artifacts; baseline and current have the same pinned model.
+  (prior/'.data').mkdir(exist_ok=True)
+  (prior/'.data/embedding-models').symlink_to(ROOT/'.data/embedding-models',target_is_directory=True)
   reports={}
   for name,implementation in [('before',prior),('after',ROOT)]:
    directory=temp/name;directory.mkdir()
