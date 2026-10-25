@@ -1,13 +1,19 @@
 """Disposable Phase 2 context artifacts; semantics live in docs/proposition-decontextualization.md."""
 import hashlib
 import json
+import re
 import time
+import unicodedata
 from .insights import digest, packed, passage_fingerprint as evidence_fingerprint
 from .evidence import ProtocolError, IntegrityError
 
 CONTRACT = 'stock-proposition-context-1'
 GENERATION = CONTRACT + ':generation-1'
 REVIEW = CONTRACT + ':review-1'
+EDIT_VALIDATION = CONTRACT + ':edit-safety-2'
+# English referring forms in the current English-language workflow. This is a
+# conservative lexical safeguard, not a referent classifier or semantic verdict.
+REFERRING_FORMS = frozenset('i me my mine myself we us our ours ourselves you your yours yourself yourselves he him his himself she her hers herself it its itself they them their theirs themselves this that these those'.split())
 GENERATION_PROMPT = '''
 Additionally return selection_key (unique nonempty string within this response) and
 context for EACH selection, in the SAME response. Retain all existing selection fields.
@@ -87,6 +93,49 @@ def validate_proposal_shape(q):
             raise ProtocolError('Invalid context resolution')
 
 
+def validate_edit_boundary(original, a, z):
+    """Do not split combining sequences or mistake a word interior for a referent.
+
+    Other partial-token operations (e.g. name completion) remain reviewable.
+    Offsets and stored strings stay in original Unicode code points, unnormalized.
+    The generator's purpose label never selects or exempts this check.
+    """
+    for pos in (a,z):
+        if 0<pos<len(original) and unicodedata.category(original[pos]).startswith('M'):
+            raise ProtocolError('Context edit splits a Unicode combining boundary')
+    target=original[a:z].strip()
+    first=re.search(r'[^\W\d_]+',target)
+    if not first or first.group().casefold() not in REFERRING_FORMS:return
+    def word(c):
+        category=unicodedata.category(c)
+        return category[0] in 'LMN' or category in ('Pc','Cf')
+    if ((a and a<len(original) and word(original[a-1]) and word(original[a])) or
+        (z and z<len(original) and word(original[z-1]) and word(original[z]))):
+        raise ProtocolError('Context edit must target the complete referring expression')
+    # A closing quotation mark is fine; an attached contraction is part of the
+    # expression. Replacing only We in We're would produce e.g. Acme're.
+    if not target[first.end():].strip() and re.match(r"['’](?:s|re|ve|ll|d|m|t)(?!\w)",original[z:],re.I):
+        raise ProtocolError('Context edit must target the complete referring expression including contraction')
+
+
+def validate_edit_application(q, original):
+    end=0;parts=[];cluster_start=None
+    for e in q['resolutions']:
+        a,z=e['original_span']
+        if not 0<=a<=z<=len(original) or a<end:
+            raise ProtocolError('Illegal or overlapping context offsets')
+        # Adjacent edits are one effective replacement, regardless of how the
+        # generator divides it. Splitting We into W and e must not evade checks.
+        if cluster_start is None:cluster_start=a
+        elif a>end:
+            validate_edit_boundary(original,cluster_start,end)
+            cluster_start=a
+        parts.extend([original[end:a],e['replacement']]);end=z
+    if cluster_start is not None:validate_edit_boundary(original,cluster_start,end)
+    parts.append(original[end:])
+    if ''.join(parts)!=q['standalone_text']:raise ProtocolError('Context edits do not reconstruct proposed text')
+
+
 def validate_proposal(q, original, references):
     validate_proposal_shape(q)
     state=q['context_status'];edits=q['resolutions']
@@ -94,15 +143,9 @@ def validate_proposal(q, original, references):
         if edits or q['standalone_text']!=original:raise ProtocolError('Unchanged context must preserve exact original')
         if bool(q['unresolved'])!=(state=='unresolved'):raise ProtocolError('Invalid abstention reasons')
     elif not edits or q['unresolved'] or q['standalone_text']==original:raise ProtocolError('Resolved context requires complete edits')
-    end=0;parts=[]
+    validate_edit_application(q,original)
     for e in edits:
-        a,z=e['original_span']
-        if not 0<=a<=z<=len(original) or a<end:
-            raise ProtocolError('Illegal or overlapping context offsets')
         if any(x not in references for x in e['evidence_refs']):raise ProtocolError('Unknown context evidence ID')
-        parts.extend([original[end:a],e['replacement']]);end=z
-    parts.append(original[end:])
-    if ''.join(parts)!=q['standalone_text']:raise ProtocolError('Context edits do not reconstruct proposed text')
     # Existing quantitative guard is additional to independent semantic judgment.
     from .quantities import unsupported
     support='\n'.join(r['text'] for r in references.values())
@@ -176,6 +219,8 @@ def legacy(proposition_id,original_text,source_fingerprint=''):
 
 def finalize(store,doc,p,judgment,review_inputs,generation_artifact_id):
     from .knowledge import CONTRACT as KNOWLEDGE_CONTRACT
+    validate_proposal(p['context_proposal'],p['text'],
+        {r['source_id']:r for r in p['location']['references']+p['context_references']})
     q=p['context_proposal'];r=legacy(digest([KNOWLEDGE_CONTRACT,p['text'],p['category'],p['speaker'],p['location']['references']]),p['text'],passage_fingerprint(p,doc))
     if generation_artifact_id is None:raise IntegrityError('Missing context generation association')
     save(store,doc,'context-selection',
@@ -196,6 +241,13 @@ def finalize(store,doc,p,judgment,review_inputs,generation_artifact_id):
 
 
 def eligible(record):
+    # Historical positive verdicts cannot override current coordinate safeguards.
+    # This predicate is not a substitute for read()'s evidence/review binding.
+    try:
+        q={k:record[k] for k in ('context_status','standalone_text','resolutions','unresolved')}
+        validate_proposal_shape(q)
+        validate_edit_application(q,record['original_text'])
+    except (KeyError,TypeError,ProtocolError):return False
     return (record.get('contract_version')==CONTRACT and record.get('context_status') in ('unnecessary','resolved')
         and record.get('verification',{}).get('original_support')=='supported'
         and record['verification'].get('context_preservation')=='accepted')

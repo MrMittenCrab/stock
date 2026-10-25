@@ -28,7 +28,10 @@ def test_known_unsafe_recorded_acceptance_is_not_certified():
     case=next(c for c in data['cases'] if c['id']=='cw-we')
     assert case['exact_edits'][0]['original_substring']=='We'
     assert 'CoreCoreWeaveave' in case['record']['standalone_text']
-    assert pc.eligible(case['record'])  # Reproduce the existing semantic gate failure honestly.
+    # Historical observation, not a current-code authorization. Phase 2.6 now
+    # rejects these boundaries; retain the positive historical verdict verbatim.
+    assert case['record']['verification']['context_preservation']=='accepted'
+    assert case['record']['context_status']=='resolved'
     assert case['known_unsafe_accepted'] and not case['safe_for_downstream']
     assert data['phase3']=='BLOCKED' and data['human_completed']==0
     assert len(data['cases'])==24 and sum(c['heldout'] for c in data['cases'])==3

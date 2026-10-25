@@ -35,7 +35,7 @@ class RecordedTransport:
 
 def run():
     fixture=json.loads((PILOT/'cases.json').read_text());reviews=json.loads((PILOT/'reviews.json').read_text())['reviews']
-    report=dict(kind='deterministic recorded-response pipeline replay; no live Cursor or human accuracy measurement',total_cases=len(fixture['cases']),held_out=sum(c['heldout'] for c in fixture['cases']),source_versions={},requests=[],counts=Counter(),exact_citations_preserved=True,identities_preserved=True,production_activation=False,remote_cursor_requests=0,prompt_instruction_increment_chars=dict(extraction=len(pc.GENERATION_PROMPT),review=len(pc.REVIEW_PROMPT)))
+    report=dict(kind='deterministic recorded-response pipeline replay; no live Cursor or human accuracy measurement',edit_validation=pc.EDIT_VALIDATION,excluded=[],total_cases=len(fixture['cases']),held_out=sum(c['heldout'] for c in fixture['cases']),source_versions={},requests=[],counts=Counter(),exact_citations_preserved=True,identities_preserved=True,production_activation=False,remote_cursor_requests=0,prompt_instruction_increment_chars=dict(extraction=len(pc.GENERATION_PROMPT),review=len(pc.REVIEW_PROMPT)))
     with tempfile.TemporaryDirectory(prefix='stock-context-pilot-') as tmp:
         store=Store(Path(tmp)/'disposable.db');knowledge.schema(store)
         for name,source in fixture['sources'].items():
@@ -54,7 +54,10 @@ def run():
             initial=store.db.execute('select count(*) from knowledge_artifacts').fetchone()[0]
             model=RecordedTransport(cases,reviews)
             passages,verify=evidence.extract(store,doc,model,lambda _:None);verify()
-            assert len(passages)==len(cases),(name,len(passages),len(cases))
+            missing={c['id'] for c in cases}-{p['selection_key'] for p in passages}
+            assert missing==({'cw-we'} if any(c['id']=='cw-we' for c in cases) else set())
+            report['excluded']+=sorted(missing)
+            assert len(passages)==len(cases)-len(missing)
             bound_doc={**{k:doc.get(k) for k in ('id','title','type','ticker','publisher','period','source_sha256','metadata_provenance')},'markdown_sha256':sha,'original':str(copied),'markdown':str(copied)}
             for p in passages:
                 r=pc.read(store,p['context_record_id'],p,bound_doc)
@@ -79,7 +82,7 @@ def run():
         report['total_proposals']=report['total_selections']
         report['counts']=dict(report['counts'])
         report['abstentions']=[dict(id=c['id'],reasons=c['proposal']['unresolved'] or [reviews[c['id']]['context_reason']]) for c in fixture['cases'] if not c['heldout'] and reviews[c['id']]['context_preservation']!='accepted']
-        report['limitations']=['Review responses are deterministic test expectations, not empirical independent source-verification observations.','Standalone sufficiency, factual correctness, meaning preservation and fluency have no independent human scores.','No live Cursor requests; authenticated model access not tested.','Held-out cases are anchor-validated but not executed or used to tune prompts.','CoreWeave fixtures are repository replay evidence, not newly authenticated production disclosures.','No semantic pair labels, embeddings, NLI or production activation.']
+        report['limitations']=['Review responses are deterministic test expectations, not empirical independent source-verification observations.','Standalone sufficiency, factual correctness, meaning preservation and fluency have no independent human scores.','No live Cursor requests; authenticated model access not tested.','Previously opened held-out cases remain observed development evidence; this replay only checks their anchors.','CoreWeave fixtures are repository replay evidence, not newly authenticated production disclosures.','No semantic pair labels, embeddings, NLI or production activation.']
     return report
 
 

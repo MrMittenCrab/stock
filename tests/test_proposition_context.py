@@ -216,12 +216,15 @@ def test_actual_cursor_transport_contract(disposable,monkeypatch):
 
 
 def test_recorded_pilot():
+    historical=json.loads((Path(__file__).parents[1]/'docs/benchmarks/proposition-context-replay.json').read_text())
+    assert historical['total_proposals']==21 and historical['counts']['eligible']==11
     import importlib.util
     spec=importlib.util.spec_from_file_location('context_pilot',Path(__file__).parents[1]/'scripts/pilot_proposition_context.py')
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     result=module.run()
-    assert result['total_cases']==24 and result['held_out']==3 and result['total_proposals']==21
-    assert result['counts']['context_rejected']==6 and result['counts']['eligible']==11
+    assert result['total_cases']==24 and result['held_out']==3 and result['total_proposals']==20
+    assert result['excluded']==['cw-we']
+    assert result['counts']['context_rejected']==6 and result['counts']['eligible']==10
     assert all(r['resume_requests']==0 for r in result['requests'])
 
 

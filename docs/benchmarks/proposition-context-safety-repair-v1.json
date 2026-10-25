@@ -1,0 +1,498 @@
+{
+  "phase": "2.6",
+  "assessment_version": 1,
+  "edit_validation": "stock-proposition-context-1:edit-safety-2",
+  "historical_commit": "a82d806",
+  "historical_assessment_sha256": "8f945512bdd56552f815b2d2f69b4aa13a8817fbb491006320de299772f1c413",
+  "baseline_sha256": "599599f06d2f7842435d70b3f72d5d0d8732d4ef22dd648362130814f79461e1",
+  "baseline_regenerated": false,
+  "cases": [
+    {
+      "id": "cw-actual",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-forecast",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-we",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": false,
+      "current_error": "Context edit must target the complete referring expression",
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-year",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-antecedent",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-forecast-actual-negative",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "rejected",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-active-negative",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "rejected",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-guarantee-negative",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "rejected",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-this-scale",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "unresolved",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-period-uncertain",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "unresolved",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-revenue",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-note",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-note-negative",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "rejected",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-label",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "unresolved",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-footnote",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-gaap",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "ms-quarter",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "ms-period",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "ms-publisher-negative",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "rejected",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "ms-publication-negative",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "rejected",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "ms-quote-year",
+      "observed_development_evidence": true,
+      "previously_heldout": false,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "unresolved",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-heldout-qualification",
+      "observed_development_evidence": true,
+      "previously_heldout": true,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "accepted",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": true,
+      "human_adjudicated": false
+    },
+    {
+      "id": "cw-heldout-table",
+      "observed_development_evidence": true,
+      "previously_heldout": true,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "unresolved",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    },
+    {
+      "id": "ms-heldout-customer",
+      "observed_development_evidence": true,
+      "previously_heldout": true,
+      "historical_validation_passed": true,
+      "historical_context_verdict": "unresolved",
+      "current_validation_passed": true,
+      "current_error": null,
+      "current_eligible": false,
+      "human_adjudicated": false
+    }
+  ],
+  "changed_policy_cases": [
+    "cw-we"
+  ],
+  "human_packets": {
+    "A": {
+      "stage1_sha256": "5725720397e683d7f4f6ddb281b40109d1e3a7338caf12c0bcab4b67269dd1ac",
+      "stage2_sha256": "7e4c8852e3d471a5733f22062a77c244c167ae275dd52dcbb83b884592c28f3a",
+      "cases": 28,
+      "changed_policy_cases": [
+        "case-003"
+      ]
+    },
+    "B": {
+      "stage1_sha256": "f4d88f9ff3743abce0278b800fb5bf3f27bdfb01e57062e05dac55bfed63e76c",
+      "stage2_sha256": "cabb297fba733168da6e46e7d62cada1b5c56b50f70c7d33c6b7001eef20ef33",
+      "cases": 28,
+      "changed_policy_cases": [
+        "case-003"
+      ]
+    }
+  },
+  "human_completed": 0,
+  "packet_use": "Original statements remain reviewable as historical development evidence. cw-we cannot authorize current use; any corrected candidate needs new blinded sufficiency and meaning-preservation review.",
+  "fresh_evaluation": "If required, select new source passages independently before model outputs or policy tuning, freeze exact anchors and criteria, use two blinded independent humans and adjudication; exclude all 24 opened cases and all opened live examples.",
+  "replay": {
+    "kind": "deterministic recorded-response pipeline replay; no live Cursor or human accuracy measurement",
+    "edit_validation": "stock-proposition-context-1:edit-safety-2",
+    "excluded": [
+      "cw-we"
+    ],
+    "total_cases": 24,
+    "held_out": 3,
+    "source_versions": {
+      "cw12": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+      "cw13": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+      "msft": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+    },
+    "requests": [
+      {
+        "source": "cw12",
+        "extraction": 1,
+        "review": 1,
+        "resume_requests": 0,
+        "new_artifacts": 44,
+        "reused_on_resume": 44,
+        "sizes": [
+          {
+            "operation": "extraction",
+            "input_chars": 32535,
+            "context_input_chars": 0,
+            "response_chars": 6828,
+            "context_response_chars": 3226
+          },
+          {
+            "operation": "review",
+            "input_chars": 30640,
+            "context_input_chars": 11525,
+            "response_chars": 3182,
+            "context_response_chars": 1331
+          }
+        ]
+      },
+      {
+        "source": "cw13",
+        "extraction": 1,
+        "review": 1,
+        "resume_requests": 0,
+        "new_artifacts": 24,
+        "reused_on_resume": 24,
+        "sizes": [
+          {
+            "operation": "extraction",
+            "input_chars": 82746,
+            "context_input_chars": 0,
+            "response_chars": 2960,
+            "context_response_chars": 1252
+          },
+          {
+            "operation": "review",
+            "input_chars": 10157,
+            "context_input_chars": 2492,
+            "response_chars": 1606,
+            "context_response_chars": 680
+          }
+        ]
+      },
+      {
+        "source": "msft",
+        "extraction": 1,
+        "review": 1,
+        "resume_requests": 0,
+        "new_artifacts": 24,
+        "reused_on_resume": 24,
+        "sizes": [
+          {
+            "operation": "extraction",
+            "input_chars": 2060,
+            "context_input_chars": 0,
+            "response_chars": 3260,
+            "context_response_chars": 1620
+          },
+          {
+            "operation": "review",
+            "input_chars": 19008,
+            "context_input_chars": 7677,
+            "response_chars": 1583,
+            "context_response_chars": 657
+          }
+        ]
+      }
+    ],
+    "counts": {
+      "unnecessary": 7,
+      "original_supported": 20,
+      "context_accepted": 10,
+      "eligible": 10,
+      "resolved": 3,
+      "unresolved": 10,
+      "context_unresolved": 4,
+      "context_rejected": 6
+    },
+    "exact_citations_preserved": true,
+    "identities_preserved": true,
+    "production_activation": false,
+    "remote_cursor_requests": 0,
+    "prompt_instruction_increment_chars": {
+      "extraction": 1808,
+      "review": 1167
+    },
+    "total_selections": 20,
+    "total_proposals": 20,
+    "abstentions": [
+      {
+        "id": "cw-forecast-actual-negative",
+        "reasons": [
+          "Unsupported change from expectation to confirmation."
+        ]
+      },
+      {
+        "id": "cw-active-negative",
+        "reasons": [
+          "Contracted capacity does not establish operating capacity."
+        ]
+      },
+      {
+        "id": "cw-guarantee-negative",
+        "reasons": [
+          "Backlog is not guaranteed recognized revenue."
+        ]
+      },
+      {
+        "id": "cw-this-scale",
+        "reasons": [
+          "This scale and pace has multiple antecedents; no complete minimal interpretation established."
+        ]
+      },
+      {
+        "id": "cw-period-uncertain",
+        "reasons": [
+          "Replay withholds independently reviewed comparison-period resolution."
+        ]
+      },
+      {
+        "id": "cw-note-negative",
+        "reasons": [
+          "Removes material illustrative-footprint limitation."
+        ]
+      },
+      {
+        "id": "cw-label",
+        "reasons": [
+          "Flattened labels do not establish label/value association or table geometry."
+        ]
+      },
+      {
+        "id": "ms-publisher-negative",
+        "reasons": [
+          "Nearby archive issuer cannot replace explicit Microsoft attribution."
+        ]
+      },
+      {
+        "id": "ms-publication-negative",
+        "reasons": [
+          "Publication date is not quarter-end measurement date."
+        ]
+      },
+      {
+        "id": "ms-quote-year",
+        "reasons": [
+          "Fiscal-year closing quarter requires independently verified period attachment; do not substitute calendar year-end."
+        ]
+      }
+    ],
+    "limitations": [
+      "Review responses are deterministic test expectations, not empirical independent source-verification observations.",
+      "Standalone sufficiency, factual correctness, meaning preservation and fluency have no independent human scores.",
+      "No live Cursor requests; authenticated model access not tested.",
+      "Previously opened held-out cases remain observed development evidence; this replay only checks their anchors.",
+      "CoreWeave fixtures are repository replay evidence, not newly authenticated production disclosures.",
+      "No semantic pair labels, embeddings, NLI or production activation."
+    ]
+  },
+  "authenticated_requests": 0,
+  "transport_observation": {
+    "effective_timeout_seconds": 117.62143149995245,
+    "wall_seconds": 117.62433933303691,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "timed_out": true,
+    "returncode": 143
+  },
+  "gates": {
+    "deterministic_safety": "PASS for tested lexical and compatibility cases; not semantic truth",
+    "semantic_validation": "BLOCKED: human reviews/adjudications missing",
+    "retrieval_baseline": "AVAILABLE and hash intact",
+    "authenticated_resolved_demonstration": "NOT COMPLETED"
+  },
+  "phase3": "BLOCKED",
+  "production_activation": false,
+  "stage2_anchor_errata": {
+    "path": "docs/benchmarks/proposition-context-review-packet-errata-v1.json",
+    "sha256": "8059041cd31a01afc4097e0f457fd40d641057a7f65feadf7d29aa830aa1fc81"
+  }
+}
