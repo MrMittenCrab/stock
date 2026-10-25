@@ -1,0 +1,222 @@
+{
+  "contract": "context-pilot-recorded-review-1",
+  "observations": "Separately injected source-review responses; test expectations, not independent human or model observations.",
+  "reviews": {
+    "cw-actual": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-forecast": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-we": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-year": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-antecedent": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-forecast-actual-negative": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "rejected",
+      "context_reason": "Unsupported change from expectation to confirmation."
+    },
+    "cw-active-negative": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "rejected",
+      "context_reason": "Contracted capacity does not establish operating capacity."
+    },
+    "cw-guarantee-negative": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "rejected",
+      "context_reason": "Backlog is not guaranteed recognized revenue."
+    },
+    "cw-this-scale": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "unresolved",
+      "context_reason": "This scale and pace has multiple antecedents; no complete minimal interpretation established."
+    },
+    "cw-period-uncertain": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "unresolved",
+      "context_reason": "Replay withholds independently reviewed comparison-period resolution."
+    },
+    "cw-revenue": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-heldout-qualification": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-note": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-note-negative": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "rejected",
+      "context_reason": "Removes material illustrative-footprint limitation."
+    },
+    "cw-label": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "unresolved",
+      "context_reason": "Flattened labels do not establish label/value association or table geometry."
+    },
+    "cw-footnote": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-gaap": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "cw-heldout-table": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "unresolved",
+      "context_reason": "Held-out label/value association requires original layout."
+    },
+    "ms-quarter": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+    },
+    "ms-period": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "accepted",
+      "context_reason": "Resolve reporting quarter from release introduction."
+    },
+    "ms-publisher-negative": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "rejected",
+      "context_reason": "Nearby archive issuer cannot replace explicit Microsoft attribution."
+    },
+    "ms-publication-negative": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "rejected",
+      "context_reason": "Publication date is not quarter-end measurement date."
+    },
+    "ms-quote-year": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "unresolved",
+      "context_reason": "Fiscal-year closing quarter requires independently verified period attachment; do not substitute calendar year-end."
+    },
+    "ms-heldout-customer": {
+      "fidelity": "supported",
+      "readability": "clear",
+      "relevance": "useful",
+      "warnings": [],
+      "reason": "Recorded fixture expectation: selected references support the attributed original.",
+      "context_preservation": "unresolved",
+      "context_reason": "Held-out fiscal versus calendar year reference; preserve attribution."
+    }
+  }
+}

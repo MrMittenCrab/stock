@@ -1,0 +1,10 @@
+{
+  "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/press-release-webcast",
+  "retrieved": "2026-10-25",
+  "original_html_sha256": "c5792e50830c9a16a7907ac3f213783331bc5155096659e79a8fbf41ec746d06",
+  "extraction": "HTMLParser.handle_data; strip each nonempty data node; join with newline; excerpt from REDMOND, to before Business\\nHighlights",
+  "extracted_text_start": 5017,
+  "extracted_text_end": 6150,
+  "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+  "scope": "Authenticated issuer-page excerpt; not a complete filing, and no original PDF/layout evidence"
+}

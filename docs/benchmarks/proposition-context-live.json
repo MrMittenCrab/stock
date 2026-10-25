@@ -1,0 +1,329 @@
+{
+  "kind": "authenticated Cursor observation, single source, no human adjudication",
+  "request_budget": 2,
+  "production_activation": false,
+  "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+  "records": [
+    {
+      "contract_version": "stock-proposition-context-1",
+      "proposition_id": "fb1cbffc57178c80d81ba38a89fd2736ed9ff53b899dacbce415862aa4fcfaf4",
+      "original_text": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+      "source_fingerprint": "d6dbcc0876d8c8c4312e6beb8a8a566ea09594b7167576b318d5a2d6504410ac",
+      "context_status": "unnecessary",
+      "standalone_text": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+      "resolutions": [],
+      "unresolved": [],
+      "verification": {
+        "original_support": "supported",
+        "context_preservation": "accepted",
+        "reason": "The original sentence already names the announcement date, issuer, quarter ended June 30, 2025, and prior-fiscal-year comparison from the cited lead, matching the unchanged standalone_text; no edit is required to keep those truth conditions independently readable.",
+        "artifact_id": "35c36a31170fb404a174f93c29bd523851e9467b6597584cc37f6ecc8945a046"
+      }
+    }
+  ],
+  "counts": {
+    "unnecessary": 1
+  },
+  "resume_requests": 0,
+  "requests": 2,
+  "metrics": [
+    {
+      "contract": "knowledge-2-strategic",
+      "instruction_chars": 6057,
+      "model_duration_ms": 50406,
+      "outcome": "ok",
+      "payload_component_chars": {
+        "context": 307,
+        "untrusted_section": 1229
+      },
+      "process": null,
+      "prompt_bytes": 7648,
+      "prompt_chars": 7626,
+      "prompt_sha256": "fd00e80ce1432888494f47f60b5ea708ec4cc3e91670c324685a8365042858ba",
+      "reported_duration_ms": 50406,
+      "response_chars": 3540,
+      "source_anchors": 1,
+      "stage": "understand",
+      "usage": {
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "inputTokens": 11564,
+        "outputTokens": 9415
+      },
+      "wall_seconds": 54.46192999999039
+    },
+    {
+      "contract": "knowledge-2-strategic",
+      "instruction_chars": 4172,
+      "model_duration_ms": 12954,
+      "outcome": "ok",
+      "payload_component_chars": {
+        "context": 271,
+        "evidence_review": 607,
+        "evidence_sources": 1288,
+        "untrusted_section": 2
+      },
+      "process": null,
+      "prompt_bytes": 6434,
+      "prompt_chars": 6412,
+      "prompt_sha256": "b52d5255d409e9f94892bb4522768df9d5ee07ef4b0f10fa71a670eee4c229aa",
+      "reported_duration_ms": 12954,
+      "response_chars": 1125,
+      "source_anchors": 0,
+      "stage": "review",
+      "usage": {
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "inputTokens": 11388,
+        "outputTokens": 1638
+      },
+      "wall_seconds": 16.996729166945443
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "107a901c9cee9ee166048977cb799cad9bc21ba0622c9a17705abaa3eb76498f",
+      "contract": "stock-proposition-context-1:generation-1",
+      "operation": "understand",
+      "payload": [
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "context": {
+            "context_status": "unnecessary",
+            "resolutions": [],
+            "standalone_text": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+            "unresolved": []
+          },
+          "ids": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "representation": "source_grounded_statement",
+          "selection_key": "msft-fy25q4-results-announcement",
+          "speaker": null,
+          "text": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+          "topics": [
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "context": {
+            "context_status": "unnecessary",
+            "resolutions": [],
+            "standalone_text": "Satya Nadella, chairman and chief executive officer of Microsoft, said cloud and AI is the driving force of business transformation across every industry and sector.",
+            "unresolved": []
+          },
+          "ids": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "representation": "source_grounded_statement",
+          "selection_key": "msft-nadella-cloud-ai-positioning",
+          "speaker": "Satya Nadella",
+          "text": "Satya Nadella, chairman and chief executive officer of Microsoft, said cloud and AI is the driving force of business transformation across every industry and sector.",
+          "topics": [
+            "Market",
+            "Product"
+          ]
+        },
+        {
+          "ambiguities": [
+            "Nadella's 'this year' for Azure revenue is not explicitly identified as the fiscal year ended June 30, 2025 versus another annual period."
+          ],
+          "category": "Management",
+          "context": {
+            "context_status": "unnecessary",
+            "resolutions": [],
+            "standalone_text": "Satya Nadella, chairman and chief executive officer of Microsoft, said that this year Azure surpassed $75 billion in revenue, up 34 percent, driven by growth across all workloads.",
+            "unresolved": []
+          },
+          "ids": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "representation": "source_grounded_statement",
+          "selection_key": "msft-nadella-azure-75b-revenue",
+          "speaker": "Satya Nadella",
+          "text": "Satya Nadella, chairman and chief executive officer of Microsoft, said that this year Azure surpassed $75 billion in revenue, up 34 percent, driven by growth across all workloads.",
+          "topics": [
+            "Product",
+            "Financials"
+          ]
+        },
+        {
+          "ambiguities": [],
+          "category": "Management",
+          "context": {
+            "context_status": "unnecessary",
+            "resolutions": [],
+            "standalone_text": "Amy Hood, executive vice president and chief financial officer of Microsoft, said Microsoft closed out the fiscal year with a strong quarter ended June 30, 2025, highlighted by Microsoft Cloud revenue reaching $46.7 billion, up 27% year-over-year (up 25% in constant currency).",
+            "unresolved": []
+          },
+          "ids": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "representation": "source_grounded_statement",
+          "selection_key": "msft-hood-cloud-46-7b-fy-close",
+          "speaker": "Amy Hood",
+          "text": "Amy Hood, executive vice president and chief financial officer of Microsoft, said Microsoft closed out the fiscal year with a strong quarter ended June 30, 2025, highlighted by Microsoft Cloud revenue reaching $46.7 billion, up 27% year-over-year (up 25% in constant currency).",
+          "topics": [
+            "Product",
+            "Financials"
+          ]
+        }
+      ],
+      "checksum": "40276d21d4d1f94ca18ccb1a660b6a314a74f224ee83a0e5fa486da649431915"
+    },
+    {
+      "id": "4e7249dc7e87fed9931518d0e5e0ffff8e8a97005c48d0af85c6d860324702d6",
+      "contract": "stock-proposition-context-1:generation-1",
+      "operation": "verify",
+      "payload": [
+        {
+          "context_preservation": "accepted",
+          "context_reason": "The original sentence already names the announcement date, issuer, quarter ended June 30, 2025, and prior-fiscal-year comparison from the cited lead, matching the unchanged standalone_text; no edit is required to keep those truth conditions independently readable.",
+          "fidelity": "supported",
+          "index": 0,
+          "readability": "clear",
+          "reason": "The cited release lead states Microsoft Corp. on July 30, 2025 announced results for the quarter ended June 30, 2025, as compared to the corresponding period of last fiscal year. The statement restates that announcement date, issuer, reporting period, and year-over-year comparison basis without adding figures, speakers, or other uncited qualifications.",
+          "relevance": "useful",
+          "warnings": []
+        }
+      ],
+      "checksum": "3a5f0e1d1acf8f5abc1f1dd119de3b7f0a7861655e96e7f42e4e160b781dc422"
+    },
+    {
+      "id": "b9b8f2690cd0bc4a9a16af25470e7fe02844b76f73645e66cbc6bdbb93e36489",
+      "contract": "stock-proposition-context-1:review-1",
+      "operation": "claim-review",
+      "payload": {
+        "context_preservation": "accepted",
+        "context_reason": "The original sentence already names the announcement date, issuer, quarter ended June 30, 2025, and prior-fiscal-year comparison from the cited lead, matching the unchanged standalone_text; no edit is required to keep those truth conditions independently readable.",
+        "fidelity": "supported",
+        "readability": "clear",
+        "reason": "The cited release lead states Microsoft Corp. on July 30, 2025 announced results for the quarter ended June 30, 2025, as compared to the corresponding period of last fiscal year. The statement restates that announcement date, issuer, reporting period, and year-over-year comparison basis without adding figures, speakers, or other uncited qualifications.",
+        "relevance": "useful",
+        "warnings": []
+      },
+      "checksum": "bef4c99a84dbe071a664357cfbf0286a027100a095de8b94adf14d19bdb9bb9f"
+    },
+    {
+      "id": "35c36a31170fb404a174f93c29bd523851e9467b6597584cc37f6ecc8945a046",
+      "contract": "stock-proposition-context-1:review-1",
+      "operation": "context-review",
+      "payload": {
+        "inputs": {
+          "claim": {
+            "category": "Management",
+            "context_proposal": {
+              "context_status": "unnecessary",
+              "resolutions": [],
+              "standalone_text": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+              "unresolved": []
+            },
+            "context_references": [],
+            "layout_pages": [],
+            "references": [
+              {
+                "candidate_id": "d203:0f4e339342d4fc63:0:1132",
+                "document_id": 203,
+                "end": 1132,
+                "evidence_file": null,
+                "evidence_type": "archived_markdown",
+                "evidence_version": null,
+                "markdown_end": 1132,
+                "markdown_path": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-live-j_2s3gv8/microsoft.md",
+                "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+                "markdown_start": 0,
+                "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-live-j_2s3gv8/microsoft.md",
+                "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+                "page": null,
+                "pdf_region": null,
+                "section": null,
+                "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+                "source_id": "d203:0f4e339342d4fc63:0:1132",
+                "start": 0,
+                "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+                "turn": null,
+                "visual": null
+              }
+            ],
+            "representation": "source_grounded_statement",
+            "speaker": null,
+            "text": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year."
+          },
+          "context": "{\"document\":{\"id\":203,\"metadata_provenance\":null,\"period\":null,\"publisher\":null,\"source_sha256\":\"0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0\",\"ticker\":\"MSFT.US\",\"title\":\"Disposable Microsoft release excerpt\",\"type\":\"Filing\"},\"original_pdf_layout\":[]}",
+          "document": {
+            "id": 203,
+            "markdown": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-live-j_2s3gv8/microsoft.md",
+            "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+            "metadata_provenance": null,
+            "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-live-j_2s3gv8/microsoft.md",
+            "period": null,
+            "publisher": null,
+            "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+            "ticker": "MSFT.US",
+            "title": "Disposable Microsoft release excerpt",
+            "type": "Filing"
+          },
+          "source_fingerprint": "d6dbcc0876d8c8c4312e6beb8a8a566ea09594b7167576b318d5a2d6504410ac"
+        },
+        "output": {
+          "context_preservation": "accepted",
+          "context_reason": "The original sentence already names the announcement date, issuer, quarter ended June 30, 2025, and prior-fiscal-year comparison from the cited lead, matching the unchanged standalone_text; no edit is required to keep those truth conditions independently readable.",
+          "fidelity": "supported",
+          "readability": "clear",
+          "reason": "The cited release lead states Microsoft Corp. on July 30, 2025 announced results for the quarter ended June 30, 2025, as compared to the corresponding period of last fiscal year. The statement restates that announcement date, issuer, reporting period, and year-over-year comparison basis without adding figures, speakers, or other uncited qualifications.",
+          "relevance": "useful",
+          "warnings": []
+        }
+      },
+      "checksum": "c813f6aae93a9d039f193b3510a2c88e9c51ac31dce4d5d846020322e310002f"
+    },
+    {
+      "id": "d10d8c5a613ddbb5cd997a0bfcc31db1d1c2931e219076b524ff8b695c8aa32c",
+      "contract": "stock-proposition-context-1",
+      "operation": "context-record",
+      "payload": {
+        "inputs": {
+          "record_id": "4ad14b138392f5a967dc990047516b2cf22a0f7495385a0d321e5bbbffb0f2c3"
+        },
+        "output": {
+          "context_status": "unnecessary",
+          "contract_version": "stock-proposition-context-1",
+          "original_text": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+          "proposition_id": "fb1cbffc57178c80d81ba38a89fd2736ed9ff53b899dacbce415862aa4fcfaf4",
+          "resolutions": [],
+          "source_fingerprint": "d6dbcc0876d8c8c4312e6beb8a8a566ea09594b7167576b318d5a2d6504410ac",
+          "standalone_text": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+          "unresolved": [],
+          "verification": {
+            "artifact_id": "35c36a31170fb404a174f93c29bd523851e9467b6597584cc37f6ecc8945a046",
+            "context_preservation": "accepted",
+            "original_support": "supported",
+            "reason": "The original sentence already names the announcement date, issuer, quarter ended June 30, 2025, and prior-fiscal-year comparison from the cited lead, matching the unchanged standalone_text; no edit is required to keep those truth conditions independently readable."
+          }
+        }
+      },
+      "checksum": "a76c3382bbb90c39f6d5f3ba1d23a809a8fa5cd13cdf8bf8fd9e5cbdcb122969"
+    }
+  ],
+  "capture_stage": "Live transport observation before final artifact binding refinements. Raw responses are replayed through final code in test_authenticated_capture_replays_on_current_pipeline; retained historical artifacts are diagnostic, not active records.",
+  "generation_counts": {
+    "selections": 4,
+    "proposals": 4,
+    "proposed_unnecessary": 4
+  },
+  "selection_validation": {
+    "accepted": 1,
+    "rejected": 3,
+    "reason": "Existing exact-envelope speaker validation rejects three named speakers absent from source atom speaker fields. Those originals and contexts were not independently reviewed."
+  },
+  "independent_review_counts": {
+    "original_supported": 1,
+    "original_unsupported": 0,
+    "context_accepted": 1,
+    "context_rejected": 0,
+    "context_unresolved": 0
+  }
+}
