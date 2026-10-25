@@ -1,0 +1,138 @@
+{
+  "kind": "authenticated model observation; no human adjudication",
+  "request_limit": 4,
+  "source": "tests/fixtures/sort/document-12.md",
+  "source_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+  "source_slices": [
+    {
+      "start": 0,
+      "end": 187,
+      "text": "26-Feb-2026\n\n# CoreWeave, Inc. (CRWV)\n\nQ4 2025 Earnings Call\n\n## **CORPORATE PARTICIPANTS**\n\nMichael Intrator\n\nCo-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc.\n\n"
+    },
+    {
+      "start": 2441,
+      "end": 2545,
+      "text": "#### Michael Intrator\n\n#### Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc.\n\n"
+    },
+    {
+      "start": 9117,
+      "end": 9654,
+      "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered."
+    }
+  ],
+  "baseline_sha256": "599599f06d2f7842435d70b3f72d5d0d8732d4ef22dd648362130814f79461e1",
+  "production_before_sha256": "a0a7817a796895f8016d3ccd2480568fe4cd0c1e1e5485975e5073359c9f8a04",
+  "error": {
+    "type": "BudgetExceeded",
+    "reason": "Request timeout"
+  },
+  "requests": 1,
+  "events": [
+    {
+      "model": {
+        "stage": "understand",
+        "outcome": "failed",
+        "prompt_chars": 7650,
+        "prompt_bytes": 7650,
+        "prompt_sha256": "79f618f74598702a5b8df80b946ef6b429cb2310fa19ac310e8b141220ee518a",
+        "instruction_chars": 6057,
+        "source_anchors": 2,
+        "payload_component_chars": {
+          "context": 606,
+          "untrusted_section": 954
+        },
+        "process": {
+          "effective_timeout_seconds": 117.62143149995245,
+          "wall_seconds": 117.62433933303691,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "timed_out": true,
+          "returncode": 143
+        },
+        "response_chars": 0,
+        "wall_seconds": 117.65324133308604,
+        "model_duration_ms": null,
+        "reported_duration_ms": null,
+        "usage": null
+      }
+    }
+  ],
+  "calls": [
+    {
+      "unit": {
+        "candidates": [
+          {
+            "id": "d251:98efb463af13540b:39:60",
+            "start": 39,
+            "end": 60,
+            "text": "Q4 2025 Earnings Call",
+            "section": "CORPORATE PARTICIPANTS",
+            "turn": null,
+            "speaker": null,
+            "role": null,
+            "markdown_sha256": "98efb463af13540b0769ff3973cac53f1b59c99b3eb9caf1b0bbebbcd29d528d",
+            "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-auth-validation-wxx3w5ow/transcript.md",
+            "original_sha256": "98efb463af13540b0769ff3973cac53f1b59c99b3eb9caf1b0bbebbcd29d528d",
+            "speaker_role": null,
+            "context_only": true,
+            "source_kind": "context"
+          },
+          {
+            "id": "d251:98efb463af13540b:295:832",
+            "start": 295,
+            "end": 832,
+            "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+            "section": "CORPORATE PARTICIPANTS",
+            "turn": "t189",
+            "speaker": "Michael Intrator",
+            "role": "Management",
+            "markdown_sha256": "98efb463af13540b0769ff3973cac53f1b59c99b3eb9caf1b0bbebbcd29d528d",
+            "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-auth-validation-wxx3w5ow/transcript.md",
+            "original_sha256": "98efb463af13540b0769ff3973cac53f1b59c99b3eb9caf1b0bbebbcd29d528d",
+            "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+          }
+        ],
+        "text": "",
+        "primary_ids": [
+          "d251:98efb463af13540b:39:60",
+          "d251:98efb463af13540b:295:832"
+        ],
+        "operation": "understand",
+        "context_contract": "stock-proposition-context-1"
+      },
+      "context": "{\"source_context\": {\"archive_quality\": null, \"document\": {\"id\": 251, \"metadata_provenance\": null, \"period\": null, \"publisher\": null, \"source_sha256\": \"98efb463af13540b0769ff3973cac53f1b59c99b3eb9caf1b0bbebbcd29d528d\", \"ticker\": \"FIXTURE.US\", \"title\": \"Disposable exact transcript slices\", \"type\": \"Transcript\"}, \"original_pdf_layout\": [], \"outline\": []}, \"validation_target\": \"Select the context-dependent execution paragraph as verbatim (text null). Apply the existing context contract to resolve only necessary referents using supplied exact source IDs. Abstain if support is insufficient. Do not change the original quotation.\"}"
+    }
+  ],
+  "metrics": [
+    {
+      "contract": "knowledge-2-strategic",
+      "instruction_chars": 6057,
+      "model_duration_ms": null,
+      "outcome": "failed",
+      "payload_component_chars": {
+        "context": 606,
+        "untrusted_section": 954
+      },
+      "process": {
+        "effective_timeout_seconds": 117.62143149995245,
+        "returncode": 143,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "timed_out": true,
+        "wall_seconds": 117.62433933303691
+      },
+      "prompt_bytes": 7650,
+      "prompt_chars": 7650,
+      "prompt_sha256": "79f618f74598702a5b8df80b946ef6b429cb2310fa19ac310e8b141220ee518a",
+      "reported_duration_ms": null,
+      "response_chars": 0,
+      "source_anchors": 2,
+      "stage": "understand",
+      "usage": null,
+      "wall_seconds": 117.65324133308604
+    }
+  ],
+  "artifacts": [],
+  "production_after_sha256": "a0a7817a796895f8016d3ccd2480568fe4cd0c1e1e5485975e5073359c9f8a04",
+  "production_unchanged": true
+}

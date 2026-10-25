@@ -1,0 +1,1762 @@
+{
+  "reviewer": "A",
+  "instructions": "Open only after stage1 is locked. Consult exact source path/hash, full context and edit anchors. Assess original support separately from contextual preservation; resolve every material financial dimension. Do not consult recorded model judgments or the other reviewer. Mark unresolved when evidence is insufficient. Return completed files without modifying originals.",
+  "cases": [
+    {
+      "id": "case-001",
+      "candidate": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+      "original": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        },
+        {
+          "source_id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-actual",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-002",
+      "candidate": "CoreWeave management said virtually all of its more than 3.1 gigawatts of contracted capacity was expected to come online by the end of 2027.",
+      "original": "CoreWeave management said virtually all of its more than 3.1 gigawatts of contracted capacity was expected to come online by the end of 2027.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-forecast",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-003",
+      "candidate": "CoreCoreWeaveave management said: We contracted close to 2 gigawatts of additional power in 2025.",
+      "original": "CoreWeave management said: We contracted close to 2 gigawatts of additional power in 2025.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            4,
+            6
+          ],
+          "replacement": "CoreWeave",
+          "purpose": "Resolve source-local reference",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654",
+            "d201:ff516a19a5418342:2545:3213"
+          ],
+          "original_substring": "We",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            },
+            {
+              "id": "d201:ff516a19a5418342:2545:3213",
+              "start": 2545,
+              "end": 3213,
+              "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        },
+        {
+          "source_id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-we",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-004",
+      "candidate": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+      "original": "CoreWeave management said it ended the year with more than 850 megawatts of active power.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            35,
+            43
+          ],
+          "replacement": "2025",
+          "purpose": "Resolve source-local reference",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654",
+            "d201:ff516a19a5418342:2545:3213"
+          ],
+          "original_substring": "the year",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            },
+            {
+              "id": "d201:ff516a19a5418342:2545:3213",
+              "start": 2545,
+              "end": 3213,
+              "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        },
+        {
+          "source_id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-year",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-005",
+      "candidate": "CoreWeave management expected virtually all of its more than 3.1 gigawatts of contracted capacity to come online by the end of 2027.",
+      "original": "CoreWeave management expected virtually all of it to come online by the end of 2027.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            47,
+            49
+          ],
+          "replacement": "its more than 3.1 gigawatts of contracted capacity",
+          "purpose": "Resolve source-local reference",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654"
+          ],
+          "original_substring": "it",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-antecedent",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-006",
+      "candidate": "CoreWeave management confirmed virtually all contracted capacity to come online by the end of 2027.",
+      "original": "CoreWeave management expected virtually all contracted capacity to come online by the end of 2027.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            21,
+            29
+          ],
+          "replacement": "confirmed",
+          "purpose": "Unsupported change from expectation to confirmation.",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654"
+          ],
+          "original_substring": "expected",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-forecast-actual-negative",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-007",
+      "candidate": "CoreWeave management said it ended 2025 with more than 3.1 gigawatts of active capacity.",
+      "original": "CoreWeave management said it ended 2025 with more than 3.1 gigawatts of contracted capacity.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            72,
+            82
+          ],
+          "replacement": "active",
+          "purpose": "Contracted capacity does not establish operating capacity.",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654"
+          ],
+          "original_substring": "contracted",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-active-negative",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-008",
+      "candidate": "CoreWeave management said it had \\$66.8 billion of guaranteed revenue.",
+      "original": "CoreWeave management said it had \\$66.8 billion of contracted revenue backlog.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            51,
+            77
+          ],
+          "replacement": "guaranteed revenue",
+          "purpose": "Backlog is not guaranteed recognized revenue.",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:13748:14199"
+          ],
+          "original_substring": "contracted revenue backlog",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:13748:14199",
+              "start": 13748,
+              "end": 14199,
+              "text": "Before I turn it over to Nitin, let me leave you with a few final thoughts. We have \\$66.8 billion of contracted revenue backlog, with every contract for new capacity expected to begin generating revenue by year-end 2026. We are delivering cloud infrastructure and converting it to revenue today. We are building and operating some of the largest purpose-built AI clusters for the world's most demanding workloads at a pace and quality second to none.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:13748:14199",
+          "start": 13748,
+          "end": 14199,
+          "text": "Before I turn it over to Nitin, let me leave you with a few final thoughts. We have \\$66.8 billion of contracted revenue backlog, with every contract for new capacity expected to begin generating revenue by year-end 2026. We are delivering cloud infrastructure and converting it to revenue today. We are building and operating some of the largest purpose-built AI clusters for the world's most demanding workloads at a pace and quality second to none.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-guarantee-negative",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-009",
+      "candidate": "CoreWeave management said operating at this scale and pace is inherently complex.",
+      "original": "CoreWeave management said operating at this scale and pace is inherently complex.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unresolved",
+      "missing_information": [
+        "This scale and pace has multiple antecedents; no complete minimal interpretation established."
+      ],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:10019:10486",
+          "start": 10019,
+          "end": 10486,
+          "text": "Operating at this scale and pace is inherently complex. When disruptions surface, we move decisively through disciplined coordination across teams and partners. We quickly cleared the delays discussed in our third quarter earnings call and, in total, we have now delivered more than 50,000 Grace Blackwells to the impacted customer, deploying servers on a rolling basis and delivering them within weeks of receiving access to the requisite data center infrastructure.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-this-scale",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-010",
+      "candidate": "CoreWeave management said average H100 pricing in Q4 was within 10% of where it started the year.",
+      "original": "CoreWeave management said average H100 pricing in Q4 was within 10% of where it started the year.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unresolved",
+      "missing_information": [
+        "Replay withholds independently reviewed comparison-period resolution."
+      ],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:5782:6000",
+          "start": 5782,
+          "end": 6000,
+          "text": "We are also seeing significant increase in demand for prior generations of GPU architectures, where supply also remains constrained. Average H100 pricing in Q4 was within 10% of where it started the year, while average",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-period-uncertain",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-011",
+      "candidate": "CoreWeave management said it generated more than \\$5.1 billion of revenue in 2025, up 168% year-over-year.",
+      "original": "CoreWeave management said it generated more than \\$5.1 billion of revenue in 2025, up 168% year-over-year.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-revenue",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-012",
+      "candidate": "CoreWeave presentation notes say figures are as of December 31, 2025 and the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "original": "CoreWeave presentation notes say figures are as of December 31, 2025 and the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "source_case_id": "cw-note",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-013",
+      "candidate": "CoreWeave presentation notes say the graphic is illustrative and precisely reflects all current locations or capacities.",
+      "original": "CoreWeave presentation notes say the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            65,
+            90
+          ],
+          "replacement": "precisely reflects",
+          "purpose": "Removes material illustrative-footprint limitation.",
+          "evidence_refs": [
+            "d202:9a240883dc057e1b:4571:4761"
+          ],
+          "original_substring": "may not precisely reflect",
+          "evidence": [
+            {
+              "id": "d202:9a240883dc057e1b:4571:4761",
+              "start": 4571,
+              "end": 4761,
+              "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities",
+              "section": "Our Platform is Purpose-Built for AI",
+              "turn": null,
+              "speaker": null,
+              "role": null,
+              "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+              "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+              "speaker_role": null
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "source_case_id": "cw-note-negative",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-014",
+      "candidate": "CoreWeave presentation lists Active Power and Contracted Power.",
+      "original": "CoreWeave presentation lists Active Power and Contracted Power.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unresolved",
+      "missing_information": [
+        "Flattened labels do not establish label/value association or table geometry."
+      ],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4981:5010",
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "source_case_id": "cw-label",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-015",
+      "candidate": "CoreWeave presentation bases its performance claim on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating.",
+      "original": "CoreWeave presentation bases its performance claim on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4064:4178",
+          "start": 4064,
+          "end": 4178,
+          "text": "<sup>1.</sup> Based on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        },
+        {
+          "source_id": "d202:9a240883dc057e1b:3502:3611",
+          "start": 3502,
+          "end": 3611,
+          "text": "Cloud Platform **Purpose-Built for Artificial Intelligence** Delivering **Unmatched Performance**<sup>1</sup>",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "source_case_id": "cw-footnote",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-016",
+      "candidate": "CoreWeave presentation uses adjusted EBITDA as a non-GAAP financial measure.",
+      "original": "CoreWeave presentation uses adjusted EBITDA as a non-GAAP financial measure.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:2528:2956",
+          "start": 2528,
+          "end": 2956,
+          "text": "To supplement our consolidated financial statements, which are prepared and presented in accordance with generally accepted accounting principles in the United States (\"GAAP\"), we use certain financial measures including adjusted EBITDA and adjusted EBITDA margin, adjusted operating income and adjusted operating income margin, and adjusted net loss and adjusted net loss margin, collectively, to help us evaluate our business.",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "source_case_id": "cw-gaap",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-017",
+      "candidate": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+      "original": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "ms-quarter",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-018",
+      "candidate": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+      "original": "Microsoft reported revenue of $76.4 billion for the quarter, up 18% (up 17% in constant currency).",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            48,
+            59
+          ],
+          "replacement": "the quarter ended June 30, 2025",
+          "purpose": "Resolve reporting quarter from release introduction.",
+          "evidence_refs": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "original_substring": "the quarter",
+          "evidence": [
+            {
+              "id": "d203:0f4e339342d4fc63:0:1132",
+              "start": 0,
+              "end": 1132,
+              "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+              "section": null,
+              "turn": null,
+              "speaker": null,
+              "role": null,
+              "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+              "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "speaker_role": null
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "ms-period",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-019",
+      "candidate": "CoreWeave reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+      "original": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            0,
+            9
+          ],
+          "replacement": "CoreWeave",
+          "purpose": "Nearby archive issuer cannot replace explicit Microsoft attribution.",
+          "evidence_refs": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "original_substring": "Microsoft",
+          "evidence": [
+            {
+              "id": "d203:0f4e339342d4fc63:0:1132",
+              "start": 0,
+              "end": 1132,
+              "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+              "section": null,
+              "turn": null,
+              "speaker": null,
+              "role": null,
+              "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+              "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "speaker_role": null
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "ms-publisher-negative",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-020",
+      "candidate": "Microsoft said it reported revenue of $76.4 billion for the quarter ended July 30, 2025.",
+      "original": "Microsoft said it reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "resolved",
+      "missing_information": [],
+      "edits": [
+        {
+          "original_span": [
+            74,
+            81
+          ],
+          "replacement": "July 30",
+          "purpose": "Publication date is not quarter-end measurement date.",
+          "evidence_refs": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "original_substring": "June 30",
+          "evidence": [
+            {
+              "id": "d203:0f4e339342d4fc63:0:1132",
+              "start": 0,
+              "end": 1132,
+              "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+              "section": null,
+              "turn": null,
+              "speaker": null,
+              "role": null,
+              "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+              "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "speaker_role": null
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "ms-publication-negative",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-021",
+      "candidate": "Amy Hood, Microsoft CFO, said Microsoft Cloud revenue reached $46.7 billion in the fiscal-year closing quarter, up 27% (up 25% in constant currency).",
+      "original": "Amy Hood, Microsoft CFO, said Microsoft Cloud revenue reached $46.7 billion in the fiscal-year closing quarter, up 27% (up 25% in constant currency).",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unresolved",
+      "missing_information": [
+        "Fiscal-year closing quarter requires independently verified period attachment; do not substitute calendar year-end."
+      ],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "ms-quote-year",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-022",
+      "candidate": "CoreWeave management said its contracted but not yet active capacity represents latent revenue potential monetized as built and delivered.",
+      "original": "CoreWeave management said its contracted but not yet active capacity represents latent revenue potential monetized as built and delivered.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "source_case_id": "cw-heldout-qualification",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-023",
+      "candidate": "CoreWeave presentation lists Active Power and Contracted Power.",
+      "original": "CoreWeave presentation lists Active Power and Contracted Power.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unresolved",
+      "missing_information": [
+        "Held-out label/value association requires original layout."
+      ],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4981:5010",
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "source_case_id": "cw-heldout-table",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-024",
+      "candidate": "Satya Nadella, Microsoft CEO, said Azure surpassed $75 billion in revenue this year, up 34 percent.",
+      "original": "Satya Nadella, Microsoft CEO, said Azure surpassed $75 billion in revenue this year, up 34 percent.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unresolved",
+      "missing_information": [
+        "Held-out fiscal versus calendar year reference; preserve attribution."
+      ],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "ms-heldout-customer",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-025",
+      "candidate": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+      "original": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.\n",
+          "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+          "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "phase2-live:msft-fy25q4-results-announcement",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-026",
+      "candidate": "Satya Nadella, chairman and chief executive officer of Microsoft, said cloud and AI is the driving force of business transformation across every industry and sector.",
+      "original": "Satya Nadella, chairman and chief executive officer of Microsoft, said cloud and AI is the driving force of business transformation across every industry and sector.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.\n",
+          "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+          "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "phase2-live:msft-nadella-cloud-ai-positioning",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-027",
+      "candidate": "Satya Nadella, chairman and chief executive officer of Microsoft, said that this year Azure surpassed $75 billion in revenue, up 34 percent, driven by growth across all workloads.",
+      "original": "Satya Nadella, chairman and chief executive officer of Microsoft, said that this year Azure surpassed $75 billion in revenue, up 34 percent, driven by growth across all workloads.",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.\n",
+          "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+          "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "phase2-live:msft-nadella-azure-75b-revenue",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    },
+    {
+      "id": "case-028",
+      "candidate": "Amy Hood, executive vice president and chief financial officer of Microsoft, said Microsoft closed out the fiscal year with a strong quarter ended June 30, 2025, highlighted by Microsoft Cloud revenue reaching $46.7 billion, up 27% year-over-year (up 25% in constant currency).",
+      "original": "Amy Hood, executive vice president and chief financial officer of Microsoft, said Microsoft closed out the fiscal year with a strong quarter ended June 30, 2025, highlighted by Microsoft Cloud revenue reaching $46.7 billion, up 27% year-over-year (up 25% in constant currency).",
+      "representation": "source_grounded_statement",
+      "proposal_status": "unnecessary",
+      "missing_information": [],
+      "edits": [],
+      "references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.\n",
+          "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+          "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source": {
+        "path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "source_case_id": "phase2-live:msft-hood-cloud-46-7b-fy-close",
+      "assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      }
+    }
+  ]
+}

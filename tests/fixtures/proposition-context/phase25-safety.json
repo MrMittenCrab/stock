@@ -1,0 +1,89 @@
+{
+  "kind": "New authored development counterfactuals; simulated rejection verdicts, no empirical semantic accuracy",
+  "cases": [
+    {
+      "id": "neighbor-issuer",
+      "source": "Alpha management expects growth. Beta management expects a decline.",
+      "original": "Alpha management expects growth.",
+      "proposal": "Beta management expects growth.",
+      "reason": "Neighboring issuer cannot replace Alpha."
+    },
+    {
+      "id": "customer-speaker",
+      "source": "Customer Jane Smith said: Our orders may grow. Alpha issued the release.",
+      "original": "Customer Jane Smith said her company’s orders may grow.",
+      "proposal": "Alpha management said Alpha’s orders will grow.",
+      "reason": "Customer speech is not issuer management; may is not will."
+    },
+    {
+      "id": "fiscal-calendar",
+      "source": "Alpha management reported revenue for fiscal year 2025; fiscal year-end was June 30.",
+      "original": "Alpha management reported revenue for fiscal year 2025.",
+      "proposal": "Alpha management reported revenue for calendar year 2025.",
+      "reason": "Fiscal and calendar windows differ."
+    },
+    {
+      "id": "publication-measurement",
+      "source": "Published July 30, 2025. Alpha reported capacity as of June 30, 2025.",
+      "original": "Alpha reported capacity as of June 30, 2025.",
+      "proposal": "Alpha reported capacity as of July 30, 2025.",
+      "reason": "Publication date is not measurement date."
+    },
+    {
+      "id": "actual-forecast",
+      "source": "Alpha management expects a facility to open in 2027.",
+      "original": "Alpha management expects a facility to open in 2027.",
+      "proposal": "Alpha opened a facility in 2027.",
+      "reason": "Forecast cannot become achieved result."
+    },
+    {
+      "id": "contracted-active",
+      "source": "Alpha management reported 850 MW of contracted capacity.",
+      "original": "Alpha management reported 850 MW of contracted capacity.",
+      "proposal": "Alpha management reported 850 MW of active capacity.",
+      "reason": "Contracted is not active."
+    },
+    {
+      "id": "revenue-bookings-backlog",
+      "source": "Alpha management reported $5 billion of bookings, subject to cancellations.",
+      "original": "Alpha management reported $5 billion of bookings, subject to cancellations.",
+      "proposal": "Alpha management reported $5 billion of revenue.",
+      "reason": "Bookings, backlog and revenue differ; cancellation caveat lost."
+    },
+    {
+      "id": "currency-scale-rounding",
+      "source": "Alpha management reported approximately $5 billion of revenue, more than $4 billion.",
+      "original": "Alpha management reported approximately $5 billion of revenue, more than $4 billion.",
+      "proposal": "Alpha management reported exactly €5 million of revenue, equal to €4 million.",
+      "reason": "Currency, scale, approximation and inequality all change."
+    },
+    {
+      "id": "gaap-adjusted",
+      "source": "Alpha reported adjusted EBITDA excluding stock compensation.",
+      "original": "Alpha reported adjusted EBITDA excluding stock compensation.",
+      "proposal": "Alpha reported GAAP net income including stock compensation.",
+      "reason": "Accounting basis, metric and exclusions change."
+    },
+    {
+      "id": "footnote-attachment",
+      "source": "Alpha management said capacity is illustrative and may not reflect actual locations.",
+      "original": "Alpha management said capacity is illustrative and may not reflect actual locations.",
+      "proposal": "Alpha management said capacity reflects actual locations.",
+      "reason": "Material footnote cannot be dropped."
+    },
+    {
+      "id": "missing-comparison",
+      "source": "Alpha management said revenue grew; no comparison period is specified.",
+      "original": "Alpha management said revenue grew.",
+      "proposal": "Alpha management said revenue grew year-over-year.",
+      "reason": "Missing comparison period cannot be invented."
+    },
+    {
+      "id": "multiple-antecedents",
+      "source": "Alpha management discussed facility A and facility B and said it might open later.",
+      "original": "Alpha management said it might open later.",
+      "proposal": "Alpha management said facility A will open later.",
+      "reason": "Multiple antecedents require abstention and modality retained."
+    }
+  ]
+}

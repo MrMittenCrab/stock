@@ -1,0 +1,3433 @@
+{
+  "kind": "deterministic integrity checks plus recorded-response replay; semantic conclusions require human adjudication",
+  "baseline_sha256": "599599f06d2f7842435d70b3f72d5d0d8732d4ef22dd648362130814f79461e1",
+  "baseline_freeze_commit": "c41a044",
+  "dataset_sha256": "c5afa26c472842f79efb15dc5dedc6ea42ed9d3734a700c2c1a8cfc82df0a545",
+  "reviews_sha256": "ce8d825e4c5a49332b84589a5cb0da36d8b6becd5bc6b1ac1fbd0f3302d063a9",
+  "cases": [
+    {
+      "id": "cw-actual",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+      "proposal": {
+        "context_status": "unnecessary",
+        "standalone_text": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+        "resolutions": [],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unnecessary",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+        "proposition_id": "0efd1b208cbcabb0bb7484d177bae4262ceb2275281a35eaad4867822fdd7375",
+        "resolutions": [],
+        "source_fingerprint": "44a85496e2bb6fc62e8556adcd325dc0098b791229fb0663e2e07b408527b5ce",
+        "standalone_text": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "908c63760cce396e0e658b93c5543b66e8372988d8d2c935dcbbd4ef02310f5b",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        },
+        {
+          "source_id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        },
+        {
+          "id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-forecast",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said virtually all of its more than 3.1 gigawatts of contracted capacity was expected to come online by the end of 2027.",
+      "proposal": {
+        "context_status": "unnecessary",
+        "standalone_text": "CoreWeave management said virtually all of its more than 3.1 gigawatts of contracted capacity was expected to come online by the end of 2027.",
+        "resolutions": [],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unnecessary",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said virtually all of its more than 3.1 gigawatts of contracted capacity was expected to come online by the end of 2027.",
+        "proposition_id": "ffbf73b4314a1f837c7d4ea97d5efe3ae8e12a43efc38790fca701390e48b9e6",
+        "resolutions": [],
+        "source_fingerprint": "304bee2f4fc7df00fb356a07bb55dcb41b87d045aec307bbf437675f4f5c7583",
+        "standalone_text": "CoreWeave management said virtually all of its more than 3.1 gigawatts of contracted capacity was expected to come online by the end of 2027.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "b721c1472f0881e941f1052d17de03090319e0c999f91410ebb850e07e7c8f30",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-we",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said: We contracted close to 2 gigawatts of additional power in 2025.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "CoreCoreWeaveave management said: We contracted close to 2 gigawatts of additional power in 2025.",
+        "resolutions": [
+          {
+            "original_span": [
+              4,
+              6
+            ],
+            "replacement": "CoreWeave",
+            "purpose": "Resolve source-local reference",
+            "evidence_refs": [
+              "d201:ff516a19a5418342:9117:9654",
+              "d201:ff516a19a5418342:2545:3213"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "resolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said: We contracted close to 2 gigawatts of additional power in 2025.",
+        "proposition_id": "49264c86a341d33495090e4b1117681bb5d85f23828f2a6db75a601871aa7789",
+        "resolutions": [
+          {
+            "evidence_refs": [
+              "d201:ff516a19a5418342:9117:9654",
+              "d201:ff516a19a5418342:2545:3213"
+            ],
+            "original_span": [
+              4,
+              6
+            ],
+            "purpose": "Resolve source-local reference",
+            "replacement": "CoreWeave"
+          }
+        ],
+        "source_fingerprint": "776dec6338d79c90020b158728d228026dd87115b391d0fdfa6ea559be09f545",
+        "standalone_text": "CoreCoreWeaveave management said: We contracted close to 2 gigawatts of additional power in 2025.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "b5afb15541638108d9c0dfa1a1f5b7c2a84ab2c92dcc8bd3cab139f9b0cbc2fd",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            4,
+            6
+          ],
+          "replacement": "CoreWeave",
+          "purpose": "Resolve source-local reference",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654",
+            "d201:ff516a19a5418342:2545:3213"
+          ],
+          "original_substring": "We",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            },
+            {
+              "id": "d201:ff516a19a5418342:2545:3213",
+              "start": 2545,
+              "end": 3213,
+              "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        },
+        {
+          "source_id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        },
+        {
+          "id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [
+        "Edit splits a lexical token; semantic review required (not a general rejection rule)."
+      ],
+      "known_unsafe_accepted": true,
+      "safe_for_downstream": false,
+      "downstream_reason": "Known malformed issuer replacement accepted by recorded verdict.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "fail",
+        "truth_condition_preservation": "fail",
+        "source_support": "fail",
+        "financial_fidelity": "issuer corruption",
+        "fluency": "fail",
+        "reason": "Span [4,6] is We inside CoreWeave, not the first-person pronoun. CoreCoreWeaveave is absent from the source."
+      }
+    },
+    {
+      "id": "cw-year",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said it ended the year with more than 850 megawatts of active power.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+        "resolutions": [
+          {
+            "original_span": [
+              35,
+              43
+            ],
+            "replacement": "2025",
+            "purpose": "Resolve source-local reference",
+            "evidence_refs": [
+              "d201:ff516a19a5418342:9117:9654",
+              "d201:ff516a19a5418342:2545:3213"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "resolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said it ended the year with more than 850 megawatts of active power.",
+        "proposition_id": "bdeaaae4b7e613d745a2f61d71dcbe687cd24372dd9225a9157bd51c94d97290",
+        "resolutions": [
+          {
+            "evidence_refs": [
+              "d201:ff516a19a5418342:9117:9654",
+              "d201:ff516a19a5418342:2545:3213"
+            ],
+            "original_span": [
+              35,
+              43
+            ],
+            "purpose": "Resolve source-local reference",
+            "replacement": "2025"
+          }
+        ],
+        "source_fingerprint": "fdf52112a0faac46ec519464f57d5e02e60c8f4cc0fa6266f166dcbae0dd1105",
+        "standalone_text": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "02b8be3a073834f4c9ddf4a84a74f796aa059985010004dc7ea3e2cfe0283635",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            35,
+            43
+          ],
+          "replacement": "2025",
+          "purpose": "Resolve source-local reference",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654",
+            "d201:ff516a19a5418342:2545:3213"
+          ],
+          "original_substring": "the year",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            },
+            {
+              "id": "d201:ff516a19a5418342:2545:3213",
+              "start": 2545,
+              "end": 3213,
+              "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        },
+        {
+          "source_id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        },
+        {
+          "id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-antecedent",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management expected virtually all of it to come online by the end of 2027.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "CoreWeave management expected virtually all of its more than 3.1 gigawatts of contracted capacity to come online by the end of 2027.",
+        "resolutions": [
+          {
+            "original_span": [
+              47,
+              49
+            ],
+            "replacement": "its more than 3.1 gigawatts of contracted capacity",
+            "purpose": "Resolve source-local reference",
+            "evidence_refs": [
+              "d201:ff516a19a5418342:9117:9654"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "resolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management expected virtually all of it to come online by the end of 2027.",
+        "proposition_id": "ddc9c4a2dd6e9e170199d4c857f31c3b52c4cc702538ebcf5107761f0efc4a23",
+        "resolutions": [
+          {
+            "evidence_refs": [
+              "d201:ff516a19a5418342:9117:9654"
+            ],
+            "original_span": [
+              47,
+              49
+            ],
+            "purpose": "Resolve source-local reference",
+            "replacement": "its more than 3.1 gigawatts of contracted capacity"
+          }
+        ],
+        "source_fingerprint": "7e92d78d655480dce33b45e6974e648c1b28ccfca3243a0d83369877c934645f",
+        "standalone_text": "CoreWeave management expected virtually all of its more than 3.1 gigawatts of contracted capacity to come online by the end of 2027.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "f2ee17c6cbb4dafe96308ecbc39406a919b20b3cd3b65f2a705c8defb8005333",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            47,
+            49
+          ],
+          "replacement": "its more than 3.1 gigawatts of contracted capacity",
+          "purpose": "Resolve source-local reference",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654"
+          ],
+          "original_substring": "it",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-forecast-actual-negative",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management expected virtually all contracted capacity to come online by the end of 2027.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "CoreWeave management confirmed virtually all contracted capacity to come online by the end of 2027.",
+        "resolutions": [
+          {
+            "original_span": [
+              21,
+              29
+            ],
+            "replacement": "confirmed",
+            "purpose": "Unsupported change from expectation to confirmation.",
+            "evidence_refs": [
+              "d201:ff516a19a5418342:9117:9654"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management expected virtually all contracted capacity to come online by the end of 2027.",
+        "proposition_id": "d8562adf4290262d60723a05ffd88b8ae49a2e4d8d5974076890936bef72715d",
+        "resolutions": [],
+        "source_fingerprint": "dd35157d46e961c3585f35a40a1fc180d70a91982c2e92a3a888785f25da2578",
+        "standalone_text": "CoreWeave management expected virtually all contracted capacity to come online by the end of 2027.",
+        "unresolved": [
+          "Unsupported change from expectation to confirmation."
+        ],
+        "verification": {
+          "artifact_id": "ac896c1264c3d3029c593da62bb52517600901f3f0a7ced5c895fe230e10f699",
+          "context_preservation": "rejected",
+          "original_support": "supported",
+          "reason": "Unsupported change from expectation to confirmation."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            21,
+            29
+          ],
+          "replacement": "confirmed",
+          "purpose": "Unsupported change from expectation to confirmation.",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654"
+          ],
+          "original_substring": "expected",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "rejected",
+        "context_reason": "Unsupported change from expectation to confirmation."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-active-negative",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said it ended 2025 with more than 3.1 gigawatts of contracted capacity.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "CoreWeave management said it ended 2025 with more than 3.1 gigawatts of active capacity.",
+        "resolutions": [
+          {
+            "original_span": [
+              72,
+              82
+            ],
+            "replacement": "active",
+            "purpose": "Contracted capacity does not establish operating capacity.",
+            "evidence_refs": [
+              "d201:ff516a19a5418342:9117:9654"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said it ended 2025 with more than 3.1 gigawatts of contracted capacity.",
+        "proposition_id": "7868815a8b20b9f362644c2cc95d39c3f414c4f1639120894337e80c09ee3a40",
+        "resolutions": [],
+        "source_fingerprint": "8bdcdd4a5a9f5b8f3665bef7bd10c3e947f814ecdda7caa22eedf3b7840b4ab0",
+        "standalone_text": "CoreWeave management said it ended 2025 with more than 3.1 gigawatts of contracted capacity.",
+        "unresolved": [
+          "Contracted capacity does not establish operating capacity."
+        ],
+        "verification": {
+          "artifact_id": "3c3dfa4161efe08e5f96f29e918d90c2b433113e958307ddba00c1fd6d11b6f6",
+          "context_preservation": "rejected",
+          "original_support": "supported",
+          "reason": "Contracted capacity does not establish operating capacity."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            72,
+            82
+          ],
+          "replacement": "active",
+          "purpose": "Contracted capacity does not establish operating capacity.",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:9117:9654"
+          ],
+          "original_substring": "contracted",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:9117:9654",
+              "start": 9117,
+              "end": 9654,
+              "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "rejected",
+        "context_reason": "Contracted capacity does not establish operating capacity."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-guarantee-negative",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said it had \\$66.8 billion of contracted revenue backlog.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "CoreWeave management said it had \\$66.8 billion of guaranteed revenue.",
+        "resolutions": [
+          {
+            "original_span": [
+              51,
+              77
+            ],
+            "replacement": "guaranteed revenue",
+            "purpose": "Backlog is not guaranteed recognized revenue.",
+            "evidence_refs": [
+              "d201:ff516a19a5418342:13748:14199"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said it had \\$66.8 billion of contracted revenue backlog.",
+        "proposition_id": "77f5c31715320918c531b220ee3928b87741783825a7840472f6cc38a6a2cae1",
+        "resolutions": [],
+        "source_fingerprint": "2c765936a62462cd22d8879b542ab1421b8b58f0225b1e84efa3f14969d70d17",
+        "standalone_text": "CoreWeave management said it had \\$66.8 billion of contracted revenue backlog.",
+        "unresolved": [
+          "Backlog is not guaranteed recognized revenue."
+        ],
+        "verification": {
+          "artifact_id": "5525773771f234636f8aec835497a4081fd83b9477e929d8fbe85e89e7c10565",
+          "context_preservation": "rejected",
+          "original_support": "supported",
+          "reason": "Backlog is not guaranteed recognized revenue."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            51,
+            77
+          ],
+          "replacement": "guaranteed revenue",
+          "purpose": "Backlog is not guaranteed recognized revenue.",
+          "evidence_refs": [
+            "d201:ff516a19a5418342:13748:14199"
+          ],
+          "original_substring": "contracted revenue backlog",
+          "evidence": [
+            {
+              "id": "d201:ff516a19a5418342:13748:14199",
+              "start": 13748,
+              "end": 14199,
+              "text": "Before I turn it over to Nitin, let me leave you with a few final thoughts. We have \\$66.8 billion of contracted revenue backlog, with every contract for new capacity expected to begin generating revenue by year-end 2026. We are delivering cloud infrastructure and converting it to revenue today. We are building and operating some of the largest purpose-built AI clusters for the world's most demanding workloads at a pace and quality second to none.",
+              "section": "MANAGEMENT DISCUSSION SECTION",
+              "turn": "t2441",
+              "speaker": "Michael Intrator",
+              "role": "Management",
+              "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+              "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+              "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:13748:14199",
+          "start": 13748,
+          "end": 14199,
+          "text": "Before I turn it over to Nitin, let me leave you with a few final thoughts. We have \\$66.8 billion of contracted revenue backlog, with every contract for new capacity expected to begin generating revenue by year-end 2026. We are delivering cloud infrastructure and converting it to revenue today. We are building and operating some of the largest purpose-built AI clusters for the world's most demanding workloads at a pace and quality second to none.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:13748:14199",
+          "start": 13748,
+          "end": 14199,
+          "text": "Before I turn it over to Nitin, let me leave you with a few final thoughts. We have \\$66.8 billion of contracted revenue backlog, with every contract for new capacity expected to begin generating revenue by year-end 2026. We are delivering cloud infrastructure and converting it to revenue today. We are building and operating some of the largest purpose-built AI clusters for the world's most demanding workloads at a pace and quality second to none.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "rejected",
+        "context_reason": "Backlog is not guaranteed recognized revenue."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-this-scale",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said operating at this scale and pace is inherently complex.",
+      "proposal": {
+        "context_status": "unresolved",
+        "standalone_text": "CoreWeave management said operating at this scale and pace is inherently complex.",
+        "resolutions": [],
+        "unresolved": [
+          "This scale and pace has multiple antecedents; no complete minimal interpretation established."
+        ]
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said operating at this scale and pace is inherently complex.",
+        "proposition_id": "f610d5e066358f34b178f6ab63bae449f5bc9b783fc6ed2f8d683c131dd95e46",
+        "resolutions": [],
+        "source_fingerprint": "099e04b842784b1be47f9eeb6e876af8f5ea602f47665c5db75d1508d967d2c4",
+        "standalone_text": "CoreWeave management said operating at this scale and pace is inherently complex.",
+        "unresolved": [
+          "This scale and pace has multiple antecedents; no complete minimal interpretation established."
+        ],
+        "verification": {
+          "artifact_id": "747b3f0d31eb37cebebabff9d63d534e897c162dd9334bf2ccc275260e095993",
+          "context_preservation": "unresolved",
+          "original_support": "supported",
+          "reason": "This scale and pace has multiple antecedents; no complete minimal interpretation established."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:10019:10486",
+          "start": 10019,
+          "end": 10486,
+          "text": "Operating at this scale and pace is inherently complex. When disruptions surface, we move decisively through disciplined coordination across teams and partners. We quickly cleared the delays discussed in our third quarter earnings call and, in total, we have now delivered more than 50,000 Grace Blackwells to the impacted customer, deploying servers on a rolling basis and delivering them within weeks of receiving access to the requisite data center infrastructure.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:10019:10486",
+          "start": 10019,
+          "end": 10486,
+          "text": "Operating at this scale and pace is inherently complex. When disruptions surface, we move decisively through disciplined coordination across teams and partners. We quickly cleared the delays discussed in our third quarter earnings call and, in total, we have now delivered more than 50,000 Grace Blackwells to the impacted customer, deploying servers on a rolling basis and delivering them within weeks of receiving access to the requisite data center infrastructure.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "unresolved",
+        "context_reason": "This scale and pace has multiple antecedents; no complete minimal interpretation established."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-period-uncertain",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said average H100 pricing in Q4 was within 10% of where it started the year.",
+      "proposal": {
+        "context_status": "unresolved",
+        "standalone_text": "CoreWeave management said average H100 pricing in Q4 was within 10% of where it started the year.",
+        "resolutions": [],
+        "unresolved": [
+          "Replay withholds independently reviewed comparison-period resolution."
+        ]
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said average H100 pricing in Q4 was within 10% of where it started the year.",
+        "proposition_id": "16216d5719891eb7a46645aa859d0c5021f36f2920c4695320abbe57a2d6977b",
+        "resolutions": [],
+        "source_fingerprint": "5cb1f3b38aaadd934226e18672a579ffffd0d114449ad042aaa94b7baf2f863b",
+        "standalone_text": "CoreWeave management said average H100 pricing in Q4 was within 10% of where it started the year.",
+        "unresolved": [
+          "Replay withholds independently reviewed comparison-period resolution."
+        ],
+        "verification": {
+          "artifact_id": "7674a45699d92ba26d8fc21fa1f5c1880001621b15196b47c03b473727daa76f",
+          "context_preservation": "unresolved",
+          "original_support": "supported",
+          "reason": "Replay withholds independently reviewed comparison-period resolution."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:5782:6000",
+          "start": 5782,
+          "end": 6000,
+          "text": "We are also seeing significant increase in demand for prior generations of GPU architectures, where supply also remains constrained. Average H100 pricing in Q4 was within 10% of where it started the year, while average",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:5782:6000",
+          "start": 5782,
+          "end": 6000,
+          "text": "We are also seeing significant increase in demand for prior generations of GPU architectures, where supply also remains constrained. Average H100 pricing in Q4 was within 10% of where it started the year, while average",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "unresolved",
+        "context_reason": "Replay withholds independently reviewed comparison-period resolution."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-revenue",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said it generated more than \\$5.1 billion of revenue in 2025, up 168% year-over-year.",
+      "proposal": {
+        "context_status": "unnecessary",
+        "standalone_text": "CoreWeave management said it generated more than \\$5.1 billion of revenue in 2025, up 168% year-over-year.",
+        "resolutions": [],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unnecessary",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said it generated more than \\$5.1 billion of revenue in 2025, up 168% year-over-year.",
+        "proposition_id": "baf28dd5236b1e6d8219b97994a74714eaf6481b13ffe47f0d2a3d82090b6747",
+        "resolutions": [],
+        "source_fingerprint": "5667c5e1a1937b6f29327ecb3b9bf67c75e6da7e7c473f89f9ff85637c49a36e",
+        "standalone_text": "CoreWeave management said it generated more than \\$5.1 billion of revenue in 2025, up 168% year-over-year.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "9e6fc1bff88b9b97944ec0e23ef7b220a23f49302e9e69ad636026ce6065eef2",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:2545:3213",
+          "start": 2545,
+          "end": 3213,
+          "text": "Good afternoon, everyone, and thank you for joining us. 2025 was a defining year for CoreWeave. We generated more than \\$5.1 billion of revenue, up 168% year-over-year; grew our contracted revenue backlog to \\$66.8 billion, an increase of \\$11.2 billion sequentially and more than \\$50 billion year-over-year; reached more than 850 megawatts of active power as of December 31; and added approximately twice as many new reserved instance customers in Q4 versus any quarter in our history. We delivered these results while quickly resolving the data center delays we discussed last quarter, delivering the impacted deployments ahead of our Q3 earnings call expectations.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-note",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "original": "CoreWeave presentation notes say figures are as of December 31, 2025 and the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "proposal": {
+        "context_status": "unnecessary",
+        "standalone_text": "CoreWeave presentation notes say figures are as of December 31, 2025 and the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+        "resolutions": [],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unnecessary",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave presentation notes say figures are as of December 31, 2025 and the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+        "proposition_id": "919878999f25e6c0074969db6d8914fba1194eb767534ff8290d460af8ab2796",
+        "resolutions": [],
+        "source_fingerprint": "f0c423afb2a56ba5ae0650e306b0c5dfed0e98a276b6328007df41db2c920c79",
+        "standalone_text": "CoreWeave presentation notes say figures are as of December 31, 2025 and the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "dd16e0c9a72c72347712ecb573cfa61ffd2d33fd7cb63a97ac1a675aca54ab9b",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d202:9a240883dc057e1b:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities",
+          "section": "Our Platform is Purpose-Built for AI",
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+          "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-note-negative",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "original": "CoreWeave presentation notes say the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "CoreWeave presentation notes say the graphic is illustrative and precisely reflects all current locations or capacities.",
+        "resolutions": [
+          {
+            "original_span": [
+              65,
+              90
+            ],
+            "replacement": "precisely reflects",
+            "purpose": "Removes material illustrative-footprint limitation.",
+            "evidence_refs": [
+              "d202:9a240883dc057e1b:4571:4761"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave presentation notes say the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+        "proposition_id": "696611f8695d9544d35bc36f4684b386c27d599bfe45d578b01fedb4482010f1",
+        "resolutions": [],
+        "source_fingerprint": "cc94c8468ad34a333d4fc6e4a3b7ae5d9e425bdda8b354535ce245d11f5b771b",
+        "standalone_text": "CoreWeave presentation notes say the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+        "unresolved": [
+          "Removes material illustrative-footprint limitation."
+        ],
+        "verification": {
+          "artifact_id": "22f536287dc9151fad5aa68f6dbd209189a1fa10fd776549df883f1feee0eeed",
+          "context_preservation": "rejected",
+          "original_support": "supported",
+          "reason": "Removes material illustrative-footprint limitation."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            65,
+            90
+          ],
+          "replacement": "precisely reflects",
+          "purpose": "Removes material illustrative-footprint limitation.",
+          "evidence_refs": [
+            "d202:9a240883dc057e1b:4571:4761"
+          ],
+          "original_substring": "may not precisely reflect",
+          "evidence": [
+            {
+              "id": "d202:9a240883dc057e1b:4571:4761",
+              "start": 4571,
+              "end": 4761,
+              "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities",
+              "section": "Our Platform is Purpose-Built for AI",
+              "turn": null,
+              "speaker": null,
+              "role": null,
+              "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+              "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+              "speaker_role": null
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d202:9a240883dc057e1b:4571:4761",
+          "start": 4571,
+          "end": 4761,
+          "text": "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities",
+          "section": "Our Platform is Purpose-Built for AI",
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+          "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "rejected",
+        "context_reason": "Removes material illustrative-footprint limitation."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-label",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "original": "CoreWeave presentation lists Active Power and Contracted Power.",
+      "proposal": {
+        "context_status": "unresolved",
+        "standalone_text": "CoreWeave presentation lists Active Power and Contracted Power.",
+        "resolutions": [],
+        "unresolved": [
+          "Flattened labels do not establish label/value association or table geometry."
+        ]
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave presentation lists Active Power and Contracted Power.",
+        "proposition_id": "9dabac85d6653af8a5e0d8ef26ab0acf53cdafb9e9c948e5d7863491a54439bb",
+        "resolutions": [],
+        "source_fingerprint": "d24dfb1e6760401ac15e9aabc105fce9a9a15409a2a9eb49dd4d8c298a7aa3c0",
+        "standalone_text": "CoreWeave presentation lists Active Power and Contracted Power.",
+        "unresolved": [
+          "Flattened labels do not establish label/value association or table geometry."
+        ],
+        "verification": {
+          "artifact_id": "5c757ea6555eea1c4672b9d5aec8b700e93d4e895d70c745aedd6293028e049a",
+          "context_preservation": "unresolved",
+          "original_support": "supported",
+          "reason": "Flattened labels do not establish label/value association or table geometry."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4981:5010",
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d202:9a240883dc057e1b:4981:5010",
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power",
+          "section": "Our Platform is Purpose-Built for AI",
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+          "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "unresolved",
+        "context_reason": "Flattened labels do not establish label/value association or table geometry."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-footnote",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "original": "CoreWeave presentation bases its performance claim on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating.",
+      "proposal": {
+        "context_status": "unnecessary",
+        "standalone_text": "CoreWeave presentation bases its performance claim on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating.",
+        "resolutions": [],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unnecessary",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave presentation bases its performance claim on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating.",
+        "proposition_id": "f38525a05d3cf44283893965947adda0aea4ef0605a0560601e09c104cd989ec",
+        "resolutions": [],
+        "source_fingerprint": "c0cdcba2ec3b3a3f35d61ddbe7d72b17779f4550adb999d510b5803aa47225df",
+        "standalone_text": "CoreWeave presentation bases its performance claim on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "c49b5f87f616c3747a323de22ab399944525f55553ba72091b5f98dae6433d9d",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4064:4178",
+          "start": 4064,
+          "end": 4178,
+          "text": "<sup>1.</sup> Based on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        },
+        {
+          "source_id": "d202:9a240883dc057e1b:3502:3611",
+          "start": 3502,
+          "end": 3611,
+          "text": "Cloud Platform **Purpose-Built for Artificial Intelligence** Delivering **Unmatched Performance**<sup>1</sup>",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d202:9a240883dc057e1b:3502:3611",
+          "start": 3502,
+          "end": 3611,
+          "text": "Cloud Platform **Purpose-Built for Artificial Intelligence** Delivering **Unmatched Performance**<sup>1</sup>",
+          "section": "CoreWeave - The Essential Cloud for AI",
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+          "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "speaker_role": null
+        },
+        {
+          "id": "d202:9a240883dc057e1b:4064:4178",
+          "start": 4064,
+          "end": 4178,
+          "text": "<sup>1.</sup> Based on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating",
+          "section": "CoreWeave - The Essential Cloud for AI",
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+          "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-gaap",
+      "heldout": false,
+      "source": {
+        "path": "sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "original": "CoreWeave presentation uses adjusted EBITDA as a non-GAAP financial measure.",
+      "proposal": {
+        "context_status": "unnecessary",
+        "standalone_text": "CoreWeave presentation uses adjusted EBITDA as a non-GAAP financial measure.",
+        "resolutions": [],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unnecessary",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave presentation uses adjusted EBITDA as a non-GAAP financial measure.",
+        "proposition_id": "1f5e4960e29846b62f5d6298188bead304acb4ae8b4f833c681239860a8ba659",
+        "resolutions": [],
+        "source_fingerprint": "36627bcfcee6ce23101d40f6c5f87740317fc7a75f7a9030c2bf4943464e88d8",
+        "standalone_text": "CoreWeave presentation uses adjusted EBITDA as a non-GAAP financial measure.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "396a4d6c6f52587dd87a264521ad7ef51561e8d2e65af2d26a00002f25882bda",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:2528:2956",
+          "start": 2528,
+          "end": 2956,
+          "text": "To supplement our consolidated financial statements, which are prepared and presented in accordance with generally accepted accounting principles in the United States (\"GAAP\"), we use certain financial measures including adjusted EBITDA and adjusted EBITDA margin, adjusted operating income and adjusted operating income margin, and adjusted net loss and adjusted net loss margin, collectively, to help us evaluate our business.",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d202:9a240883dc057e1b:2528:2956",
+          "start": 2528,
+          "end": 2956,
+          "text": "To supplement our consolidated financial statements, which are prepared and presented in accordance with generally accepted accounting principles in the United States (\"GAAP\"), we use certain financial measures including adjusted EBITDA and adjusted EBITDA margin, adjusted operating income and adjusted operating income margin, and adjusted net loss and adjusted net loss margin, collectively, to help us evaluate our business.",
+          "section": "Earnings Presentation",
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+          "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "ms-quarter",
+      "heldout": false,
+      "source": {
+        "path": "proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "original": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+      "proposal": {
+        "context_status": "unnecessary",
+        "standalone_text": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+        "resolutions": [],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unnecessary",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+        "proposition_id": "69f907517dd4a5897c2d8cb91634168b48bdb06f7a8c42ce3f33dab76b7ad1e4",
+        "resolutions": [],
+        "source_fingerprint": "769d69526e9087369d7a77b9e9aaf09a9e08d874c395262b59451bb56a43d976",
+        "standalone_text": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "ec57b30e4e05f334190392ebe89b6d74eb9a40b85c8e620fe513e6011992205f",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "section": null,
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+          "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "ms-period",
+      "heldout": false,
+      "source": {
+        "path": "proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "original": "Microsoft reported revenue of $76.4 billion for the quarter, up 18% (up 17% in constant currency).",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+        "resolutions": [
+          {
+            "original_span": [
+              48,
+              59
+            ],
+            "replacement": "the quarter ended June 30, 2025",
+            "purpose": "Resolve reporting quarter from release introduction.",
+            "evidence_refs": [
+              "d203:0f4e339342d4fc63:0:1132"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "resolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "Microsoft reported revenue of $76.4 billion for the quarter, up 18% (up 17% in constant currency).",
+        "proposition_id": "e4210d5f5cec5566e655129534f773ff8602a1c0454f7238c8698e2757474b3c",
+        "resolutions": [
+          {
+            "evidence_refs": [
+              "d203:0f4e339342d4fc63:0:1132"
+            ],
+            "original_span": [
+              48,
+              59
+            ],
+            "purpose": "Resolve reporting quarter from release introduction.",
+            "replacement": "the quarter ended June 30, 2025"
+          }
+        ],
+        "source_fingerprint": "056a9e43dda4d12e924c5df0ac98be5c11a798b20a5ed74fe8eb69e7874e307d",
+        "standalone_text": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "5879b9b607089db718f84a431abaeb33120a251000673d7120e15c4e6e0d6907",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Resolve reporting quarter from release introduction."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            48,
+            59
+          ],
+          "replacement": "the quarter ended June 30, 2025",
+          "purpose": "Resolve reporting quarter from release introduction.",
+          "evidence_refs": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "original_substring": "the quarter",
+          "evidence": [
+            {
+              "id": "d203:0f4e339342d4fc63:0:1132",
+              "start": 0,
+              "end": 1132,
+              "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+              "section": null,
+              "turn": null,
+              "speaker": null,
+              "role": null,
+              "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+              "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "speaker_role": null
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "section": null,
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+          "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Resolve reporting quarter from release introduction."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "ms-publisher-negative",
+      "heldout": false,
+      "source": {
+        "path": "proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "original": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "CoreWeave reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+        "resolutions": [
+          {
+            "original_span": [
+              0,
+              9
+            ],
+            "replacement": "CoreWeave",
+            "purpose": "Nearby archive issuer cannot replace explicit Microsoft attribution.",
+            "evidence_refs": [
+              "d203:0f4e339342d4fc63:0:1132"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+        "proposition_id": "2fe2ae558d1b64692f9fcae8e7d22cafaa2f63209b7c0b078b358cb315e62422",
+        "resolutions": [],
+        "source_fingerprint": "55028fd07b907fb4911cea1b15689a40196f5a5c5b8a6caa09f912c85e138fbb",
+        "standalone_text": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+        "unresolved": [
+          "Nearby archive issuer cannot replace explicit Microsoft attribution."
+        ],
+        "verification": {
+          "artifact_id": "373274c36bf7f7f41202b49ffecfa7fcf316c1c98abd5cb2cadbf33098f157b1",
+          "context_preservation": "rejected",
+          "original_support": "supported",
+          "reason": "Nearby archive issuer cannot replace explicit Microsoft attribution."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            0,
+            9
+          ],
+          "replacement": "CoreWeave",
+          "purpose": "Nearby archive issuer cannot replace explicit Microsoft attribution.",
+          "evidence_refs": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "original_substring": "Microsoft",
+          "evidence": [
+            {
+              "id": "d203:0f4e339342d4fc63:0:1132",
+              "start": 0,
+              "end": 1132,
+              "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+              "section": null,
+              "turn": null,
+              "speaker": null,
+              "role": null,
+              "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+              "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "speaker_role": null
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "section": null,
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+          "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "rejected",
+        "context_reason": "Nearby archive issuer cannot replace explicit Microsoft attribution."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "ms-publication-negative",
+      "heldout": false,
+      "source": {
+        "path": "proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "original": "Microsoft said it reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+      "proposal": {
+        "context_status": "resolved",
+        "standalone_text": "Microsoft said it reported revenue of $76.4 billion for the quarter ended July 30, 2025.",
+        "resolutions": [
+          {
+            "original_span": [
+              74,
+              81
+            ],
+            "replacement": "July 30",
+            "purpose": "Publication date is not quarter-end measurement date.",
+            "evidence_refs": [
+              "d203:0f4e339342d4fc63:0:1132"
+            ]
+          }
+        ],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "Microsoft said it reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+        "proposition_id": "00fd11928a998def2b2760527c02017b307ac05e92280d0aea0b22a9c3402a1f",
+        "resolutions": [],
+        "source_fingerprint": "dd2887fa862d659d43571ef79f4876491459739efdd2f944b49b2dfcee9a6c0a",
+        "standalone_text": "Microsoft said it reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+        "unresolved": [
+          "Publication date is not quarter-end measurement date."
+        ],
+        "verification": {
+          "artifact_id": "817599ed5a31878c6ba5328aad7c881ed7013157a76eea0f9351a07ca3440f85",
+          "context_preservation": "rejected",
+          "original_support": "supported",
+          "reason": "Publication date is not quarter-end measurement date."
+        }
+      },
+      "exact_edits": [
+        {
+          "original_span": [
+            74,
+            81
+          ],
+          "replacement": "July 30",
+          "purpose": "Publication date is not quarter-end measurement date.",
+          "evidence_refs": [
+            "d203:0f4e339342d4fc63:0:1132"
+          ],
+          "original_substring": "June 30",
+          "evidence": [
+            {
+              "id": "d203:0f4e339342d4fc63:0:1132",
+              "start": 0,
+              "end": 1132,
+              "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+              "section": null,
+              "turn": null,
+              "speaker": null,
+              "role": null,
+              "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+              "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+              "speaker_role": null
+            }
+          ]
+        }
+      ],
+      "source_references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "section": null,
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+          "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "rejected",
+        "context_reason": "Publication date is not quarter-end measurement date."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "ms-quote-year",
+      "heldout": false,
+      "source": {
+        "path": "proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "original": "Amy Hood, Microsoft CFO, said Microsoft Cloud revenue reached $46.7 billion in the fiscal-year closing quarter, up 27% (up 25% in constant currency).",
+      "proposal": {
+        "context_status": "unresolved",
+        "standalone_text": "Amy Hood, Microsoft CFO, said Microsoft Cloud revenue reached $46.7 billion in the fiscal-year closing quarter, up 27% (up 25% in constant currency).",
+        "resolutions": [],
+        "unresolved": [
+          "Fiscal-year closing quarter requires independently verified period attachment; do not substitute calendar year-end."
+        ]
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "Amy Hood, Microsoft CFO, said Microsoft Cloud revenue reached $46.7 billion in the fiscal-year closing quarter, up 27% (up 25% in constant currency).",
+        "proposition_id": "11fd0aea86f1e8c26d87779e30d089aa853e7000e6b58512e043fd081fd022a0",
+        "resolutions": [],
+        "source_fingerprint": "aa414394783d30f1f8b0d12e5c19d793fe65af6bc44e96ae67c5cfa1bcb1ce2c",
+        "standalone_text": "Amy Hood, Microsoft CFO, said Microsoft Cloud revenue reached $46.7 billion in the fiscal-year closing quarter, up 27% (up 25% in constant currency).",
+        "unresolved": [
+          "Fiscal-year closing quarter requires independently verified period attachment; do not substitute calendar year-end."
+        ],
+        "verification": {
+          "artifact_id": "9e896cbd52c094276e209b4e67f3d061b0cc315d4d15bfa04ac37adc53dc70a5",
+          "context_preservation": "unresolved",
+          "original_support": "supported",
+          "reason": "Fiscal-year closing quarter requires independently verified period attachment; do not substitute calendar year-end."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "section": null,
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+          "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "unresolved",
+        "context_reason": "Fiscal-year closing quarter requires independently verified period attachment; do not substitute calendar year-end."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-heldout-qualification",
+      "heldout": true,
+      "source": {
+        "path": "sort/document-12.md",
+        "id": 201,
+        "type": "Transcript",
+        "sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+      },
+      "original": "CoreWeave management said its contracted but not yet active capacity represents latent revenue potential monetized as built and delivered.",
+      "proposal": {
+        "context_status": "unnecessary",
+        "standalone_text": "CoreWeave management said its contracted but not yet active capacity represents latent revenue potential monetized as built and delivered.",
+        "resolutions": [],
+        "unresolved": []
+      },
+      "record": {
+        "context_status": "unnecessary",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave management said its contracted but not yet active capacity represents latent revenue potential monetized as built and delivered.",
+        "proposition_id": "e9fe43133b39e88c412bd3a7b3cdfb01eb79370b2345de8c1167e0ce7d8f0e3f",
+        "resolutions": [],
+        "source_fingerprint": "96193bba422675c863d5c231498901c58ada12f16918ab77ebdcee95f36c097b",
+        "standalone_text": "CoreWeave management said its contracted but not yet active capacity represents latent revenue potential monetized as built and delivered.",
+        "unresolved": [],
+        "verification": {
+          "artifact_id": "111296d0ca3c71a18f2aa1d1322f985be24c3ecc416daa8259c0b463255b58f9",
+          "context_preservation": "accepted",
+          "original_support": "supported",
+          "reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d201:ff516a19a5418342:9117:9654",
+          "start": 9117,
+          "end": 9654,
+          "text": "On to execution. We ended the year with more than 850 megawatts of active power, adding approximately 260 megawatts in the fourth quarter alone across 43 active data centers, up from 32 at the start of the year. We contracted close to 2 gigawatts of additional power in 2025, ending the year with more than 3.1 gigawatts of contracted capacity, virtually all of which we expect to come online by the end of 2027. Our contracted but not yet active capacity represents latent revenue potential that we will monetize as built and delivered.",
+          "section": "MANAGEMENT DISCUSSION SECTION",
+          "turn": "t2441",
+          "speaker": "Michael Intrator",
+          "role": "Management",
+          "markdown_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw12.md",
+          "original_sha256": "ff516a19a541834213f870d2355de5b8acddd184b22e9449e6ab8f7f4b16057b",
+          "speaker_role": "Co-Founder, Chairman, President & Chief Executive Officer, CoreWeave, Inc."
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "accepted",
+        "context_reason": "Recorded fixture expectation: interpretation retains attribution and exact material meaning."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "cw-heldout-table",
+      "heldout": true,
+      "source": {
+        "path": "sort/document-13.md",
+        "id": 202,
+        "type": "Presentation",
+        "sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+      },
+      "original": "CoreWeave presentation lists Active Power and Contracted Power.",
+      "proposal": {
+        "context_status": "unresolved",
+        "standalone_text": "CoreWeave presentation lists Active Power and Contracted Power.",
+        "resolutions": [],
+        "unresolved": [
+          "Held-out label/value association requires original layout."
+        ]
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "CoreWeave presentation lists Active Power and Contracted Power.",
+        "proposition_id": "9dabac85d6653af8a5e0d8ef26ab0acf53cdafb9e9c948e5d7863491a54439bb",
+        "resolutions": [],
+        "source_fingerprint": "dc8faaa5adb904e30b9e70816468bf4941112ee90f404477ab92ee4597103aeb",
+        "standalone_text": "CoreWeave presentation lists Active Power and Contracted Power.",
+        "unresolved": [
+          "Held-out label/value association requires original layout."
+        ],
+        "verification": {
+          "artifact_id": "7656e08788c79aa1a782b028965e3cb9621e177b232cbd3b22daa4a9ef535da6",
+          "context_preservation": "unresolved",
+          "original_support": "supported",
+          "reason": "Held-out label/value association requires original layout."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d202:9a240883dc057e1b:4981:5010",
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power",
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d202:9a240883dc057e1b:4981:5010",
+          "start": 4981,
+          "end": 5010,
+          "text": "Active Power Contracted Power",
+          "section": "Our Platform is Purpose-Built for AI",
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/cw13.md",
+          "original_sha256": "9a240883dc057e1bc43092d5a256766e52633f588f6e1d0444a1df4112ec8027",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "unresolved",
+        "context_reason": "Held-out label/value association requires original layout."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    },
+    {
+      "id": "ms-heldout-customer",
+      "heldout": true,
+      "source": {
+        "path": "proposition-context/microsoft-fy25q4-excerpt.md",
+        "id": 203,
+        "type": "Filing",
+        "sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+      },
+      "original": "Satya Nadella, Microsoft CEO, said Azure surpassed $75 billion in revenue this year, up 34 percent.",
+      "proposal": {
+        "context_status": "unresolved",
+        "standalone_text": "Satya Nadella, Microsoft CEO, said Azure surpassed $75 billion in revenue this year, up 34 percent.",
+        "resolutions": [],
+        "unresolved": [
+          "Held-out fiscal versus calendar year reference; preserve attribution."
+        ]
+      },
+      "record": {
+        "context_status": "unresolved",
+        "contract_version": "stock-proposition-context-1",
+        "original_text": "Satya Nadella, Microsoft CEO, said Azure surpassed $75 billion in revenue this year, up 34 percent.",
+        "proposition_id": "3452cc5bd137a67cd5dcf4c6c5d0ccd76fefbf580f11300f61cee671c175f098",
+        "resolutions": [],
+        "source_fingerprint": "0966dbe6f4e7c9931f210d01cd66fd34d7ac810e8dccc99ce2148355b25851d5",
+        "standalone_text": "Satya Nadella, Microsoft CEO, said Azure surpassed $75 billion in revenue this year, up 34 percent.",
+        "unresolved": [
+          "Held-out fiscal versus calendar year reference; preserve attribution."
+        ],
+        "verification": {
+          "artifact_id": "27ab276bb8d7557a6fd2fa9b8cdd16b857d5f3ce32e1a0c445d8d39e1505861c",
+          "context_preservation": "unresolved",
+          "original_support": "supported",
+          "reason": "Held-out fiscal versus calendar year reference; preserve attribution."
+        }
+      },
+      "exact_edits": [],
+      "source_references": [
+        {
+          "source_id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0"
+        }
+      ],
+      "source_atoms": [
+        {
+          "id": "d203:0f4e339342d4fc63:0:1132",
+          "start": 0,
+          "end": 1132,
+          "text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft.",
+          "section": null,
+          "turn": null,
+          "speaker": null,
+          "role": null,
+          "markdown_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "original": "/var/folders/m2/14fn3yz12j3f6yknz7_3cmw80000gn/T/stock-context-assessment-rp2bkeud/msft.md",
+          "original_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+          "speaker_role": null
+        }
+      ],
+      "deterministic": {
+        "source_hash": true,
+        "exact_anchors": true,
+        "edit_reconstruction": true,
+        "original_preserved": true,
+        "passage_identity_preserved": true,
+        "checked_review_binding": true
+      },
+      "recorded_model_assessment": {
+        "fidelity": "supported",
+        "readability": "clear",
+        "relevance": "useful",
+        "warnings": [],
+        "reason": "Recorded fixture expectation: selected references support the attributed original.",
+        "context_preservation": "unresolved",
+        "context_reason": "Held-out fiscal versus calendar year reference; preserve attribution."
+      },
+      "semantic_human_assessment": {
+        "standalone_sufficiency": null,
+        "truth_condition_preservation": null,
+        "source_support": null,
+        "financial_fidelity": {
+          "issuer": null,
+          "speaker": null,
+          "period": null,
+          "metric": null,
+          "quantity": null,
+          "definition": null,
+          "modality": null,
+          "scope": null,
+          "qualifications": null
+        },
+        "fluency": null,
+        "conciseness": null,
+        "unsupported_additions": null,
+        "meaning_changes": null,
+        "missing_information": null,
+        "verdict": null,
+        "confidence": null,
+        "reasons": null,
+        "completed_at": null
+      },
+      "audit_flags": [],
+      "known_unsafe_accepted": false,
+      "safe_for_downstream": false,
+      "downstream_reason": "No independent human adjudication; recorded review cannot establish semantic reliability.",
+      "validation_model_assessment": {
+        "author": "Codex source inspection; not human or independent blinded review",
+        "standalone_sufficiency": "requires_human_review",
+        "truth_condition_preservation": "requires_human_review",
+        "source_support": "requires_human_review",
+        "financial_fidelity": "requires_human_review",
+        "fluency": "requires_human_review",
+        "reason": "Exact anchors and applicable semantic support are different properties. See per-dimension reviewer form."
+      }
+    }
+  ],
+  "runs": [
+    {
+      "source": "cw12",
+      "heldout": false,
+      "requests": 2,
+      "resume_requests": 0,
+      "artifacts": 48,
+      "manifest": "5b2fa5983b7b4b34b7504a4f31e2dbb402af644e33b73d8f2ae30ac1f36d8dc7"
+    },
+    {
+      "source": "cw13",
+      "heldout": false,
+      "requests": 2,
+      "resume_requests": 0,
+      "artifacts": 24,
+      "manifest": "58de431d2375b41efbded3f6dab36ac17d132ba8effb369b5c0b0bf120ccdc60"
+    },
+    {
+      "source": "msft",
+      "heldout": false,
+      "requests": 2,
+      "resume_requests": 0,
+      "artifacts": 24,
+      "manifest": "d2c6afc4bc174ed7cd44d00f7752302ad80a85285220171fe763acd7f92fbf30"
+    },
+    {
+      "source": "cw12",
+      "heldout": true,
+      "requests": 2,
+      "resume_requests": 0,
+      "artifacts": 8,
+      "manifest": "a9b9af111488df53392fffee5f4656a3f696699879073cea18b36ebc4dd803ce"
+    },
+    {
+      "source": "cw13",
+      "heldout": true,
+      "requests": 2,
+      "resume_requests": 0,
+      "artifacts": 8,
+      "manifest": "8d73802188d2e9208555e8e5d9db9026373d73fb81d2bfb838f9a339f94817b6"
+    },
+    {
+      "source": "msft",
+      "heldout": true,
+      "requests": 2,
+      "resume_requests": 0,
+      "artifacts": 8,
+      "manifest": "7b47acf0f381d1ae45efe4be51c25c108ee46b2122f1360d185cd04d5784aa8b"
+    }
+  ],
+  "human_completed": 0,
+  "human_agreement": null,
+  "production_activation": false,
+  "cursor_requests": 0,
+  "recorded_development_counts": {
+    "unnecessary": 7,
+    "resolved": 4,
+    "unresolved": 10
+  },
+  "recorded_heldout_counts": {
+    "unnecessary": 1,
+    "unresolved": 2
+  },
+  "semantic_counts": {
+    "human_sufficiency_pass": 0,
+    "human_preservation_pass": 0,
+    "human_pending": 24,
+    "deterministic_semantic_pass": null,
+    "known_unsafe_accepted": 1,
+    "known_unsupported_accepted_addition": 1,
+    "known_meaning_changing_accepted_rewrite": 1,
+    "recorded_acceptance_is_not_semantic_accuracy": true
+  },
+  "phase3": "BLOCKED"
+}
