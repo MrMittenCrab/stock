@@ -59,8 +59,8 @@ def test_cached_bidirectional_inference_and_policy_reuse(tmp_path):
     assert len(calls)==2 and first['kind']=='EQUIVALENT'
     second=rel.judge(s,a,b,'fa','fb',infer)
     assert second['cache_hit'] and len(calls)==2
-    rel.judge(s,a,b,'changed-source','fb',infer)
-    assert len(calls)==4
+    changed=rel.judge(s,a,b,'changed-source','fb',infer)
+    assert len(calls)==2 and changed['source_fingerprints']==['changed-source','fb']
 
 
 def test_invalid_scores_fail_closed(tmp_path):
@@ -116,3 +116,222 @@ def test_policy_change_reuses_raw_inference(tmp_path,monkeypatch):
     monkeypatch.setattr(rel,'POLICY','future-policy')
     result=rel.judge(s,a,b,'a','b',infer)
     assert result['policy']=='future-policy' and result['cache_hit'] and len(calls)==2
+
+
+@pytest.mark.parametrize('a,b',[
+ ('CoreWeave revenue was $5 billion in 2025.', 'In 2025 CoreWeave generated $5 billion of revenue.'),
+ ('CoreWeave ended 2025 with more than 850 megawatts of active power.', 'As of December 31, 2025, CoreWeave reported 850MW+ of active power.'),
+ ('CoreWeave reported 43 active data centers as of December 31, 2025.', 'CoreWeave ended 2025 with 43 active data centers.'),
+])
+def test_semantically_compatible_financial_notation(a,b):
+    assert rel.decide(p(a),p(b),scores(),scores())['kind']=='EQUIVALENT'
+
+
+def test_complete_kpi_parse_can_resolve_model_date_notation_failure():
+    a=p('CoreWeave ended 2025 with more than 850 megawatts of active power.')
+    b=p('CoreWeave reached more than 850 megawatts of active power as of December 31, 2025.')
+    r=rel.decide(a,b,scores(.02,.005,.975),scores(.96,.005,.035))
+    assert r['kind']=='EQUIVALENT' and r['decision_basis']=='complete_kpi_parse'
+
+
+@pytest.mark.parametrize('tail',[
+ ' excluding leased sites.', ' in Europe.', ' subject to permits.',
+ ' and expected to reach 90 by 2027.',
+])
+def test_complete_parse_never_discards_material_tail(tail):
+    a=p('CoreWeave ended 2025 with 43 active data centers.')
+    b=p('CoreWeave ended 2025 with 43 active data centers'+tail)
+    assert rel.decide(a,b,scores(.02,.005,.975),scores(.96,.005,.035))['kind']!='EQUIVALENT'
+
+
+def test_may_modal_is_not_reporting_month():
+    assert rel.attributes(p('CoreWeave may expand.'))['period']==[]
+
+
+def test_context_recovery_does_not_use_publication_or_publisher():
+    row=p('Revenue increased.',attributes={})
+    enriched=rel.with_context(row,dict(publication_date='2026-05-01',publisher='Reuters',period='2025'))
+    assert enriched['text']==row['text']
+    assert not rel.attributes(enriched)['entity']
+    assert not rel.attributes(enriched)['period']
+
+
+def test_source_context_is_audited_and_only_resolves_deictic_period():
+    row=p('We ended the year with 43 active data centers.')
+    enriched=rel.with_context(row,dict(id=12,period='2025',structured_metadata={'registrant':'CoreWeave','period_end':'2025-12-31'}))
+    attrs=rel.attributes(enriched)
+    assert attrs['entity']==['coreweave'] and attrs['period']==['2025-12-31']
+    assert enriched['semantic_context']['provenance']
+    assert row.get('semantic_context') is None
+
+
+def test_scope_aliases_and_verified_context_are_semantic():
+    a=p('CoreWeave revenue was $5 billion in 2025 globally.',attributes={'scope':'global'})
+    b=p('CoreWeave revenue totaled $5 billion in 2025 worldwide.',attributes={'scope':'worldwide'})
+    assert rel.decide(a,b,scores(),scores())['kind']=='EQUIVALENT'
+
+
+def test_structured_conflicts_with_text_do_not_disappear():
+    a=p('CoreWeave revenue was $5 billion in 2025.',attributes={'issuer':'Microsoft'})
+    b=p('CoreWeave revenue totaled $5 billion in 2025.',attributes={'issuer':'Microsoft'})
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+
+
+def test_literal_conjunct_entailment_keeps_direction():
+    a=p('CoreWeave serves customers and operates data centers.')
+    b=p('CoreWeave serves customers.')
+    r=rel.decide(a,b,scores(),scores(.005,.005,.99))
+    assert r['kind']=='ENTAILS' and r['direction']=='left_to_right'
+
+
+def test_kpi_parser_does_not_equate_fiscal_and_calendar_year_end():
+    a=p('CoreWeave ended fiscal 2025 with 43 active data centers.')
+    b=p('CoreWeave reported 43 active data centers as of December 31, 2025.')
+    assert rel.decide(a,b,scores(.02,.005,.975),scores(.96,.005,.035))['kind']!='EQUIVALENT'
+
+
+def test_explicit_anchored_source_note_resolves_missing_asof():
+    row=p('CoreWeave reported 43 active data centers.')
+    row['location']['references']=[dict(source_id='note:1',text='Notes: Figures as of December 31, 2025. This graphic is illustrative.')]
+    enriched=rel.with_context(row,dict(id=13,publication_date='2026-02-01'))
+    assert rel.attributes(enriched)['period']==['2025-12-31']
+    assert enriched['semantic_context']['provenance']['period']['source_id']=='note:1'
+    assert row['location']==enriched['location']
+
+
+def test_surrounding_paragraph_does_not_supply_arbitrary_period_or_scope():
+    row=p('CoreWeave reported 43 active data centers.')
+    row['location']['references']=[dict(source_id='paragraph',text='In 2024 we operated globally. We ended 2025 with 43 sites and plan 60 in 2027.')]
+    enriched=rel.with_context(row,dict(id=12,period='2025'))
+    assert not rel.attributes(enriched)['period']
+
+
+def test_conflicting_explicit_source_notes_remain_unknown():
+    row=p('CoreWeave reported 43 active data centers.')
+    row['location']['references']=[dict(source_id=str(i),text=f'Notes: Figures as of December 31, {year}.') for i,year in enumerate((2024,2025))]
+    enriched=rel.with_context(row,dict(id=13))
+    assert not rel.attributes(enriched)['period']
+
+
+def test_complete_issuer_kpi_retains_missing_source_speaker_without_veto():
+    a=p('CoreWeave ended 2025 with 43 active data centers.')
+    a['speaker']='Michael Intrator'
+    b=p('CoreWeave reported 43 active data centers as of December 31, 2025.')
+    r=rel.decide(a,b,scores(.02,.005,.975),scores(.96,.005,.035))
+    assert r['kind']=='EQUIVALENT'
+    assert 'speaker' in r['compatibility']['missing']
+    assert 'speaker' not in r['compatibility']['agreements']
+
+
+def test_complete_issuer_kpi_preserves_explicit_attribution_disagreement():
+    a=p('CoreWeave ended 2025 with 43 active data centers.');a['speaker']='Michael Intrator'
+    b=p('CoreWeave reported 43 active data centers as of December 31, 2025.');b['speaker']='Another Person'
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+    b['speaker']=None;b['category']='Analyst'
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+
+
+def test_source_qualifications_veto_complete_kpi_equivalence():
+    rows=[]
+    for qualifier in ('Excluding leased sites.','Including leased sites.'):
+        row=p('CoreWeave reported 43 active data centers as of December 31, 2025.')
+        row['location']['references']=[dict(source_id=qualifier,text='Notes: Figures as of December 31, 2025. '+qualifier)]
+        rows.append(rel.with_context(row,dict(id=13)))
+    assert rel.decide(*rows,scores(),scores())['kind']=='UNRESOLVED'
+    rows[1]['location']={};rows[1]=rel.with_context(rows[1],dict(id=13))
+    assert rel.decide(*rows,scores(),scores())['kind']=='UNRESOLVED'
+
+
+def test_context_correction_reuses_raw_text_inference(tmp_path):
+    s=Store(tmp_path/'db');calls=[]
+    def infer(pairs):
+        calls.extend(pairs);return [scores()]*2
+    a=p('CoreWeave serves customers.');b=p('CoreWeave serves clients.')
+    rel.judge(s,a,b,'original-a','original-b',infer)
+    r=rel.judge(s,a,b,'new-context-a','new-context-b',infer)
+    assert len(calls)==2 and r['cache_hit']
+    assert r['source_fingerprints']==['new-context-a','new-context-b']
+
+
+def test_legacy_raw_cache_migrates_without_reinference(tmp_path):
+    import json
+    s=Store(tmp_path/'db');rel.schema(s)
+    a=p('CoreWeave serves customers.');b=p('CoreWeave serves clients.')
+    legacy=rel._digest([rel.CONTRACT,'fa','fb',a['text'],b['text']])
+    with s.db:s.db.execute('INSERT INTO source_nli_cache VALUES(?,?,?)',(legacy,rel.CONTRACT,json.dumps([scores(),scores()])))
+    def forbidden(_):pytest.fail('Legacy raw inference must be reused')
+    assert rel.judge(s,a,b,'fa','fb',forbidden)['cache_hit']
+    assert rel.judge(s,a,b,'corrected','fb',forbidden)['cache_hit']
+    changed=dict(a,text='CoreWeave serves nobody.')
+    calls=[]
+    rel.judge(s,changed,b,'corrected','fb',lambda pairs:(calls.extend(pairs) or [scores(),scores()]))
+    assert len(calls)==2
+
+
+@pytest.mark.parametrize('note',['Europe.','Non-GAAP.','Forecast capacity.','In gigawatts.'])
+def test_source_note_scope_definition_and_units_are_not_dropped(note):
+    a=p('CoreWeave reported 43 active data centers as of December 31, 2025.')
+    a['location']['references']=[dict(source_id='note',text='Notes: Figures as of December 31, 2025. '+note)]
+    b=p(a['text'])
+    a=rel.with_context(a,dict(id=13));b=rel.with_context(b,dict(id=12))
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+
+
+def test_year_shaped_amount_is_never_removed_as_reporting_period():
+    a=p('CoreWeave revenue was $2024 million in 2025.')
+    b=p('CoreWeave revenue was $2025 million in 2025.')
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+    assert rel.attributes(a)['period']==['2025']
+    assert rel.attributes(a)['numbers']!=rel.attributes(b)['numbers']
+
+
+def test_deictic_fiscal_year_does_not_invent_december_end():
+    row=p('We ended the year with 43 active data centers.')
+    enriched=rel.with_context(row,dict(id=12,period='2025',structured_metadata={'registrant':'Microsoft'}))
+    assert not rel.attributes(enriched)['period']
+
+
+def test_financial_first_conjunct_entails_without_discarding_extra_numbers():
+    a=p('CoreWeave revenue was $5 billion in 2025 and profit was $1 billion.')
+    b=p('CoreWeave revenue was $5 billion in 2025.')
+    result=rel.decide(a,b,scores(),scores(.005,.005,.99))
+    assert result['kind']=='ENTAILS' and result['direction']=='left_to_right'
+    assert rel.decide(b,a,scores(.005,.005,.99),scores())['direction']=='right_to_left'
+    b['attributes']={'issuer':'Microsoft'}
+    assert rel.decide(a,b,scores(),scores(.005,.005,.99))['kind']=='UNRESOLVED'
+
+
+def test_source_note_date_conflicting_with_claim_blocks_complete_kpi():
+    a=p('CoreWeave reported 43 active data centers as of December 31, 2025.')
+    a['location']['references']=[dict(source_id='note',text='Notes: Figures as of December 31, 2024.')]
+    b=p('CoreWeave ended 2025 with 43 active data centers.')
+    a=rel.with_context(a,dict(id=13))
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+
+
+def test_written_quarters_and_fiscal_years_remain_material():
+    a=p('CoreWeave revenue rose globally in the first quarter of 2025.')
+    b=p('CoreWeave revenue rose globally in the second quarter of 2025.')
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+    a=p('CoreWeave revenue rose globally in fiscal 2025.')
+    b=p('CoreWeave revenue rose globally in calendar 2025.')
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'
+
+
+def test_annual_archive_reporting_end_resolves_deictic_year():
+    row=p('We ended the year with 43 active data centers.')
+    doc=dict(id=7,type='Annual',structured_metadata={'report_period_end':'2025-06-30','issuer':'Microsoft'})
+    enriched=rel.with_context(row,doc)
+    assert rel.attributes(enriched)['period']==['2025-06-30']
+    assert enriched['semantic_context']['provenance']['period']['field']=='structured_metadata.report_period_end'
+    doc['type']='Quarterly'
+    assert not rel.attributes(rel.with_context(row,doc))['period']
+
+
+def test_source_note_conflicts_with_recovered_reporting_period():
+    row=p('We ended the year with 43 active data centers.',attributes={'scope':'issuer'})
+    row['location']['references']=[dict(source_id='note',text='Notes: Figures as of December 31, 2024.')]
+    doc=dict(id=7,type='Annual',structured_metadata={'report_period_end':'2025-06-30','issuer':'Microsoft'})
+    a=rel.with_context(row,doc)
+    b=rel.with_context(dict(row,location={}),doc)
+    assert rel.decide(a,b,scores(),scores())['kind']=='UNRESOLVED'

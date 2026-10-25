@@ -116,7 +116,13 @@ def _worker(implementation,directory):
  anchors=sorted((p['text'],[(r['text'],r['start'],r['end'],r['markdown_sha256']) for r in p['location']['references']]) for p in ps)
  counts.setdefault('citation recovery',dict(requests=0,prompt_characters=0))
  by_document={str(did):dict(requests=sum(m['document']==did for m in metrics[:first]),prompt_characters=sum(m['prompt_chars'] for m in metrics[:first] if m['document']==did)) for did in claims_by_doc}
- return dict(missed_merges=missed_merges,cursor_deduplication_requests=sum(m['stage'] in ('within-document grouping','cross-document grouping') for m in metrics[:first]),by_document=by_document,stages=counts,requests=first,prompt_characters=sum(m['prompt_chars'] for m in metrics[:first]),cold_local_seconds=cold,resumed_local_seconds=resumed,resume_requests=len(metrics)-first,evidence=len(ps),insights=len(insights.entries(store,'CRWV.US')),exact_citations=sum(len(p['location']['references']) for p in ps),anchors=anchors,missing_fixture_claims=sorted(set(keys)-{p['text'] for p in ps}),live_latency=None,actual_tokens=None)
+ from itertools import combinations
+ revision=insights.load(store,insights.head(store,'CRWV.US'))
+ edges={tuple(sorted((e['left'],e['right']))):e for e in revision.get('relationships',[])}
+ positives=[(a,b) for a,b in combinations(ps,2) if gold[a['text']]==gold[b['text']]]
+ pair_trace=[dict(texts=[a['text'],b['text']],retrieved=tuple(sorted((a['id'],b['id']))) in edges,
+     relationship=edges.get(tuple(sorted((a['id'],b['id']))),{})) for a,b in positives]
+ return dict(labeled_equivalent_pairs=pair_trace,graph_metrics=revision.get('semantic_map'),missed_merges=missed_merges,cursor_deduplication_requests=sum(m['stage'] in ('within-document grouping','cross-document grouping') for m in metrics[:first]),by_document=by_document,stages=counts,requests=first,prompt_characters=sum(m['prompt_chars'] for m in metrics[:first]),cold_local_seconds=cold,resumed_local_seconds=resumed,resume_requests=len(metrics)-first,evidence=len(ps),insights=len(insights.entries(store,'CRWV.US')),exact_citations=sum(len(p['location']['references']) for p in ps),anchors=anchors,missing_fixture_claims=sorted(set(keys)-{p['text'] for p in ps}),live_latency=None,actual_tokens=None)
 
 def worker(implementation,directory):
  # Tests may invoke the replay in-process; recorded layout must not escape it.

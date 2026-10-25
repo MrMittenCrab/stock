@@ -52,14 +52,14 @@ def validate(proposal):
 def stage(store,ticker,progress=print,new_document=None,new_documents=None,identity_map=None,refine=False):
     views.schema(store)
     from .archive import documents
-    docs={d['id']:{k:d.get(k) for k in ('id','title','type','publisher','period','publication_date','source_sha256','metadata_provenance')} for d in documents(store,ticker)}
+    docs={d['id']:{k:d.get(k) for k in ('id','title','type','publisher','period','publication_date','source_sha256','metadata_provenance','structured_metadata')} for d in documents(store,ticker)}
     rows=sources.passages(store,ticker)
     initial=views.snapshot(store,ticker);parent=views.head(store,ticker)
     previous=views.load(store,parent) if parent else {}
     replacements=new_documents or ([new_document] if new_document else [])
     for doc,passages in replacements:
         rows=[p for p in rows if p['document_id']!=doc['id']]+[dict(p,id=sources.passage_id(doc,p),document_id=doc['id']) for p in passages]
-        docs[doc['id']]={k:doc.get(k) for k in ('id','title','type','publisher','period','publication_date','source_sha256','metadata_provenance')}
+        docs[doc['id']]={k:doc.get(k) for k in ('id','title','type','publisher','period','publication_date','source_sha256','metadata_provenance','structured_metadata')}
     from .editorial import validate_publication
     for p in rows:validate_publication(p)
     lookup={p['id']:p for p in rows}
@@ -67,6 +67,7 @@ def stage(store,ticker,progress=print,new_document=None,new_documents=None,ident
     remap=identity_map or {}
     suppressed={tuple(sorted((remap.get(a,a),remap.get(b,b)))) for a,b in views.suppressed_pairs(store,previous)}
     prior_fps=previous.get('fingerprints',{})
+    prior_texts={p['id']:p['text'] for p in previous.get('evidence',[])}
     edges={}
     overrides={tuple(sorted((e['left'],e['right']))):e for e in previous.get('relationship_overrides',[])}
     overrides.update({tuple(sorted((e['left'],e['right']))):e for e in previous.get('relationships',[]) if e.get('provenance')=='manual'})
@@ -117,7 +118,15 @@ def stage(store,ticker,progress=print,new_document=None,new_documents=None,ident
                 source_fingerprints=[fps[a],fps[b]],safeguards=['manual_split'])
         else:
             progress(f'Local relationships · {index}/{len(selected)}')
-            e=nli.judge(store,lookup[a],lookup[b],fps[a],fps[b])
+            # Legacy caches include source fingerprints. Context metadata may
+            # have changed those, although the exact model inputs are unchanged.
+            # Use historical keys only after verifying both original texts; the
+            # decision still receives current context and current fingerprints.
+            raw_fps=[prior_fps[a],prior_fps[b]] if all(
+                prior_texts.get(m)==lookup[m]['text'] and m in prior_fps for m in (a,b)) else [fps[a],fps[b]]
+            e=nli.judge(store,nli.with_context(lookup[a],docs[lookup[a]['document_id']]),
+                nli.with_context(lookup[b],docs[lookup[b]['document_id']]),*raw_fps)
+            e['source_fingerprints']=[fps[a],fps[b]]
             cache_hits+=int(e['cache_hit']);inferences+=e['inference_count'];elapsed+=e['elapsed_seconds']
         edges[(a,b)]=dict(e,left=a,right=b)
     # A split is a presentation veto even if an older positive edge survives.

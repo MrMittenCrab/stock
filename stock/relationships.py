@@ -14,7 +14,7 @@ MODEL = 'cross-encoder/nli-MiniLM2-L6-H768'
 REVISION = 'b95119ce93d3e065de6214e38cd4a97b0f2f2c6d'
 ARTIFACT = 'onnx/model.onnx'
 CONTRACT = f'{MODEL}@{REVISION}:{ARTIFACT}:pair-no-truncation-512-softmax-v1'
-POLICY = 'financial-conservative-3-uncalibrated'
+POLICY = 'financial-compatibility-5-uncalibrated'
 KINDS = {'EQUIVALENT','ENTAILS','RELATED','CONTRADICTS','UNRESOLVED'}
 _BACKEND = None
 
@@ -93,14 +93,16 @@ def backend():
     return _BACKEND
 
 
-# Structured extraction is a conservative veto layer, never an equivalence engine.
-# Unknown structured attributes on either side prevent asserting matching scope.
+# General attribute extraction is a veto layer, not proof of equivalence.
+# A separate full-sentence KPI grammar can establish narrow deterministic facts.
+# Missing attributes are tracked separately from observed conflicts.
+from .semantic_attributes import with_context, kpi_fact
 PATTERNS={
     'period':r'\b(?:19|20)\d{2}\b|\bq[1-4]\b|\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\b',
     'entity':r'\b(?:coreweave|microsoft|openai|nvidia|amazon|google|meta|oracle)\b',
     'metric':r'\b(?:revenue|backlog|bookings|arr|ebitda|profit|cash flow|capacity|power|debt|capex|data centers?|expense|margin)\b',
     'capacity_state':r'\b(?:active|contracted|available|planned|operational|installed)\b',
-    'scope':r'\b(?:europe|asia|global|globally|us|u\.s\.|uk|inference|training|segment|consolidated)\b',
+    'scope':r'\b(?:europe|asia|global|globally|worldwide|us|u\.s\.|uk|inference|training|segment|consolidated)\b',
     'qualification':r'\b(?:except|excluding|including|unless|subject to|only|approximately|up to|at least|more than|less than|over|under)\b',
     'definition':r'\b(?:gaap|non-gaap|adjusted|annualized|recognized|gross|net|committed|remaining)\b',
     'numbers':r'[-+−]?\$?\d[\d,]*(?:\.\d+)?\s*(?:%|billion|million|thousand|bn|mw|gw|kw|usd|dollars)?',
@@ -111,33 +113,93 @@ def attributes(p):
     text=p['text'].lower()
     found={key:sorted({m.strip() for m in re.findall(pattern,text)}) for key,pattern in PATTERNS.items()}
     from .quantities import quantities
-    found['numbers']=sorted((format(value.normalize(),'f'),unit,currency) for value,unit,currency in quantities(p['text']))
+    from .semantic_attributes import periods, without_periods
+    found['period']=periods(p['text'])
+    found['year_basis']=sorted(set(re.findall(r'\b(?:fiscal|calendar)\b',text)))
+    found['numbers']=sorted((format(value.normalize(),'f'),unit,currency) for value,unit,currency in quantities(without_periods(p['text'])))
     found['parenthetical_numbers']=re.findall(r'\([^)]*\d[^)]*\)',p['text'])
     # Preserve previously unseen issuers/counterparties as well as familiar names.
     # This is a veto heuristic, not a named-entity recognizer or source authority.
     common=set('A An The In As At On By For From We Our It Its Revenue Backlog Bookings Active Contracted Available Planned Capacity Power Demand Customer Sales Marketing Expense Management Investor Media January February March April May June July August September October November December Q1 Q2 Q3 Q4 FY'.lower().split())
     names={name.lower() for name in re.findall(r'\b[A-Z][A-Za-z0-9]*(?:\s+(?:Inc|Corp|Ltd|LLC))?\b',p['text']) if name.lower() not in common}
+    names-=set('As Disruption Europe Asia Globally Global In December January February March April May June July August September October November MW GW GPUs'.lower().split())
     found['named_entities']=sorted(names)
     modality=re.findall(r'\b(?:forecast|forecasts|expected|expects|expect|projected|target|targets|intend|intends|planned|plans|may|might|could|risk|will)\b',text)
     found['modality']='prospective' if modality else 'asserted'
     found['modality_terms']=sorted(set(modality))
+    found['scope']=sorted({'global' if x in ('globally','worldwide') else x for x in found['scope']})
+    notes=p.get('semantic_context',{}).get('source_notes',[])
+    from .semantic_attributes import note_restrictions
+    found['source_restrictions']=note_restrictions(notes)
     found['speaker']=p.get('speaker')
     found['category']=p.get('category')
     # Do not mistake document publication dates for reporting periods.
     structured=p.get('attributes') or p.get('location',{}).get('attributes') or {}
-    found.update({'structured:'+key:value for key,value in structured.items()})
+    for key,value in structured.items():
+        normalized=str(value).strip().lower()
+        if key=='scope':normalized={'globally':'global','worldwide':'global'}.get(normalized,normalized)
+        if key in ('period','as_of'):
+            from .semantic_attributes import period_text
+            normalized=period_text(normalized)
+        found['structured:'+key]=normalized
+
+    context=p.get('semantic_context',{}).get('attributes',{})
+    if not found['entity'] and context.get('issuer'):
+        found['entity']=[context['issuer'].lower()]
+        found['named_entities']=sorted(set(found['named_entities'])|set(found['entity']))
+    if not found['period'] and context.get('period'):found['period']=[context['period']]
+    # Issuer-level scope is syntactically expressed by an issuer's own metric,
+    # not inferred from jointly empty geographical attributes.
+    if not found['scope'] and found['entity'] and re.search(
+            r'\b'+re.escape(found['entity'][0])+r"(?:'s)? (?:revenue|backlog|bookings|arr|ebitda|profit|cash flow|debt|capex|margin|generated)\b",text):
+        found['scope']=['issuer']
+    fact=kpi_fact(p)
+    if fact:
+        found.update(period=[fact['period']],entity=[fact['issuer']],named_entities=[fact['issuer']],
+            metric=[fact['metric']],scope=['issuer'],numbers=[(fact['value'],fact['unit'],'')],
+            qualification=[fact['bound']],capacity_state=[fact['state']])
     return found
 
 
-def safeguards(a,b):
+def compatibility(a,b):
     left,right=attributes(a),attributes(b)
-    conflicts=[key for key in sorted(left.keys()|right.keys()) if left.get(key)!=right.get(key)]
-    if left['metric'] or right['metric'] or left['numbers'] or right['numbers']:
+    conflicts=[];missing=[];agreements=[]
+    for side,p in (('left',a),('right',b)):
+        conflicts.extend('inconsistent_'+side+'_'+x for x in p.get('semantic_context',{}).get('inconsistencies',[]))
+    ignored={'modality_terms'}
+    for side,attrs in (('left',left),('right',right)):
+        for key,alias in (('entity','issuer'),('period','period'),('scope','scope')):
+            declared=attrs.get('structured:'+alias)
+            if declared and attrs[key] and declared not in attrs[key]:
+                conflicts.append('inconsistent_'+side+'_'+key)
+
+    for key in sorted(left.keys()|right.keys()):
+        if key in ignored:continue
+        x,y=left.get(key),right.get(key)
+        if x==y:
+            if x:agreements.append(key)
+        elif x and y:conflicts.append(key)
+        else:missing.append(key)
+    # An omitted material restriction is still insufficient for merging, but
+    # it is not evidence of a positive conflict.
+    required=set(missing)
+    if left['metric'] or right['metric']:
+        for side,attrs in (('left',left),('right',right)):
+            if not attrs['entity'] and not attrs.get('structured:issuer') and not attrs.get('structured:entity'):
+                required.add('unknown_'+side+'_entity')
+    if left['numbers'] or right['numbers'] or any(
+            m in ('revenue','backlog','bookings','arr','ebitda','debt','capex','margin')
+            for m in left['metric']+right['metric']):
         for side,attrs in (('left',left),('right',right)):
             for key,alternatives in (('entity',('entity','issuer')),('period',('period','as_of')),('scope',('scope',))):
                 known=bool(attrs[key]) or any(attrs.get('structured:'+k) for k in alternatives)
-                if not known:conflicts.append('unknown_'+side+'_'+key)
-    return conflicts
+                if not known:required.add('unknown_'+side+'_'+key)
+    return dict(conflicts=conflicts,missing=sorted(required),agreements=agreements)
+
+
+def safeguards(a,b):
+    check=compatibility(a,b)
+    return check['conflicts']+check['missing']
 
 
 def validate_scores(row):
@@ -150,14 +212,43 @@ def validate_scores(row):
 
 def decide(a,b,forward,reverse):
     validate_scores(forward);validate_scores(reverse)
-    conflicts=safeguards(a,b)
+    comparison=compatibility(a,b)
+    conflicts=comparison['conflicts']+comparison['missing']
     result=dict(kind='UNRESOLVED',direction=None,safeguards=conflicts,policy=POLICY,
+                compatibility=comparison,decision_basis='nli',
+                context=[a.get('semantic_context',{}),b.get('semantic_context',{})],
                 reason='Insufficient evidence; retain both propositions.')
     if forward is None or reverse is None:
         result['reason']='Pair exceeds model context; no truncated inference.'
         return result
+    # Literal first-conjunct projection is directional only. Extra attributes
+    # from an additional conjunct cannot turn this into an equivalence merge.
+    def first_conjunct(premise,hypothesis):
+        return premise['text'].lower().startswith(hypothesis['text'].rstrip('.').lower()+' and ')
+    def projection_compatible(premise,hypothesis):
+        # Compare the literal projected clause with source context still attached.
+        # Attributes of a separate conjunct cannot contradict this clause, while
+        # source restrictions and attribution must continue to pass safeguards.
+        projected=dict(premise,text=hypothesis['text'])
+        check=compatibility(projected,hypothesis)
+        return not check['conflicts'] and not check['missing']
+    if forward['entailment']>=.985 and reverse['neutral']>=.95 and first_conjunct(a,b) and projection_compatible(a,b):
+        result.update(kind='ENTAILS',direction='left_to_right',reason='High NLI entailment and literal first conjunct; both retained.')
+        return result
+    if reverse['entailment']>=.985 and forward['neutral']>=.95 and first_conjunct(b,a) and projection_compatible(b,a):
+        result.update(kind='ENTAILS',direction='right_to_left',reason='High NLI entailment and literal first conjunct; both retained.')
+        return result
+    facts=kpi_fact(a),kpi_fact(b)
+    fact_compatible=(not comparison['conflicts'] and
+        (not comparison['missing'] or (comparison['missing']==['speaker'] and
+         a.get('category')==b.get('category')=='Management')))
+    if facts[0] and facts[0]==facts[1] and fact_compatible:
+        result.update(kind='EQUIVALENT',decision_basis='complete_kpi_parse',
+            reason='Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.',
+            normalized_fact=facts[0])
+        return result
     if conflicts:
-        result['reason']='Material attributes differ or are unknown: '+', '.join(conflicts)
+        result['reason']='Conflicts: '+', '.join(comparison['conflicts'])+'; missing context: '+', '.join(comparison['missing'])
         return result
     # Conservative provisional cutoffs; these are NOT empirical calibration.
     fe,re=forward['entailment']>=.985,reverse['entailment']>=.985
@@ -178,8 +269,16 @@ def decide(a,b,forward,reverse):
 
 def judge(store,a,b,fa,fb,infer=None):
     schema(store)
-    key=_digest([CONTRACT,fa,fb,a['text'],b['text']])
+    key=_digest([CONTRACT,a['text'],b['text']])
+    legacy_key=_digest([CONTRACT,fa,fb,a['text'],b['text']])
     cached=store.db.execute('SELECT payload FROM source_nli_cache WHERE fingerprint=? AND contract=?',(key,CONTRACT)).fetchone()
+    # Upgrade the old source-keyed cache lazily. Model outputs depend only on
+    # exact ordered texts; source/context freshness belongs to the decision.
+    if not cached:
+        cached=store.db.execute('SELECT payload FROM source_nli_cache WHERE fingerprint=? AND contract=?',(legacy_key,CONTRACT)).fetchone()
+        if cached:
+            with store.db:
+                store.db.execute('INSERT OR REPLACE INTO source_nli_cache VALUES(?,?,?)',(key,CONTRACT,cached[0]))
     started=time.monotonic()
     if cached:
         raw=json.loads(cached[0]);hit=True

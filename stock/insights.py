@@ -40,6 +40,9 @@ def schema(store):
 
 
 def passage_fingerprint(p,doc):
+    # Empty added metadata must not invalidate previously valid raw inference.
+    doc=dict(doc)
+    if doc.get('structured_metadata') in (None,'{}',{}):doc.pop('structured_metadata',None)
     # Topics/overrides affect visibility, not factual identity; edits reuse judgments.
     return digest([CONTRACT,{k:p.get(k) for k in ('id','document_id','text','category','speaker','publication_date','date_provenance','location')},doc])
 
@@ -237,7 +240,7 @@ def current(store,ticker):
     if (p.get('graph_contract')!=GRAPH_CONTRACT or model_state.get('decision_policy')!=POLICY
         or model_state.get('inference_model')!=nli_contract or model_state.get('model')!=embedding_contract):return False
     from .archive import documents
-    docs={d['id']:{k:d.get(k) for k in ('id','title','type','publisher','period','publication_date','source_sha256','metadata_provenance')} for d in documents(store,ticker)}
+    docs={d['id']:{k:d.get(k) for k in ('id','title','type','publisher','period','publication_date','source_sha256','metadata_provenance','structured_metadata')} for d in documents(store,ticker)}
     rows=sources.passages(store,ticker)
     return p.get('fingerprints')=={r['id']:passage_fingerprint(r,docs[r['document_id']]) for r in rows}
 

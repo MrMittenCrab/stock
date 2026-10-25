@@ -162,3 +162,49 @@ def test_current_requires_current_graph_and_model_policy(library,local,monkeypat
     assert insights.current(s,'CRWV.US')
     monkeypatch.setattr(relationships,'POLICY','next-policy')
     assert not insights.current(s,'CRWV.US')
+
+
+def test_policy_revision_reuses_original_source_raw_scores(library,local,monkeypatch):
+    s,_,add=library;add('CoreWeave serves customers.');add('CoreWeave serves clients.',1)
+    p=insights.stage(s,'CRWV.US',None,lambda _:None);insights.activate(s,p['id'])
+    before=[e['scores'] for e in p['relationships']]
+    monkeypatch.setattr(relationships,'POLICY','revised-decision-only')
+    p=insights.stage(s,'CRWV.US',None,lambda _:None)
+    assert p['semantic_map']['nli_inference_count']==0 and len(local)==2
+    assert [e['scores'] for e in p['relationships']]==before
+    assert all(e['policy']=='revised-decision-only' for e in p['relationships'])
+
+
+def test_structured_source_context_changes_invalidate_graph(library,local):
+    s,_,add=library;add('CoreWeave serves customers.');add('CoreWeave serves clients.',1)
+    p=insights.stage(s,'CRWV.US',None,lambda _:None);insights.activate(s,p['id'])
+    assert insights.current(s,'CRWV.US')
+    with s.db:
+        s.db.execute("UPDATE archive_documents SET structured_metadata=?",('{"registrant":"Microsoft"}',))
+    assert not insights.current(s,'CRWV.US')
+
+
+def test_empty_context_preserves_historical_source_fingerprints():
+    row=dict(text='Claim',id='p')
+    doc=dict(id=1,period='2025')
+    assert insights.passage_fingerprint(row,doc)==insights.passage_fingerprint(row,dict(doc,structured_metadata='{}'))
+    assert insights.passage_fingerprint(row,doc)!=insights.passage_fingerprint(row,dict(doc,structured_metadata='{"issuer":"CoreWeave"}'))
+
+
+def test_legacy_cache_survives_context_fingerprint_upgrade(library,local,monkeypatch):
+    s,_,add=library;add('CoreWeave serves customers.');add('CoreWeave serves clients.',1)
+    p=insights.stage(s,'CRWV.US',None,lambda _:None);insights.activate(s,p['id'])
+    # Recreate the original commit's source-keyed cache with no text-only key.
+    import json
+    edge=p['relationships'][0];lookup={r['id']:r for r in p['evidence']}
+    a,b=edge['left'],edge['right']
+    legacy=relationships._digest([relationships.CONTRACT,*edge['source_fingerprints'],lookup[a]['text'],lookup[b]['text']])
+    with s.db:
+        s.db.execute('DELETE FROM source_nli_cache')
+        s.db.execute('INSERT INTO source_nli_cache VALUES(?,?,?)',(legacy,relationships.CONTRACT,json.dumps(list(edge['scores'].values()))))
+        s.db.execute('UPDATE archive_documents SET structured_metadata=?',('{"issuer":"CoreWeave"}',))
+    def forbidden():pytest.fail('Unchanged original texts must reuse legacy scores across context changes')
+    monkeypatch.setattr(relationships,'backend',forbidden)
+    revised=insights.stage(s,'CRWV.US',None,lambda _:None)
+    assert revised['semantic_map']['nli_inference_count']==0
+    assert revised['fingerprints']!=p['fingerprints']
