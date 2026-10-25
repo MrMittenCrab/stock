@@ -1,0 +1,708 @@
+{
+  "version": 1,
+  "starting_commit": "5740ed5",
+  "frontier": 0,
+  "budgets": [
+    10,
+    25,
+    50,
+    100
+  ],
+  "ranking": "default candidate set, descending persisted cosine, lexical IDs break ties; budget clips set; no frontier expansion",
+  "material_kinds": [
+    "EQUIVALENT",
+    "ENTAILS",
+    "CONTRADICTS"
+  ],
+  "labels": "Existing authored development labels, not new human adjudication. Unlabeled pairs are unreviewed, never negatives.",
+  "comparison": "Future views must use identical inventory, labels and budgets; default candidate workload reported separately.",
+  "acceptance": "No arbitrary recall target; document missed positives and workload. Human semantic adjudication and mandatory integrity gates required before Phase 3.",
+  "embedding_contract": "fastembed-0.9-bge-small@aa8f8b060edb00e03bfdd08813a2949946c8ba55-raw-text-512-cls-normalized-384-v3",
+  "nli_contract": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+  "relationship_policy": "financial-complete-facts-6-uncalibrated",
+  "sources": {
+    "tests/fixtures/sort/semantic-coreweave.json": "3e36e2833abefaaf6ff5768a408f98cc0ac5ebba7a7bf60da614b0958c1edd10",
+    "scripts/evaluate_proposition_graph.py": "4f3a8ce3dc9b17dad39701647ca53415112e51e6a26000e97a4dc0704a348cdb"
+  },
+  "datasets": {
+    "coreweave": {
+      "rows": [
+        {
+          "id": "power-intro",
+          "text": "CoreWeave reached more than 850 megawatts of active power as of December 31, 2025."
+        },
+        {
+          "id": "power-execution",
+          "text": "CoreWeave ended 2025 with more than 850 megawatts of active power."
+        },
+        {
+          "id": "power-presentation",
+          "text": "As of December 31, 2025, CoreWeave reported 850MW+ of active power."
+        },
+        {
+          "id": "centers-presentation",
+          "text": "CoreWeave reported 43 active data centers as of December 31, 2025."
+        },
+        {
+          "id": "centers-transcript",
+          "text": "CoreWeave ended 2025 with 43 active data centers."
+        },
+        {
+          "id": "centers-added",
+          "text": "CoreWeave added 11 data centers in 2025."
+        },
+        {
+          "id": "power-2026-actual",
+          "text": "CoreWeave surpassed 1 gigawatt of active power in Q1 2026."
+        },
+        {
+          "id": "power-2026-forecast",
+          "text": "CoreWeave remained on track to reach or exceed its target of more than 1.7 gigawatts of active power by the end of 2026."
+        },
+        {
+          "id": "suppliers-summary",
+          "text": "We have a limited number of suppliers for significant components of the equipment we use to build and operate our platform and provide our solutions and services. Any disruption in the availability of these components could delay our ability to expand or increase the capacity of our infrastructure or replace defective equipment."
+        },
+        {
+          "id": "suppliers-detail",
+          "text": "Disruption at CoreWeave's limited component suppliers could delay infrastructure expansion or replacement of defective equipment."
+        },
+        {
+          "id": "expense",
+          "text": "Sales and marketing expense increased by $10 million, or 421%, in 2023 versus 2022, including approximately $7 million of increased personnel costs."
+        },
+        {
+          "id": "contracted-power",
+          "text": "CoreWeave reported 3.1GW+ of contracted power as of December 31, 2025."
+        },
+        {
+          "id": "contracted-qualified",
+          "text": "CoreWeave ended 2025 with more than 3.1 gigawatts of contracted capacity, virtually all of which it expected to come online by the end of 2027."
+        }
+      ],
+      "labels": [
+        {
+          "left": "power-intro",
+          "right": "power-execution",
+          "kind": "EQUIVALENT"
+        },
+        {
+          "left": "power-intro",
+          "right": "power-presentation",
+          "kind": "EQUIVALENT"
+        },
+        {
+          "left": "power-intro",
+          "right": "centers-presentation",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "centers-transcript",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "centers-added",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "power-2026-actual",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "power-2026-forecast",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "suppliers-summary",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "suppliers-detail",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-intro",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "power-presentation",
+          "kind": "EQUIVALENT"
+        },
+        {
+          "left": "power-execution",
+          "right": "centers-presentation",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "centers-transcript",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "centers-added",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "power-2026-actual",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "power-2026-forecast",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "suppliers-summary",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "suppliers-detail",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-execution",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "centers-presentation",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "centers-transcript",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "centers-added",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "power-2026-actual",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "power-2026-forecast",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "suppliers-summary",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "suppliers-detail",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-presentation",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "centers-transcript",
+          "kind": "EQUIVALENT"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "centers-added",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "power-2026-actual",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "power-2026-forecast",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "suppliers-summary",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "suppliers-detail",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-presentation",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-transcript",
+          "right": "centers-added",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-transcript",
+          "right": "power-2026-actual",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-transcript",
+          "right": "power-2026-forecast",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-transcript",
+          "right": "suppliers-summary",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-transcript",
+          "right": "suppliers-detail",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-transcript",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-transcript",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-transcript",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-added",
+          "right": "power-2026-actual",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-added",
+          "right": "power-2026-forecast",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-added",
+          "right": "suppliers-summary",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-added",
+          "right": "suppliers-detail",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-added",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-added",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "centers-added",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-actual",
+          "right": "power-2026-forecast",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-actual",
+          "right": "suppliers-summary",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-actual",
+          "right": "suppliers-detail",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-actual",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-actual",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-actual",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-forecast",
+          "right": "suppliers-summary",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-forecast",
+          "right": "suppliers-detail",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-forecast",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-forecast",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "power-2026-forecast",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "suppliers-summary",
+          "right": "suppliers-detail",
+          "kind": "EQUIVALENT"
+        },
+        {
+          "left": "suppliers-summary",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "suppliers-summary",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "suppliers-summary",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "suppliers-detail",
+          "right": "expense",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "suppliers-detail",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "suppliers-detail",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "expense",
+          "right": "contracted-power",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "expense",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        },
+        {
+          "left": "contracted-power",
+          "right": "contracted-qualified",
+          "kind": "UNRESOLVED"
+        }
+      ]
+    },
+    "development_challenge": {
+      "rows": [
+        {
+          "id": "0a",
+          "text": "CoreWeave serves customers."
+        },
+        {
+          "id": "0b",
+          "text": "CoreWeave provides services to clients."
+        },
+        {
+          "id": "1a",
+          "text": "CoreWeave revenue was $5 billion in 2025."
+        },
+        {
+          "id": "1b",
+          "text": "In 2025 CoreWeave generated $5 billion of revenue."
+        },
+        {
+          "id": "2a",
+          "text": "CoreWeave serves customers and operates data centers."
+        },
+        {
+          "id": "2b",
+          "text": "CoreWeave serves customers."
+        },
+        {
+          "id": "3a",
+          "text": "CoreWeave operates data centers."
+        },
+        {
+          "id": "3b",
+          "text": "CoreWeave purchases GPUs."
+        },
+        {
+          "id": "4a",
+          "text": "CoreWeave revenue increased in 2025."
+        },
+        {
+          "id": "4b",
+          "text": "CoreWeave revenue decreased in 2025."
+        },
+        {
+          "id": "5a",
+          "text": "CoreWeave revenue increased in 2025."
+        },
+        {
+          "id": "5b",
+          "text": "CoreWeave revenue increased in 2026."
+        },
+        {
+          "id": "6a",
+          "text": "CoreWeave revenue is $5 billion."
+        },
+        {
+          "id": "6b",
+          "text": "CoreWeave forecasts revenue of $5 billion."
+        },
+        {
+          "id": "7a",
+          "text": "CoreWeave has 850 MW active power."
+        },
+        {
+          "id": "7b",
+          "text": "CoreWeave has 850 MW contracted power."
+        },
+        {
+          "id": "8a",
+          "text": "CoreWeave revenue increased in Europe."
+        },
+        {
+          "id": "8b",
+          "text": "CoreWeave revenue increased globally."
+        },
+        {
+          "id": "9a",
+          "text": "CoreWeave backlog is $5 billion."
+        },
+        {
+          "id": "9b",
+          "text": "CoreWeave revenue is $5 billion."
+        },
+        {
+          "id": "10a",
+          "text": "CoreWeave demand exceeds capacity."
+        },
+        {
+          "id": "10b",
+          "text": "CoreWeave demand exceeds capacity except in Europe."
+        },
+        {
+          "id": "11a",
+          "text": "CoreWeave revenue increased in 2025."
+        },
+        {
+          "id": "11b",
+          "text": "Microsoft revenue increased in 2025."
+        },
+        {
+          "id": "12a",
+          "text": "CoreWeave revenue was $5 billion in 2025."
+        },
+        {
+          "id": "12b",
+          "text": "CoreWeave revenue was $6 billion in 2025."
+        },
+        {
+          "id": "13a",
+          "text": "CoreWeave provides cloud services and employs engineers."
+        },
+        {
+          "id": "13b",
+          "text": "CoreWeave provides cloud services."
+        },
+        {
+          "id": "14a",
+          "text": "CoreWeave revenue increased globally in 2025."
+        },
+        {
+          "id": "14b",
+          "text": "CoreWeave revenue decreased globally in 2025."
+        },
+        {
+          "id": "15a",
+          "text": "CoreWeave may expand."
+        },
+        {
+          "id": "15b",
+          "text": "CoreWeave intends to expand."
+        }
+      ],
+      "labels": [
+        {
+          "left": "0a",
+          "right": "0b",
+          "kind": "EQUIVALENT",
+          "name": "equivalent"
+        },
+        {
+          "left": "1a",
+          "right": "1b",
+          "kind": "EQUIVALENT",
+          "name": "mutual"
+        },
+        {
+          "left": "2a",
+          "right": "2b",
+          "kind": "ENTAILS",
+          "name": "containment"
+        },
+        {
+          "left": "3a",
+          "right": "3b",
+          "kind": "RELATED",
+          "name": "theme"
+        },
+        {
+          "left": "4a",
+          "right": "4b",
+          "kind": "CONTRADICTS",
+          "name": "contradiction"
+        },
+        {
+          "left": "5a",
+          "right": "5b",
+          "kind": "UNRESOLVED",
+          "name": "period"
+        },
+        {
+          "left": "6a",
+          "right": "6b",
+          "kind": "UNRESOLVED",
+          "name": "forecast"
+        },
+        {
+          "left": "7a",
+          "right": "7b",
+          "kind": "UNRESOLVED",
+          "name": "capacity"
+        },
+        {
+          "left": "8a",
+          "right": "8b",
+          "kind": "UNRESOLVED",
+          "name": "scope"
+        },
+        {
+          "left": "9a",
+          "right": "9b",
+          "kind": "UNRESOLVED",
+          "name": "definition"
+        },
+        {
+          "left": "10a",
+          "right": "10b",
+          "kind": "UNRESOLVED",
+          "name": "qualification"
+        },
+        {
+          "left": "11a",
+          "right": "11b",
+          "kind": "UNRESOLVED",
+          "name": "issuer"
+        },
+        {
+          "left": "12a",
+          "right": "12b",
+          "kind": "UNRESOLVED",
+          "name": "numeric"
+        },
+        {
+          "left": "13a",
+          "right": "13b",
+          "kind": "ENTAILS",
+          "name": "containment_explicit"
+        },
+        {
+          "left": "14a",
+          "right": "14b",
+          "kind": "CONTRADICTS",
+          "name": "contradiction_scoped"
+        },
+        {
+          "left": "15a",
+          "right": "15b",
+          "kind": "UNRESOLVED",
+          "name": "uncertain"
+        }
+      ]
+    }
+  },
+  "heldout_policy": "No proposition-context heldout cases or review outcomes opened before baseline file and hash are written. Heldout once only, no tuning."
+}
