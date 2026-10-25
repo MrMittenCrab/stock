@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "instructions": "Apply only when opening stage2 after stage1 is locked. Replace reference text at the specified index; source IDs, coordinates, original statements and all judgments remain unchanged.",
+  "entries": [
+    {
+      "reviewer": "A",
+      "case_id": "case-025",
+      "reference_index": 0,
+      "source_id": "d203:0f4e339342d4fc63:0:1132",
+      "start": 0,
+      "end": 1132,
+      "source_path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+      "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+      "corrected_text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft."
+    },
+    {
+      "reviewer": "A",
+      "case_id": "case-026",
+      "reference_index": 0,
+      "source_id": "d203:0f4e339342d4fc63:0:1132",
+      "start": 0,
+      "end": 1132,
+      "source_path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+      "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+      "corrected_text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft."
+    },
+    {
+      "reviewer": "A",
+      "case_id": "case-027",
+      "reference_index": 0,
+      "source_id": "d203:0f4e339342d4fc63:0:1132",
+      "start": 0,
+      "end": 1132,
+      "source_path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+      "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+      "corrected_text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft."
+    },
+    {
+      "reviewer": "A",
+      "case_id": "case-028",
+      "reference_index": 0,
+      "source_id": "d203:0f4e339342d4fc63:0:1132",
+      "start": 0,
+      "end": 1132,
+      "source_path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+      "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+      "corrected_text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft."
+    },
+    {
+      "reviewer": "B",
+      "case_id": "case-028",
+      "reference_index": 0,
+      "source_id": "d203:0f4e339342d4fc63:0:1132",
+      "start": 0,
+      "end": 1132,
+      "source_path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+      "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+      "corrected_text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft."
+    },
+    {
+      "reviewer": "B",
+      "case_id": "case-027",
+      "reference_index": 0,
+      "source_id": "d203:0f4e339342d4fc63:0:1132",
+      "start": 0,
+      "end": 1132,
+      "source_path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+      "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+      "corrected_text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft."
+    },
+    {
+      "reviewer": "B",
+      "case_id": "case-026",
+      "reference_index": 0,
+      "source_id": "d203:0f4e339342d4fc63:0:1132",
+      "start": 0,
+      "end": 1132,
+      "source_path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+      "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+      "corrected_text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft."
+    },
+    {
+      "reviewer": "B",
+      "case_id": "case-025",
+      "reference_index": 0,
+      "source_id": "d203:0f4e339342d4fc63:0:1132",
+      "start": 0,
+      "end": 1132,
+      "source_path": "tests/fixtures/proposition-context/microsoft-fy25q4-excerpt.md",
+      "source_sha256": "0f4e339342d4fc63fcc74750d1b487dcb7328a7e9805804768731e878588a9f0",
+      "corrected_text": "REDMOND,\nWash. — July 30, 2025 —\nMicrosoft Corp. today\nannounced the following results for the quarter ended June 30, 2025, as\ncompared to the corresponding period of last fiscal year:\n·\nRevenue was $76.4 billion and increased 18% (up 17% in constant\ncurrency)\n·\nOperating income was $34.3 billion and increased 23% (up 22% in\nconstant currency)\n·\nNet income was\n$27.2 billion and increased 24% (up 22%\nin\nconstant currency)\n·\nDiluted earnings per\nshare\nwas $3.65\nand increased 24% (up 22% in\nconstant currency)\n“Cloud and AI is the driving\nforce of business transformation across every industry and sector,\" said\nSatya Nadella, chairman and chief executive officer of Microsoft. “We’re\ninnovating across the tech stack to help customers adapt and grow in this new\nera, and this year, Azure surpassed $75 billion in revenue, up 34 percent,\ndriven by growth across all workloads.”\n“We closed out the fiscal year\nwith a strong quarter, highlighted by Microsoft Cloud revenue\nreaching $46.7 billion, up 27% (up 25% in constant currency)\nyear-over-year,” said Amy Hood, executive vice president and chief financial\nofficer of Microsoft."
+    }
+  ]
+}

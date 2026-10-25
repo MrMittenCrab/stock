@@ -1,0 +1,1509 @@
+{
+  "phase": "2.5",
+  "decision": "BLOCKED",
+  "normative_source": "docs/proposition-decontextualization.md",
+  "evidence_classes": {
+    "deterministic": "Exact hashes/anchors/edit reconstruction, stale-review rejection, staging identity and checked manifests; tests are not semantic accuracy.",
+    "recorded": "21 development + 3 opened heldout pipeline outcomes; review expectations injected, not measured.",
+    "authenticated": "Phase 2 historical capture: 4 proposals, 3 pre-review exclusions, 1 unnecessary acceptance; Phase 2.5: one timed-out request, zero outputs.",
+    "human": "Zero completed independent human decisions; two separate packets ready.",
+    "unverified": "All semantic pass counts, reviewer agreement, population error rates and production reliability remain unestablished."
+  },
+  "reconciliation": {
+    "total": 24,
+    "development": 21,
+    "heldout": 3,
+    "development_context_counts": {
+      "unnecessary": 7,
+      "resolved": 4,
+      "unresolved": 10
+    },
+    "recorded_accepted": 11,
+    "recorded_rejected": 6,
+    "recorded_unresolved_reviews": 4,
+    "focused_historical_and_fresh_tests": 164,
+    "new_tests": 26,
+    "known_unsafe_accepted": [
+      "cw-we"
+    ]
+  },
+  "speaker_diagnosis": [
+    {
+      "selection": "msft-nadella-cloud-ai-positioning",
+      "speaker": "Satya Nadella",
+      "bound_ids": [
+        "d203:0f4e339342d4fc63:0:1132"
+      ],
+      "atom": {
+        "start": 0,
+        "end": 1132,
+        "speaker": null,
+        "turn": null,
+        "role": null
+      },
+      "classification": [
+        "B: no structured speaker identity in mixed Filing atom",
+        "C: explicit quotation attribution exists in exact source bytes but is not represented as a turn"
+      ],
+      "incorrect_cursor_name": false,
+      "source_name_present": true,
+      "semantic_review": "not_checked",
+      "finding": "Single Filing atom contains both named executives and issuer narration. No participant headers or transcript turns. Existing strict per-atom speaker equality rejects before independent review. Do not infer issuer speaker or apply one name to whole atom.",
+      "implementation_change": null,
+      "remaining_issue": "Finer anchored quotation-to-speaker extraction would require a separately validated source parser, not a validation bypass."
+    },
+    {
+      "selection": "msft-nadella-azure-75b-revenue",
+      "speaker": "Satya Nadella",
+      "bound_ids": [
+        "d203:0f4e339342d4fc63:0:1132"
+      ],
+      "atom": {
+        "start": 0,
+        "end": 1132,
+        "speaker": null,
+        "turn": null,
+        "role": null
+      },
+      "classification": [
+        "B: no structured speaker identity in mixed Filing atom",
+        "C: explicit quotation attribution exists in exact source bytes but is not represented as a turn"
+      ],
+      "incorrect_cursor_name": false,
+      "source_name_present": true,
+      "semantic_review": "not_checked",
+      "finding": "Single Filing atom contains both named executives and issuer narration. No participant headers or transcript turns. Existing strict per-atom speaker equality rejects before independent review. Do not infer issuer speaker or apply one name to whole atom.",
+      "implementation_change": null,
+      "remaining_issue": "Finer anchored quotation-to-speaker extraction would require a separately validated source parser, not a validation bypass."
+    },
+    {
+      "selection": "msft-hood-cloud-46-7b-fy-close",
+      "speaker": "Amy Hood",
+      "bound_ids": [
+        "d203:0f4e339342d4fc63:0:1132"
+      ],
+      "atom": {
+        "start": 0,
+        "end": 1132,
+        "speaker": null,
+        "turn": null,
+        "role": null
+      },
+      "classification": [
+        "B: no structured speaker identity in mixed Filing atom",
+        "C: explicit quotation attribution exists in exact source bytes but is not represented as a turn"
+      ],
+      "incorrect_cursor_name": false,
+      "source_name_present": true,
+      "semantic_review": "not_checked",
+      "finding": "Single Filing atom contains both named executives and issuer narration. No participant headers or transcript turns. Existing strict per-atom speaker equality rejects before independent review. Do not infer issuer speaker or apply one name to whole atom.",
+      "implementation_change": null,
+      "remaining_issue": "Finer anchored quotation-to-speaker extraction would require a separately validated source parser, not a validation bypass."
+    }
+  ],
+  "baseline": {
+    "path": "docs/benchmarks/proposition-context-validation/raw-baseline.json",
+    "sha256": "599599f06d2f7842435d70b3f72d5d0d8732d4ef22dd648362130814f79461e1",
+    "freeze_commit": "c41a044",
+    "total_inventory": 45,
+    "total_scored_pairs": 574,
+    "total_candidates": 106,
+    "material_labeled": 11,
+    "material_retrieved_default": 11,
+    "missed_default": [],
+    "labels": "Authored development labels; no independent new adjudication. 13/32-row inventories evaluated separately, not cross-joined.",
+    "embedding_vectors_computed": 40,
+    "embedding_vectors_reused_on_resume": 40,
+    "vector_cache_bytes": 61440,
+    "elapsed_seconds": 2.5426118338946253,
+    "nli_calls": 0,
+    "cursor_calls": 0
+  },
+  "heldout": {
+    "executed_once": true,
+    "policy_changed": false,
+    "outcomes": {
+      "unnecessary": 1,
+      "unresolved": 2
+    },
+    "independent_human_result": null,
+    "fresh_cursor_result": null,
+    "source_references_in": "assessment.json",
+    "all_downstream_safe": false,
+    "limitation": "Recorded replay only. Three cases cannot estimate population reliability; now opened, not an untouched set. Misnamed ms-heldout-customer contains a CEO quote, not customer speech; actual customer counterfactual is new authored development data."
+  },
+  "semantic_assessment": {
+    "human_sufficiency_pass": 0,
+    "human_preservation_pass": 0,
+    "human_pending": 24,
+    "deterministic_semantic_pass": null,
+    "known_unsafe_accepted": 1,
+    "known_unsupported_accepted_addition": 1,
+    "known_meaning_changing_accepted_rewrite": 1,
+    "recorded_acceptance_is_not_semantic_accuracy": true
+  },
+  "financial_taxonomy": [
+    {
+      "dimension": "neighbor-issuer",
+      "expected_reason": "Neighboring issuer cannot replace Alpha.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "customer-speaker",
+      "expected_reason": "Customer speech is not issuer management; may is not will.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "fiscal-calendar",
+      "expected_reason": "Fiscal and calendar windows differ.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "publication-measurement",
+      "expected_reason": "Publication date is not measurement date.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "actual-forecast",
+      "expected_reason": "Forecast cannot become achieved result.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "contracted-active",
+      "expected_reason": "Contracted is not active.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "revenue-bookings-backlog",
+      "expected_reason": "Bookings, backlog and revenue differ; cancellation caveat lost.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "currency-scale-rounding",
+      "expected_reason": "Currency, scale, approximation and inequality all change.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "gaap-adjusted",
+      "expected_reason": "Accounting basis, metric and exclusions change.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "footnote-attachment",
+      "expected_reason": "Material footnote cannot be dropped.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "missing-comparison",
+      "expected_reason": "Missing comparison period cannot be invented.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    },
+    {
+      "dimension": "multiple-antecedents",
+      "expected_reason": "Multiple antecedents require abstention and modality retained.",
+      "evidence_class": "New authored counterfactual plus injected rejection regression; not measured model discrimination"
+    }
+  ],
+  "integrity": {
+    "known_unsupported_accepted_additions_zero": false,
+    "known_meaning_changing_accepted_rewrites_zero": false,
+    "source_identity_or_exact_citation_loss": 0,
+    "manual_correction_loss": 0,
+    "approved_downstream_validation_inputs": 0,
+    "production_activated": false,
+    "production_schema_changed": false,
+    "metadata_invalidation": "Nine extra document fields tested plus prior source/proposal/edit/qualification/speaker bindings.",
+    "resume": "All six development/heldout disposable replay groups: zero new requests and artifacts on completed resume. Historical authenticated response replay tests also pass. Timed-out new attempt had no completed work to reuse; no retry made.",
+    "interruption": "Existing interrupted-review and partial generation/transport rebatching tests pass.",
+    "manual_history": "Existing disposable publication, topic correction, split transfer, replacement history and rollback regressions pass; production file hash unchanged.",
+    "production_file_checks": [
+      {
+        "path": ".data/stock.sqlite3",
+        "before_sha256": "a0a7817a796895f8016d3ccd2480568fe4cd0c1e1e5485975e5073359c9f8a04",
+        "after_sha256": "a0a7817a796895f8016d3ccd2480568fe4cd0c1e1e5485975e5073359c9f8a04"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.pdf",
+        "before_sha256": "2dc113ea8994001127c424c60f5c3aca71a92adfb00d303e532ed4279468cc9b",
+        "after_sha256": "2dc113ea8994001127c424c60f5c3aca71a92adfb00d303e532ed4279468cc9b"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-13--quarterly--Q2-2025.md",
+        "before_sha256": "0e60065faed53c2cab7d1d323d41818521b9b2cef055a7070ba8f1d3e179ff46",
+        "after_sha256": "0e60065faed53c2cab7d1d323d41818521b9b2cef055a7070ba8f1d3e179ff46"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.md",
+        "before_sha256": "c2b6a05be1e6fdc3a76176dc3ecb29ec0a57e043bae9d03c5b18dc7398b35662",
+        "after_sha256": "c2b6a05be1e6fdc3a76176dc3ecb29ec0a57e043bae9d03c5b18dc7398b35662"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.md",
+        "before_sha256": "9bdc4b2d30522a1e1f44091347e0dcf15f1e89a6dacce8875536904ba26a6129",
+        "after_sha256": "9bdc4b2d30522a1e1f44091347e0dcf15f1e89a6dacce8875536904ba26a6129"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-08--quarterly--Q1-2026.md",
+        "before_sha256": "3226d51831a8143cebb47202a9f34e3a6ce2803641f89b955b08343496a965d2",
+        "after_sha256": "3226d51831a8143cebb47202a9f34e3a6ce2803641f89b955b08343496a965d2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.md",
+        "before_sha256": "c90933f5608f5c07993e208542d8869dee9acf134add9b2452c96e9c3c7321f1",
+        "after_sha256": "c90933f5608f5c07993e208542d8869dee9acf134add9b2452c96e9c3c7321f1"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.pdf",
+        "before_sha256": "e1dc615b937ee655e62b812096ced3c64e25c24c1450ad8660b3558a825feee9",
+        "after_sha256": "e1dc615b937ee655e62b812096ced3c64e25c24c1450ad8660b3558a825feee9"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-15--quarterly--Q1-2025.md",
+        "before_sha256": "a9e3ae6d9761d37b7d1d49032af8cccf6d48b51ad1ed7adb12ca8f71f876fd66",
+        "after_sha256": "a9e3ae6d9761d37b7d1d49032af8cccf6d48b51ad1ed7adb12ca8f71f876fd66"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-13--quarterly--Q3-2025.pdf",
+        "before_sha256": "539e621c6f9e4a88c0e41e60579dbcfa7aff870125f22cc90b2453dbbe02bacb",
+        "after_sha256": "539e621c6f9e4a88c0e41e60579dbcfa7aff870125f22cc90b2453dbbe02bacb"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.md",
+        "before_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4",
+        "after_sha256": "9f4f0f20f24a91c83adba7dfea851c61c0250629d8100c51d45682ad63aa84d4"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.md",
+        "before_sha256": "f7c5182b917306c402c232bd47b0844781a7db2aee966b362d128000fe5faaf9",
+        "after_sha256": "f7c5182b917306c402c232bd47b0844781a7db2aee966b362d128000fe5faaf9"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.md",
+        "before_sha256": "cac4dc4edd6ff97d12ef17705d5f61a00b8a855cebae20b08701956db8c9e7ae",
+        "after_sha256": "cac4dc4edd6ff97d12ef17705d5f61a00b8a855cebae20b08701956db8c9e7ae"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.pdf",
+        "before_sha256": "105bfea2bcba98a2089713634ab93057fdd3d9ee36c30df65946b5f6c4ff88a3",
+        "after_sha256": "105bfea2bcba98a2089713634ab93057fdd3d9ee36c30df65946b5f6c4ff88a3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.pdf",
+        "before_sha256": "863706795708152ab65722e7b7b461c12dc9b72974a78abe21a35c2acbbaf8db",
+        "after_sha256": "863706795708152ab65722e7b7b461c12dc9b72974a78abe21a35c2acbbaf8db"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-04-22--annual--FY2025.md",
+        "before_sha256": "da2339f63f4a1e89de16a57fefcbc2cd2e3fa8a6a658314033cca3934ea5b99e",
+        "after_sha256": "da2339f63f4a1e89de16a57fefcbc2cd2e3fa8a6a658314033cca3934ea5b99e"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-08--quarterly--Q1-2026.pdf",
+        "before_sha256": "b57cd2b889ba167744332230fd85303512aee21da832820cee805c6857a133da",
+        "after_sha256": "b57cd2b889ba167744332230fd85303512aee21da832820cee805c6857a133da"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-13--quarterly--Q3-2025.md",
+        "before_sha256": "54e055c41ac8b117301a80b02329cba6e7eea0c9fa9c4cbbb1c2336efc5d5041",
+        "after_sha256": "54e055c41ac8b117301a80b02329cba6e7eea0c9fa9c4cbbb1c2336efc5d5041"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.pdf",
+        "before_sha256": "d5cd0cf132937d1dacc598efeffa66170fd1283c976c17caababad21970dfac9",
+        "after_sha256": "d5cd0cf132937d1dacc598efeffa66170fd1283c976c17caababad21970dfac9"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.pdf",
+        "before_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6",
+        "after_sha256": "db716980ae8eb4eddda477d43ef2cead98419f6fa4fbec8e37ff643a98b6cbf6"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.md",
+        "before_sha256": "74071316400f0b13119eb37eec010b76f08021c245a9678babfca77e5e626817",
+        "after_sha256": "74071316400f0b13119eb37eec010b76f08021c245a9678babfca77e5e626817"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.pdf",
+        "before_sha256": "10f8088803d57c58c62e7ee885de27ad13717ead30b6859c8eeec487b4550d53",
+        "after_sha256": "10f8088803d57c58c62e7ee885de27ad13717ead30b6859c8eeec487b4550d53"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-15--quarterly--Q1-2025.pdf",
+        "before_sha256": "537c222d9eb2538f07c0efb331c923e62b584f416bf04fc1b524965239f12a6d",
+        "after_sha256": "537c222d9eb2538f07c0efb331c923e62b584f416bf04fc1b524965239f12a6d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-04-22--annual--FY2025.pdf",
+        "before_sha256": "f660a7c2d181ceb77c27e9c58456fd11d08fdee4ff8d5826c71bd631facdee8d",
+        "after_sha256": "f660a7c2d181ceb77c27e9c58456fd11d08fdee4ff8d5826c71bd631facdee8d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.md",
+        "before_sha256": "862d4fd6a663262bc4ca6e38860a2e1ecb22e56c127e4936e5ef9609821ba52c",
+        "after_sha256": "862d4fd6a663262bc4ca6e38860a2e1ecb22e56c127e4936e5ef9609821ba52c"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.pdf",
+        "before_sha256": "5e2306cfd4f4f732395049b2cdd3cdb2909a4e8c6712de3009c962b13de833ba",
+        "after_sha256": "5e2306cfd4f4f732395049b2cdd3cdb2909a4e8c6712de3009c962b13de833ba"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-13--quarterly--Q2-2025.pdf",
+        "before_sha256": "6e07dc9166c48cf8b15fa7fba9c1b8d311d9da81600b7791d3e4221c2a4a4b3b",
+        "after_sha256": "6e07dc9166c48cf8b15fa7fba9c1b8d311d9da81600b7791d3e4221c2a4a4b3b"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_16_Picture_3.jpeg",
+        "before_sha256": "90ddfe0ab4e67935db54af6c31b591a7874c7d46464a66b7a0177173c98e52c3",
+        "after_sha256": "90ddfe0ab4e67935db54af6c31b591a7874c7d46464a66b7a0177173c98e52c3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_9_Picture_8.jpeg",
+        "before_sha256": "5c11a70def488bed874ba72e5e6254b28f16794b21bbb932567f43dee812b7eb",
+        "after_sha256": "5c11a70def488bed874ba72e5e6254b28f16794b21bbb932567f43dee812b7eb"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_13_Picture_4.jpeg",
+        "before_sha256": "6f6ba8c9205c9db0a52c61b57d10bbcb018d9d3d21a9ba76b9852bae265beef2",
+        "after_sha256": "6f6ba8c9205c9db0a52c61b57d10bbcb018d9d3d21a9ba76b9852bae265beef2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_8_Picture_15.jpeg",
+        "before_sha256": "2b94d8fba663052889085fdb2a39341890432239157ffce8e16082e3d8d5a5eb",
+        "after_sha256": "2b94d8fba663052889085fdb2a39341890432239157ffce8e16082e3d8d5a5eb"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_10_Picture_2.jpeg",
+        "before_sha256": "1f6f22f7027fc7d6f02aee1b40011a331333d3a88e284187349eb767d03a6623",
+        "after_sha256": "1f6f22f7027fc7d6f02aee1b40011a331333d3a88e284187349eb767d03a6623"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_13_Picture_8.jpeg",
+        "before_sha256": "9728b81126f3ace4ed1a00820a72604203be5779f484929ba7603ee1b158d62a",
+        "after_sha256": "9728b81126f3ace4ed1a00820a72604203be5779f484929ba7603ee1b158d62a"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_8_Picture_19.jpeg",
+        "before_sha256": "dd138aac36a683a98fbcc499e2b8c1176dd65a67999f9530595706a67784340f",
+        "after_sha256": "dd138aac36a683a98fbcc499e2b8c1176dd65a67999f9530595706a67784340f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_9_Picture_13.jpeg",
+        "before_sha256": "4cc1842066380aaeda35ccf1e7c6a59f80efbaa1a3fbce0239874b25a0c84cc5",
+        "after_sha256": "4cc1842066380aaeda35ccf1e7c6a59f80efbaa1a3fbce0239874b25a0c84cc5"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_8_Picture_8.jpeg",
+        "before_sha256": "7fe829341e7f6d2ffe952229af502406890d9bad291dce56663d9a165d7cc4ca",
+        "after_sha256": "7fe829341e7f6d2ffe952229af502406890d9bad291dce56663d9a165d7cc4ca"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_12_Picture_13.jpeg",
+        "before_sha256": "e19f7e5e6bd5d598aef690d66465c9a4bc89e259e2519a87fb5349d930f3eca2",
+        "after_sha256": "e19f7e5e6bd5d598aef690d66465c9a4bc89e259e2519a87fb5349d930f3eca2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_11_Picture_10.jpeg",
+        "before_sha256": "27748e51ed98b99c539d993eea7ca8c0656e772503f9da9e7d51fea2f5789421",
+        "after_sha256": "27748e51ed98b99c539d993eea7ca8c0656e772503f9da9e7d51fea2f5789421"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_8_Picture_12.jpeg",
+        "before_sha256": "4d535eec5ac927902e0cf00b11ac83a48e0080280f3187b60ff298dd6b314e8d",
+        "after_sha256": "4d535eec5ac927902e0cf00b11ac83a48e0080280f3187b60ff298dd6b314e8d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_13_Picture_12.jpeg",
+        "before_sha256": "188dc7ddcbc78a275856dcc98ca1544a0f72b688daa9fad03184ae621094ac43",
+        "after_sha256": "188dc7ddcbc78a275856dcc98ca1544a0f72b688daa9fad03184ae621094ac43"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_10_Picture_17.jpeg",
+        "before_sha256": "5340caf7763b8335a7008a8af99c85ef74b1fd5480482be78ae1add534229833",
+        "after_sha256": "5340caf7763b8335a7008a8af99c85ef74b1fd5480482be78ae1add534229833"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_14_Picture_3.jpeg",
+        "before_sha256": "1286583986c473452af2e7aec5a75bd53964cbce75b72ee6501e228999964e36",
+        "after_sha256": "1286583986c473452af2e7aec5a75bd53964cbce75b72ee6501e228999964e36"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_9_Picture_3.jpeg",
+        "before_sha256": "583a317bb0d98f6e7195788c998f33d9d63ed7f5b5a02731aeeddb782c535df7",
+        "after_sha256": "583a317bb0d98f6e7195788c998f33d9d63ed7f5b5a02731aeeddb782c535df7"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_16_Picture_8.jpeg",
+        "before_sha256": "0fd78fe01ca14e84de15a6f24457f8f2380591448f30c8eb801ded10b2efb372",
+        "after_sha256": "0fd78fe01ca14e84de15a6f24457f8f2380591448f30c8eb801ded10b2efb372"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_11_Picture_4.jpeg",
+        "before_sha256": "9a87e08fab9f5b474ef740c5ef32982a3a84a3f85329e62f4564803b6ac1be76",
+        "after_sha256": "9a87e08fab9f5b474ef740c5ef32982a3a84a3f85329e62f4564803b6ac1be76"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_10_Picture_22.jpeg",
+        "before_sha256": "c2b02910e05e9063b54364b593a9f1e557fd647764dc54a63e3ba60026c2ad71",
+        "after_sha256": "c2b02910e05e9063b54364b593a9f1e557fd647764dc54a63e3ba60026c2ad71"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_16_Picture_12.jpeg",
+        "before_sha256": "46608e76a481417d42a3f5ee3d90049cf6d3a9ba397c02779d19cf1f58dcd079",
+        "after_sha256": "46608e76a481417d42a3f5ee3d90049cf6d3a9ba397c02779d19cf1f58dcd079"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_14_Picture_11.jpeg",
+        "before_sha256": "9206055f83cba065911ef7fa169edd1550489d8bd7cd677f013fa9a3489b0f78",
+        "after_sha256": "9206055f83cba065911ef7fa169edd1550489d8bd7cd677f013fa9a3489b0f78"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_10_Picture_7.jpeg",
+        "before_sha256": "89751b24ccdb103f116dc44f7a6075e3acc1c18568425f3f31ab15cf8e124069",
+        "after_sha256": "89751b24ccdb103f116dc44f7a6075e3acc1c18568425f3f31ab15cf8e124069"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_10_Picture_12.jpeg",
+        "before_sha256": "61d63e423bfb0a9090ee3c17a19fddb317866777038418d7b4ff2ea9c91c2557",
+        "after_sha256": "61d63e423bfb0a9090ee3c17a19fddb317866777038418d7b4ff2ea9c91c2557"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_13_Picture_21.jpeg",
+        "before_sha256": "a6d8882591aa5c2b21872ea15158792b3b02932d840d5c750f2be18c2c24eef9",
+        "after_sha256": "a6d8882591aa5c2b21872ea15158792b3b02932d840d5c750f2be18c2c24eef9"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_16_Picture_19.jpeg",
+        "before_sha256": "d3446bdbbd28d9fb5ab2944349d12ec98e9ed432c62e37d859a3b7092cfc164a",
+        "after_sha256": "d3446bdbbd28d9fb5ab2944349d12ec98e9ed432c62e37d859a3b7092cfc164a"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_11_Picture_18.jpeg",
+        "before_sha256": "8a8e50b08c085b70f42069f467cfb90960e21f6756201ec087bc076adf851943",
+        "after_sha256": "8a8e50b08c085b70f42069f467cfb90960e21f6756201ec087bc076adf851943"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_13_Picture_16.jpeg",
+        "before_sha256": "5ecbec0a7b9ec7f0f74a79c8886b18ebd5c0ea377d251ac751d83ec779461102",
+        "after_sha256": "5ecbec0a7b9ec7f0f74a79c8886b18ebd5c0ea377d251ac751d83ec779461102"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_11_Picture_14.jpeg",
+        "before_sha256": "486f4aeeb6ad86891df35f5e42366d749653b4cf60e4c1def1e3654f82141e95",
+        "after_sha256": "486f4aeeb6ad86891df35f5e42366d749653b4cf60e4c1def1e3654f82141e95"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/undated--transcript--Q4-2025.assets/_page_12_Picture_6.jpeg",
+        "before_sha256": "3a6c0ceb7e5c742a88728d31a7cce040062d13e94752acdc49501137646eca0e",
+        "after_sha256": "3a6c0ceb7e5c742a88728d31a7cce040062d13e94752acdc49501137646eca0e"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_22_Picture_1.jpeg",
+        "before_sha256": "a133e22ee5b96facdad558b86db87c165da556c01bdc3e963d89aa156d604cc8",
+        "after_sha256": "a133e22ee5b96facdad558b86db87c165da556c01bdc3e963d89aa156d604cc8"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_11_Figure_1.jpeg",
+        "before_sha256": "e6383797894d9aed4b1fb9ce08447b54bd6a3c9134be476f5705d54775069827",
+        "after_sha256": "e6383797894d9aed4b1fb9ce08447b54bd6a3c9134be476f5705d54775069827"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_12_Figure_1.jpeg",
+        "before_sha256": "764f36067617b9da17f379e53f5f3fe5f1e8cbfebea80c0f1744b56413a342d1",
+        "after_sha256": "764f36067617b9da17f379e53f5f3fe5f1e8cbfebea80c0f1744b56413a342d1"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_9_Figure_1.jpeg",
+        "before_sha256": "04744f6fade5cfd4b7f77977ad9825806c28b8de5d1978413157e7d6e8cbaf89",
+        "after_sha256": "04744f6fade5cfd4b7f77977ad9825806c28b8de5d1978413157e7d6e8cbaf89"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_0_Picture_1.jpeg",
+        "before_sha256": "05455ca8a41fa6703b2dd2ca0c64ba9b78dbd4d75b0f6340cd3387ee15350ea9",
+        "after_sha256": "05455ca8a41fa6703b2dd2ca0c64ba9b78dbd4d75b0f6340cd3387ee15350ea9"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_13_Figure_1.jpeg",
+        "before_sha256": "3cc99f9a19e02f3f5f62f3ee0c66457b551f6fd30400184f97fa49483261e499",
+        "after_sha256": "3cc99f9a19e02f3f5f62f3ee0c66457b551f6fd30400184f97fa49483261e499"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_8_Figure_1.jpeg",
+        "before_sha256": "dd72988ed57b4f897730fd56d96248cb43982136f44ec4d9cbd0a5ce63bf8238",
+        "after_sha256": "dd72988ed57b4f897730fd56d96248cb43982136f44ec4d9cbd0a5ce63bf8238"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_6_Picture_0.jpeg",
+        "before_sha256": "34307edc6331c509bbe116a6b2f5105320aaf1a7bfde2ccdef9017b47ab80aa9",
+        "after_sha256": "34307edc6331c509bbe116a6b2f5105320aaf1a7bfde2ccdef9017b47ab80aa9"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_3_Diagram_2.jpeg",
+        "before_sha256": "ec113f903e7bd29bb96e05063024a204bb1751856af861f56ef7c9f632c6c637",
+        "after_sha256": "ec113f903e7bd29bb96e05063024a204bb1751856af861f56ef7c9f632c6c637"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_10_Figure_1.jpeg",
+        "before_sha256": "cf0e41b85f141e778d3c10305b23dc11e6cd1164447596f1bb25185061da1336",
+        "after_sha256": "cf0e41b85f141e778d3c10305b23dc11e6cd1164447596f1bb25185061da1336"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--presentation--Q1-2026.assets/_page_17_Picture_0.jpeg",
+        "before_sha256": "6f5b0542b3609264d202a52dd1447139392d4300413f0837e3ca2238f851617b",
+        "after_sha256": "6f5b0542b3609264d202a52dd1447139392d4300413f0837e3ca2238f851617b"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-08--quarterly--Q1-2026.assets/_page_24_Picture_0.jpeg",
+        "before_sha256": "553b9e52882919e022015a1c3ecd64bdaeaad4bc1f64e4d47400820ab4d82a43",
+        "after_sha256": "553b9e52882919e022015a1c3ecd64bdaeaad4bc1f64e4d47400820ab4d82a43"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_12_Diagram_1.jpeg",
+        "before_sha256": "83e1261aa9503c5af491c9ef92005a7159c89a0edea6d7e49d78782a87af7b71",
+        "after_sha256": "83e1261aa9503c5af491c9ef92005a7159c89a0edea6d7e49d78782a87af7b71"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_6_Figure_3.jpeg",
+        "before_sha256": "9d0ecbe721e791f53318fadbf0a8774020f9737b1dd1885fab34c5c6fbaaa06d",
+        "after_sha256": "9d0ecbe721e791f53318fadbf0a8774020f9737b1dd1885fab34c5c6fbaaa06d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_8_Figure_3.jpeg",
+        "before_sha256": "5dd7b98e794f1e708b44bf3f9cc555f6cc5ce088c04f3c070021f4f9466f560d",
+        "after_sha256": "5dd7b98e794f1e708b44bf3f9cc555f6cc5ce088c04f3c070021f4f9466f560d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_9_Figure_1.jpeg",
+        "before_sha256": "13247e43fc2af9aac86b13b399b516233f261469b9f51ddfd58559d184dff6b7",
+        "after_sha256": "13247e43fc2af9aac86b13b399b516233f261469b9f51ddfd58559d184dff6b7"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_0_Picture_0.jpeg",
+        "before_sha256": "d8c798862b50b1a3da40c40075bd3c02b41d7bbd9d0e0a6bf968dea2b5c85004",
+        "after_sha256": "d8c798862b50b1a3da40c40075bd3c02b41d7bbd9d0e0a6bf968dea2b5c85004"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_4_Figure_2.jpeg",
+        "before_sha256": "a91d5b5db26ba2116c06df368e61625f3560e6ec10841cb449d3a9aa1fe25514",
+        "after_sha256": "a91d5b5db26ba2116c06df368e61625f3560e6ec10841cb449d3a9aa1fe25514"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_10_Picture_0.jpeg",
+        "before_sha256": "f785e46fc58d3a62c97c5d02dceaa81dcbc5c6ade050f356bb69acfadeea39d3",
+        "after_sha256": "f785e46fc58d3a62c97c5d02dceaa81dcbc5c6ade050f356bb69acfadeea39d3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_3_Figure_2.jpeg",
+        "before_sha256": "1b280567baf6ef229c33920700edb721e1c3fdf241ee50fc99531c4887eb1604",
+        "after_sha256": "1b280567baf6ef229c33920700edb721e1c3fdf241ee50fc99531c4887eb1604"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-05-14--presentation--Q1-2025.assets/_page_7_Figure_2.jpeg",
+        "before_sha256": "db2029b268928d64497e7965eabd681c7e63a4013f493d63d171b04484f62f98",
+        "after_sha256": "db2029b268928d64497e7965eabd681c7e63a4013f493d63d171b04484f62f98"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_4_Figure_0.jpeg",
+        "before_sha256": "0dec64498147f1540e2658089878a421dff7bdc8f24d39ef37fc4ae189fef7ea",
+        "after_sha256": "0dec64498147f1540e2658089878a421dff7bdc8f24d39ef37fc4ae189fef7ea"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_23_Picture_1.jpeg",
+        "before_sha256": "a133e22ee5b96facdad558b86db87c165da556c01bdc3e963d89aa156d604cc8",
+        "after_sha256": "a133e22ee5b96facdad558b86db87c165da556c01bdc3e963d89aa156d604cc8"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_12_Figure_1.jpeg",
+        "before_sha256": "0ed4440d94dbb5120600629de048b976c73a3d83a7d67d5be0daf0f0a781dbad",
+        "after_sha256": "0ed4440d94dbb5120600629de048b976c73a3d83a7d67d5be0daf0f0a781dbad"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_13_Figure_2.jpeg",
+        "before_sha256": "9733a8b19e5eacf758049eb3623a4f9cb4a2ea4799a70a86e3a8d737bf64f0bc",
+        "after_sha256": "9733a8b19e5eacf758049eb3623a4f9cb4a2ea4799a70a86e3a8d737bf64f0bc"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_9_Figure_1.jpeg",
+        "before_sha256": "80657312c1c1b27b03c6297f4d3ebc8ab94d54e23e075e7a70b50cfa39aead1a",
+        "after_sha256": "80657312c1c1b27b03c6297f4d3ebc8ab94d54e23e075e7a70b50cfa39aead1a"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_0_Picture_1.jpeg",
+        "before_sha256": "643626684b6919dd9a74a3ffe6710a74e9afc90f003362ee9b1d570e585ca001",
+        "after_sha256": "643626684b6919dd9a74a3ffe6710a74e9afc90f003362ee9b1d570e585ca001"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_6_Picture_0.jpeg",
+        "before_sha256": "34307edc6331c509bbe116a6b2f5105320aaf1a7bfde2ccdef9017b47ab80aa9",
+        "after_sha256": "34307edc6331c509bbe116a6b2f5105320aaf1a7bfde2ccdef9017b47ab80aa9"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_3_Diagram_2.jpeg",
+        "before_sha256": "ec113f903e7bd29bb96e05063024a204bb1751856af861f56ef7c9f632c6c637",
+        "after_sha256": "ec113f903e7bd29bb96e05063024a204bb1751856af861f56ef7c9f632c6c637"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_10_Figure_1.jpeg",
+        "before_sha256": "31d94c31b71db6cd4a1dc1e2e0abe7bec6f7115b77cc2766e25421b0580007ec",
+        "after_sha256": "31d94c31b71db6cd4a1dc1e2e0abe7bec6f7115b77cc2766e25421b0580007ec"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_14_Figure_1.jpeg",
+        "before_sha256": "65e0b91d5f18c6cbc6db1f7549153c78f1c01076e1653c81cd7f605f46b6aaa2",
+        "after_sha256": "65e0b91d5f18c6cbc6db1f7549153c78f1c01076e1653c81cd7f605f46b6aaa2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.assets/_page_18_Picture_0.jpeg",
+        "before_sha256": "6f5b0542b3609264d202a52dd1447139392d4300413f0837e3ca2238f851617b",
+        "after_sha256": "6f5b0542b3609264d202a52dd1447139392d4300413f0837e3ca2238f851617b"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_9_Picture_53.jpeg",
+        "before_sha256": "b76cfcbbb84d4dc05d20e9dfd940e1f9de94594c2c1f48a7b91405a02c6cc5e0",
+        "after_sha256": "b76cfcbbb84d4dc05d20e9dfd940e1f9de94594c2c1f48a7b91405a02c6cc5e0"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_5_Picture_17.jpeg",
+        "before_sha256": "82ba5cb71c4e51b808f17cf2ad4b4bfa61d3bad92e28bf7b5012d25edb90ae12",
+        "after_sha256": "82ba5cb71c4e51b808f17cf2ad4b4bfa61d3bad92e28bf7b5012d25edb90ae12"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_153_Picture_4.jpeg",
+        "before_sha256": "403d1f21f3c6d6520f63b28a22fd02a198a1354ed80ede9298610e7a2cd27329",
+        "after_sha256": "403d1f21f3c6d6520f63b28a22fd02a198a1354ed80ede9298610e7a2cd27329"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_0_Picture_5.jpeg",
+        "before_sha256": "3236afadbfcc9b822852d486d2f1076b66de575a9e9f1b7b736392304f7f241c",
+        "after_sha256": "3236afadbfcc9b822852d486d2f1076b66de575a9e9f1b7b736392304f7f241c"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_26_Diagram_3.jpeg",
+        "before_sha256": "5439bd87fe4d867ed5409f4b2e63b3196fdafc863706de271c27cb0e01258c5f",
+        "after_sha256": "5439bd87fe4d867ed5409f4b2e63b3196fdafc863706de271c27cb0e01258c5f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_177_Picture_1.jpeg",
+        "before_sha256": "ca722d79ad860a395f5c69ad1e957dd0978673b69adf6bf19d3d0d269bbe8d55",
+        "after_sha256": "ca722d79ad860a395f5c69ad1e957dd0978673b69adf6bf19d3d0d269bbe8d55"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_9_Picture_33.jpeg",
+        "before_sha256": "aaea634d3d35c1cf94aba24bcf76f39be25f6e66f739007fbdacde84d1dd0254",
+        "after_sha256": "aaea634d3d35c1cf94aba24bcf76f39be25f6e66f739007fbdacde84d1dd0254"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_5_Picture_20.jpeg",
+        "before_sha256": "585de784718dd02d8640af4cf803da920e479385b09e9428493d371312a2a51b",
+        "after_sha256": "585de784718dd02d8640af4cf803da920e479385b09e9428493d371312a2a51b"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_9_Figure_36.jpeg",
+        "before_sha256": "5f35333b430b73c636290ca08ae11540cc5d38e52cb99243adcf01699e5e06ea",
+        "after_sha256": "5f35333b430b73c636290ca08ae11540cc5d38e52cb99243adcf01699e5e06ea"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_7_Diagram_15.jpeg",
+        "before_sha256": "765742a56c7d137f71e09b8d77c25f2c93954d600ffd866fe71267e45284a497",
+        "after_sha256": "765742a56c7d137f71e09b8d77c25f2c93954d600ffd866fe71267e45284a497"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_9_Figure_46.jpeg",
+        "before_sha256": "969bf6c62af3c5102f165823094bfe901915ad2fe22b82fdd07aa49eae1c7379",
+        "after_sha256": "969bf6c62af3c5102f165823094bfe901915ad2fe22b82fdd07aa49eae1c7379"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_165_Diagram_2.jpeg",
+        "before_sha256": "a3571d34a999aa7d4f7bcc29b10cb6a754a37fa93fbd3ac03e889cfcd1f2deff",
+        "after_sha256": "a3571d34a999aa7d4f7bcc29b10cb6a754a37fa93fbd3ac03e889cfcd1f2deff"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_167_Diagram_5.jpeg",
+        "before_sha256": "a739a685beb265bda8eb5023000b1f1ca848ca6b441837efe01254f6185d5b12",
+        "after_sha256": "a739a685beb265bda8eb5023000b1f1ca848ca6b441837efe01254f6185d5b12"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_9_Picture_43.jpeg",
+        "before_sha256": "c7e65915e85d6a9e9be98eae990fcdc468de473000002a912bc33ad7e47a75f8",
+        "after_sha256": "c7e65915e85d6a9e9be98eae990fcdc468de473000002a912bc33ad7e47a75f8"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_11_Figure_20.jpeg",
+        "before_sha256": "3646f96e963d0274fd5d287677ff1dba20063f7800d7ec193d7655edf7439d2a",
+        "after_sha256": "3646f96e963d0274fd5d287677ff1dba20063f7800d7ec193d7655edf7439d2a"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_5_Picture_26.jpeg",
+        "before_sha256": "021758aaecbde914a489c033c59815469a03063b4070376094d0eb29dabe3469",
+        "after_sha256": "021758aaecbde914a489c033c59815469a03063b4070376094d0eb29dabe3469"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_24_Diagram_2.jpeg",
+        "before_sha256": "fed3b379dbcaa09ad975f848a863e8036f4bf8786df842a311a40c3b5e29672b",
+        "after_sha256": "fed3b379dbcaa09ad975f848a863e8036f4bf8786df842a311a40c3b5e29672b"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_1_Picture_3.jpeg",
+        "before_sha256": "1fa16263a4a992a445c167aaa5b3d965ecb7f526be3989a7c7e04e87486ee9a3",
+        "after_sha256": "1fa16263a4a992a445c167aaa5b3d965ecb7f526be3989a7c7e04e87486ee9a3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_7_Picture_12.jpeg",
+        "before_sha256": "b7c1b99f81a2cdea2a78978afa90fb5bfeef89f2db23821496adcf02f99df7bd",
+        "after_sha256": "b7c1b99f81a2cdea2a78978afa90fb5bfeef89f2db23821496adcf02f99df7bd"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_5_Picture_29.jpeg",
+        "before_sha256": "44d3ebe855e4ee63768517e4d31d2209f7680385c54e6e2c676787ac0df13580",
+        "after_sha256": "44d3ebe855e4ee63768517e4d31d2209f7680385c54e6e2c676787ac0df13580"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_172_Picture_3.jpeg",
+        "before_sha256": "ea1fe0aa5b51babbf837a0068819994ebedb617dc43dce0ff887c237110ec0cb",
+        "after_sha256": "ea1fe0aa5b51babbf837a0068819994ebedb617dc43dce0ff887c237110ec0cb"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_158_Diagram_2.jpeg",
+        "before_sha256": "a101f94dae0839f67a447e2ea6fc4810f29feb05b9d78325c87fa75664246f61",
+        "after_sha256": "a101f94dae0839f67a447e2ea6fc4810f29feb05b9d78325c87fa75664246f61"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_156_Diagram_3.jpeg",
+        "before_sha256": "2c592929e815e0b4847ae15e1d24f80c3c18dc623d2c09e883d60694fe5fb642",
+        "after_sha256": "2c592929e815e0b4847ae15e1d24f80c3c18dc623d2c09e883d60694fe5fb642"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_12_Picture_1.jpeg",
+        "before_sha256": "631bb6971a5dbca1c226946254f6e84772de817ef9770c5b16992080e5ed816c",
+        "after_sha256": "631bb6971a5dbca1c226946254f6e84772de817ef9770c5b16992080e5ed816c"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_9_Picture_41.jpeg",
+        "before_sha256": "830783de231f5d2bbd605ebf6a6ee3c426f5020618a4d7d1a89770a77d179b36",
+        "after_sha256": "830783de231f5d2bbd605ebf6a6ee3c426f5020618a4d7d1a89770a77d179b36"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_161_Picture_3.jpeg",
+        "before_sha256": "428e542d2cb5e4e1d639fa450f48fc5f8611fef5428f4bbdb5646200fe599922",
+        "after_sha256": "428e542d2cb5e4e1d639fa450f48fc5f8611fef5428f4bbdb5646200fe599922"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_339_Picture_4.jpeg",
+        "before_sha256": "06e03be5b0536e39cfce4fab453cbca118164b0c90ecf1e3dfebb1d1b8d403bd",
+        "after_sha256": "06e03be5b0536e39cfce4fab453cbca118164b0c90ecf1e3dfebb1d1b8d403bd"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_171_Figure_4.jpeg",
+        "before_sha256": "472564fdc77b465d068f260e27b2512074fb976dd16be27640c96c1631595ea4",
+        "after_sha256": "472564fdc77b465d068f260e27b2512074fb976dd16be27640c96c1631595ea4"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_28_Picture_2.jpeg",
+        "before_sha256": "153dc8cecdb06b360f5c352e12b970833b88f8e4f006ace3db776917c4a31e7f",
+        "after_sha256": "153dc8cecdb06b360f5c352e12b970833b88f8e4f006ace3db776917c4a31e7f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_25_Figure_4.jpeg",
+        "before_sha256": "6644eb96e903701e6173c609265ec8e85a89c5dd6a453a8f9f8940f0d5287f73",
+        "after_sha256": "6644eb96e903701e6173c609265ec8e85a89c5dd6a453a8f9f8940f0d5287f73"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_1_Picture_1.jpeg",
+        "before_sha256": "9a4025f7dd08229e59fde4d3d3f30371c8b010d767c28dc5b0009fe5ae477af3",
+        "after_sha256": "9a4025f7dd08229e59fde4d3d3f30371c8b010d767c28dc5b0009fe5ae477af3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_177_Picture_5.jpeg",
+        "before_sha256": "7f8b82800e87e5f27f3e1805bab3c0b7f9d8c59f660144e3217017a2ff1bc816",
+        "after_sha256": "7f8b82800e87e5f27f3e1805bab3c0b7f9d8c59f660144e3217017a2ff1bc816"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_5_Picture_23.jpeg",
+        "before_sha256": "a9d615de3a037e27e7ba265673e607322b72ce4f42e48f25920a0005c432067f",
+        "after_sha256": "a9d615de3a037e27e7ba265673e607322b72ce4f42e48f25920a0005c432067f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_2_Picture_0.jpeg",
+        "before_sha256": "f56200c15905695b96767898e6db4a2580f3ec89b39f8a7e8a4213d9e9b1549c",
+        "after_sha256": "f56200c15905695b96767898e6db4a2580f3ec89b39f8a7e8a4213d9e9b1549c"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_11_Picture_23.jpeg",
+        "before_sha256": "dca5ec19881f1201ee29fe4ed70e3b37dc895959f42e7444c48d3076cf38e72c",
+        "after_sha256": "dca5ec19881f1201ee29fe4ed70e3b37dc895959f42e7444c48d3076cf38e72c"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_24_Picture_3.jpeg",
+        "before_sha256": "4e1c61768b8ec0c8f52806a04a8f89399159fe4eac83f378c341b788133d6584",
+        "after_sha256": "4e1c61768b8ec0c8f52806a04a8f89399159fe4eac83f378c341b788133d6584"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_116_Figure_16.jpeg",
+        "before_sha256": "bcd57db6176f0e53ec84286509d351c4b5d1a8f4c5f0ce4939dfdc16ed212c56",
+        "after_sha256": "bcd57db6176f0e53ec84286509d351c4b5d1a8f4c5f0ce4939dfdc16ed212c56"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_4_Picture_0.jpeg",
+        "before_sha256": "fc3a0b3ee71a343803b101048e79b8afc1d3baa62fd7bfd49e00ba45a0170e18",
+        "after_sha256": "fc3a0b3ee71a343803b101048e79b8afc1d3baa62fd7bfd49e00ba45a0170e18"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_9_Figure_38.jpeg",
+        "before_sha256": "eb6285fc6fdbbf44c942cc9b0046261e2a434de9b58aafa9a428ff43411d5d9d",
+        "after_sha256": "eb6285fc6fdbbf44c942cc9b0046261e2a434de9b58aafa9a428ff43411d5d9d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_11_Picture_18.jpeg",
+        "before_sha256": "5eb9d272e5d2d3e586f1503b012b16837d10808b4c2561e8361b6eec2aba27eb",
+        "after_sha256": "5eb9d272e5d2d3e586f1503b012b16837d10808b4c2561e8361b6eec2aba27eb"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_9_Picture_50.jpeg",
+        "before_sha256": "566d2611284b0563de43ac95f809b3cfe403f162b2863218ae938c82a68520c6",
+        "after_sha256": "566d2611284b0563de43ac95f809b3cfe403f162b2863218ae938c82a68520c6"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-03-31--filing--CoreWeave-IPO-Final-Prospectus.assets/_page_165_Picture_3.jpeg",
+        "before_sha256": "9e94901aa2af79a9db433b8914aa0d81b384b0f52207898ca4de2a71ca57826f",
+        "after_sha256": "9e94901aa2af79a9db433b8914aa0d81b384b0f52207898ca4de2a71ca57826f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/source.md",
+        "before_sha256": "076d1db0eedd0e4ca5e7d3c1f830576df8e07d92f7e80da638a39555e8219336",
+        "after_sha256": "076d1db0eedd0e4ca5e7d3c1f830576df8e07d92f7e80da638a39555e8219336"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/source.evidence.json",
+        "before_sha256": "2a2474744ee01ab16ce645401397883c3c7f2f09406f9acb953ec3d14955d6c0",
+        "after_sha256": "2a2474744ee01ab16ce645401397883c3c7f2f09406f9acb953ec3d14955d6c0"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-13--quarterly--Q2-2025.assets/_page_114_Picture_0.jpeg",
+        "before_sha256": "aab0e595be9edd1d91454cbec44f8cabc66e2e4c9bb78cee138ab1df3c526e4d",
+        "after_sha256": "aab0e595be9edd1d91454cbec44f8cabc66e2e4c9bb78cee138ab1df3c526e4d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-13--quarterly--Q2-2025.assets/_page_6_Picture_0.jpeg",
+        "before_sha256": "e9f05fd495b2b80112ac2e815acba265df4b0ffc2a7e84f803ebd5c6b3e574b4",
+        "after_sha256": "e9f05fd495b2b80112ac2e815acba265df4b0ffc2a7e84f803ebd5c6b3e574b4"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-13--quarterly--Q2-2025.assets/_page_120_Picture_0.jpeg",
+        "before_sha256": "e98b21723bca0cdf1b1d3ae2bd640acc160e0b7fa5b0a883126d742cb1f38719",
+        "after_sha256": "e98b21723bca0cdf1b1d3ae2bd640acc160e0b7fa5b0a883126d742cb1f38719"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-13--quarterly--Q2-2025.assets/_page_121_Picture_1.jpeg",
+        "before_sha256": "631bb6971a5dbca1c226946254f6e84772de817ef9770c5b16992080e5ed816c",
+        "after_sha256": "631bb6971a5dbca1c226946254f6e84772de817ef9770c5b16992080e5ed816c"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-04-22--annual--FY2025.assets/_page_4_Picture_21.jpeg",
+        "before_sha256": "8389fffe950f97b733f90e5fc05fa5838efa9c7ca02bc8ee941374e1ffa37581",
+        "after_sha256": "8389fffe950f97b733f90e5fc05fa5838efa9c7ca02bc8ee941374e1ffa37581"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-04-22--annual--FY2025.assets/_page_152_Picture_1.jpeg",
+        "before_sha256": "3aa4e6f096617ed23a3e774d812e6cfd6066906f14961dcf786ee305436e57e8",
+        "after_sha256": "3aa4e6f096617ed23a3e774d812e6cfd6066906f14961dcf786ee305436e57e8"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-04-22--annual--FY2025.assets/_page_3_Picture_18.jpeg",
+        "before_sha256": "c4f1a8c61ccc0696a5118de035462a0a2d3bcdb6de393c935e084b67f22e20d2",
+        "after_sha256": "c4f1a8c61ccc0696a5118de035462a0a2d3bcdb6de393c935e084b67f22e20d2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-04-22--annual--FY2025.assets/_page_2_Picture_22.jpeg",
+        "before_sha256": "76619f3925e76b04729de050c9117e09109ea2838420b21bca406c2e68813dac",
+        "after_sha256": "76619f3925e76b04729de050c9117e09109ea2838420b21bca406c2e68813dac"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-04-22--annual--FY2025.assets/_page_70_Figure_15.jpeg",
+        "before_sha256": "9579241115da693db8f980c0167743d298db0a157e881ddcd2600a1b46c07e79",
+        "after_sha256": "9579241115da693db8f980c0167743d298db0a157e881ddcd2600a1b46c07e79"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_5_Figure_3.jpeg",
+        "before_sha256": "fedb0e069cdaa09258c5ecfdecdea5749b208b08158f059c764a87dc0cc9566b",
+        "after_sha256": "fedb0e069cdaa09258c5ecfdecdea5749b208b08158f059c764a87dc0cc9566b"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_8_Figure_3.jpeg",
+        "before_sha256": "3b1e80ca3c92f351c933b4240bc48aab0e86fed7fb38370ae06d6b66a104d1cf",
+        "after_sha256": "3b1e80ca3c92f351c933b4240bc48aab0e86fed7fb38370ae06d6b66a104d1cf"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_9_Figure_1.jpeg",
+        "before_sha256": "c3ec62538b98e074b3d188c33e395f79300671e968a7ae03aeaac98e18bb7695",
+        "after_sha256": "c3ec62538b98e074b3d188c33e395f79300671e968a7ae03aeaac98e18bb7695"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_14_Picture_0.jpeg",
+        "before_sha256": "9bb8b50720d78b5cc9d0c1dfc071ca95ee2afd8a0f4393353c5b79114e8c482f",
+        "after_sha256": "9bb8b50720d78b5cc9d0c1dfc071ca95ee2afd8a0f4393353c5b79114e8c482f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_7_Figure_4.jpeg",
+        "before_sha256": "69f2f8311bec65bb60c4955cb0341f294d9c21eaa0c375ba5aa2f19d0b92afe7",
+        "after_sha256": "69f2f8311bec65bb60c4955cb0341f294d9c21eaa0c375ba5aa2f19d0b92afe7"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_0_Picture_0.jpeg",
+        "before_sha256": "b38af30b35bcf695919c73938db3eb2f7731449b33b447af79eee7490f389b26",
+        "after_sha256": "b38af30b35bcf695919c73938db3eb2f7731449b33b447af79eee7490f389b26"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_7_Diagram_3.jpeg",
+        "before_sha256": "1b37581c282feb7e9abc0c9584e105d847a10818b7c12ec9c20471526723d9c5",
+        "after_sha256": "1b37581c282feb7e9abc0c9584e105d847a10818b7c12ec9c20471526723d9c5"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_10_Picture_0.jpeg",
+        "before_sha256": "991d1e6c6fb707ec8f05392a1e85e30a96f483aebe15a1313be2ed09191fa877",
+        "after_sha256": "991d1e6c6fb707ec8f05392a1e85e30a96f483aebe15a1313be2ed09191fa877"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_4_Figure_3.jpeg",
+        "before_sha256": "834f2acc10df67875c8b2a776e6731533eb5b969113f059b82256edd99cb6460",
+        "after_sha256": "834f2acc10df67875c8b2a776e6731533eb5b969113f059b82256edd99cb6460"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-11-10--presentation--Q3-2025.assets/_page_3_Figure_2.jpeg",
+        "before_sha256": "f18e79a60b0fec0541e993c23967457ab5408a2723e1bce09ae6e3498841b9dc",
+        "after_sha256": "f18e79a60b0fec0541e993c23967457ab5408a2723e1bce09ae6e3498841b9dc"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/source.md",
+        "before_sha256": "d9f55ec9dec19ec3a5d1ee294bca39cbe52f4c4d32316b520cb76bf516e5beb0",
+        "after_sha256": "d9f55ec9dec19ec3a5d1ee294bca39cbe52f4c4d32316b520cb76bf516e5beb0"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/source.evidence.json",
+        "before_sha256": "4e575a7a1bd17b4e753b69bfdb7a6c80fa215d63f1056f4fbeff534026baca55",
+        "after_sha256": "4e575a7a1bd17b4e753b69bfdb7a6c80fa215d63f1056f4fbeff534026baca55"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/source.md",
+        "before_sha256": "076d1db0eedd0e4ca5e7d3c1f830576df8e07d92f7e80da638a39555e8219336",
+        "after_sha256": "076d1db0eedd0e4ca5e7d3c1f830576df8e07d92f7e80da638a39555e8219336"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/source.evidence.json",
+        "before_sha256": "201eedcdb6f72c677f3aab1de71148f757fa463592d0f258b8f2560f5bf076dd",
+        "after_sha256": "201eedcdb6f72c677f3aab1de71148f757fa463592d0f258b8f2560f5bf076dd"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_6_Figure_2.jpeg",
+        "before_sha256": "1426288b9e2ab7cc03c2d31da677d0b89ac77e038a8112d92140ee3c1aad33c9",
+        "after_sha256": "1426288b9e2ab7cc03c2d31da677d0b89ac77e038a8112d92140ee3c1aad33c9"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_5_Figure_3.jpeg",
+        "before_sha256": "4cf47007738592ae7ba267ebc2fe4c619743dfe44584a8f95903ec653b94a614",
+        "after_sha256": "4cf47007738592ae7ba267ebc2fe4c619743dfe44584a8f95903ec653b94a614"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_8_Figure_4.jpeg",
+        "before_sha256": "ff14d27b7bda90799ede6b7e9344d14044847d4e688b6d494199eff2a981acee",
+        "after_sha256": "ff14d27b7bda90799ede6b7e9344d14044847d4e688b6d494199eff2a981acee"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_11_Diagram_1.jpeg",
+        "before_sha256": "77c7c9511d5c98635fdec272b447c2b2be81d545bd0cf12f74227da05b3873aa",
+        "after_sha256": "77c7c9511d5c98635fdec272b447c2b2be81d545bd0cf12f74227da05b3873aa"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_9_Figure_1.jpeg",
+        "before_sha256": "b86ba717eaf21d0dfecb78dc69abc8ee2c8e1559bb90e56b9cbaca591e2303e3",
+        "after_sha256": "b86ba717eaf21d0dfecb78dc69abc8ee2c8e1559bb90e56b9cbaca591e2303e3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_7_Figure_5.jpeg",
+        "before_sha256": "c5bd20421c499c97247834b7fbd634e055e61a019154700710bf070b4898b74f",
+        "after_sha256": "c5bd20421c499c97247834b7fbd634e055e61a019154700710bf070b4898b74f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_0_Picture_0.jpeg",
+        "before_sha256": "84b47455b0fccd090ab038f1f974c17809c77f0abc39cc1af02b8ddc3d454a72",
+        "after_sha256": "84b47455b0fccd090ab038f1f974c17809c77f0abc39cc1af02b8ddc3d454a72"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_15_Picture_0.jpeg",
+        "before_sha256": "124f19ec2d4575729760f837f8ba778a45ba23d8be4ac50d105aa59940d1a7ca",
+        "after_sha256": "124f19ec2d4575729760f837f8ba778a45ba23d8be4ac50d105aa59940d1a7ca"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_7_Diagram_4.jpeg",
+        "before_sha256": "fd9f2f96f623bff7e50f730b3e5f48ad2c8d7d452e408dbc6f03bfead8f708a8",
+        "after_sha256": "fd9f2f96f623bff7e50f730b3e5f48ad2c8d7d452e408dbc6f03bfead8f708a8"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_10_Picture_0.jpeg",
+        "before_sha256": "991d1e6c6fb707ec8f05392a1e85e30a96f483aebe15a1313be2ed09191fa877",
+        "after_sha256": "991d1e6c6fb707ec8f05392a1e85e30a96f483aebe15a1313be2ed09191fa877"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_4_Figure_3.jpeg",
+        "before_sha256": "e567116232200b0b04d3deb73c83961f822991ee6608d691ddd5488669acf9e2",
+        "after_sha256": "e567116232200b0b04d3deb73c83961f822991ee6608d691ddd5488669acf9e2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2025-08-12--presentation--Q2-2025.assets/_page_3_Figure_2.jpeg",
+        "before_sha256": "0f6cccca7e1cd77f5de1be13d68197e28fae45b05897daccc7bb802dda239c1a",
+        "after_sha256": "0f6cccca7e1cd77f5de1be13d68197e28fae45b05897daccc7bb802dda239c1a"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-_989w270/source.md",
+        "before_sha256": "b1b2d6875b2842cfa89c91b46d4a5d1940f346e58800ff7ba5da2f07946a8c3c",
+        "after_sha256": "b1b2d6875b2842cfa89c91b46d4a5d1940f346e58800ff7ba5da2f07946a8c3c"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-_989w270/source.evidence.json",
+        "before_sha256": "55af996abff11bc2a44ca28947217a20d281cdd16ac9c5a96e2f78bfceaff250",
+        "after_sha256": "55af996abff11bc2a44ca28947217a20d281cdd16ac9c5a96e2f78bfceaff250"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_8_Picture_9.jpeg",
+        "before_sha256": "94f77e0a1f432da884ddb2a972b2e8d99cf10da661bcb570c2eb75f8c1de11d0",
+        "after_sha256": "94f77e0a1f432da884ddb2a972b2e8d99cf10da661bcb570c2eb75f8c1de11d0"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_12_Picture_12.jpeg",
+        "before_sha256": "316db9e9533b8c813bdf10d92446f5622b5df2535d7186ba9e67024a61b9282f",
+        "after_sha256": "316db9e9533b8c813bdf10d92446f5622b5df2535d7186ba9e67024a61b9282f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_16_Picture_3.jpeg",
+        "before_sha256": "91c29e36ad72a51903c41663635090cab4a5575ba5acc73e7f15e9aa48e9e6b3",
+        "after_sha256": "91c29e36ad72a51903c41663635090cab4a5575ba5acc73e7f15e9aa48e9e6b3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_13_Picture_15.jpeg",
+        "before_sha256": "02457b0c0ebda54b115b08102b6bf459d365d57b68da504754830430ea819a52",
+        "after_sha256": "02457b0c0ebda54b115b08102b6bf459d365d57b68da504754830430ea819a52"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_11_Picture_17.jpeg",
+        "before_sha256": "7e083166ba1d5ef61eaa1ee389dbc0b6051f51683d02a31805dee081d812758a",
+        "after_sha256": "7e083166ba1d5ef61eaa1ee389dbc0b6051f51683d02a31805dee081d812758a"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_10_Picture_2.jpeg",
+        "before_sha256": "aef35028e0564c2d6b35c580051d81afb89189072e53438a670d5cc16e1bb0af",
+        "after_sha256": "aef35028e0564c2d6b35c580051d81afb89189072e53438a670d5cc16e1bb0af"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_15_Picture_25.jpeg",
+        "before_sha256": "4d1dce9f12831fbc676a85a73d28c56d43718c34a994b270930584811458b1c1",
+        "after_sha256": "4d1dce9f12831fbc676a85a73d28c56d43718c34a994b270930584811458b1c1"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_13_Picture_19.jpeg",
+        "before_sha256": "3ed276fd8a4f58b18886c01d9da9aae52f5a540531798a56bdbb7c160e7aa799",
+        "after_sha256": "3ed276fd8a4f58b18886c01d9da9aae52f5a540531798a56bdbb7c160e7aa799"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_12_Picture_8.jpeg",
+        "before_sha256": "b08e07b38ef3b2ed826cb1b9e7051fd3256c53024f76a1f8eacd2527f042f439",
+        "after_sha256": "b08e07b38ef3b2ed826cb1b9e7051fd3256c53024f76a1f8eacd2527f042f439"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_14_Picture_5.jpeg",
+        "before_sha256": "59aa51ac1e27322904567f42dd2b586a6c3c98909267dfdca62af2c8e8a848dc",
+        "after_sha256": "59aa51ac1e27322904567f42dd2b586a6c3c98909267dfdca62af2c8e8a848dc"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_12_Picture_25.jpeg",
+        "before_sha256": "f4e2fb63239a76cc6a36d66071cd2909d373acc2c8eaa33412484680023845ea",
+        "after_sha256": "f4e2fb63239a76cc6a36d66071cd2909d373acc2c8eaa33412484680023845ea"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_13_Picture_9.jpeg",
+        "before_sha256": "4374c712ed559ab1b40bcf28af6d928f604b3c95afa065afa51ae11f575fa54e",
+        "after_sha256": "4374c712ed559ab1b40bcf28af6d928f604b3c95afa065afa51ae11f575fa54e"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_15_Picture_8.jpeg",
+        "before_sha256": "0834bb69c8e451c60a6777b7e69f376a0ae8d44c1a3f1bbad28896dc32528ddc",
+        "after_sha256": "0834bb69c8e451c60a6777b7e69f376a0ae8d44c1a3f1bbad28896dc32528ddc"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_12_Picture_29.jpeg",
+        "before_sha256": "66863dd0456f3a70b3739fee055233a7306c58a418253145e56d8625367fd737",
+        "after_sha256": "66863dd0456f3a70b3739fee055233a7306c58a418253145e56d8625367fd737"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_13_Picture_5.jpeg",
+        "before_sha256": "a752ed23635718520e831c815025d8dd0a363a02d8cbd890f32ab0b056b42332",
+        "after_sha256": "a752ed23635718520e831c815025d8dd0a363a02d8cbd890f32ab0b056b42332"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_15_Picture_12.jpeg",
+        "before_sha256": "4a075fb7f60f28c53e15b7d5d92b1866b4940e527326654b3261b234259cb029",
+        "after_sha256": "4a075fb7f60f28c53e15b7d5d92b1866b4940e527326654b3261b234259cb029"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_9_Picture_18.jpeg",
+        "before_sha256": "c5c588569714964f146aa94a8d3d0858c786856f002e547f835f506d3b1fec5a",
+        "after_sha256": "c5c588569714964f146aa94a8d3d0858c786856f002e547f835f506d3b1fec5a"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_9_Picture_14.jpeg",
+        "before_sha256": "3082dc64741fe735759189bb9b50783ba2f4a37a7d8330a14e5ae25bae329a2c",
+        "after_sha256": "3082dc64741fe735759189bb9b50783ba2f4a37a7d8330a14e5ae25bae329a2c"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_10_Picture_16.jpeg",
+        "before_sha256": "4fb980edff15505ce036708ed2aad02114e59abac7e7b648a138733ee36391f5",
+        "after_sha256": "4fb980edff15505ce036708ed2aad02114e59abac7e7b648a138733ee36391f5"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_12_Picture_3.jpeg",
+        "before_sha256": "fbcb39976812310bff471c3df7e4abdb5d11172bc5fd0f4538ab4bd4d744f6a3",
+        "after_sha256": "fbcb39976812310bff471c3df7e4abdb5d11172bc5fd0f4538ab4bd4d744f6a3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_8_Picture_13.jpeg",
+        "before_sha256": "1ef00935507ba5ac18fb36746df995ea080ac9d8d49103fd434a1271abd7c6ca",
+        "after_sha256": "1ef00935507ba5ac18fb36746df995ea080ac9d8d49103fd434a1271abd7c6ca"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_14_Picture_13.jpeg",
+        "before_sha256": "e34a1ea62e947bb5cfdf2289fcf8da2b1771ba8f56a7585c334db926e91e84b7",
+        "after_sha256": "e34a1ea62e947bb5cfdf2289fcf8da2b1771ba8f56a7585c334db926e91e84b7"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_11_Picture_8.jpeg",
+        "before_sha256": "a2884bb723de8be90a9cf5a41bf92d775f7429e24f359dfaba98ec5074348254",
+        "after_sha256": "a2884bb723de8be90a9cf5a41bf92d775f7429e24f359dfaba98ec5074348254"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_15_Picture_2.jpeg",
+        "before_sha256": "9bb53a8f9d5f7539164c1354dc4c95c047d1cc003e7365d9c6490b164e164c05",
+        "after_sha256": "9bb53a8f9d5f7539164c1354dc4c95c047d1cc003e7365d9c6490b164e164c05"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_10_Picture_21.jpeg",
+        "before_sha256": "54e279a23b8d15b36dc1dcb7269a29d9c4d06bee43401a7cf7afad3a0ae1e926",
+        "after_sha256": "54e279a23b8d15b36dc1dcb7269a29d9c4d06bee43401a7cf7afad3a0ae1e926"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_16_Picture_8.jpeg",
+        "before_sha256": "366feca5c39a4aaed7126b75610a08e546f8f9fa44c8676cd70f033cea72fa1d",
+        "after_sha256": "366feca5c39a4aaed7126b75610a08e546f8f9fa44c8676cd70f033cea72fa1d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_11_Picture_4.jpeg",
+        "before_sha256": "15ae3f2c2a7c39a37ddc5d81a23c8444c9e9764c6317ce86bbad8e44402126d1",
+        "after_sha256": "15ae3f2c2a7c39a37ddc5d81a23c8444c9e9764c6317ce86bbad8e44402126d1"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_15_Picture_21.jpeg",
+        "before_sha256": "16be564ba3dac07a10fac498fb38087b29622d45b7074a12806155b473b3800a",
+        "after_sha256": "16be564ba3dac07a10fac498fb38087b29622d45b7074a12806155b473b3800a"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_11_Picture_13.jpeg",
+        "before_sha256": "20b003ad6689fac20f4b2c4eb0e94847a3f9b20b7470e45a66bd9a0087a4c3ff",
+        "after_sha256": "20b003ad6689fac20f4b2c4eb0e94847a3f9b20b7470e45a66bd9a0087a4c3ff"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_15_Picture_17.jpeg",
+        "before_sha256": "2f39218ce730c7218645d840fd57106884bb84dca348aa834e0a3caeb08a38ac",
+        "after_sha256": "2f39218ce730c7218645d840fd57106884bb84dca348aa834e0a3caeb08a38ac"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_12_Picture_17.jpeg",
+        "before_sha256": "6ce76cfb2e14857bec67720ca07574fe0ea5925748e4f72328043ebf3b0a80f5",
+        "after_sha256": "6ce76cfb2e14857bec67720ca07574fe0ea5925748e4f72328043ebf3b0a80f5"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_10_Picture_7.jpeg",
+        "before_sha256": "dfb488971410b5f08a6eed5b56d5b613681621f9e4926b380189b11d4d1e3177",
+        "after_sha256": "dfb488971410b5f08a6eed5b56d5b613681621f9e4926b380189b11d4d1e3177"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_12_Picture_21.jpeg",
+        "before_sha256": "7ea791100588d9dc43cc1bdfec7d65cbdf14593117ee2ffdbedc085d6f0b9258",
+        "after_sha256": "7ea791100588d9dc43cc1bdfec7d65cbdf14593117ee2ffdbedc085d6f0b9258"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_10_Picture_12.jpeg",
+        "before_sha256": "6c4574770cdd9884f2825c83498b1ca469cb2dcdbff269dc3e29945453079441",
+        "after_sha256": "6c4574770cdd9884f2825c83498b1ca469cb2dcdbff269dc3e29945453079441"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_9_Picture_10.jpeg",
+        "before_sha256": "d8743c427af07e16d5f5b24f7c6ecfb9188ba891167878c7877d2f65ed92b2c6",
+        "after_sha256": "d8743c427af07e16d5f5b24f7c6ecfb9188ba891167878c7877d2f65ed92b2c6"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_9_Picture_6.jpeg",
+        "before_sha256": "3fa58c20085e16cf7d103c6c3bae451138be46f1fc9f67bc008c0756128e41c2",
+        "after_sha256": "3fa58c20085e16cf7d103c6c3bae451138be46f1fc9f67bc008c0756128e41c2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-05-07--transcript--Q1-2026.assets/_page_10_Picture_25.jpeg",
+        "before_sha256": "f374bf1e9b27e321a03877b8cb1e924aff737a099cf01b09d7446cfab4c1f80f",
+        "after_sha256": "f374bf1e9b27e321a03877b8cb1e924aff737a099cf01b09d7446cfab4c1f80f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-5/run.log",
+        "before_sha256": "c4549a235d410b1f8c2fcf8e54cf257da11e0faaf13452c221eee14a995a0f74",
+        "after_sha256": "c4549a235d410b1f8c2fcf8e54cf257da11e0faaf13452c221eee14a995a0f74"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-5/config.json",
+        "before_sha256": "5d65abd322e86993df9a85186b756a05bba85b73fcc49d9ab2c59015bed7496e",
+        "after_sha256": "5d65abd322e86993df9a85186b756a05bba85b73fcc49d9ab2c59015bed7496e"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-5/versions.json",
+        "before_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023",
+        "after_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-5/review.json",
+        "before_sha256": "9e5e2106c55515c0e1803e56e5929b55a7f52858e1dc1ec0ac656da530e0c7d3",
+        "after_sha256": "9e5e2106c55515c0e1803e56e5929b55a7f52858e1dc1ec0ac656da530e0c7d3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-6/run.log",
+        "before_sha256": "116dc48a364b0324af338da65cec7402e0752740037bf3c38d5a16fcb56cb3ac",
+        "after_sha256": "116dc48a364b0324af338da65cec7402e0752740037bf3c38d5a16fcb56cb3ac"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-6/config.json",
+        "before_sha256": "955fbf4717c45daab6d0d15cee38991fce78f01b6ab9192f242db713c5a8305f",
+        "after_sha256": "955fbf4717c45daab6d0d15cee38991fce78f01b6ab9192f242db713c5a8305f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-6/versions.json",
+        "before_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023",
+        "after_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-6/review.json",
+        "before_sha256": "38a4311ab0e50d0e6360b72082c0e2770be2b67a74a90c5c0e12ec4dcbdd7d2f",
+        "after_sha256": "38a4311ab0e50d0e6360b72082c0e2770be2b67a74a90c5c0e12ec4dcbdd7d2f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-6/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025.md",
+        "before_sha256": "cce4dac158ce843972282205901682870d45944b4bb09a54d2e1cc6f22bd14c2",
+        "after_sha256": "cce4dac158ce843972282205901682870d45944b4bb09a54d2e1cc6f22bd14c2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-6/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025_meta.json",
+        "before_sha256": "92cefc7c058acef08503c33998c6069ea4b15df579cccc8a1d4373ed3aa92cb6",
+        "after_sha256": "92cefc7c058acef08503c33998c6069ea4b15df579cccc8a1d4373ed3aa92cb6"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-5/2026-02-26--presentation--Q4-2025/_page_4_Figure_10.jpeg",
+        "before_sha256": "42f8dd4961ee752c3682033b06045a489e5abdb95dc0492a6e65d85a7daeaa83",
+        "after_sha256": "42f8dd4961ee752c3682033b06045a489e5abdb95dc0492a6e65d85a7daeaa83"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-5/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025.md",
+        "before_sha256": "f266fe990411634033b7ea932dbef252bd6d527535bde6ff757fd5731e079cc0",
+        "after_sha256": "f266fe990411634033b7ea932dbef252bd6d527535bde6ff757fd5731e079cc0"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-67cd0ju1/ocr-page-5/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025_meta.json",
+        "before_sha256": "c012cab7a6f59969009aebbc0288ca3ff66f8e27dc909dcd7d40ef556961984d",
+        "after_sha256": "c012cab7a6f59969009aebbc0288ca3ff66f8e27dc909dcd7d40ef556961984d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-5/run.log",
+        "before_sha256": "c4549a235d410b1f8c2fcf8e54cf257da11e0faaf13452c221eee14a995a0f74",
+        "after_sha256": "c4549a235d410b1f8c2fcf8e54cf257da11e0faaf13452c221eee14a995a0f74"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-5/config.json",
+        "before_sha256": "5d65abd322e86993df9a85186b756a05bba85b73fcc49d9ab2c59015bed7496e",
+        "after_sha256": "5d65abd322e86993df9a85186b756a05bba85b73fcc49d9ab2c59015bed7496e"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-5/versions.json",
+        "before_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023",
+        "after_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-5/review.json",
+        "before_sha256": "9e5e2106c55515c0e1803e56e5929b55a7f52858e1dc1ec0ac656da530e0c7d3",
+        "after_sha256": "9e5e2106c55515c0e1803e56e5929b55a7f52858e1dc1ec0ac656da530e0c7d3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-6/run.log",
+        "before_sha256": "116dc48a364b0324af338da65cec7402e0752740037bf3c38d5a16fcb56cb3ac",
+        "after_sha256": "116dc48a364b0324af338da65cec7402e0752740037bf3c38d5a16fcb56cb3ac"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-6/config.json",
+        "before_sha256": "955fbf4717c45daab6d0d15cee38991fce78f01b6ab9192f242db713c5a8305f",
+        "after_sha256": "955fbf4717c45daab6d0d15cee38991fce78f01b6ab9192f242db713c5a8305f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-6/versions.json",
+        "before_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023",
+        "after_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-6/review.json",
+        "before_sha256": "38a4311ab0e50d0e6360b72082c0e2770be2b67a74a90c5c0e12ec4dcbdd7d2f",
+        "after_sha256": "38a4311ab0e50d0e6360b72082c0e2770be2b67a74a90c5c0e12ec4dcbdd7d2f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-6/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025.md",
+        "before_sha256": "cce4dac158ce843972282205901682870d45944b4bb09a54d2e1cc6f22bd14c2",
+        "after_sha256": "cce4dac158ce843972282205901682870d45944b4bb09a54d2e1cc6f22bd14c2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-6/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025_meta.json",
+        "before_sha256": "92cefc7c058acef08503c33998c6069ea4b15df579cccc8a1d4373ed3aa92cb6",
+        "after_sha256": "92cefc7c058acef08503c33998c6069ea4b15df579cccc8a1d4373ed3aa92cb6"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-5/2026-02-26--presentation--Q4-2025/_page_4_Figure_10.jpeg",
+        "before_sha256": "42f8dd4961ee752c3682033b06045a489e5abdb95dc0492a6e65d85a7daeaa83",
+        "after_sha256": "42f8dd4961ee752c3682033b06045a489e5abdb95dc0492a6e65d85a7daeaa83"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-5/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025.md",
+        "before_sha256": "f266fe990411634033b7ea932dbef252bd6d527535bde6ff757fd5731e079cc0",
+        "after_sha256": "f266fe990411634033b7ea932dbef252bd6d527535bde6ff757fd5731e079cc0"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-98e90_dl/ocr-page-5/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025_meta.json",
+        "before_sha256": "c012cab7a6f59969009aebbc0288ca3ff66f8e27dc909dcd7d40ef556961984d",
+        "after_sha256": "c012cab7a6f59969009aebbc0288ca3ff66f8e27dc909dcd7d40ef556961984d"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-5/run.log",
+        "before_sha256": "c4549a235d410b1f8c2fcf8e54cf257da11e0faaf13452c221eee14a995a0f74",
+        "after_sha256": "c4549a235d410b1f8c2fcf8e54cf257da11e0faaf13452c221eee14a995a0f74"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-5/config.json",
+        "before_sha256": "5d65abd322e86993df9a85186b756a05bba85b73fcc49d9ab2c59015bed7496e",
+        "after_sha256": "5d65abd322e86993df9a85186b756a05bba85b73fcc49d9ab2c59015bed7496e"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-5/versions.json",
+        "before_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023",
+        "after_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-5/review.json",
+        "before_sha256": "9e5e2106c55515c0e1803e56e5929b55a7f52858e1dc1ec0ac656da530e0c7d3",
+        "after_sha256": "9e5e2106c55515c0e1803e56e5929b55a7f52858e1dc1ec0ac656da530e0c7d3"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-6/run.log",
+        "before_sha256": "116dc48a364b0324af338da65cec7402e0752740037bf3c38d5a16fcb56cb3ac",
+        "after_sha256": "116dc48a364b0324af338da65cec7402e0752740037bf3c38d5a16fcb56cb3ac"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-6/config.json",
+        "before_sha256": "955fbf4717c45daab6d0d15cee38991fce78f01b6ab9192f242db713c5a8305f",
+        "after_sha256": "955fbf4717c45daab6d0d15cee38991fce78f01b6ab9192f242db713c5a8305f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-6/versions.json",
+        "before_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023",
+        "after_sha256": "083ae04702967da45b31416a4d83c85c78bef354df9220f4160e0e6b5a78d023"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-6/review.json",
+        "before_sha256": "38a4311ab0e50d0e6360b72082c0e2770be2b67a74a90c5c0e12ec4dcbdd7d2f",
+        "after_sha256": "38a4311ab0e50d0e6360b72082c0e2770be2b67a74a90c5c0e12ec4dcbdd7d2f"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-6/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025.md",
+        "before_sha256": "cce4dac158ce843972282205901682870d45944b4bb09a54d2e1cc6f22bd14c2",
+        "after_sha256": "cce4dac158ce843972282205901682870d45944b4bb09a54d2e1cc6f22bd14c2"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-6/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025_meta.json",
+        "before_sha256": "92cefc7c058acef08503c33998c6069ea4b15df579cccc8a1d4373ed3aa92cb6",
+        "after_sha256": "92cefc7c058acef08503c33998c6069ea4b15df579cccc8a1d4373ed3aa92cb6"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-5/2026-02-26--presentation--Q4-2025/_page_4_Figure_10.jpeg",
+        "before_sha256": "42f8dd4961ee752c3682033b06045a489e5abdb95dc0492a6e65d85a7daeaa83",
+        "after_sha256": "42f8dd4961ee752c3682033b06045a489e5abdb95dc0492a6e65d85a7daeaa83"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-5/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025.md",
+        "before_sha256": "f266fe990411634033b7ea932dbef252bd6d527535bde6ff757fd5731e079cc0",
+        "after_sha256": "f266fe990411634033b7ea932dbef252bd6d527535bde6ff757fd5731e079cc0"
+      },
+      {
+        "path": "Research/CRWV.US/Archive/2026-02-26--presentation--Q4-2025.evidence-alkhbhl9/ocr-page-5/2026-02-26--presentation--Q4-2025/2026-02-26--presentation--Q4-2025_meta.json",
+        "before_sha256": "c012cab7a6f59969009aebbc0288ca3ff66f8e27dc909dcd7d40ef556961984d",
+        "after_sha256": "c012cab7a6f59969009aebbc0288ca3ff66f8e27dc909dcd7d40ef556961984d"
+      }
+    ]
+  },
+  "costs": {
+    "phase25_new_cursor_requests": 1,
+    "strict_maximum": 4,
+    "phase25_input_tokens": null,
+    "phase25_output_tokens": null,
+    "phase25_usage_reason": "Timeout returned zero stdout bytes; provider usage/billing unknown, not zero.",
+    "phase25_prompt_chars": 7650,
+    "phase25_wall_seconds": 117.65324133308604,
+    "phase25_completed_outputs": 0,
+    "phase25_retry_requests": 0,
+    "phase25_completed_resume_evidence": null,
+    "historical_phase2_input_tokens": 22952,
+    "historical_phase2_output_tokens": 11053,
+    "historical_usage_is_not_this_phase": true,
+    "pairwise_cursor_requests": 0
+  },
+  "blockers": [
+    {
+      "kind": "semantic_failure",
+      "criterion": "Zero known unsupported/meaning-changing accepted contextual additions",
+      "evidence": "cw-we: CoreWeave -> CoreCoreWeaveave; wrong edit target accepted by recorded judge and pc.eligible.",
+      "next_action": "Quarantine the example from any approved downstream set; preserve historical labels; evaluate source-based review and any proposed guard on new development examples before fresh heldout testing."
+    },
+    {
+      "kind": "missing_human_evidence",
+      "criterion": "Small independently adjudicated semantic pilot including heldout cases",
+      "evidence": "28 packet cases; zero completed human decisions or adjudications.",
+      "next_action": "Two independent humans complete their stage1 then stage2 packets; adjudicate disagreements with exact source evidence."
+    },
+    {
+      "kind": "bounded_observation_limitation",
+      "criterion": "Authenticated resolved contextual edit demonstration",
+      "evidence": "One attempt timed out before generation; prior live acceptance was unchanged only.",
+      "next_action": "Investigate transport timeout without score-improvement reruns in this phase; a future explicitly bounded pilot can demonstrate the missing extraction/edit/review/resume chain."
+    }
+  ],
+  "unresolved_questions": [
+    "Whether other recorded accepted outputs are truly standalone and preserve source truth conditions.",
+    "Whether quarter and fiscal-year attachments and footnotes have sufficient exact support under human review.",
+    "All reviewer disagreements are pending, not agreement.",
+    "No adjudicated relationship recall/workload targets or representative population error rate established.",
+    "Mixed Filing quotations require evidence of applicability at finer speaker boundaries before named attributions can pass."
+  ],
+  "scope": {
+    "phase3_started": false,
+    "production_document13_rebuild": false,
+    "embedding_integration": false,
+    "nli_replacement": false,
+    "model_threshold_or_policy_change": false,
+    "historical_fixture_relabel": false,
+    "pr1_must_remain_draft": true
+  },
+  "code_review": {
+    "kind": "Model code/evidence review, not human semantic adjudication",
+    "critical": 0,
+    "important": 0,
+    "minor_findings": [
+      "Reviewer packets should include exact representation and abstention information.",
+      "Financial rejection test should assert passage cardinality before iterating."
+    ],
+    "resolution": "Both corrected; no heldout outcome rerun."
+  }
+}

@@ -178,7 +178,7 @@ def test_editorial_override_transfer_and_rollback(staged_editorial):
  before=s.db.execute('select * from source_passages').fetchall()
  with s.db:s.db.execute('delete from knowledge_artifacts')
  m.wording='In 2025, CoreWeave added 11 data centers.'
- assert not rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,lambda:False)
+ assert rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,review_only=True)
  assert s.db.execute('select * from source_passages').fetchall()==before
  assert rebuild(s,'CRWV.US',str(d['id']),lambda:m,lambda _:None,lambda:True)
  p=sources.passages(s,'CRWV.US')[0]
@@ -305,5 +305,5 @@ def test_completed_rebuild_review_does_not_launch_cursor(staged_editorial):
  s,d,m=staged_editorial
  extract(s,d,m,lambda _:None)
  factory=Mock(side_effect=AssertionError('Verified staging does not require Cursor'))
- assert not rebuild(s,'CRWV.US',str(d['id']),factory,lambda _:None,lambda:False)
+ assert rebuild(s,'CRWV.US',str(d['id']),factory,lambda _:None,review_only=True)
  factory.assert_not_called()

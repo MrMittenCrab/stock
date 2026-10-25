@@ -1,0 +1,245 @@
+{
+  "provenance": "New authored synthetic financial test, frozen 2026-10-25 before any model inference or implementation. Names are test entities; values are invented, not disclosures. No calibration or threshold tuning. Distinct from all pre-existing fixtures. Labels distinguish withholding for mismatched contexts from affirmative contradiction of the same dated fact.",
+  "cases": [
+    {
+      "id": "Adobe-units",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe revenue totaled $19.750 billion in fiscal 2023.",
+      "gold": "EQUIVALENT"
+    },
+    {
+      "id": "Adobe-paraphrase",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "In fiscal 2023, Adobe reported $19750 million of revenue.",
+      "gold": "EQUIVALENT"
+    },
+    {
+      "id": "Adobe-containment",
+      "left": "Adobe revenue was $19750 million in fiscal 2023 and cash increased.",
+      "right": "Adobe revenue was $19750 million in fiscal 2023.",
+      "gold": "ENTAILS"
+    },
+    {
+      "id": "Adobe-negation",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe revenue was not $19750 million in fiscal 2023.",
+      "gold": "CONTRADICTS"
+    },
+    {
+      "id": "Adobe-period",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe revenue was $19750 million in fiscal 2022.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Adobe-forecast",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe revenue is forecast to be $19750 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Adobe-adjusted",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe adjusted revenue was $19750 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Adobe-scope",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe revenue in Europe was $19750 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Salesforce-units",
+      "left": "Salesforce net income was $4123 million in fiscal 2023.",
+      "right": "Salesforce net income totaled $4.123 billion in fiscal 2023.",
+      "gold": "EQUIVALENT"
+    },
+    {
+      "id": "Salesforce-paraphrase",
+      "left": "Salesforce net income was $4123 million in fiscal 2023.",
+      "right": "In fiscal 2023, Salesforce reported $4123 million of net income.",
+      "gold": "EQUIVALENT"
+    },
+    {
+      "id": "Salesforce-containment",
+      "left": "Salesforce net income was $4123 million in fiscal 2023 and cash increased.",
+      "right": "Salesforce net income was $4123 million in fiscal 2023.",
+      "gold": "ENTAILS"
+    },
+    {
+      "id": "Salesforce-negation",
+      "left": "Salesforce net income was $4123 million in fiscal 2023.",
+      "right": "Salesforce net income was not $4123 million in fiscal 2023.",
+      "gold": "CONTRADICTS"
+    },
+    {
+      "id": "Salesforce-period",
+      "left": "Salesforce net income was $4123 million in fiscal 2023.",
+      "right": "Salesforce net income was $4123 million in fiscal 2022.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Salesforce-forecast",
+      "left": "Salesforce net income was $4123 million in fiscal 2023.",
+      "right": "Salesforce net income is forecast to be $4123 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Salesforce-adjusted",
+      "left": "Salesforce net income was $4123 million in fiscal 2023.",
+      "right": "Salesforce adjusted net income was $4123 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Salesforce-scope",
+      "left": "Salesforce net income was $4123 million in fiscal 2023.",
+      "right": "Salesforce net income in Europe was $4123 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Intel-units",
+      "left": "Intel operating income was $2520 million in fiscal 2023.",
+      "right": "Intel operating income totaled $2.520 billion in fiscal 2023.",
+      "gold": "EQUIVALENT"
+    },
+    {
+      "id": "Intel-paraphrase",
+      "left": "Intel operating income was $2520 million in fiscal 2023.",
+      "right": "In fiscal 2023, Intel reported $2520 million of operating income.",
+      "gold": "EQUIVALENT"
+    },
+    {
+      "id": "Intel-containment",
+      "left": "Intel operating income was $2520 million in fiscal 2023 and cash increased.",
+      "right": "Intel operating income was $2520 million in fiscal 2023.",
+      "gold": "ENTAILS"
+    },
+    {
+      "id": "Intel-negation",
+      "left": "Intel operating income was $2520 million in fiscal 2023.",
+      "right": "Intel operating income was not $2520 million in fiscal 2023.",
+      "gold": "CONTRADICTS"
+    },
+    {
+      "id": "Intel-period",
+      "left": "Intel operating income was $2520 million in fiscal 2023.",
+      "right": "Intel operating income was $2520 million in fiscal 2022.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Intel-forecast",
+      "left": "Intel operating income was $2520 million in fiscal 2023.",
+      "right": "Intel operating income is forecast to be $2520 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Intel-adjusted",
+      "left": "Intel operating income was $2520 million in fiscal 2023.",
+      "right": "Intel adjusted operating income was $2520 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Intel-scope",
+      "left": "Intel operating income was $2520 million in fiscal 2023.",
+      "right": "Intel operating income in Europe was $2520 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Netflix-units",
+      "left": "Netflix net sales was $33723 million in fiscal 2023.",
+      "right": "Netflix net sales totaled $33.723 billion in fiscal 2023.",
+      "gold": "EQUIVALENT"
+    },
+    {
+      "id": "Netflix-paraphrase",
+      "left": "Netflix net sales was $33723 million in fiscal 2023.",
+      "right": "In fiscal 2023, Netflix reported $33723 million of net sales.",
+      "gold": "EQUIVALENT"
+    },
+    {
+      "id": "Netflix-containment",
+      "left": "Netflix net sales was $33723 million in fiscal 2023 and cash increased.",
+      "right": "Netflix net sales was $33723 million in fiscal 2023.",
+      "gold": "ENTAILS"
+    },
+    {
+      "id": "Netflix-negation",
+      "left": "Netflix net sales was $33723 million in fiscal 2023.",
+      "right": "Netflix net sales was not $33723 million in fiscal 2023.",
+      "gold": "CONTRADICTS"
+    },
+    {
+      "id": "Netflix-period",
+      "left": "Netflix net sales was $33723 million in fiscal 2023.",
+      "right": "Netflix net sales was $33723 million in fiscal 2022.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Netflix-forecast",
+      "left": "Netflix net sales was $33723 million in fiscal 2023.",
+      "right": "Netflix net sales is forecast to be $33723 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Netflix-adjusted",
+      "left": "Netflix net sales was $33723 million in fiscal 2023.",
+      "right": "Netflix adjusted net sales was $33723 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "Netflix-scope",
+      "left": "Netflix net sales was $33723 million in fiscal 2023.",
+      "right": "Netflix net sales in Europe was $33723 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "rounding",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe revenue was $19.8 billion in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "currency",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe revenue was \u20ac19750 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "basis",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Adobe revenue was $19750 million in calendar 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "issuer",
+      "left": "Adobe revenue was $19750 million in fiscal 2023.",
+      "right": "Intel revenue was $19750 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "metric",
+      "left": "Intel operating income was $2520 million in fiscal 2023.",
+      "right": "Intel net income was $2520 million in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "unknown-period",
+      "left": "Adobe revenue was $19750 million.",
+      "right": "Adobe revenue totaled $19.750 billion.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "unknown-issuer",
+      "left": "Revenue was $19750 million in fiscal 2023.",
+      "right": "Revenue totaled $19.750 billion in fiscal 2023.",
+      "gold": "UNRESOLVED"
+    },
+    {
+      "id": "theme",
+      "left": "Adobe licenses software.",
+      "right": "Adobe hires software engineers.",
+      "gold": "RELATED"
+    }
+  ]
+}

@@ -181,43 +181,62 @@ def repair_work(rejections,atoms,limit=CONTEXT):
 class Operations:
     def __init__(self,store,doc,cursor,verify):
         self.store=store;self.doc=doc;self.cursor=cursor;self.verify=verify
+        self.context_generations={}
     def review_claims(self,unit,context):
         # Independent judgments keyed by complete evidence, not batch index/order.
+        from . import proposition_context as pc
+        contextual=all('context_proposal' in p for p in unit['review'])
+        contract=pc.REVIEW if contextual else CONTRACT
+        validator=pc.validate_reviews if contextual else editorial.validate_reviews
         cached={};pending=[];keys={}
         for i,p in enumerate(unit['review']):
             claim={k:v for k,v in p.items() if k!='index'}
             data=review_context_for(context,{r['source_id'] for r in p['references']},{tuple(v) for v in p.get('layout_pages',[])} if 'layout_pages' in p else None)
-            key=digest([CONTRACT,self.doc,'claim-review',claim,data]);keys[i]=key
-            row=self.store.db.execute('SELECT payload,checksum FROM knowledge_artifacts WHERE id=? AND contract=?',(key,CONTRACT)).fetchone()
+            key=digest([contract,self.doc,'claim-review',claim,data]);keys[i]=key
+            row=self.store.db.execute('SELECT payload,checksum FROM knowledge_artifacts WHERE id=? AND contract=?',(key,contract)).fetchone()
             if row:
                 if hashlib.sha256(row[0].encode()).hexdigest()!=row[1]:raise IntegrityError('Corrupt claim review artifact')
-                judgment=json.loads(row[0]);editorial.validate_reviews([dict(judgment,index=0)],1)
+                judgment=json.loads(row[0]);validator([dict(judgment,index=0)],1)
                 cached[i]=dict(judgment,index=i)
             else:pending.append((i,p))
         if pending:
             subset=[dict(p,index=i) for i,(_,p) in enumerate(pending)]
             # Filter page context again after removing already reviewed claims.
             data=review_context_for(context,{r['source_id'] for p in subset for r in p['references']},{tuple(v) for p in subset for v in p.get('layout_pages',[])} if all('layout_pages' in p for p in subset) else None)
-            results=editorial.validate_reviews(self.extract({**unit,'review':subset},data,_batch_review=True),len(subset))
+            results=validator(self.extract({**unit,'review':subset},data,_batch_review=True),len(subset))
             with self.store.db:
                 for j,(i,_) in enumerate(pending):
                     judgment={k:v for k,v in results[j].items() if k!='index'};payload=packed(judgment);key=keys[i]
-                    if (judgment['fidelity'],judgment['readability'],judgment['relevance'])==('supported','clear','useful'):
+                    if contextual or (judgment['fidelity'],judgment['readability'],judgment['relevance'])==('supported','clear','useful'):
                         self.store.db.execute('INSERT OR IGNORE INTO knowledge_artifacts VALUES(?,?,?,?,?,?,?,?)',
-                            (key,CONTRACT,self.doc['id'],'claim-review',key,payload,hashlib.sha256(payload.encode()).hexdigest(),time.time()))
+                            (key,contract,self.doc['id'],'claim-review',key,payload,hashlib.sha256(payload.encode()).hexdigest(),time.time()))
                     cached[i]=dict(judgment,index=i)
         self.verify()
         return [cached[i] for i in range(len(unit['review']))]
 
     def extract(self,unit,context,_batch_review=False):
         if 'review' in unit and not _batch_review:return self.review_claims(unit,context)
+        from . import proposition_context as pc
+        contextual=getattr(self.cursor,'contextualize',False)
+        contract=(pc.REVIEW if 'review' in unit else pc.GENERATION) if contextual else CONTRACT
+        if contextual:unit={**unit,'context_contract':pc.CONTRACT}
         operation=unit.get('operation','verify' if 'review' in unit else 'understand')
-        identity=[CONTRACT,self.doc,unit,context]
+        prior=[]
+        if contextual and unit.get('operation')=='understand':
+            prior,missing=pc.generation_replay(self,unit,context,allow_partial=True)
+            if not missing:return prior
+            # Completed anchors remain referenceable context, never new extraction work.
+            if prior or len(missing)<len(unit['candidates']):unit={**unit,'primary_ids':sorted(missing)}
+        identity=[contract,self.doc,unit,context]
         key=digest(identity)
-        row=self.store.db.execute('SELECT payload,checksum FROM knowledge_artifacts WHERE id=? AND contract=?',(key,CONTRACT)).fetchone()
+        row=self.store.db.execute('SELECT payload,checksum FROM knowledge_artifacts WHERE id=? AND contract=?',(key,contract)).fetchone()
         if row:
             if hashlib.sha256(row[0].encode()).hexdigest()!=row[1]:raise IntegrityError('Corrupt knowledge artifact')
-            return json.loads(row[0])
+            raw=json.loads(row[0])
+            if contextual and 'review' not in unit:
+                pc.validate_selections(raw)
+                self.context_generations.update({digest(s):key for s in raw})
+            return prior+raw
         with self.store.db:
             self.store.db.execute('INSERT OR REPLACE INTO knowledge_attempts VALUES(?,?,?,?,?,?)',
                 (key,self.doc['id'],operation,'running',None,time.time()))
@@ -225,8 +244,10 @@ class Operations:
             for attempt in range(2):
                 try:
                     raw=self.cursor.extract(unit,context)
-                    if 'review' in unit:editorial.validate_reviews(raw,len(unit['review']))
-                    else:editorial.validate_selections(raw)
+                    if 'review' in unit:(pc.validate_reviews if contextual else editorial.validate_reviews)(raw,len(unit['review']))
+                    else:(pc.validate_selections if contextual else editorial.validate_selections)(raw)
+                    if contextual and unit.get('operation')=='understand':
+                        raw=[s for s in raw if set(s['ids']) & set(unit['primary_ids'])]
                     break
                 except ProtocolError:
                     if attempt:raise
@@ -240,12 +261,19 @@ class Operations:
         payload=packed(raw)
         with self.store.db:
             self.store.db.execute('INSERT OR IGNORE INTO knowledge_artifacts VALUES(?,?,?,?,?,?,?,?)',
-                (key,CONTRACT,self.doc['id'],operation,key,payload,hashlib.sha256(payload.encode()).hexdigest(),time.time()))
+                (key,contract,self.doc['id'],operation,key,payload,hashlib.sha256(payload.encode()).hexdigest(),time.time()))
             self.store.db.execute('UPDATE knowledge_attempts SET state=?,error=NULL,updated_at=? WHERE id=?',('complete',time.time(),key))
-        return raw
+        if contextual and 'review' not in unit:
+            self.context_generations.update({digest(s):key for s in raw})
+            if operation=='understand':
+                pc.save(self.store,self.doc,'context-generation-input',
+                    dict(document=self.doc,unit=unit,context=context),dict(generation_artifact_id=key),pc.GENERATION)
+        return prior+raw
 
 
 def extract(store,doc,cursor,progress):
+    if getattr(cursor,'contextualize',False) and not getattr(cursor,'disposable_context',False):
+        raise IntegrityError('Phase 2 context requires explicit disposable_context transport opt-in')
     from .archive import filehash
     original=Path(doc['original']);md=Path(doc.get('markdown') or doc['original'])
     if not original.is_file() or filehash(original)!=doc['source_sha256']:raise IntegrityError('Original missing or changed')
@@ -371,6 +399,8 @@ def extract(store,doc,cursor,progress):
             if (r['markdown_sha256']!=sha or r['original_sha256']!=doc['source_sha256'] or
                 text[r['start']:r['end']]!=r['text']):raise IntegrityError('Source anchor failed verification')
         ident=digest([CONTRACT,p['text'],p['category'],p['speaker'],p['location']['references']])
+        if ident in unique and unique[ident].get('context_record_id')!=p.get('context_record_id'):
+            raise IntegrityError('Conflicting context records for one original proposition')
         if ident in unique:unique[ident]['topics']=sorted(set(unique[ident]['topics'])|set(p['topics']))
         else:unique[ident]=p
     with store.db:

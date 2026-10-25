@@ -161,7 +161,7 @@ def test_period_and_unit_scope_normalization(source,claim):
  assert not unsupported(claim,source)
 
 
-def test_manual_split_blocks_changed_passage_identity(research):
+def test_manual_split_transfers_changed_passage_identity(research):
  from stock import insights
  from stock.rebuild import rebuild
  s,d=research;m=Recorded();ps,_=evidence.extract(s,d,m,lambda _:None)
@@ -179,9 +179,13 @@ def test_manual_split_blocks_changed_passage_identity(research):
    if 'review' not in u:result[0]['text']='FY2025 revenue was $5.1 billion, up 168% year over year.'
    return result
  approve=[]
- assert not rebuild(s,'CRWV.US',str(d['id']),Changed,lambda _:None,lambda:approve.append(True))
- assert not approve and sources.passages(s,'CRWV.US')[0]['id']==old['id']
- assert insights.head(s,'CRWV.US')==revision['id']
+ assert rebuild(s,'CRWV.US',str(d['id']),Changed,lambda _:None,lambda:approve.append(True))
+ assert not approve
+ incoming=sources.passages(s,'CRWV.US')[0]
+ active=insights.load(s,insights.head(s,'CRWV.US'))
+ assert sorted((incoming['id'],'other-member')) in [list(pair) for pair in active['suppressed_pairs']]
+ assert insights.head(s,'CRWV.US')!=revision['id']
+ assert s.db.execute('SELECT count(*) FROM source_publication_history').fetchone()[0]==1
 
 
 def test_complete_document13_fits_one_analysis_request():

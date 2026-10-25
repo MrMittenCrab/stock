@@ -1,0 +1,313 @@
+{
+  "instructions": "After both independent reviews are locked, compare every A–E dimension; record disagreement and evidence-based resolution. Do not fill agreement for missing reviews.",
+  "cases": [
+    {
+      "id": "case-001",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-002",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-003",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-004",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-005",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-006",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-007",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-008",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-009",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-010",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-011",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-012",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-013",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-014",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-015",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-016",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-017",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-018",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-019",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-020",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-021",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-022",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-023",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-024",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-025",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-026",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-027",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    },
+    {
+      "id": "case-028",
+      "reviewer_A": null,
+      "reviewer_B": null,
+      "disagreements": null,
+      "adjudicator": null,
+      "evidence": null,
+      "resolution": null,
+      "confidence": null,
+      "completed_at": null
+    }
+  ]
+}

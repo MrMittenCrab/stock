@@ -1,5 +1,8 @@
 # Incremental rebuild correction · 2026-10-24
 
+Current implementation: [local directional proposition graph](semantic-map.md).
+Cursor grouping and lexical retrieval described below are historical baselines.
+
 This supersedes earlier requirements to type REPLACE or to publish before semantic
 deduplication. Explicit `--rebuild DOCUMENT` authorizes replacement, but extraction,
 independent factual review, semantic grouping and manual-correction reconciliation

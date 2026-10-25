@@ -1,0 +1,21 @@
+{
+ "provenance": "Source-grounded independent evaluation from Microsoft FY2024 annual report and Apple FY2024 statements, retrieved 2026-10-24. Paraphrases are author labels; contradiction and negative cases include explicitly counterfactual mutations. Frozen before evaluation; policy is not tuned to these cases. Attributes reflect statement-level issuer, consolidated scope and fiscal reporting year, never publication date.",
+ "sources": {
+  "microsoft": {"url":"https://www.microsoft.com/investor/reports/ar24/", "section":"Financial Review; FY2024 versus FY2023 results; consolidated income statements", "facts":{"revenue_millions":245122,"cloud_revenue_billions":137.4,"revenue_growth_percent":16,"operating_income_growth_percent":24}},
+  "apple": {"url":"https://www.apple.com/newsroom/pdfs/fy2024-q4/FY24_Q4_Consolidated_Financial_Statements.pdf", "section":"Page 1; unaudited consolidated operations; twelve months ended September 28, 2024; USD millions", "facts":{"net_sales_millions":391035,"net_income_millions":93736,"europe_net_sales_millions":101328,"greater_china_net_sales_millions":66952}}
+ },
+ "cases": [
+ ["ms-revenue","microsoft","Microsoft revenue was $245122 million in fiscal 2024.","Microsoft revenue totaled $245.122 billion in fiscal 2024.","EQUIVALENT"],
+ ["ms-cloud","microsoft","Microsoft Cloud revenue increased 23% to $137.4 billion in fiscal 2024.","In fiscal 2024 Microsoft Cloud revenue rose 23% to $137.4 billion.","EQUIVALENT"],
+ ["apple-sales","apple","Apple total net sales were $391035 million in fiscal 2024.","Apple total net sales totaled $391.035 billion in fiscal 2024.","EQUIVALENT"],
+ ["apple-income","apple","Apple net income was $93736 million in fiscal 2024.","Apple net income totaled $93.736 billion in fiscal 2024.","EQUIVALENT"],
+ ["ms-growth-containment","microsoft","Microsoft revenue was $245122 million in fiscal 2024 and increased 16%.","Microsoft revenue was $245122 million in fiscal 2024.","ENTAILS"],
+ ["apple-containment","apple","Apple total net sales were $391035 million in fiscal 2024 and net income was $93736 million.","Apple total net sales were $391035 million in fiscal 2024.","ENTAILS"],
+ ["ms-growth-negation-counterfactual","microsoft","Microsoft revenue increased in fiscal 2024.","Microsoft revenue did not increase in fiscal 2024.","CONTRADICTS"],
+ ["apple-income-negation-counterfactual","apple","Apple net income was $93736 million in fiscal 2024.","Apple net income was not $93736 million in fiscal 2024.","CONTRADICTS"],
+ ["ms-period-counterfactual","microsoft","Microsoft revenue was $245122 million in fiscal 2024.","Microsoft revenue was $245122 million in fiscal 2023.","UNRESOLVED"],
+ ["ms-definition-counterfactual","microsoft","Microsoft revenue was $245122 million in fiscal 2024.","Microsoft adjusted revenue was $245122 million in fiscal 2024.","UNRESOLVED"],
+ ["apple-geography","apple","Apple net sales in Europe were $101328 million in fiscal 2024.","Apple net sales in Greater China were $66952 million in fiscal 2024.","UNRESOLVED"],
+ ["apple-forecast-counterfactual","apple","Apple net income was $93736 million in fiscal 2024.","Apple forecast net income of $93736 million for fiscal 2024.","UNRESOLVED"]
+ ]
+}

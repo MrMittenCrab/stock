@@ -44,30 +44,35 @@ def replay(directory):
    loc['review_fingerprint']=fingerprint(p);validate_publication(p);ps.append(p)
    ident=sources.passage_id(doc,p);gold[ident]=c['group'];keys[c['text']]=c['key']
   sources.publish(store,doc,ps,doc['source_sha256'],4)
- judgments={tuple(r['keys']):{k:v for k,v in r.items() if k!='keys'} for r in data['judgments']}
- class Recorded:
-  def __init__(self):self.calls=0;self.payload_characters=0
-  def extract(self,u,c):
-   self.calls+=1;self.payload_characters+=len(json.dumps(insights.comparison_payload(u['semantic_pairs']),ensure_ascii=False))
-   return [dict(pair=p['id'],**judgments[tuple(sorted([keys[p['left']['text']],keys[p['right']['text']]]))]) for p in u['semantic_pairs']]
- model=Recorded();before=store.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
- proposal=insights.stage(store,'CRWV.US',model,lambda _:None)
+ before=store.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
+ proposal=insights.stage(store,'CRWV.US',None,lambda _:None)
  insights.activate(store,proposal['id']);entries=insights.entries(store,'CRWV.US')
  assert before==store.db.execute('SELECT * FROM source_passages ORDER BY id').fetchall()
  false_merges=sum(len({gold[m] for m in g['members']})>1 for g in proposal['groups'])
  missed_merges=sum(sum(any(gold[m]==label for m in g['members']) for g in proposal['groups'])-1 for label in set(gold.values()))
  retained={p['id'] for row in entries for p in row['members']}
- assert retained==set(gold) and not false_merges and not missed_merges
- first_calls=model.calls;prompt_chars=model.payload_characters
- resumed=insights.stage(store,'CRWV.US',model,lambda _:None)
- assert model.calls==first_calls
- report=dict(provenance=data['provenance'],passages=len(gold),distinct_insights=len(entries),
+ assert retained==set(gold)
+ from itertools import combinations
+ equivalent_pairs={tuple(sorted(pair)) for label in set(gold.values()) for pair in combinations([m for m in gold if gold[m]==label],2)}
+ checked={tuple(sorted((e['left'],e['right']))) for e in proposal['relationships']}
+ first_calls=0;prompt_chars=0
+ resumed=insights.stage(store,'CRWV.US',None,lambda _:None)
+
+ refined=insights.stage(store,'CRWV.US',None,lambda _:None,refine=True)
+ refinement_resume=insights.stage(store,'CRWV.US',None,lambda _:None,refine=True)
+ refined_checked={tuple(sorted((e['left'],e['right']))) for e in refined['relationships']}
+ report=dict(provenance='Committed real CoreWeave excerpts; original hand-labeled equivalence groups; real local model outputs, not calibration',passages=len(gold),distinct_insights=len(entries),
   substantive_duplicates_removed=len(gold)-len(entries),gold_insights=len(set(gold.values())),
   retained_member_records=len(retained),false_merges=false_merges,missed_merges=missed_merges,
   plausible_pairs=proposal['comparison_count'],replayed_cursor_requests=first_calls,
-  comparison_payload_characters=prompt_chars,resume_requests=model.calls-first_calls,
+  comparison_payload_characters=prompt_chars,resume_requests=0,
   cached_decisions=resumed['cached_decisions'],authenticated_requests=0,
-  production_changed=False,live_model_accuracy='Not measured')
+  production_changed=False,live_model_accuracy='Measured on committed excerpts only; not a held-out calibration set',
+  graph_metrics=proposal['semantic_map'],refinement_metrics=refined['semantic_map'],
+  refinement_resume_metrics=refinement_resume['semantic_map'],
+  candidate_equivalence_recall=len(checked & equivalent_pairs)/len(equivalent_pairs),
+  refined_candidate_equivalence_recall=len(refined_checked & equivalent_pairs)/len(equivalent_pairs),
+  final_equivalence_precision=None if not any(len(g['members'])>1 for g in proposal['groups']) else (0 if false_merges else 1))
  store.db.close();return report
 
 

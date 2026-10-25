@@ -55,6 +55,9 @@ def publish(store, doc, passages, source_hash, extraction_version=3,insight_prop
     check()
     from .editorial import validate_publication
     for p in passages: validate_publication(p)
+    if insight_proposal:
+        from .proposition_graph import validate as validate_graph
+        validate_graph(insight_proposal)
     with store.db:
         store.db.execute('BEGIN IMMEDIATE')
         if completed(store, doc['id']):

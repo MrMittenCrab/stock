@@ -1,0 +1,1134 @@
+{
+  "before": {
+    "local_inference_cost": {
+      "raw_cached_pairs": 12,
+      "nli_execution_seconds": 0.330097459256649,
+      "nli_initialization_seconds": 0.7128045831341296,
+      "cache_counts": {
+        "source_nli_cache": 12,
+        "source_semantic_vectors": 19,
+        "source_candidate_scores": 78
+      },
+      "resume_added_cache_rows": 0
+    },
+    "labeled_equivalent_pairs": [
+      {
+        "texts": [
+          "Disruption at CoreWeave's limited component suppliers could delay infrastructure expansion or replacement of defective equipment.",
+          "We have a limited number of suppliers for significant components of the equipment we use to build and operate our platform and provide our solutions and services. Any disruption in the availability of these components could delay our ability to expand or increase the capacity of our infrastructure or replace defective equipment."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "category",
+              "modality"
+            ],
+            "conflicts": [
+              "named_entities"
+            ],
+            "missing": [
+              "entity",
+              "metric",
+              "unknown_right_entity"
+            ]
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d6:36a9bdd47fa00601:10098:10430"
+              ],
+              "source_notes": [],
+              "speaker": null
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d6:36a9bdd47fa00601:1114:1492",
+                "d6:36a9bdd47fa00601:1493:2893"
+              ],
+              "source_notes": [],
+              "speaker": null
+            }
+          ],
+          "decision_basis": "nli",
+          "direction": null,
+          "elapsed_seconds": 0.05075541604310274,
+          "inference_count": 2,
+          "inference_key": "c8181427ec61f9cfcabdb995c3863d6c87923436b88c0ab63ec96389c07913f2",
+          "kind": "UNRESOLVED",
+          "left": "55075e30cf57ca0d1957071e8c26bbc12029889b8bd8b4f61cc53b26889880e8",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "policy": "financial-compatibility-5-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Conflicts: named_entities; missing context: entity, metric, unknown_right_entity",
+          "right": "f775f25a97121cb4628ba947b3594da34253495e1497a73132a0557a20c082ca",
+          "safeguards": [
+            "named_entities",
+            "entity",
+            "metric",
+            "unknown_right_entity"
+          ],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.000767796125728637,
+              "entailment": 0.10140899568796158,
+              "neutral": 0.8978231549263
+            },
+            "right_to_left": {
+              "contradiction": 0.0037477496080100536,
+              "entailment": 0.38273340463638306,
+              "neutral": 0.6135187745094299
+            }
+          },
+          "source_fingerprints": [
+            "17b1547c35672101d3dcc4d3bace0335ca0f1acd45a1a3d3e9231a319ab58e5e",
+            "c3d6e8109812cf39cbc3000f42289b61eadf525c711c4dc2f77dcff28177d838"
+          ]
+        }
+      },
+      {
+        "texts": [
+          "CoreWeave ended 2025 with more than 850 megawatts of active power.",
+          "CoreWeave reached more than 850 megawatts of active power as of December 31, 2025."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "capacity_state",
+              "category",
+              "entity",
+              "metric",
+              "modality",
+              "named_entities",
+              "numbers",
+              "period",
+              "qualification",
+              "scope",
+              "speaker"
+            ],
+            "conflicts": [],
+            "missing": []
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:9117:9654"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:2545:3213"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            }
+          ],
+          "decision_basis": "complete_kpi_parse",
+          "direction": null,
+          "elapsed_seconds": 0.05429458408616483,
+          "inference_count": 2,
+          "inference_key": "fb043ad47fc5e9937c7f11bd14d0eb0c11001a68a3a9c09559d6fd67dc104245",
+          "kind": "EQUIVALENT",
+          "left": "139fee09035e7fe7f4555894e53f18e4ef8ec12addd6591e582dcb31ac710d37",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "normalized_fact": {
+            "bound": "greater_than",
+            "issuer": "coreweave",
+            "metric": "power",
+            "period": "2025-12-31",
+            "state": "active",
+            "unit": "power",
+            "value": "8.5E+8"
+          },
+          "policy": "financial-compatibility-5-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.",
+          "right": "18ce9613eba76b08653937a55bfbd8bbdf8a225662a5d790c5cb0ec2c892746d",
+          "safeguards": [],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.0011242196196690202,
+              "entailment": 0.03533213958144188,
+              "neutral": 0.9635436534881592
+            },
+            "right_to_left": {
+              "contradiction": 0.008390877395868301,
+              "entailment": 0.9637641310691833,
+              "neutral": 0.027845017611980438
+            }
+          },
+          "source_fingerprints": [
+            "7a33e04a5cba67ffeb5f8928a88ef08ff63d0790ef0117e58da8e50d8fde7018",
+            "c56e6d5dba1bf4ddd008244a0560dcaa928947f71a872c8ad3352407ca172ea0"
+          ]
+        }
+      },
+      {
+        "texts": [
+          "CoreWeave ended 2025 with more than 850 megawatts of active power.",
+          "As of December 31, 2025, CoreWeave reported 850MW+ of active power."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "capacity_state",
+              "category",
+              "entity",
+              "metric",
+              "modality",
+              "named_entities",
+              "numbers",
+              "period",
+              "qualification",
+              "scope"
+            ],
+            "conflicts": [],
+            "missing": [
+              "speaker"
+            ]
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:9117:9654"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d13:9a240883dc057e1b:4571:4761",
+                "d13:9a240883dc057e1b:4981:5010",
+                "d13:9a240883dc057e1b:5012:5029"
+              ],
+              "source_notes": [
+                "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+              ],
+              "speaker": null
+            }
+          ],
+          "decision_basis": "complete_kpi_parse",
+          "direction": null,
+          "elapsed_seconds": 0.022279249969869852,
+          "inference_count": 2,
+          "inference_key": "f3a6e23e0db84fb118fef472bf53795d0ba5a5aea977f4f5e1b287d69fd9aee1",
+          "kind": "EQUIVALENT",
+          "left": "139fee09035e7fe7f4555894e53f18e4ef8ec12addd6591e582dcb31ac710d37",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "normalized_fact": {
+            "bound": "greater_than",
+            "issuer": "coreweave",
+            "metric": "power",
+            "period": "2025-12-31",
+            "state": "active",
+            "unit": "power",
+            "value": "8.5E+8"
+          },
+          "policy": "financial-compatibility-5-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.",
+          "right": "1c30f77e32580f2ce60ed0c19887040dbc0710196fa260434d0258ed90cf427c",
+          "safeguards": [
+            "speaker"
+          ],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.001189183327369392,
+              "entailment": 0.023364713415503502,
+              "neutral": 0.9754461050033569
+            },
+            "right_to_left": {
+              "contradiction": 0.00434735044836998,
+              "entailment": 0.9322837591171265,
+              "neutral": 0.06336893141269684
+            }
+          },
+          "source_fingerprints": [
+            "7a33e04a5cba67ffeb5f8928a88ef08ff63d0790ef0117e58da8e50d8fde7018",
+            "1f53d9c3b0e81b889bc6b90976fecef099ab100d1d97b44197b4d76313598246"
+          ]
+        }
+      },
+      {
+        "texts": [
+          "CoreWeave reached more than 850 megawatts of active power as of December 31, 2025.",
+          "As of December 31, 2025, CoreWeave reported 850MW+ of active power."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "capacity_state",
+              "category",
+              "entity",
+              "metric",
+              "modality",
+              "named_entities",
+              "numbers",
+              "period",
+              "qualification",
+              "scope"
+            ],
+            "conflicts": [],
+            "missing": [
+              "speaker"
+            ]
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:2545:3213"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d13:9a240883dc057e1b:4571:4761",
+                "d13:9a240883dc057e1b:4981:5010",
+                "d13:9a240883dc057e1b:5012:5029"
+              ],
+              "source_notes": [
+                "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+              ],
+              "speaker": null
+            }
+          ],
+          "decision_basis": "complete_kpi_parse",
+          "direction": null,
+          "elapsed_seconds": 0.025205666897818446,
+          "inference_count": 2,
+          "inference_key": "81baf81c902c535dfeb2a70a2d420c2721b3d293907c1fc930c1a6aed4c0389c",
+          "kind": "EQUIVALENT",
+          "left": "18ce9613eba76b08653937a55bfbd8bbdf8a225662a5d790c5cb0ec2c892746d",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "normalized_fact": {
+            "bound": "greater_than",
+            "issuer": "coreweave",
+            "metric": "power",
+            "period": "2025-12-31",
+            "state": "active",
+            "unit": "power",
+            "value": "8.5E+8"
+          },
+          "policy": "financial-compatibility-5-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.",
+          "right": "1c30f77e32580f2ce60ed0c19887040dbc0710196fa260434d0258ed90cf427c",
+          "safeguards": [
+            "speaker"
+          ],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.0014948470052331686,
+              "entailment": 0.9885977506637573,
+              "neutral": 0.00990738719701767
+            },
+            "right_to_left": {
+              "contradiction": 0.002380427671596408,
+              "entailment": 0.9307138919830322,
+              "neutral": 0.06690569967031479
+            }
+          },
+          "source_fingerprints": [
+            "c56e6d5dba1bf4ddd008244a0560dcaa928947f71a872c8ad3352407ca172ea0",
+            "1f53d9c3b0e81b889bc6b90976fecef099ab100d1d97b44197b4d76313598246"
+          ]
+        }
+      },
+      {
+        "texts": [
+          "CoreWeave ended 2025 with 43 active data centers.",
+          "CoreWeave reported 43 active data centers as of December 31, 2025."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "capacity_state",
+              "category",
+              "entity",
+              "metric",
+              "modality",
+              "named_entities",
+              "numbers",
+              "period",
+              "qualification",
+              "scope"
+            ],
+            "conflicts": [],
+            "missing": [
+              "speaker"
+            ]
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:9117:9654"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d13:9a240883dc057e1b:4571:4761",
+                "d13:9a240883dc057e1b:5333:5339",
+                "d13:9a240883dc057e1b:5341:5360"
+              ],
+              "source_notes": [
+                "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+              ],
+              "speaker": null
+            }
+          ],
+          "decision_basis": "complete_kpi_parse",
+          "direction": null,
+          "elapsed_seconds": 0.02433933410793543,
+          "inference_count": 2,
+          "inference_key": "5ce6662618559bfb3bf97cf64d763180be1056c2c64957d600cc34d9acdc96c1",
+          "kind": "EQUIVALENT",
+          "left": "e2a23089716a38633e24802f41ce6a2de654704b1f46f015a5934832c12d3c3b",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "normalized_fact": {
+            "bound": "exact",
+            "issuer": "coreweave",
+            "metric": "data centers",
+            "period": "2025-12-31",
+            "state": "active",
+            "unit": "count",
+            "value": "43"
+          },
+          "policy": "financial-compatibility-5-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.",
+          "right": "f8771fff0a4922ec8eb6aa7be3c8b8f218bc69885c36780a20d60e77c53ff233",
+          "safeguards": [
+            "speaker"
+          ],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.0012591455597430468,
+              "entailment": 0.018237430602312088,
+              "neutral": 0.9805034399032593
+            },
+            "right_to_left": {
+              "contradiction": 0.005696745123714209,
+              "entailment": 0.9535660147666931,
+              "neutral": 0.040737174451351166
+            }
+          },
+          "source_fingerprints": [
+            "86ee78d4a53cc6c0db88ada4f189ea9aefc38a07d7da870a88ab638bca4c13eb",
+            "d563ffc5d1d5d88011423a91cc02df071f452bc4a07ebd3bf4679380a6a87633"
+          ]
+        }
+      }
+    ],
+    "graph_metrics": {
+      "all_inventory_pairs": 78,
+      "cached_embeddings": 9,
+      "cached_inference_pairs": 5,
+      "calibrated": false,
+      "candidate_run": "736c3e55c9eb9b9aec9662ac7fbbc709f86ed38e19035dee64928ef5f5a2e52e",
+      "checked_relationships": 12,
+      "contradictions": 0,
+      "cursor_deduplication_requests": 0,
+      "cutoffs": {
+        "00cae577fad48eebc9996cb710a5ba258307ea5c6fe11993a3aebf411009ad10": 0.8246289789676666,
+        "1c30f77e32580f2ce60ed0c19887040dbc0710196fa260434d0258ed90cf427c": 0.8698011636734009,
+        "1df88f5fa3cf2f6090b269aa8b67dd6f3fd2709adaeb21507d2524e869835a9b": 0.8677072525024414,
+        "f8771fff0a4922ec8eb6aa7be3c8b8f218bc69885c36780a20d60e77c53ff233": 0.8677072525024414
+      },
+      "decision_policy": "financial-compatibility-5-uncalibrated",
+      "deferred": 35,
+      "discovery_policy": "empirical-tail-elbow-null-v2",
+      "embedded": 4,
+      "embedding_initialization_seconds": 0.0,
+      "embedding_seconds": 0.026888125110417604,
+      "entailment_edges": 0,
+      "equivalence_groups": 2,
+      "existing_propositions": 9,
+      "frontier": 0,
+      "inference_model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+      "minimum_neighbors": 0,
+      "model": "fastembed-0.9-bge-small@aa8f8b060edb00e03bfdd08813a2949946c8ba55-raw-text-512-cls-normalized-384-v3",
+      "new_new_scanned": 6,
+      "new_propositions": 4,
+      "nli_execution_seconds": 0.15296170953661203,
+      "nli_inference_count": 14,
+      "nli_initialization_seconds": 0.0,
+      "nli_seconds": 0.16393487504683435,
+      "null_reference_comparisons": 0,
+      "null_reference_embeddings": 0,
+      "prior_outcomes": {
+        "EQUIVALENT": 1,
+        "UNRESOLVED": 4
+      },
+      "proposed": 7,
+      "scanned": 36,
+      "score_cache_hit": false,
+      "similarity_calculations": 42,
+      "status": "adaptive_candidates_not_verified_equivalence",
+      "total_propositions": 13,
+      "uncertain": 8,
+      "unreviewed_inventory_pairs": 66
+    },
+    "missed_merges": 1,
+    "cursor_deduplication_requests": 0,
+    "by_document": {
+      "1": {
+        "requests": 2,
+        "prompt_characters": 31029
+      },
+      "4": {
+        "requests": 2,
+        "prompt_characters": 41229
+      },
+      "6": {
+        "requests": 2,
+        "prompt_characters": 30333
+      },
+      "12": {
+        "requests": 2,
+        "prompt_characters": 32702
+      },
+      "13": {
+        "requests": 2,
+        "prompt_characters": 51595
+      }
+    },
+    "stages": {
+      "understand": {
+        "requests": 5,
+        "prompt_characters": 154051
+      },
+      "review": {
+        "requests": 5,
+        "prompt_characters": 32837
+      },
+      "citation recovery": {
+        "requests": 0,
+        "prompt_characters": 0
+      }
+    },
+    "requests": 10,
+    "prompt_characters": 186888,
+    "cold_local_seconds": 3.092463915934786,
+    "resumed_local_seconds": 0.0034390410874038935,
+    "resume_requests": 0,
+    "evidence": 13,
+    "insights": 10,
+    "exact_citations": 22,
+    "missing_fixture_claims": [],
+    "live_latency": null,
+    "actual_tokens": null
+  },
+  "after": {
+    "local_inference_cost": {
+      "raw_cached_pairs": 12,
+      "nli_execution_seconds": 0.3063187091611326,
+      "nli_initialization_seconds": 0.6765977088361979,
+      "cache_counts": {
+        "source_nli_cache": 12,
+        "source_semantic_vectors": 19,
+        "source_candidate_scores": 78
+      },
+      "resume_added_cache_rows": 0
+    },
+    "labeled_equivalent_pairs": [
+      {
+        "texts": [
+          "Disruption at CoreWeave's limited component suppliers could delay infrastructure expansion or replacement of defective equipment.",
+          "We have a limited number of suppliers for significant components of the equipment we use to build and operate our platform and provide our solutions and services. Any disruption in the availability of these components could delay our ability to expand or increase the capacity of our infrastructure or replace defective equipment."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "category",
+              "modality"
+            ],
+            "conflicts": [
+              "named_entities"
+            ],
+            "missing": [
+              "entity",
+              "metric",
+              "unknown_right_entity"
+            ]
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d6:36a9bdd47fa00601:10098:10430"
+              ],
+              "source_notes": [],
+              "speaker": null
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d6:36a9bdd47fa00601:1114:1492",
+                "d6:36a9bdd47fa00601:1493:2893"
+              ],
+              "source_notes": [],
+              "speaker": null
+            }
+          ],
+          "decision_basis": "nli",
+          "direction": null,
+          "elapsed_seconds": 0.04349549999460578,
+          "inference_count": 2,
+          "inference_key": "c8181427ec61f9cfcabdb995c3863d6c87923436b88c0ab63ec96389c07913f2",
+          "kind": "UNRESOLVED",
+          "left": "55075e30cf57ca0d1957071e8c26bbc12029889b8bd8b4f61cc53b26889880e8",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "policy": "financial-complete-facts-6-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Conflicts: named_entities; missing context: entity, metric, unknown_right_entity",
+          "right": "f775f25a97121cb4628ba947b3594da34253495e1497a73132a0557a20c082ca",
+          "safeguards": [
+            "named_entities",
+            "entity",
+            "metric",
+            "unknown_right_entity"
+          ],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.000767796125728637,
+              "entailment": 0.10140899568796158,
+              "neutral": 0.8978231549263
+            },
+            "right_to_left": {
+              "contradiction": 0.0037477496080100536,
+              "entailment": 0.38273340463638306,
+              "neutral": 0.6135187745094299
+            }
+          },
+          "source_fingerprints": [
+            "17b1547c35672101d3dcc4d3bace0335ca0f1acd45a1a3d3e9231a319ab58e5e",
+            "c3d6e8109812cf39cbc3000f42289b61eadf525c711c4dc2f77dcff28177d838"
+          ]
+        }
+      },
+      {
+        "texts": [
+          "CoreWeave ended 2025 with more than 850 megawatts of active power.",
+          "CoreWeave reached more than 850 megawatts of active power as of December 31, 2025."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "capacity_state",
+              "category",
+              "entity",
+              "metric",
+              "modality",
+              "named_entities",
+              "numbers",
+              "period",
+              "qualification",
+              "scope",
+              "speaker"
+            ],
+            "conflicts": [],
+            "missing": []
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:9117:9654"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:2545:3213"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            }
+          ],
+          "decision_basis": "complete_kpi_parse",
+          "direction": null,
+          "elapsed_seconds": 0.025462707970291376,
+          "inference_count": 2,
+          "inference_key": "fb043ad47fc5e9937c7f11bd14d0eb0c11001a68a3a9c09559d6fd67dc104245",
+          "kind": "EQUIVALENT",
+          "left": "139fee09035e7fe7f4555894e53f18e4ef8ec12addd6591e582dcb31ac710d37",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "normalized_fact": {
+            "bound": "greater_than",
+            "issuer": "coreweave",
+            "metric": "power",
+            "period": "2025-12-31",
+            "state": "active",
+            "unit": "power",
+            "value": "8.5E+8"
+          },
+          "policy": "financial-complete-facts-6-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.",
+          "right": "18ce9613eba76b08653937a55bfbd8bbdf8a225662a5d790c5cb0ec2c892746d",
+          "safeguards": [],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.0011242196196690202,
+              "entailment": 0.03533213958144188,
+              "neutral": 0.9635436534881592
+            },
+            "right_to_left": {
+              "contradiction": 0.008390877395868301,
+              "entailment": 0.9637641310691833,
+              "neutral": 0.027845017611980438
+            }
+          },
+          "source_fingerprints": [
+            "7a33e04a5cba67ffeb5f8928a88ef08ff63d0790ef0117e58da8e50d8fde7018",
+            "c56e6d5dba1bf4ddd008244a0560dcaa928947f71a872c8ad3352407ca172ea0"
+          ]
+        }
+      },
+      {
+        "texts": [
+          "CoreWeave ended 2025 with more than 850 megawatts of active power.",
+          "As of December 31, 2025, CoreWeave reported 850MW+ of active power."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "capacity_state",
+              "category",
+              "entity",
+              "metric",
+              "modality",
+              "named_entities",
+              "numbers",
+              "period",
+              "qualification",
+              "scope"
+            ],
+            "conflicts": [],
+            "missing": [
+              "speaker"
+            ]
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:9117:9654"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d13:9a240883dc057e1b:4571:4761",
+                "d13:9a240883dc057e1b:4981:5010",
+                "d13:9a240883dc057e1b:5012:5029"
+              ],
+              "source_notes": [
+                "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+              ],
+              "speaker": null
+            }
+          ],
+          "decision_basis": "complete_kpi_parse",
+          "direction": null,
+          "elapsed_seconds": 0.02968879183754325,
+          "inference_count": 2,
+          "inference_key": "f3a6e23e0db84fb118fef472bf53795d0ba5a5aea977f4f5e1b287d69fd9aee1",
+          "kind": "EQUIVALENT",
+          "left": "139fee09035e7fe7f4555894e53f18e4ef8ec12addd6591e582dcb31ac710d37",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "normalized_fact": {
+            "bound": "greater_than",
+            "issuer": "coreweave",
+            "metric": "power",
+            "period": "2025-12-31",
+            "state": "active",
+            "unit": "power",
+            "value": "8.5E+8"
+          },
+          "policy": "financial-complete-facts-6-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.",
+          "right": "1c30f77e32580f2ce60ed0c19887040dbc0710196fa260434d0258ed90cf427c",
+          "safeguards": [
+            "speaker"
+          ],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.001189183327369392,
+              "entailment": 0.023364713415503502,
+              "neutral": 0.9754461050033569
+            },
+            "right_to_left": {
+              "contradiction": 0.00434735044836998,
+              "entailment": 0.9322837591171265,
+              "neutral": 0.06336893141269684
+            }
+          },
+          "source_fingerprints": [
+            "7a33e04a5cba67ffeb5f8928a88ef08ff63d0790ef0117e58da8e50d8fde7018",
+            "1f53d9c3b0e81b889bc6b90976fecef099ab100d1d97b44197b4d76313598246"
+          ]
+        }
+      },
+      {
+        "texts": [
+          "CoreWeave reached more than 850 megawatts of active power as of December 31, 2025.",
+          "As of December 31, 2025, CoreWeave reported 850MW+ of active power."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "capacity_state",
+              "category",
+              "entity",
+              "metric",
+              "modality",
+              "named_entities",
+              "numbers",
+              "period",
+              "qualification",
+              "scope"
+            ],
+            "conflicts": [],
+            "missing": [
+              "speaker"
+            ]
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:2545:3213"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d13:9a240883dc057e1b:4571:4761",
+                "d13:9a240883dc057e1b:4981:5010",
+                "d13:9a240883dc057e1b:5012:5029"
+              ],
+              "source_notes": [
+                "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+              ],
+              "speaker": null
+            }
+          ],
+          "decision_basis": "complete_kpi_parse",
+          "direction": null,
+          "elapsed_seconds": 0.026760624954476953,
+          "inference_count": 2,
+          "inference_key": "81baf81c902c535dfeb2a70a2d420c2721b3d293907c1fc930c1a6aed4c0389c",
+          "kind": "EQUIVALENT",
+          "left": "18ce9613eba76b08653937a55bfbd8bbdf8a225662a5d790c5cb0ec2c892746d",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "normalized_fact": {
+            "bound": "greater_than",
+            "issuer": "coreweave",
+            "metric": "power",
+            "period": "2025-12-31",
+            "state": "active",
+            "unit": "power",
+            "value": "8.5E+8"
+          },
+          "policy": "financial-complete-facts-6-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.",
+          "right": "1c30f77e32580f2ce60ed0c19887040dbc0710196fa260434d0258ed90cf427c",
+          "safeguards": [
+            "speaker"
+          ],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.0014948470052331686,
+              "entailment": 0.9885977506637573,
+              "neutral": 0.00990738719701767
+            },
+            "right_to_left": {
+              "contradiction": 0.002380427671596408,
+              "entailment": 0.9307138919830322,
+              "neutral": 0.06690569967031479
+            }
+          },
+          "source_fingerprints": [
+            "c56e6d5dba1bf4ddd008244a0560dcaa928947f71a872c8ad3352407ca172ea0",
+            "1f53d9c3b0e81b889bc6b90976fecef099ab100d1d97b44197b4d76313598246"
+          ]
+        }
+      },
+      {
+        "texts": [
+          "CoreWeave ended 2025 with 43 active data centers.",
+          "CoreWeave reported 43 active data centers as of December 31, 2025."
+        ],
+        "retrieved": true,
+        "relationship": {
+          "cache_hit": false,
+          "compatibility": {
+            "agreements": [
+              "capacity_state",
+              "category",
+              "entity",
+              "metric",
+              "modality",
+              "named_entities",
+              "numbers",
+              "period",
+              "qualification",
+              "scope"
+            ],
+            "conflicts": [],
+            "missing": [
+              "speaker"
+            ]
+          },
+          "context": [
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d12:ff516a19a5418342:9117:9654"
+              ],
+              "source_notes": [],
+              "speaker": "Michael Intrator"
+            },
+            {
+              "attributes": {},
+              "inconsistencies": [],
+              "provenance": {},
+              "reference_ids": [
+                "d13:9a240883dc057e1b:4571:4761",
+                "d13:9a240883dc057e1b:5333:5339",
+                "d13:9a240883dc057e1b:5341:5360"
+              ],
+              "source_notes": [
+                "Notes: Figures as of December 31, 2025. This graphic provides an illustrative representation of our infrastructure footprint and may not precisely reflect all current locations or capacities"
+              ],
+              "speaker": null
+            }
+          ],
+          "decision_basis": "complete_kpi_parse",
+          "direction": null,
+          "elapsed_seconds": 0.024995208019390702,
+          "inference_count": 2,
+          "inference_key": "5ce6662618559bfb3bf97cf64d763180be1056c2c64957d600cc34d9acdc96c1",
+          "kind": "EQUIVALENT",
+          "left": "e2a23089716a38633e24802f41ce6a2de654704b1f46f015a5934832c12d3c3b",
+          "model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+          "normalized_fact": {
+            "bound": "exact",
+            "issuer": "coreweave",
+            "metric": "data centers",
+            "period": "2025-12-31",
+            "state": "active",
+            "unit": "count",
+            "value": "43"
+          },
+          "policy": "financial-complete-facts-6-uncalibrated",
+          "provenance": "local_nli",
+          "reason": "Complete issuer capacity KPI parses agree; source speaker attribution remains independently preserved.",
+          "right": "f8771fff0a4922ec8eb6aa7be3c8b8f218bc69885c36780a20d60e77c53ff233",
+          "safeguards": [
+            "speaker"
+          ],
+          "scores": {
+            "left_to_right": {
+              "contradiction": 0.0012591455597430468,
+              "entailment": 0.018237430602312088,
+              "neutral": 0.9805034399032593
+            },
+            "right_to_left": {
+              "contradiction": 0.005696745123714209,
+              "entailment": 0.9535660147666931,
+              "neutral": 0.040737174451351166
+            }
+          },
+          "source_fingerprints": [
+            "86ee78d4a53cc6c0db88ada4f189ea9aefc38a07d7da870a88ab638bca4c13eb",
+            "d563ffc5d1d5d88011423a91cc02df071f452bc4a07ebd3bf4679380a6a87633"
+          ]
+        }
+      }
+    ],
+    "graph_metrics": {
+      "all_inventory_pairs": 78,
+      "cached_embeddings": 9,
+      "cached_inference_pairs": 5,
+      "calibrated": false,
+      "candidate_run": "736c3e55c9eb9b9aec9662ac7fbbc709f86ed38e19035dee64928ef5f5a2e52e",
+      "checked_relationships": 12,
+      "contradictions": 0,
+      "cursor_deduplication_requests": 0,
+      "cutoffs": {
+        "00cae577fad48eebc9996cb710a5ba258307ea5c6fe11993a3aebf411009ad10": 0.8246289789676666,
+        "1c30f77e32580f2ce60ed0c19887040dbc0710196fa260434d0258ed90cf427c": 0.8698011636734009,
+        "1df88f5fa3cf2f6090b269aa8b67dd6f3fd2709adaeb21507d2524e869835a9b": 0.8677072525024414,
+        "f8771fff0a4922ec8eb6aa7be3c8b8f218bc69885c36780a20d60e77c53ff233": 0.8677072525024414
+      },
+      "decision_policy": "financial-complete-facts-6-uncalibrated",
+      "deferred": 35,
+      "discovery_policy": "empirical-tail-plus-structured-v3",
+      "embedded": 4,
+      "embedding_initialization_seconds": 0.0,
+      "embedding_seconds": 0.031013542087748647,
+      "entailment_edges": 0,
+      "equivalence_groups": 2,
+      "existing_propositions": 9,
+      "frontier": 0,
+      "inference_model": "cross-encoder/nli-MiniLM2-L6-H768@b95119ce93d3e065de6214e38cd4a97b0f2f2c6d:onnx/model.onnx:pair-no-truncation-512-softmax-v1",
+      "minimum_neighbors": 0,
+      "model": "fastembed-0.9-bge-small@aa8f8b060edb00e03bfdd08813a2949946c8ba55-raw-text-512-cls-normalized-384-v3",
+      "new_new_scanned": 6,
+      "new_propositions": 4,
+      "nli_execution_seconds": 0.15971525106579065,
+      "nli_inference_count": 14,
+      "nli_initialization_seconds": 0.0,
+      "nli_seconds": 0.1745326668024063,
+      "null_reference_comparisons": 0,
+      "null_reference_embeddings": 0,
+      "prior_outcomes": {
+        "EQUIVALENT": 1,
+        "UNRESOLVED": 4
+      },
+      "proposed": 7,
+      "scanned": 36,
+      "score_cache_hit": false,
+      "similarity_calculations": 42,
+      "status": "adaptive_candidates_not_verified_equivalence",
+      "structured_added": 0,
+      "structured_candidate_limit": 32,
+      "structured_candidates": 0,
+      "total_propositions": 13,
+      "uncertain": 8,
+      "unreviewed_inventory_pairs": 66
+    },
+    "missed_merges": 1,
+    "cursor_deduplication_requests": 0,
+    "by_document": {
+      "1": {
+        "requests": 2,
+        "prompt_characters": 31029
+      },
+      "4": {
+        "requests": 2,
+        "prompt_characters": 41229
+      },
+      "6": {
+        "requests": 2,
+        "prompt_characters": 30333
+      },
+      "12": {
+        "requests": 2,
+        "prompt_characters": 32702
+      },
+      "13": {
+        "requests": 2,
+        "prompt_characters": 51595
+      }
+    },
+    "stages": {
+      "understand": {
+        "requests": 5,
+        "prompt_characters": 154051
+      },
+      "review": {
+        "requests": 5,
+        "prompt_characters": 32837
+      },
+      "citation recovery": {
+        "requests": 0,
+        "prompt_characters": 0
+      }
+    },
+    "requests": 10,
+    "prompt_characters": 186888,
+    "cold_local_seconds": 2.6711240420117974,
+    "resumed_local_seconds": 0.0030342082027345896,
+    "resume_requests": 0,
+    "evidence": 13,
+    "insights": 10,
+    "exact_citations": 22,
+    "missing_fixture_claims": [],
+    "live_latency": null,
+    "actual_tokens": null
+  },
+  "baseline": "0893253",
+  "provenance": "Hand-recorded fixture decisions replayed through actual prompt transport and publication gates. Local wall times exclude live model service. No production writes.",
+  "authenticated_requests": 0
+}

@@ -64,6 +64,10 @@ def validate_selections(raw):
 def resolve_selection(selection,batch,text,doc,digest):
     from .evidence import IntegrityError
     from .sort import public_date
+    contextual='context' in selection
+    if contextual:
+        from .proposition_context import split_selection
+        full_selection=selection;selection=split_selection(selection)
     if set(selection)!=FIELDS: raise ValueError('Invalid editorial selection fields')
     ids=selection['ids'];lookup={c['id']:c for c in batch}
     if not isinstance(ids,list) or not ids or any(not isinstance(x,str) or x not in lookup for x in ids) or len(set(ids))!=len(ids):
@@ -103,13 +107,7 @@ def resolve_selection(selection,batch,text,doc,digest):
     from .quantities import unsupported
     if unsupported(readable,support): raise ValueError('Unsupported number, currency, unit or scale in editorial text')
     published,provenance=public_date(doc)
-    refs=[dict(document_id=doc['id'],source_id=c['id'],candidate_id=c['id'],
-               markdown_sha256=digest,sha256=digest,start=c['start'],end=c['end'],
-               markdown_start=c['start'],markdown_end=c['end'],text=c['text'],
-               original=doc['original'],original_sha256=doc['source_sha256'],
-               evidence_version=doc.get('evidence_version'),evidence_file=doc.get('evidence'),markdown_path=doc.get('markdown'),
-               section=c['section'],turn=c['turn'],page=c.get('page'),
-               visual=c.get('visual'),evidence_type=c.get('source_kind','archived_markdown'),pdf_region=c.get('pdf_region'),**({'table':c['table']} if c.get('table') else {})) for c in group]
+    refs=[source_reference(c,doc,digest) for c in group]
     for previous,current in zip(refs,refs[1:]):
         gap=text[previous['end']:current['start']]
         if not gap.strip(): current['gap_before']=gap
@@ -117,9 +115,23 @@ def resolve_selection(selection,batch,text,doc,digest):
     loc={**refs[0], 'kind':('original PDF region' if any(c.get('source_kind') in ('native_pdf_region','local_ocr_region') for c in group) else 'archived Markdown'),'contract':4,'representation':kind,
          'references':refs,'verification':'Exact source anchors; semantic review pending',
          'review':{'state':'pending'},'ambiguities':[]}
-    return dict(text=readable,topics=topics.copy(),category=role,
+    result=dict(text=readable,topics=topics.copy(),category=role,
                 speaker=spoken[0]['speaker'] if spoken[0]['turn'] else speaker,location=loc,
                 publication_date=published,date_provenance=provenance)
+    if contextual:
+        from .proposition_context import attach
+        attach(full_selection,result,batch,text,doc,digest)
+    return result
+
+
+def source_reference(c,doc,sha):
+    return dict(document_id=doc['id'],source_id=c['id'],candidate_id=c['id'],
+               markdown_sha256=sha,sha256=sha,start=c['start'],end=c['end'],
+               markdown_start=c['start'],markdown_end=c['end'],text=c['text'],
+               original=doc['original'],original_sha256=doc['source_sha256'],
+               evidence_version=doc.get('evidence_version'),evidence_file=doc.get('evidence'),markdown_path=doc.get('markdown'),
+               section=c['section'],turn=c['turn'],page=c.get('page'),
+               visual=c.get('visual'),evidence_type=c.get('source_kind','archived_markdown'),pdf_region=c.get('pdf_region'),**({'table':c['table']} if c.get('table') else {}))
 
 
 def validate_reviews(raw,count):
@@ -153,7 +165,7 @@ def review(passages,cursor,context,on_result=None):
     unique={}
     for p in passages:
         loc=p['location']
-        key=json.dumps([p['text'],p['category'],p['speaker'],loc.get('representation'),loc.get('references',loc)],sort_keys=True)
+        key=json.dumps([p['text'],p['category'],p['speaker'],loc.get('representation'),loc.get('references',loc),p.get('context_proposal'),p.get('context_references')],sort_keys=True)
         if key in unique:
             unique[key]['topics']=sorted(set(unique[key]['topics'])|set(p['topics']))
         else:unique[key]=p
@@ -162,22 +174,36 @@ def review(passages,cursor,context,on_result=None):
             accepted.append(p);continue
         try:validate_publication(p)
         except IntegrityError:pending.append(p)
-        else:accepted.append(p)
+        else:
+            if 'context_proposal' in p:
+                from .proposition_context import read
+                try:
+                    if not p.get('context_record_id'):raise IntegrityError('Missing context approval')
+                    read(cursor.store,p['context_record_id'],p,cursor.doc)
+                except IntegrityError:pending.append(p)
+                else:accepted.append(p)
+            else:accepted.append(p)
     chunks=[];chunk=[];size=0
     from .sort_transport import reference_payload
     for p in pending:
         cost=len(p['text'])+len(json.dumps([reference_payload(r) for r in p['location']['references']]))
+        if 'context_proposal' in p:cost+=len(json.dumps([p['context_proposal'],[reference_payload(r) for r in p['context_references']]]))
         if chunk and size+cost>REVIEW_CONTEXT:chunks.append(chunk);chunk=[];size=0
         chunk.append(p);size+=cost
     if chunk:chunks.append(chunk)
     for chunk in chunks:
         payload=[dict(index=i,text=p['text'],representation=p['location']['representation'],
                       references=p['location']['references'],speaker=p['speaker'],category=p['category'],
-                      layout_pages=[(v.get('original_sha256'),v.get('page')) for v in p['location'].get('visual_context',[])]) for i,p in enumerate(chunk)]
+                      layout_pages=[(v.get('original_sha256'),v.get('page')) for v in p['location'].get('visual_context',[])],
+                      **({k:p[k] for k in ('context_proposal','context_references')} if 'context_proposal' in p else {})) for i,p in enumerate(chunk)]
         raw=cursor.extract(dict(candidates=[],text='',review=payload),context(chunk) if callable(context) else context)
-        results=validate_reviews(raw,len(chunk))
+        contextual=all('context_proposal' in p for p in chunk)
+        if contextual:
+            from .proposition_context import validate_reviews as validate_context_reviews
+            results=validate_context_reviews(raw,len(chunk))
+        else:results=validate_reviews(raw,len(chunk))
         for i,p in enumerate(chunk):
-            r=results[i];loc=p['location']
+            r={k:v for k,v in results[i].items() if k not in ('context_preservation','context_reason')};loc=p['location']
             problem=standalone_error(p['text'])
             if problem:r={**r,'readability':'fragment','reason':problem}
             loc['review']={**r,'state':'model_reviewed','limitation':'Semantic judgment, not proof of equivalence'}
@@ -186,6 +212,16 @@ def review(passages,cursor,context,on_result=None):
                 loc['review_fingerprint']=fingerprint(p)
                 accepted.append(p)
             else:rejected.append(dict(selection=dict(ids=[r['source_id'] for r in loc['references']]),error='Evidence review: '+r['reason'],proposed=p))
+            if contextual:
+                from .proposition_context import finalize
+                from .knowledge import review_context_for
+                claim={k:v for k,v in payload[i].items() if k!='index'}
+                data=review_context_for(context(chunk) if callable(context) else context,
+                    {r['source_id'] for r in payload[i]['references']},set(map(tuple,payload[i]['layout_pages'])))
+                finalize(cursor.store,cursor.doc,p,
+                    {k:v for k,v in results[i].items() if k!='index'},
+                    dict(claim=claim,document=cursor.doc,context=data),
+                    cursor.context_generations.get(p['context_selection_digest']))
         if on_result:on_result(accepted,rejected)
     accepted.sort(key=lambda p:p['location']['start'])
     return accepted,rejected

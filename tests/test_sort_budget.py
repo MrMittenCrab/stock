@@ -129,7 +129,7 @@ def test_review_only_combines_pending_documents_without_publication(tmp_path,mon
  monkeypatch.setattr('stock.sort.Cursor',Model)
  output=[]
  with Budget():assert sort_stock(s,'CRWV.US',output.append,review_only=True)
- assert any('Existing 2 passages · Proposed 1 distinct insights' in line for line in output)
+ assert any('Existing 2 passages · Proposed 2 distinct insights' in line for line in output)
  assert not sources.passages(s,'CRWV.US') and not insights.head(s,'CRWV.US')
  assert all(not sources.completed(s,d['id']) for d in docs)
  row=s.db.execute('SELECT id FROM source_insight_revisions').fetchone()

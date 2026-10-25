@@ -1,5 +1,8 @@
 # Distinct investment evidence
 
+Current implementation: [local directional proposition graph](semantic-map.md).
+Cursor grouping and lexical retrieval described below are historical baselines.
+
 Implemented on top of `17c710c`. The completed transport, PDF/layout caching,
 checkpoint adoption, review reuse, citation recovery, deferred Cursor startup,
 process cancellation and metrics repair remain in place. No production CoreWeave

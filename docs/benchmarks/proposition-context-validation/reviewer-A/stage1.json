@@ -1,0 +1,286 @@
+{
+  "reviewer": "A",
+  "instructions": "Review independently. Open ONLY stage1 first, without title, sources, original or other reviewer judgments. Save standalone sufficiency and fluency with confidence and reasons, then timestamp and lock these answers BEFORE opening stage2. Evaluate all material referents. null means pending, never pass.",
+  "cases": [
+    {
+      "id": "case-001",
+      "statement": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-002",
+      "statement": "CoreWeave management said virtually all of its more than 3.1 gigawatts of contracted capacity was expected to come online by the end of 2027.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-003",
+      "statement": "CoreCoreWeaveave management said: We contracted close to 2 gigawatts of additional power in 2025.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-004",
+      "statement": "CoreWeave management said it ended 2025 with more than 850 megawatts of active power.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-005",
+      "statement": "CoreWeave management expected virtually all of its more than 3.1 gigawatts of contracted capacity to come online by the end of 2027.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-006",
+      "statement": "CoreWeave management confirmed virtually all contracted capacity to come online by the end of 2027.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-007",
+      "statement": "CoreWeave management said it ended 2025 with more than 3.1 gigawatts of active capacity.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-008",
+      "statement": "CoreWeave management said it had \\$66.8 billion of guaranteed revenue.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-009",
+      "statement": "CoreWeave management said operating at this scale and pace is inherently complex.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-010",
+      "statement": "CoreWeave management said average H100 pricing in Q4 was within 10% of where it started the year.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-011",
+      "statement": "CoreWeave management said it generated more than \\$5.1 billion of revenue in 2025, up 168% year-over-year.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-012",
+      "statement": "CoreWeave presentation notes say figures are as of December 31, 2025 and the graphic is illustrative and may not precisely reflect all current locations or capacities.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-013",
+      "statement": "CoreWeave presentation notes say the graphic is illustrative and precisely reflects all current locations or capacities.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-014",
+      "statement": "CoreWeave presentation lists Active Power and Contracted Power.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-015",
+      "statement": "CoreWeave presentation bases its performance claim on MLPerf benchmark results, NVIDIA Exemplar Cloud status, and SemiAnalysis ClusterMAX™ rating.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-016",
+      "statement": "CoreWeave presentation uses adjusted EBITDA as a non-GAAP financial measure.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-017",
+      "statement": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-018",
+      "statement": "Microsoft reported revenue of $76.4 billion for the quarter ended June 30, 2025, up 18% (up 17% in constant currency).",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-019",
+      "statement": "CoreWeave reported revenue of $76.4 billion for the quarter ended June 30, 2025.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-020",
+      "statement": "Microsoft said it reported revenue of $76.4 billion for the quarter ended July 30, 2025.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-021",
+      "statement": "Amy Hood, Microsoft CFO, said Microsoft Cloud revenue reached $46.7 billion in the fiscal-year closing quarter, up 27% (up 25% in constant currency).",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-022",
+      "statement": "CoreWeave management said its contracted but not yet active capacity represents latent revenue potential monetized as built and delivered.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-023",
+      "statement": "CoreWeave presentation lists Active Power and Contracted Power.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-024",
+      "statement": "Satya Nadella, Microsoft CEO, said Azure surpassed $75 billion in revenue this year, up 34 percent.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-025",
+      "statement": "On July 30, 2025, Microsoft Corp. announced results for the quarter ended June 30, 2025, compared with the corresponding period of the prior fiscal year.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-026",
+      "statement": "Satya Nadella, chairman and chief executive officer of Microsoft, said cloud and AI is the driving force of business transformation across every industry and sector.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-027",
+      "statement": "Satya Nadella, chairman and chief executive officer of Microsoft, said that this year Azure surpassed $75 billion in revenue, up 34 percent, driven by growth across all workloads.",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    },
+    {
+      "id": "case-028",
+      "statement": "Amy Hood, executive vice president and chief financial officer of Microsoft, said Microsoft closed out the fiscal year with a strong quarter ended June 30, 2025, highlighted by Microsoft Cloud revenue reaching $46.7 billion, up 27% year-over-year (up 25% in constant currency).",
+      "standalone_sufficiency": null,
+      "fluency": null,
+      "conciseness": null,
+      "confidence": null,
+      "reasons": null,
+      "locked_at": null
+    }
+  ]
+}
