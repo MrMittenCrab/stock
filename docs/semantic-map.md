@@ -1,5 +1,9 @@
 # Local proposition graph
 
+Future proposition contextualization is governed by
+[the proposition decontextualization contract](proposition-decontextualization.md).
+That specification is a design for later phases; the runtime behavior below is current.
+
 This replaces the draft's fixed 0.85 gate and Cursor equivalence requests. The
 architecture is implemented, but **production rollout remains blocked by financial
 recall and calibration**. Do not rebuild production document 13 to validate it.
